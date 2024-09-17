@@ -12,10 +12,11 @@ const LoginForm = () => {
   const registerLink = () => {
     setAction(" active");
   };
-
   const loginLink = () => {
     setAction("");
   };
+
+  const [isShowPassword, setIsShowPassword] = useState(false);
 
   return (
     <div className={`wrapper${action}`}>
@@ -33,12 +34,19 @@ const LoginForm = () => {
           </div>
           <div className="input-box">
             <input
-              type="password"
+              type={isShowPassword === true ? "text" : "password"}
               placeholder="Password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
             />
-            <FaRegEyeSlash className="icon" />
+
+            <span onClick={() => setIsShowPassword(!isShowPassword)}>
+              {isShowPassword ? (
+                <FaRegEye className="icon" /> // Show when password is visible
+              ) : (
+                <FaRegEyeSlash className="icon" /> // Show when password is hidden
+              )}
+            </span>
           </div>
           <div className="remember-forgot">
             <label>
@@ -46,7 +54,11 @@ const LoginForm = () => {
             </label>
             <a href="#">Forgotten password?</a>
           </div>
-          <button type="submit" className={Email && password ? "active " : ""}>
+          <button
+            type="submit"
+            className={Email && password ? "active " : ""}
+            disabled={Email && password ? false : true}
+          >
             Log in
           </button>
           <div className="register-link">

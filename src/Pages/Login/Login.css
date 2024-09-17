@@ -173,3 +173,8 @@ a {
   background-position: 3px;
   background-position-x: 5%;
 }
+
+button[disabled="disabled"],
+button:disabled {
+  cursor: not-allowed;
+}
