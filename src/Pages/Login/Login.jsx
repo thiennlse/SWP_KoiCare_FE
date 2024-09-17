@@ -8,8 +8,17 @@ const LoginForm = () => {
   const [Email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [action, setAction] = useState("");
+  const registerLink = () => {
+    setAction(" active");
+  };
+
+  const loginLink = () => {
+    setAction("");
+  };
+
   return (
-    <div className="wrapper">
+    <div className={`wrapper${action}`}>
       <div className="form-box login">
         <form action="">
           <h1>Login</h1>
@@ -31,30 +40,33 @@ const LoginForm = () => {
             />
             <FaRegEyeSlash className="icon" />
           </div>
-          <div className="remember">
+          <div className="remember-forgot">
             <label>
               <input type="checkbox"></input>Remember
             </label>
+            <a href="#">Forgotten password?</a>
           </div>
-
           <button type="submit" className={Email && password ? "active " : ""}>
             Log in
           </button>
-
-          <a href="#" className="forgot">Forgotten password?</a>
-
           <div className="register-link">
             <p>
-              Don't have an account <a href="#">Register</a>
+              Don't have an account{" "}
+              <a href="#" onClick={registerLink}>
+                Register
+              </a>
             </p>
           </div>
-
-          <span className="line left"></span><span className="center">Or</span><span className="line right"></span> <br/>
-
-          <a href="#" class="btn google">Login with Google</a>
+          <span className="line left"></span>
+          <span className="center">Or</span>
+          <span className="line right"></span> <br />
+          <a href="#" class="btn google">
+            Login with Google
+          </a>
         </form>
       </div>
-      {/* <div className="form-box register">
+
+      <div className="form-box register">
         <form action="">
           <h1>Registration</h1>
           <div className="input-box">
@@ -75,23 +87,25 @@ const LoginForm = () => {
             />
             <FaRegEyeSlash className="icon" />
           </div>
-          <div className="remember">
+          <div className="remember-forgot">
             <label>
-              <input type="checkbox"></input>Remember
+              <input type="checkbox"></input> I agree to the
+              <a href="#"> terms & conditions</a>
             </label>
-            {/* <a href="#">Quên mật khẩu?</a> */}
-      {/* </div> */}
-      {/* <button type="submit" className={Email && password ? "active " : ""}>
-            Login
+          </div>
+          <button type="submit" className={Email && password ? "active " : ""}>
+            Register
           </button>
-
           <div className="register-link">
             <p>
-              Don't have an account <a href="#">Register</a>
+              Already have an account?{" "}
+              <a href="#" onClick={loginLink}>
+                Login
+              </a>
             </p>
-          </div> */}
-      {/* </form> */}
-      {/* </div> */}
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
