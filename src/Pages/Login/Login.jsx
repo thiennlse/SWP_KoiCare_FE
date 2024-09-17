@@ -49,8 +49,7 @@ const LoginForm = () => {
           </div>
         </form>
       </div>
-
-      <div className="form-box register">
+      {/* <div className="form-box register">
         <form action="">
           <h1>Registration</h1>
           <div className="input-box">
@@ -76,9 +75,8 @@ const LoginForm = () => {
               <input type="checkbox"></input>Remember
             </label>
             {/* <a href="#">Quên mật khẩu?</a> */}
-          </div>
-
-          <button type="submit" className={Email && password ? "active " : ""}>
+      {/* </div> */}
+      {/* <button type="submit" className={Email && password ? "active " : ""}>
             Login
           </button>
 
@@ -86,9 +84,9 @@ const LoginForm = () => {
             <p>
               Don't have an account <a href="#">Register</a>
             </p>
-          </div>
-        </form>
-      </div>
+          </div> */}
+      {/* </form> */}
+      {/* </div> */}
     </div>
   );
 };
