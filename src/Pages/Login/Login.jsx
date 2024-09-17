@@ -35,18 +35,23 @@ const LoginForm = () => {
             <label>
               <input type="checkbox"></input>Remember
             </label>
-            {/* <a href="#">Quên mật khẩu?</a> */}
           </div>
 
           <button type="submit" className={Email && password ? "active " : ""}>
-            Login
+            Log in
           </button>
+
+          <a href="#" className="forgot">Forgotten password?</a>
 
           <div className="register-link">
             <p>
               Don't have an account <a href="#">Register</a>
             </p>
           </div>
+
+          <span className="line left"></span><span className="center">Or</span><span className="line right"></span> <br/>
+
+          <a href="#" class="btn google">Login with Google</a>
         </form>
       </div>
       {/* <div className="form-box register">
