@@ -3,7 +3,7 @@ import "./Login.css";
 import { FaUser } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
 const LoginForm = () => {
-  const [usernmame, setUsernmame] = useState("");
+  const [Email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   return (
@@ -13,9 +13,9 @@ const LoginForm = () => {
         <div className="input-box">
           <input
             type="text"
-            placeholder="Username"
-            value={usernmame}
-            onChange={(event) => setUsernmame(event.target.value)}
+            placeholder="Email"
+            value={Email}
+            onChange={(event) => setEmail(event.target.value)}
           />
           <FaUser className="icon" />
         </div>
@@ -35,10 +35,7 @@ const LoginForm = () => {
           {/* <a href="#">Quên mật khẩu?</a> */}
         </div>
 
-        <button
-          type="submit"
-          className={usernmame && password ? "active " : ""}
-        >
+        <button type="submit" className={Email && password ? "active " : ""}>
           Login
         </button>
 
