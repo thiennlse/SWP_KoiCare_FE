@@ -1,4 +1,5 @@
 .wrapper {
+  position: relative;
   width: 420px;
   background-color: transparent;
   border: 2px solid rgba(255, 255, 255, 0.2);
@@ -7,14 +8,21 @@
   border-radius: 10px;
   padding: 50px 40px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  transition: height 0.2s ease;
+  overflow: hidden;
 }
-
-.wrapper h1 {
+.form-box {
+  flex: 1;
+  width: 80%;
+}
+form h1 {
   font-size: 36px;
   text-align: center;
 }
 
-.wrapper .input-box {
+form .input-box {
   position: relative;
   width: 100%;
   height: 50px;
@@ -44,14 +52,25 @@
   transform: translateY(-50%);
 }
 
-.remember {
-  text-decoration: none;
-  text-align: left;
+form .remember-forgot {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  margin: -15px 0 15px;
 }
 
-.remember label input {
+.remember-forgot label input {
   accent-color: #fff;
   margin-right: 4px;
+}
+
+.remember-forgot a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.remember-forgot a:hover {
+  text-decoration: underline;
 }
 
 .wrapper button {
@@ -73,7 +92,11 @@ a {
   text-decoration: none;
 }
 
-.wrapper .forgot { 
+.wrapper.active {
+  height: 500px;
+}
+
+.wrapper .forgot {
   display: flex;
   justify-content: center;
   font-size: 16px;
@@ -85,6 +108,26 @@ a {
   font-size: 16px;
   text-align: center;
   margin: 20px 0 15px;
+}
+
+.wrapper .form-box.register {
+  transition: translate 0.18s ease;
+  translate: 0;
+}
+
+.wrapper.active .form-box.login {
+  transition: none;
+  translate: -400px;
+}
+
+.wrapper .form-box.register {
+  position: absolute;
+  translate: 400px;
+}
+
+.wrapper.active .form-box.register {
+  transition: translate 0.18s ease;
+  translate: 0;
 }
 
 .register-link p a {
@@ -124,14 +167,14 @@ a {
   font-size: 20px;
   font-weight: 700;
   color: #000000;
-  background-image: url(../image/google.svg);
+  background-image: url(../../Components/Assets/google.svg);
   background-repeat: no-repeat;
   background-size: 35px;
   background-position: 3px;
   background-position-x: 5%;
 }
 
-.active {
-  background-color: red;
-  color: #fff;
+button[disabled="disabled"],
+button:disabled {
+  cursor: not-allowed;
 }
