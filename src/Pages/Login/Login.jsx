@@ -45,7 +45,7 @@ const LoginForm = () => {
 
           <div className="register-link">
             <p>
-              Don't have an account <a href="#">Register</a>
+              Don't have an account? <a href="#">Register</a>
             </p>
           </div>
 
@@ -54,7 +54,7 @@ const LoginForm = () => {
           <a href="#" class="btn google">Login with Google</a>
         </form>
       </div>
-      {/* <div className="form-box register">
+      <div className="form-box register">
         <form action="">
           <h1>Registration</h1>
           <div className="input-box">
@@ -77,21 +77,20 @@ const LoginForm = () => {
           </div>
           <div className="remember">
             <label>
-              <input type="checkbox"></input>Remember
+              <input type="checkbox"></input>I already to the terms & conditions
             </label>
-            {/* <a href="#">Quên mật khẩu?</a> */}
-      {/* </div> */}
-      {/* <button type="submit" className={Email && password ? "active " : ""}>
+          </div>
+          <button type="submit" className={Email && password ? "active " : ""}>
             Login
           </button>
 
           <div className="register-link">
             <p>
-              Don't have an account <a href="#">Register</a>
+              Already have an account? <a href="#">Login</a>
             </p>
-          </div> */}
-      {/* </form> */}
-      {/* </div> */}
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
