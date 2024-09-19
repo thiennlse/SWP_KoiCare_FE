@@ -5,8 +5,11 @@ import { FaLock } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
 const LoginForm = () => {
-  const [Email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+
+  const [registerEmail, setRegisterEmail] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
 
   const [action, setAction] = useState("");
   const registerLink = () => {
@@ -27,8 +30,8 @@ const LoginForm = () => {
             <input
               type="text"
               placeholder="Email"
-              value={Email}
-              onChange={(event) => setEmail(event.target.value)}
+              value={loginEmail}
+              onChange={(event) => setLoginEmail(event.target.value)}
             />
             <FaUser className="icon" />
           </div>
@@ -36,8 +39,8 @@ const LoginForm = () => {
             <input
               type={isShowPassword === true ? "text" : "password"}
               placeholder="Password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
+              value={loginPassword}
+              onChange={(event) => setLoginPassword(event.target.value)}
             />
 
             <span onClick={() => setIsShowPassword(!isShowPassword)}>
@@ -56,8 +59,8 @@ const LoginForm = () => {
           </div>
           <button
             type="submit"
-            className={Email && password ? "active " : ""}
-            disabled={Email && password ? false : true}
+            className={loginEmail && loginPassword ? "active " : ""}
+            disabled={loginEmail && loginPassword ? false : true}
           >
             Log in
           </button>
@@ -85,19 +88,26 @@ const LoginForm = () => {
             <input
               type="text"
               placeholder="Email"
-              value={Email}
-              onChange={(event) => setEmail(event.target.value)}
+              value={registerEmail}
+              onChange={(event) => setRegisterEmail(event.target.value)}
             />
             <FaUser className="icon" />
           </div>
           <div className="input-box">
             <input
-              type="password"
+              type={isShowPassword === true ? "text" : "password"}
               placeholder="Password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
+              value={registerPassword}
+              onChange={(event) => setRegisterPassword(event.target.value)}
             />
-            <FaRegEyeSlash className="icon" />
+
+            <span onClick={() => setIsShowPassword(!isShowPassword)}>
+              {isShowPassword ? (
+                <FaRegEye className="icon" /> // Show when password is visible
+              ) : (
+                <FaRegEyeSlash className="icon" /> // Show when password is hidden
+              )}
+            </span>
           </div>
           <div className="remember-forgot">
             <label>
@@ -105,7 +115,10 @@ const LoginForm = () => {
               <a href="#"> terms & conditions</a>
             </label>
           </div>
-          <button type="submit" className={Email && password ? "active " : ""}>
+          <button
+            type="submit"
+            className={registerEmail && registerPassword ? "active " : ""}
+          >
             Register
           </button>
           <div className="register-link">
