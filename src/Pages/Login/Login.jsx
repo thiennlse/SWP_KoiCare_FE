@@ -10,8 +10,10 @@ const LoginForm = () => {
 
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [action, setAction] = useState("");
+
   const registerLink = () => {
     setAction(" active");
   };
@@ -19,8 +21,12 @@ const LoginForm = () => {
     setAction("");
   };
 
-  const [isShowPassword, setIsShowPassword] = useState(false);
+  const checkPassword = () => {
+    if (registerPassword !== confirmPassword) alert("Wrong Password!");
+  };
 
+  const [isShowPassword, setIsShowPassword] = useState(false);
+  const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
   return (
     <div className={`wrapper${action}`}>
       <div className="form-box login">
@@ -100,7 +106,6 @@ const LoginForm = () => {
               value={registerPassword}
               onChange={(event) => setRegisterPassword(event.target.value)}
             />
-
             <span onClick={() => setIsShowPassword(!isShowPassword)}>
               {isShowPassword ? (
                 <FaRegEye className="icon" /> // Show when password is visible
@@ -109,6 +114,24 @@ const LoginForm = () => {
               )}
             </span>
           </div>
+          <div className="input-box">
+            <input
+              type={isShowConfirmPassword === true ? "text" : "password"}
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(event) => setConfirmPassword(event.target.value)}
+            />
+            <span
+              onClick={() => setIsShowConfirmPassword(!isShowConfirmPassword)}
+            >
+              {isShowConfirmPassword ? (
+                <FaRegEye className="icon" /> // Show when password is visible
+              ) : (
+                <FaRegEyeSlash className="icon" /> // Show when password is hidden
+              )}
+            </span>
+          </div>
+
           <div className="remember-forgot">
             <label>
               <input type="checkbox"></input> I agree to the
@@ -118,6 +141,7 @@ const LoginForm = () => {
           <button
             type="submit"
             className={registerEmail && registerPassword ? "active " : ""}
+            onClick={checkPassword}
           >
             Register
           </button>
