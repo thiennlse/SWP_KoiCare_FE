@@ -28,132 +28,134 @@ const LoginForm = () => {
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
   return (
-    <div className={`wrapper${action}`}>
-      <div className="form-box login">
-        <form action="">
-          <h1>Login</h1>
-          <div className="input-box">
-            <input
-              type="text"
-              placeholder="Email"
-              value={loginEmail}
-              onChange={(event) => setLoginEmail(event.target.value)}
-            />
-            <FaUser className="icon" />
-          </div>
-          <div className="input-box">
-            <input
-              type={isShowPassword === true ? "text" : "password"}
-              placeholder="Password"
-              value={loginPassword}
-              onChange={(event) => setLoginPassword(event.target.value)}
-            />
+    <div className="login-wrapper">
+      <div className={`wrapper${action}`}>
+        <div className="form-box login">
+          <form action="">
+            <h1>Login</h1>
+            <div className="input-box">
+              <input
+                type="text"
+                placeholder="Email"
+                value={loginEmail}
+                onChange={(event) => setLoginEmail(event.target.value)}
+              />
+              <FaUser className="icon" />
+            </div>
+            <div className="input-box">
+              <input
+                type={isShowPassword === true ? "text" : "password"}
+                placeholder="Password"
+                value={loginPassword}
+                onChange={(event) => setLoginPassword(event.target.value)}
+              />
 
-            <span onClick={() => setIsShowPassword(!isShowPassword)}>
-              {isShowPassword ? (
-                <FaRegEye className="icon" /> // Show when password is visible
-              ) : (
-                <FaRegEyeSlash className="icon" /> // Show when password is hidden
-              )}
-            </span>
-          </div>
-          <div className="remember-forgot">
-            <label>
-              <input type="checkbox"></input>Remember
-            </label>
-            <a href="#">Forgotten password?</a>
-          </div>
-          <button
-            type="submit"
-            className={loginEmail && loginPassword ? "active " : ""}
-            disabled={loginEmail && loginPassword ? false : true}
-          >
-            Log in
-          </button>
-          <div className="register-link">
-            <p>
-              Don't have an account{" "}
-              <a href="#" onClick={registerLink}>
-                Register
-              </a>
-            </p>
-          </div>
-          <span className="line left"></span>
-          <span className="center">Or</span>
-          <span className="line right"></span> <br />
-          <a href="#" class="btn google">
-            Login with Google
-          </a>
-        </form>
-      </div>
-
-      <div className="form-box register">
-        <form action="">
-          <h1>Registration</h1>
-          <div className="input-box">
-            <input
-              type="text"
-              placeholder="Email"
-              value={registerEmail}
-              onChange={(event) => setRegisterEmail(event.target.value)}
-            />
-            <FaUser className="icon" />
-          </div>
-          <div className="input-box">
-            <input
-              type={isShowPassword === true ? "text" : "password"}
-              placeholder="Password"
-              value={registerPassword}
-              onChange={(event) => setRegisterPassword(event.target.value)}
-            />
-            <span onClick={() => setIsShowPassword(!isShowPassword)}>
-              {isShowPassword ? (
-                <FaRegEye className="icon" /> // Show when password is visible
-              ) : (
-                <FaRegEyeSlash className="icon" /> // Show when password is hidden
-              )}
-            </span>
-          </div>
-          <div className="input-box">
-            <input
-              type={isShowConfirmPassword === true ? "text" : "password"}
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={(event) => setConfirmPassword(event.target.value)}
-            />
-            <span
-              onClick={() => setIsShowConfirmPassword(!isShowConfirmPassword)}
+              <span onClick={() => setIsShowPassword(!isShowPassword)}>
+                {isShowPassword ? (
+                  <FaRegEye className="icon" /> // Show when password is visible
+                ) : (
+                  <FaRegEyeSlash className="icon" /> // Show when password is hidden
+                )}
+              </span>
+            </div>
+            <div className="remember-forgot">
+              <label>
+                <input type="checkbox"></input>Remember
+              </label>
+              <a href="#">Forgotten password?</a>
+            </div>
+            <button
+              type="submit"
+              className={loginEmail && loginPassword ? "active " : ""}
+              disabled={loginEmail && loginPassword ? false : true}
             >
-              {isShowConfirmPassword ? (
-                <FaRegEye className="icon" /> // Show when password is visible
-              ) : (
-                <FaRegEyeSlash className="icon" /> // Show when password is hidden
-              )}
-            </span>
-          </div>
+              Log in
+            </button>
+            <div className="register-link">
+              <p>
+                Don't have an account{" "}
+                <a href="#" onClick={registerLink}>
+                  Register
+                </a>
+              </p>
+            </div>
+            <span className="line left"></span>
+            <span className="center">Or</span>
+            <span className="line right"></span> <br />
+            <a href="#" class="btn google">
+              Login with Google
+            </a>
+          </form>
+        </div>
 
-          <div className="remember-forgot">
-            <label>
-              <input type="checkbox"></input> I agree to the
-              <a href="#"> terms & conditions</a>
-            </label>
-          </div>
-          <button
-            type="submit"
-            className={registerEmail && registerPassword ? "active " : ""}
-            onClick={checkPassword}
-          >
-            Register
-          </button>
-          <div className="register-link">
-            <p>
-              Already have an account?{" "}
-              <a href="#" onClick={loginLink}>
-                Login
-              </a>
-            </p>
-          </div>
-        </form>
+        <div className="form-box register">
+          <form action="">
+            <h1>Registration</h1>
+            <div className="input-box">
+              <input
+                type="text"
+                placeholder="Email"
+                value={registerEmail}
+                onChange={(event) => setRegisterEmail(event.target.value)}
+              />
+              <FaUser className="icon" />
+            </div>
+            <div className="input-box">
+              <input
+                type={isShowPassword === true ? "text" : "password"}
+                placeholder="Password"
+                value={registerPassword}
+                onChange={(event) => setRegisterPassword(event.target.value)}
+              />
+              <span onClick={() => setIsShowPassword(!isShowPassword)}>
+                {isShowPassword ? (
+                  <FaRegEye className="icon" /> // Show when password is visible
+                ) : (
+                  <FaRegEyeSlash className="icon" /> // Show when password is hidden
+                )}
+              </span>
+            </div>
+            <div className="input-box">
+              <input
+                type={isShowConfirmPassword === true ? "text" : "password"}
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(event) => setConfirmPassword(event.target.value)}
+              />
+              <span
+                onClick={() => setIsShowConfirmPassword(!isShowConfirmPassword)}
+              >
+                {isShowConfirmPassword ? (
+                  <FaRegEye className="icon" /> // Show when password is visible
+                ) : (
+                  <FaRegEyeSlash className="icon" /> // Show when password is hidden
+                )}
+              </span>
+            </div>
+
+            <div className="remember-forgot">
+              <label>
+                <input type="checkbox"></input> I agree to the
+                <a href="#"> terms & conditions</a>
+              </label>
+            </div>
+            <button
+              type="submit"
+              className={registerEmail && registerPassword ? "active " : ""}
+              onClick={checkPassword}
+            >
+              Register
+            </button>
+            <div className="register-link">
+              <p>
+                Already have an account?{" "}
+                <a href="#" onClick={loginLink}>
+                  Login
+                </a>
+              </p>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
