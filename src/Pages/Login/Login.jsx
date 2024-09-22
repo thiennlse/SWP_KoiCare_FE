@@ -4,7 +4,6 @@ import { FaUser } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
-
 const LoginForm = () => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
