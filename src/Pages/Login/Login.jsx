@@ -22,11 +22,16 @@ const LoginForm = () => {
   };
 
   const checkPassword = () => {
-    if (registerPassword !== confirmPassword) alert("Wrong Password!");
+    registerPassword !== confirmPassword
+      ? alert("Wrong Password!")
+      : alert("Register Successful");
   };
+
+  const [checkBox, setCheckBox] = useState("");
 
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
+
   return (
     <div className="login-wrapper">
       <div className={`wrapper${action}`}>
@@ -135,14 +140,22 @@ const LoginForm = () => {
 
             <div className="remember-forgot">
               <label>
-                <input type="checkbox"></input> I agree to the
+                <input
+                  type="checkbox"
+                  onChange={(event) => setCheckBox(!checkBox)}
+                ></input>{" "}
+                I agree to the
                 <a href="#"> terms & conditions</a>
               </label>
             </div>
             <button
               type="submit"
-              className={registerEmail && registerPassword ? "active " : ""}
               onClick={checkPassword}
+              disabled={
+                registerEmail && registerPassword && confirmPassword && checkBox
+                  ? false
+                  : true
+              }
             >
               Register
             </button>
