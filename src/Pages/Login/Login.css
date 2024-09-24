@@ -1,4 +1,20 @@
-.wrapper {
+/* Áp dụng các quy tắc chỉ cho trang login */
+.login-wrapper {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: url("../../Components/Assets/background3.jpg") no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.login-wrapper .wrapper {
   position: relative;
   width: 420px;
   background-color: transparent;
@@ -13,23 +29,25 @@
   transition: height 0.2s ease;
   overflow: hidden;
 }
-.form-box {
+
+.login-wrapper .form-box {
   flex: 1;
   width: 80%;
 }
-form h1 {
+
+.login-wrapper form h1 {
   font-size: 36px;
   text-align: center;
 }
 
-form .input-box {
+.login-wrapper form .input-box {
   position: relative;
   width: 100%;
   height: 50px;
   margin: 30px 0;
 }
 
-.input-box input {
+.login-wrapper .input-box input {
   width: 100%;
   height: 100%;
   background: transparent;
@@ -41,39 +59,39 @@ form .input-box {
   padding: 20px;
 }
 
-.input-box input::placeholder {
+.login-wrapper .input-box input::placeholder {
   color: #fff;
 }
 
-.input-box .icon {
+.login-wrapper .input-box .icon {
   position: absolute;
   right: 20px;
   top: 50%;
   transform: translateY(-50%);
 }
 
-form .remember-forgot {
+.login-wrapper .remember-forgot {
   display: flex;
   justify-content: space-between;
   font-size: 15px;
   margin: -15px 0 15px;
 }
 
-.remember-forgot label input {
+.login-wrapper .remember-forgot label input {
   accent-color: #fff;
   margin-right: 4px;
 }
 
-.remember-forgot a {
+.login-wrapper .remember-forgot a {
   color: #fff;
   text-decoration: none;
 }
 
-.remember-forgot a:hover {
+.login-wrapper .remember-forgot a:hover {
   text-decoration: underline;
 }
 
-.wrapper button {
+.login-wrapper button {
   width: 100%;
   height: 40px;
   border: none;
@@ -88,15 +106,15 @@ form .remember-forgot {
   margin-top: 20px;
 }
 
-a {
+.login-wrapper a {
   text-decoration: none;
 }
 
-.wrapper.active {
+.login-wrapper .wrapper.active {
   height: 500px;
 }
 
-.wrapper .forgot {
+.login-wrapper .wrapper .forgot {
   display: flex;
   justify-content: center;
   font-size: 16px;
@@ -104,55 +122,55 @@ a {
   margin-top: 8px;
 }
 
-.wrapper .register-link {
+.login-wrapper .wrapper .register-link {
   font-size: 16px;
   text-align: center;
   margin: 20px 0 15px;
 }
 
-.wrapper .form-box.register {
+.login-wrapper .wrapper .form-box.register {
   transition: translate 0.18s ease;
   translate: 0;
 }
 
-.wrapper.active .form-box.login {
+.login-wrapper .wrapper.active .form-box.login {
   transition: none;
   translate: -400px;
 }
 
-.wrapper .form-box.register {
+.login-wrapper .wrapper .form-box.register {
   position: absolute;
   translate: 400px;
 }
 
-.wrapper.active .form-box.register {
+.login-wrapper .wrapper.active .form-box.register {
   transition: translate 0.18s ease;
   translate: 0;
 }
 
-.register-link p a {
+.login-wrapper .register-link p a {
   color: #fff;
   text-decoration: none;
   font-weight: 600;
 }
 
-.register-link p a:hover {
+.login-wrapper .register-link p a:hover {
   text-decoration: underline;
 }
 
-.line {
+.login-wrapper .line {
   display: inline-block;
   border-bottom: solid 1px #333;
   width: 45%;
 }
 
-.center {
+.login-wrapper .center {
   color: #333;
   margin: 0 5px;
   font-size: 16px;
 }
 
-.btn {
+.login-wrapper .btn {
   display: inline-block;
   width: 100%;
   padding: 15px;
@@ -163,7 +181,7 @@ a {
   background-color: #fff;
 }
 
-.google {
+.login-wrapper .google {
   font-size: 20px;
   font-weight: 700;
   color: #000000;
