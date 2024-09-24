@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Chilanka&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    background-color: #F9F3EC;
+    height: 100px;
+}
+
+.header_logo img {
+    width: 148px;
+    height: auto;
+}
+
+.nav_links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+    margin-left: 50px;
+}
+
+.nav-list {
+    display: flex;
+    list-style-type: none;
+    justify-content: space-evenly;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-list li a {
+    text-decoration: none;
+    color: black;
+    font-family: "Chilanka", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 26px;
+}
+
+.nav-list li a:hover {
+    color: #DEAD6F;
+}
+
+.nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.icon {
+    font-size: 34px;
+    color: black;
+    margin-right: 50px;
+}
+
+.icon:hover {
+    color: #DEAD6F;
+}
