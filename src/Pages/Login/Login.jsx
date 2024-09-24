@@ -70,8 +70,8 @@ const LoginForm = () => {
               <a href="#">Forgotten password?</a>
             </div>
             <button
+              className="login_button"
               type="submit"
-              className={loginEmail && loginPassword ? "active " : ""}
               disabled={loginEmail && loginPassword ? false : true}
             >
               Log in
@@ -149,6 +149,7 @@ const LoginForm = () => {
               </label>
             </div>
             <button
+              className="register_button"
               type="submit"
               onClick={checkPassword}
               disabled={

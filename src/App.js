@@ -6,7 +6,7 @@ import LoginForm from "./Pages/Login/Login";
 import HomePage from "./Pages/HomePage/HomePage";
 function App() {
   const router = createBrowserRouter([
-    { path: "/", element: <HomePage /> },
+    { path: "/", element: <LoginForm /> },
     { path: "Login", element: <LoginForm /> },
   ]);
   return <RouterProvider router={router} />;
