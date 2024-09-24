@@ -1,28 +1,7 @@
-import React from "react";
 import "./HomePage.css";
 
-function Body() {
-    return (
-        <body className="body">
-            <p>Hello</p>
-            <p>Hello</p>
-            <p>Hello</p>
-            <p>Hello</p>
-            <p>Hello</p>
-            <p>Hello</p>
-            <p>Hello</p>
-            <p>Hello</p>
-            <p>Hello</p>
-            <p>Hello</p>
-            <p>Hello</p>
-            <p>Hello</p>
-            <p>Hello</p>
-            <p>Hello</p>
-            <p>Hello</p>
-            <p>Hello</p>
-            <p>Hello</p>
-        </body>
-    );
-}
+const HomePage = () => {
+  return <div>12341243</div>;
+};
 
-export default Body;
+export default HomePage;
