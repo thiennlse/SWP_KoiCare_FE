@@ -1,11 +1,10 @@
-import logo from "./logo.svg";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import "./index.css";
 import LoginForm from "./Pages/Login/Login";
 import HomePage from "./Pages/HomePage/HomePage";
 import Header from "./Components/header/header";
-import Footer from "./Components/footer/footer"
+import Footer from "./Components/footer/footer";
 
 function App() {
   const router = createBrowserRouter([
