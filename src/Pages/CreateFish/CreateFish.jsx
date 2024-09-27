@@ -18,56 +18,39 @@ function CreateFishForm() {
       <p className="form_title">Create Fish</p>
 
       <div className="form_grid">
-        {/* Fish Name */}
-        <div className="input-group">
-          <label htmlFor="fishName">Fish Name:</label>
-          <input type="text" id="fishName" name="fishName" />
+        <div className="input_infor">
+          <label className="fish_name">Fish Name</label>
         </div>
-
-        {/* Pool Name */}
-        <div className="input-group">
-          <label htmlFor="poolName">Pool Name:</label>
-          <input type="text" id="poolName" name="poolName" />
+        <div className="input_infor">
+          <label>Pool Name:</label>
+          <input type="text"></input>
         </div>
-
-        {/* Size */}
-        <div className="input-group">
-          <label htmlFor="size">Size:</label>
-          <input type="text" id="size" name="size" />
+        <div className="input_infor">
+          <label>Size:</label>
+          <input type="text"></input>
         </div>
-
-        {/* Weight */}
-        <div className="input-group">
-          <label htmlFor="weight">Weight:</label>
-          <input type="text" id="weight" name="weight" />
+        <div className="input_infor">
+          <label>Weight:</label>
+          <input type="text"></input>
         </div>
-
-        {/* Age */}
-        <div className="input-group">
-          <label htmlFor="age">Age:</label>
-          <input type="text" id="age" name="age" />
+        <div className="input_infor">
+          <label>Age:</label>
+          <input type="text"></input>
         </div>
-
-        {/* Gender */}
-        <div className="input-group">
-          <label htmlFor="gender">Gender:</label>
-          <input type="text" id="gender" name="gender" />
+        <div className="input_infor">
+          <label>Gender:</label>
+          <input type="text"></input>
         </div>
-
-        {/* Origin */}
-        <div className="input-group">
-          <label htmlFor="origin">Origin:</label>
-          <input type="text" id="origin" name="origin" />
+        <div className="input_infor">
+          <label>Origin:</label>
+          <input type="text"></input>
         </div>
-
-        {/* Cost */}
-        <div className="input-group">
-          <label htmlFor="cost">Cost:</label>
-          <input type="text" id="cost" name="cost" />
+        <div className="input_infor">
+          <label>Cost:</label>
+          <input type="text"></input>
         </div>
       </div>
 
-      {/* Save and Cancel Buttons */}
       <div className="buttons">
         <button type="submit">Save</button>
         <button type="button">Cancel</button>

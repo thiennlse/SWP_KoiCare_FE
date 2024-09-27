@@ -1,15 +1,19 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import "./index.css";
 import LoginForm from "./Pages/Login/Login";
 import HomePage from "./Pages/HomePage/HomePage";
 import Fish from "./Pages/CreateFish/CreateFish";
+import { Routes, Route } from "react-router-dom";
+
 function App() {
-  const router = createBrowserRouter([
-    { path: "/", element: <Fish /> },
-    { path: "Login", element: <LoginForm /> },
-  ]);
-  return <RouterProvider router={router} />;
+  return (
+    <div>
+      <Routes>
+        <Route path="/" element={<Fish />} />
+        <Route path="/login" element={<LoginForm />} />
+      </Routes>
+    </div>
+  );
 }
 
 export default App;
