@@ -1,5 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Chilanka&display=swap");
 
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
 * {
   margin: 0;
   padding: 0;
