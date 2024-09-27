@@ -25,9 +25,9 @@ function Header() {
                     <li><a href="#">Blog</a></li>
                 </ul>
 
-                <div className="nav-icons">
-                    <a href="#"><TiShoppingCart className="icons" /></a>
-                    <a href="#"><CgProfile className="icons" /></a>
+                <div className="nav-icons_header">
+                    <a href="#"><TiShoppingCart className="icon_header" /></a>
+                    <a href="#"><CgProfile className="icon_header" /></a>
                 </div>
             </nav>
             </div>

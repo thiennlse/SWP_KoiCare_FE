@@ -55,18 +55,18 @@
     color: #DEAD6F;
 }
 
-.nav-icons {
+.nav-icons_header {
     display: flex;
     align-items: center;
     gap: 20px;
 }
 
-.icons {
+.icon_header {
     font-size: 34px;
     color: black;
     margin-right: 50px;
 }
 
-.icons:hover {
+.icon_header:hover {
     color: #DEAD6F;
 }
