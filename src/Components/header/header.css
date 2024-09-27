@@ -61,12 +61,12 @@
     gap: 20px;
 }
 
-.icon {
+.icons {
     font-size: 34px;
     color: black;
     margin-right: 50px;
 }
 
-.icon:hover {
+.icons:hover {
     color: #DEAD6F;
 }

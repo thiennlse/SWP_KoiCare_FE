@@ -18,7 +18,7 @@ function Header() {
             </div>
 
             <nav className="nav_links">
-                <ul className="nav-list"> {/* Changed className from nav-links to nav-list */}
+                <ul className="nav-list">
                     <li><a href="#">Home</a></li>
                     <li><a href="#">Product</a></li>
                     <li><a href="#">Contact Us</a></li>
@@ -26,8 +26,8 @@ function Header() {
                 </ul>
 
                 <div className="nav-icons">
-                    <a href="#"><TiShoppingCart className="icon" /></a>
-                    <a href="#"><CgProfile className="icon" /></a>
+                    <a href="#"><TiShoppingCart className="icons" /></a>
+                    <a href="#"><CgProfile className="icons" /></a>
                 </div>
             </nav>
             </div>
