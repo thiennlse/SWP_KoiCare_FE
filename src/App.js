@@ -11,6 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Fish />} />
         <Route path="/login" element={<LoginForm />} />
+        <Route path="/product" element={<HomePage />} />
       </Routes>
     </div>
   );

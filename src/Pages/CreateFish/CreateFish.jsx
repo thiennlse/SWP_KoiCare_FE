@@ -18,36 +18,59 @@ function CreateFishForm() {
       <p className="form_title">Create Fish</p>
 
       <div className="form_grid">
-        <div className="input_infor">
-          <label className="fish_name">Fish Name</label>
+        <div className="column">
+          <div className="input_infor">
+            <label>Fish Name</label>
+            <input type="text"></input>
+          </div>
+
+          <div className="input_infor">
+            <label>Pool Name:</label>
+            <select className="pool_opt">
+              <option value="pool 1">Pool 1</option>
+              <option value="pool 2">Pool 2</option>
+              <option value="pool 3">Pool 3</option>
+            </select>
+          </div>
+
+          <div className="input_infor">
+            <label>Gender:</label>
+            <select className="pool_opt">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+
+          <div className="input_infor">
+            <label>Origin:</label>
+            <select className="pool_opt">
+              <option value="asia">Asia</option>
+              <option value="europe">Europe</option>
+              <option value="america">America</option>
+            </select>
+          </div>
         </div>
-        <div className="input_infor">
-          <label>Pool Name:</label>
-          <input type="text"></input>
-        </div>
-        <div className="input_infor">
-          <label>Size:</label>
-          <input type="text"></input>
-        </div>
-        <div className="input_infor">
-          <label>Weight:</label>
-          <input type="text"></input>
-        </div>
-        <div className="input_infor">
-          <label>Age:</label>
-          <input type="text"></input>
-        </div>
-        <div className="input_infor">
-          <label>Gender:</label>
-          <input type="text"></input>
-        </div>
-        <div className="input_infor">
-          <label>Origin:</label>
-          <input type="text"></input>
-        </div>
-        <div className="input_infor">
-          <label>Cost:</label>
-          <input type="text"></input>
+
+        <div className="column">
+          <div className="input_infor">
+            <label>Size:</label>
+            <input type="text"></input>
+          </div>
+
+          <div className="input_infor">
+            <label>Weight:</label>
+            <input type="text"></input>
+          </div>
+
+          <div className="input_infor">
+            <label>Age:</label>
+            <input type="text"></input>
+          </div>
+
+          <div className="input_infor">
+            <label>Cost:</label>
+            <input type="text"></input>
+          </div>
         </div>
       </div>
 
