@@ -15,9 +15,8 @@ function Header() {
         <nav className="nav_links">
           <ul className="nav-list">
             {" "}
-            {/* Changed className from nav-links to nav-list */}
             <li>
-              <a href="#">Home</a>
+              <a href="/home">Home</a>
             </li>
             <li>
               <a href="/product">Product</a>
