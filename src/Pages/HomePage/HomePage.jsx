@@ -1,23 +1,42 @@
 import "./HomePage.css";
 import Header from "../../Components/header/header";
 import Footer from "../../Components/footer/footer";
+import img1 from "../../Components/Assets/KoiFood.jpeg";
+import { FaHeart } from "react-icons/fa";
+import React, { useState } from "react";
 
 const data = [
   {
-    img: "", // Đường dẫn hình ảnh sẽ được điền ở đây
+    img: img1,
     name: "Sản phẩm A",
   },
   {
-    img: "",
+    img: img1,
     name: "Sản phẩm B",
   },
   {
-    img: "",
+    img: img1,
     name: "Sản phẩm C",
   },
   {
-    img: "",
+    img: img1,
     name: "Sản phẩm D",
+  },
+  {
+    img: img1,
+    name: "Sản phẩm E",
+  },
+  {
+    img: img1,
+    name: "Sản phẩm F",
+  },
+  {
+    img: img1,
+    name: "Sản phẩm G",
+  },
+  {
+    img: img1,
+    name: "Sản phẩm H",
   },
 ];
 
@@ -41,29 +60,40 @@ function Home() {
     </>
   );
 }
+
 function Products() {
   return (
     <>
       <ul className="products">
-        {data.map((product) => (
-          <Product productObj={product} />
+        {data.map((product, index) => (
+          <Product key={index} productObj={product} />
         ))}
       </ul>
     </>
   );
 }
+
 function Product({ productObj }) {
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const toggleFavorite = () => {
+    setIsFavorite(!isFavorite);
+  };
+
   return (
-    <>
-      <li>
-        <img src={productObj.img} alt="product"></img>
-        <p>{productObj.name}</p>
-        <div>
-          <button>Add To Cart</button>
-          <button>❤️</button>
-        </div>
-      </li>
-    </>
+    <li>
+      <img src={productObj.img} alt="product"></img>
+      <p>{productObj.name}</p>
+      <div>
+        <button>Add To Cart</button>
+        <button onClick={toggleFavorite}>
+          <FaHeart
+            className="heart_icon"
+            style={{ color: isFavorite ? "red" : "black" }}
+          />
+        </button>
+      </div>
+    </li>
   );
 }
 

@@ -1,17 +1,79 @@
+/* General styling for products */
 .products {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between; /* Space between products */
+  flex-wrap: wrap; /* Allow wrapping of products */
   list-style: none;
   margin-top: 30px;
+  padding: 0;
 }
 
 .products li {
-  margin: 20px;
-  flex: 1;
+  flex-basis: 22%; /* Increase the basis to allow more space between products */
+  max-width: 22%; /* Ensures no product exceeds 22% of the width */
+  background-color: #fff;
   text-align: center;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 20px; /* Space between rows */
+  margin-right: 10px; /* Space between products */
 }
 
-.product_title {
-  font-size: 20px;
-  margin: 20px 100px;
+.products li:nth-child(4n) {
+  margin-right: 0; /* Remove right margin for every 4th product to prevent overflow */
+}
+
+.products li:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.products img {
+  width: 100%;
+  height: auto;
+  border-bottom: 1px solid #eee;
+}
+
+.products p {
+  font-size: 14px; /* Adjust font size for smaller products */
+  color: #333;
+  padding: 10px 0;
+  margin: 0;
+}
+
+.products div {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+}
+
+.products button {
+  background-color: #ff6f61;
+  color: white;
+  border: none;
+  padding: 8px 10px; /* Adjust padding for smaller buttons */
+  font-size: 12px; /* Decrease font size for buttons */
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.products button:hover {
+  background-color: #e65a50;
+}
+
+button:last-child {
+  background-color: #eee;
+  color: #333;
+}
+
+button:last-child:hover {
+  background-color: #ddd;
+}
+
+.heart_icon {
+  font-size: 18px; /* Adjust heart icon size */
+  transition: color 0.3s ease;
 }
