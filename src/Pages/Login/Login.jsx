@@ -15,7 +15,7 @@ const LoginForm = () => {
   const [action, setAction] = useState("");
 
   const registerLink = () => {
-    setAction(" active");
+    setAction("active");
   };
   const loginLink = () => {
     setAction("");
@@ -32,11 +32,27 @@ const LoginForm = () => {
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
 
+  const [error, setError] = useState(false);
+
+  const errorMessage = () => {
+    return (
+      <div
+        className="error"
+        style={{
+          display: error ? "" : "none",
+        }}
+      >
+        <h1>Please enter all the fields</h1>
+      </div>
+    );
+  };
+
   return (
     <div className="login-wrapper">
-      <div className={`wrapper${action}`}>
+      <div className={`wrapper ${action}`}>
         <div className="form-box login">
-          <form action="">
+          <div className="messages">{errorMessage()}</div>
+          <form>
             <h1>Login</h1>
             <div className="input-box">
               <input
@@ -94,7 +110,7 @@ const LoginForm = () => {
         </div>
 
         <div className="form-box register">
-          <form action="">
+          <form>
             <h1>Registration</h1>
             <div className="input-box">
               <input

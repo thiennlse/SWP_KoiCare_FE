@@ -1,10 +1,4 @@
-/* Áp dụng các quy tắc chỉ cho trang login */
 .login-wrapper {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -207,21 +201,34 @@
   background-position-x: 5%;
 }
 
-.login_button[disabled="disabled"],
 .login_button:disabled {
   cursor: not-allowed;
 }
 
-/* Style for the Register button when disabled */
-.register_button[disabled="disabled"],
 .register_button:disabled {
-  background-color: #616568; /* Gray color when disabled */
+  background-color: #616568;
   cursor: not-allowed;
 }
 
-/* Style for the Register button when enabled */
-.register_button:not([disabled]),
+.register_button:disabled:hover {
+  background-color: #242525;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
 .register_button:enabled {
-  background-color: #0171d3; /* Green color when enabled */
+  background-color: #0171d3;
   cursor: pointer;
+}
+
+.register_button:enabled:hover {
+  background-color: #005bb5;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-wrapper .login_button:hover {
+  background-color: #005bb5;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
