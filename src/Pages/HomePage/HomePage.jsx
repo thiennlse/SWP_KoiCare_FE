@@ -145,7 +145,9 @@ function Product({ productObj }) {
 
   return (
     <li>
-      <img src={productObj.img} alt="product"></img>
+      <a href="Purchase">
+        <img src={productObj.img} alt="product"></img>
+      </a>
       <p>{productObj.name}</p>
       <div>
         <button className="product_btn">Add To Cart</button>
