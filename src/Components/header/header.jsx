@@ -30,7 +30,7 @@ function Header() {
           </ul>
 
           <div className="nav-icons_header">
-            <a href="#">
+            <a href="/cart">
               <TiShoppingCart className="icon_header" />
             </a>
             <a href="/login">
