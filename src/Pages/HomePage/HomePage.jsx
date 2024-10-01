@@ -124,7 +124,7 @@ function Banner() {
 
 function Products() {
   return (
-    <div className="product_wrapper">
+    <div id="products_scroll" className="product_wrapper">
       <h1 className="product_title">Best Selling Products</h1>
 
       <ul className="products">
@@ -188,7 +188,7 @@ const blogData = [
 
 function BlogSection({ blogs }) {
   return (
-    <div className="blog_section">
+    <div id="blog_scroll" className="blog_section">
       <div className="blog_header">
         <h1 className="blog_title">Latest Blog Post</h1>
         <button className="read_all_btn">READ ALL ➔</button>

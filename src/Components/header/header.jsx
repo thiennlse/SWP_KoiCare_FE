@@ -13,23 +13,23 @@ function Header() {
         </div>
 
         <nav className="nav_links">
-          <ul className="nav-list">
+          <ul className="nav_list">
             {" "}
             <li>
               <a href="/home">Home</a>
             </li>
             <li>
-              <a href="/product">Product</a>
+              <a href="#products_scroll">Product</a>
             </li>
             <li>
               <a href="#">Contact Us</a>
             </li>
             <li>
-              <a href="#">Blog</a>
+              <a href="#blog_scroll">Blog</a>
             </li>
           </ul>
 
-          <div className="nav-icons_header">
+          <div className="nav_icons_header">
             <a href="#">
               <TiShoppingCart className="icon_header" />
             </a>
