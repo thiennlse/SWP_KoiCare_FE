@@ -3,7 +3,7 @@ import Header from "../../Components/header/header";
 import Footer from "../../Components/footer/footer";
 import img1 from "../../Components/Assets/KoiFood.jpeg";
 import { FaHeart } from "react-icons/fa";
-import { useState, useEffect } from "react"; 
+import { useState, useEffect } from "react";
 
 import banner_image_1 from "../../Components/Assets/banner_image_1.png";
 import banner_image_2 from "../../Components/Assets/banner_image_2.png";
@@ -13,11 +13,10 @@ import blog_image_1 from "../../Components/Assets/blog_imgae_1.png";
 import blog_image_2 from "../../Components/Assets/blog_imgae_2.png";
 import blog_image_3 from "../../Components/Assets/blog_imgae_3.png";
 
-
 const bannerImages = [
   { img: banner_image_1, title: "Your Fish" },
   { img: banner_image_2, title: "Your Fish" },
-  { img: banner_image_3, title: "Your Fish" }
+  { img: banner_image_3, title: "Your Fish" },
 ];
 
 const data = [
@@ -60,7 +59,6 @@ const HomePage = () => {
     <div>
       <Header />
       <div>
-        <p className="product_title">Best Selling Products</p>
         <Home />
         <BlogSection blogs={blogData} />
       </div>
@@ -84,7 +82,7 @@ function Banner() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % bannerImages.length);
-    }, 5000); 
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -126,13 +124,15 @@ function Banner() {
 
 function Products() {
   return (
-    <>
+    <div className="product_wrapper">
+      <h1 className="product_title">Best Selling Products</h1>
+
       <ul className="products">
         {data.map((product, index) => (
           <Product key={index} productObj={product} />
         ))}
       </ul>
-    </>
+    </div>
   );
 }
 
@@ -166,19 +166,22 @@ const blogData = [
   {
     date: "20 Feb",
     title: "10 Reasons To Be Helpful Towards Animals",
-    content: "At the core of our practice is the idea that cities are the incubators of our greatest achievements...",
+    content:
+      "At the core of our practice is the idea that cities are the incubators of our greatest achievements...",
     image: blog_image_1,
   },
   {
     date: "21 Feb",
     title: "How To Know Your Pet Is Hungry",
-    content: "At the core of our practice is the idea that cities are the incubators of our greatest achievements...",
+    content:
+      "At the core of our practice is the idea that cities are the incubators of our greatest achievements...",
     image: blog_image_2,
   },
   {
     date: "22 Feb",
     title: "Best Home For Your Pets",
-    content: "At the core of our practice is the idea that cities are the incubators of our greatest achievements...",
+    content:
+      "At the core of our practice is the idea that cities are the incubators of our greatest achievements...",
     image: blog_image_3,
   },
 ];
@@ -193,14 +196,20 @@ function BlogSection({ blogs }) {
       <div className="blog_container">
         {blogs.map((blog, index) => (
           <div key={index} className="blog_card">
-            <a href="#"><img src={blog.image} alt={blog.title} className="blog_image" /></a>
+            <a href="#">
+              <img src={blog.image} alt={blog.title} className="blog_image" />
+            </a>
             <div className="blog_content">
               <div className="blog_date">
                 <span>{blog.date}</span>
               </div>
-              <a href="#"><h2 className="blog_card_title">{blog.title}</h2></a>
+              <a href="#">
+                <h2 className="blog_card_title">{blog.title}</h2>
+              </a>
               <p className="blog_excerpt">{blog.content}</p>
-              <a href="#" className="read_more">READ MORE</a>
+              <a href="#" className="read_more">
+                READ MORE
+              </a>
             </div>
           </div>
         ))}
