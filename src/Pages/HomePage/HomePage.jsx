@@ -9,6 +9,11 @@ import banner_image_1 from "../../Components/Assets/banner_image_1.png";
 import banner_image_2 from "../../Components/Assets/banner_image_2.png";
 import banner_image_3 from "../../Components/Assets/banner_image_3.png";
 
+import blog_image_1 from "../../Components/Assets/blog_imgae_1.png";
+import blog_image_2 from "../../Components/Assets/blog_imgae_2.png";
+import blog_image_3 from "../../Components/Assets/blog_imgae_3.png";
+
+
 const bannerImages = [
   { img: banner_image_1, title: "Your Fish" },
   { img: banner_image_2, title: "Your Fish" },
@@ -160,19 +165,19 @@ const blogData = [
     date: "20 Feb",
     title: "10 Reasons To Be Helpful Towards Animals",
     content: "At the core of our practice is the idea that cities are the incubators of our greatest achievements...",
-    image: "path-to-your-image1.jpg",
+    image: blog_image_1,
   },
   {
     date: "21 Feb",
     title: "How To Know Your Pet Is Hungry",
     content: "At the core of our practice is the idea that cities are the incubators of our greatest achievements...",
-    image: "path-to-your-image2.jpg",
+    image: blog_image_2,
   },
   {
     date: "22 Feb",
     title: "Best Home For Your Pets",
     content: "At the core of our practice is the idea that cities are the incubators of our greatest achievements...",
-    image: "path-to-your-image3.jpg",
+    image: blog_image_3,
   },
 ];
 
@@ -186,12 +191,12 @@ function BlogSection({ blogs }) {
       <div className="blog_container">
         {blogs.map((blog, index) => (
           <div key={index} className="blog_card">
-            <img src={blog.image} alt={blog.title} className="blog_image" />
+            <a href="#"><img src={blog.image} alt={blog.title} className="blog_image" /></a>
             <div className="blog_content">
               <div className="blog_date">
                 <span>{blog.date}</span>
               </div>
-              <h2 className="blog_card_title">{blog.title}</h2>
+              <a href="#"><h2 className="blog_card_title">{blog.title}</h2></a>
               <p className="blog_excerpt">{blog.content}</p>
               <a href="#" className="read_more">READ MORE</a>
             </div>
