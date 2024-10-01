@@ -13,12 +13,13 @@ body {
 .banner {
   position: relative;
   width: 100%;
-  height: 700px;
+  height: 600px;
   background-color: #f4fff6;
   display: flex;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+  margin-top: 100px;
 }
 
 .banner_content {
@@ -188,7 +189,7 @@ body {
 
 .blog_section,
 .product_wrapper {
-  padding: 100px 120px;
+  padding: 40px 120px;
   font-family: "Chilanka", system-ui;
   font-weight: 400;
   font-style: normal;
