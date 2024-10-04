@@ -1,11 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Chilanka&display=swap');
 
-/* Footer styling */
 .footer {
     padding: 0 110px;
     text-align: center;
     width: 100%;
-    margin-top: auto; /* Pushes the footer to the bottom */
+    margin-top: auto; 
     background-color: #F9F3EC;
 }
 

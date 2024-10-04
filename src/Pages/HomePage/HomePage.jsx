@@ -70,8 +70,15 @@ const HomePage = () => {
 function Home() {
   return (
     <>
-      <Banner />
-      <Products />
+      <div id="banner_scroll">
+        <Banner />
+      </div>
+      <div id="products_scroll">
+        <Products />
+      </div>
+      <div id="blog_scroll">
+        <BlogSection blogs={blogData} />
+      </div>
     </>
   );
 }
@@ -80,7 +87,7 @@ function Banner() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const interval = setInterval(() => {  
       setCurrentIndex((prevIndex) => (prevIndex + 1) % bannerImages.length);
     }, 5000);
     return () => clearInterval(interval);
