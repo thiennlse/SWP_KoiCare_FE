@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import "./Login.css";
 import { FaUser } from "react-icons/fa";
-import { FaLock } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+
 const LoginForm = () => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
@@ -13,6 +16,7 @@ const LoginForm = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [action, setAction] = useState("");
+  const navigate = useNavigate();
 
   const registerLink = () => {
     setAction("active");
@@ -23,36 +27,65 @@ const LoginForm = () => {
 
   const checkPassword = () => {
     registerPassword !== confirmPassword
-      ? alert("Wrong Password!")
-      : alert("Register Successful");
+      ? toast.error("Wrong Password!")
+      : toast.success("Register Successful");
   };
 
   const [checkBox, setCheckBox] = useState("");
-
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "https://koicare.azurewebsites.net/api/Member/login",
+        {
+          email: loginEmail,
+          password: loginPassword,
+        }
+      );
+      toast.success("thanh cong");
+      navigate("/");
+      setLoginEmail("");
+      setLoginPassword("");
+      console.log("Login successful:", response.data);
+    } catch (error) {
+      toast.error("that bai me roi");
+      if (error.response) {
+        console.log("Login error:", error.response.data);
+      } else {
+      }
+    }
+  };
 
-  const [error, setError] = useState(false);
+  const handleRegister = (event) => {
+    event.preventDefault();
+    if (registerPassword !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
 
-  const errorMessage = () => {
-    return (
-      <div
-        className="error"
-        style={{
-          display: error ? "" : "none",
-        }}
-      >
-        <h1>Please enter all the fields</h1>
-      </div>
-    );
+    axios
+      .post("https://koicare.azurewebsites.net/api/Member/register", {
+        email: registerEmail,
+        password: registerPassword,
+      })
+      .then((response) => {
+        console.log("Registration Successful:", response.data);
+        alert("Registration successful! Please log in.");
+        setAction("");
+      })
+      .catch((error) => {
+        console.error("Registration Error:", error);
+        alert("Registration failed, please try again.");
+      });
   };
 
   return (
     <div className="login-wrapper">
       <div className={`wrapper ${action}`}>
         <div className="form-box login">
-          <div className="messages">{errorMessage()}</div>
-          <form>
+          <form onSubmit={handleLogin}>
             <h1>Login</h1>
             <div className="input-box">
               <input
@@ -73,9 +106,9 @@ const LoginForm = () => {
 
               <span onClick={() => setIsShowPassword(!isShowPassword)}>
                 {isShowPassword ? (
-                  <FaRegEye className="icon" /> // Show when password is visible
+                  <FaRegEye className="icon" />
                 ) : (
-                  <FaRegEyeSlash className="icon" /> // Show when password is hidden
+                  <FaRegEyeSlash className="icon" />
                 )}
               </span>
             </div>
@@ -103,14 +136,14 @@ const LoginForm = () => {
             <span className="line left"></span>
             <span className="center">Or</span>
             <span className="line right"></span> <br />
-            <a href="#" class="btn google">
+            <a href="#" className="btn google">
               Login with Google
             </a>
           </form>
         </div>
 
         <div className="form-box register">
-          <form>
+          <form onSubmit={handleRegister}>
             <h1>Registration</h1>
             <div className="input-box">
               <input
@@ -130,9 +163,9 @@ const LoginForm = () => {
               />
               <span onClick={() => setIsShowPassword(!isShowPassword)}>
                 {isShowPassword ? (
-                  <FaRegEye className="icon" /> // Show when password is visible
+                  <FaRegEye className="icon" />
                 ) : (
-                  <FaRegEyeSlash className="icon" /> // Show when password is hidden
+                  <FaRegEyeSlash className="icon" />
                 )}
               </span>
             </div>
@@ -147,9 +180,9 @@ const LoginForm = () => {
                 onClick={() => setIsShowConfirmPassword(!isShowConfirmPassword)}
               >
                 {isShowConfirmPassword ? (
-                  <FaRegEye className="icon" /> // Show when password is visible
+                  <FaRegEye className="icon" />
                 ) : (
-                  <FaRegEyeSlash className="icon" /> // Show when password is hidden
+                  <FaRegEyeSlash className="icon" />
                 )}
               </span>
             </div>
@@ -187,6 +220,7 @@ const LoginForm = () => {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
