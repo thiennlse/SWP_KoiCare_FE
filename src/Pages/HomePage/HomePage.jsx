@@ -1,4 +1,5 @@
 import "./HomePage.css";
+import axios from "axios";
 import Header from "../../Components/header/header";
 import Footer from "../../Components/footer/footer";
 import img1 from "../../Components/Assets/KoiFood.jpeg";
@@ -95,7 +96,7 @@ function Banner() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {  
+    const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % bannerImages.length);
     }, 5000);
     return () => clearInterval(interval);
@@ -138,15 +139,75 @@ function Banner() {
 }
 
 function Products() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 8; // Display 8 products per page
+
+  useEffect(() => {
+    // Fetch products from the API
+    axios
+      .get("https://koicare.azurewebsites.net/api/Product")
+      .then((response) => {
+        setProducts(response.data); // Update the state with the fetched products
+        setLoading(false); // Set loading to false after the data is fetched
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+        setLoading(false);
+      });
+  }, []);
+
+  // Get current products for the page
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  // Function to handle page change
+  const handleNextPage = () => {
+    if (currentPage < Math.ceil(products.length / productsPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
     <div id="products_scroll" className="product_wrapper">
       <h1 className="product_title">Best Selling Products</h1>
 
-      <ul className="products">
-        {data.map((product, index) => (
-          <Product key={index} productObj={product} />
-        ))}
-      </ul>
+      {loading ? (
+        <p>Loading products...</p> // Show a loading message while products are being fetched
+      ) : (
+        <>
+          <ul className="products">
+            {currentProducts.map((product, index) => (
+              <Product key={index} productObj={product} />
+            ))}
+          </ul>
+
+          <div className="pagination_buttons">
+            <button onClick={handlePrevPage} disabled={currentPage === 1}>
+              Previous Page
+            </button>
+            <button
+              onClick={handleNextPage}
+              disabled={
+                currentPage >= Math.ceil(products.length / productsPerPage)
+              }
+            >
+              Next Page
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -161,11 +222,11 @@ function Product({ productObj }) {
   return (
     <li>
       <a href="Purchase">
-        <img src={productObj.img} alt="product" />
+        <img src={productObj.image} alt={productObj.name} />
       </a>
       <div className="product_price">
         <p>{productObj.name}</p>
-        <p>{productObj.price}</p>
+        <p>{productObj.cost} Vnd</p>
       </div>
       <div>
         <button className="product_btn">Add To Cart</button>
