@@ -165,27 +165,18 @@ body {
 }
 
 .product_btn {
-  background-color: #ff6f61;
+  background-color: #e65a50;
   color: white;
   border: none;
   padding: 8px 10px;
-  font-size: 12px;
+  font-size: 15px;
   cursor: pointer;
   border-radius: 5px;
   transition: background-color 0.3s ease;
 }
 
-.product_btn {
-  background-color: #e65a50;
-}
-
-.product_btn:last-child {
-  background-color: #eee;
-  color: #333;
-}
-
-.product_btn:last-child:hover {
-  background-color: #ddd;
+.product_btn:hover {
+  background-color: #ff6f61;
 }
 
 .heart_icon {
@@ -335,4 +326,37 @@ body {
 .pagination_buttons button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+.calc {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.calc button {
+  background-color: #e65a50;
+  color: white;
+  border: none;
+  font-size: 20px;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.calc button:hover {
+  background-color: #ff6f61;
+}
+
+.calc input {
+  width: 180px;
+  text-align: center;
+  font-size: 18px;
+  padding: 10px;
+  margin: 0 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }

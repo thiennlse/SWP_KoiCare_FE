@@ -4,6 +4,7 @@ import Header from "../../Components/header/header";
 import Footer from "../../Components/footer/footer";
 import img1 from "../../Components/Assets/KoiFood.jpeg";
 import { FaHeart } from "react-icons/fa";
+import { TiShoppingCart } from "react-icons/ti";
 import { useState, useEffect } from "react";
 
 import banner_image_1 from "../../Components/Assets/banner_image_1.png";
@@ -142,6 +143,7 @@ function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [quantities, setQuantities] = useState({}); // Store quantities for products
   const productsPerPage = 8; // Display 8 products per page
 
   useEffect(() => {
@@ -179,17 +181,29 @@ function Products() {
     }
   };
 
+  const updateQuantity = (index, newQuantity) => {
+    setQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [index]: newQuantity,
+    }));
+  };
+
   return (
     <div id="products_scroll" className="product_wrapper">
       <h1 className="product_title">Best Selling Products</h1>
 
       {loading ? (
-        <p>Loading products...</p> // Show a loading message while products are being fetched
+        <p>Loading products...</p>
       ) : (
         <>
           <ul className="products">
             {currentProducts.map((product, index) => (
-              <Product key={index} productObj={product} />
+              <Product
+                key={index}
+                productObj={product}
+                quantity={quantities[index] || 1} // Get the stored quantity or default to 1
+                updateQuantity={updateQuantity} // Pass the update function
+              />
             ))}
           </ul>
 
@@ -214,10 +228,7 @@ function Products() {
 
 function Product({ productObj }) {
   const [isFavorite, setIsFavorite] = useState(false);
-
-  const toggleFavorite = () => {
-    setIsFavorite(!isFavorite);
-  };
+  const [count, setCount] = useState(1);
 
   return (
     <li>
@@ -228,14 +239,23 @@ function Product({ productObj }) {
         <p>{productObj.name}</p>
         <p>{productObj.cost} Vnd</p>
       </div>
+
+      <div className="calc">
+        {count > 1 ? (
+          <button onClick={() => setCount((c) => c - 1)}>-</button>
+        ) : (
+          <button onClick={() => setCount((c) => c)}>-</button>
+        )}
+        <input
+          type="text"
+          value={count}
+          onChange={(e) => setCount(Number(e.target.value))}
+        ></input>
+        <button onClick={() => setCount((c) => c + 1)}>+</button>
+      </div>
+
       <div>
         <button className="product_btn">Add To Cart</button>
-        <button className="product_btn" onClick={toggleFavorite}>
-          <FaHeart
-            className="heart_icon"
-            style={{ color: isFavorite ? "red" : "black" }}
-          />
-        </button>
       </div>
     </li>
   );
