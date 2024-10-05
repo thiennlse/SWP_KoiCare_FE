@@ -25,11 +25,11 @@ const LoginForm = () => {
     setAction("");
   };
 
-  const checkPassword = () => {
-    registerPassword !== confirmPassword
-      ? toast.error("Wrong Password!")
-      : toast.success("Register Successful");
-  };
+  // const checkPassword = () => {
+  //   registerPassword !== confirmPassword
+  //     ? toast.error("Wrong Password!")
+  //     : toast.success("Register Successful");
+  // };
 
   const [checkBox, setCheckBox] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
@@ -61,7 +61,7 @@ const LoginForm = () => {
   const handleRegister = (event) => {
     event.preventDefault();
     if (registerPassword !== confirmPassword) {
-      alert("Passwords do not match!");
+      toast.error("Passwords do not match!");
       return;
     }
 
@@ -72,12 +72,12 @@ const LoginForm = () => {
       })
       .then((response) => {
         console.log("Registration Successful:", response.data);
-        alert("Registration successful! Please log in.");
+        toast.success("Registration successful! Please log in.");
         setAction("");
       })
       .catch((error) => {
         console.error("Registration Error:", error);
-        alert("Registration failed, please try again.");
+        toast.error("Registration failed, please try again.");
       });
   };
 
@@ -200,7 +200,7 @@ const LoginForm = () => {
             <button
               className="register_button"
               type="submit"
-              onClick={checkPassword}
+              // onClick={checkPassword}
               disabled={
                 registerEmail && registerPassword && confirmPassword && checkBox
                   ? false
