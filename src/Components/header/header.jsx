@@ -43,7 +43,7 @@ function Header() {
             </li>
           </ul>
 
-          <div className="nav-icons_header">
+          <div className="nav_icons_header">
             <a href="/cart">
               <TiShoppingCart className="icon_header" />
             </a>
