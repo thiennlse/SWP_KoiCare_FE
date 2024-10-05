@@ -13,7 +13,7 @@ function Header() {
     setTimeout(() => {
       const element = document.getElementById(target);
       if (element) {
-        element.scrollIntoView({ behavior: "smooth" }); 
+        element.scrollIntoView({ behavior: "smooth" });
       }
     }, 100);
   };
@@ -34,7 +34,9 @@ function Header() {
               <a onClick={() => handleNavigation("products_scroll")}>Product</a>
             </li>
             <li>
-              <a onClick={() => handleNavigation("contact_scroll")}>Contact Us</a>
+              <a onClick={() => handleNavigation("contact_scroll")}>
+                Contact Us
+              </a>
             </li>
             <li>
               <a onClick={() => handleNavigation("blog_scroll")}>Blog</a>
@@ -43,8 +45,6 @@ function Header() {
 
           <div className="nav-icons_header">
             <a href="/cart">
-          <div className="nav_icons_header">
-            <a href="#">
               <TiShoppingCart className="icon_header" />
             </a>
             <a href="/login">
