@@ -14,10 +14,10 @@ const CreateFish = () => {
 
 function CreateFishForm() {
   return (
-    <form className="form">
+    <form className="form_fish">
       <p className="form_title">Create Fish</p>
 
-      <div className="form_grid">
+      <div className="form_grid_fish">
         <div className="column">
           <div className="input_infor">
             <label>Fish Name</label>

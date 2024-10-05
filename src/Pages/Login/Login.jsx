@@ -73,9 +73,9 @@ const LoginForm = () => {
 
               <span onClick={() => setIsShowPassword(!isShowPassword)}>
                 {isShowPassword ? (
-                  <FaRegEye className="icon" /> // Show when password is visible
+                  <FaRegEye className="icon" />
                 ) : (
-                  <FaRegEyeSlash className="icon" /> // Show when password is hidden
+                  <FaRegEyeSlash className="icon" />
                 )}
               </span>
             </div>
@@ -130,9 +130,9 @@ const LoginForm = () => {
               />
               <span onClick={() => setIsShowPassword(!isShowPassword)}>
                 {isShowPassword ? (
-                  <FaRegEye className="icon" /> // Show when password is visible
+                  <FaRegEye className="icon" />
                 ) : (
-                  <FaRegEyeSlash className="icon" /> // Show when password is hidden
+                  <FaRegEyeSlash className="icon" />
                 )}
               </span>
             </div>
@@ -147,9 +147,9 @@ const LoginForm = () => {
                 onClick={() => setIsShowConfirmPassword(!isShowConfirmPassword)}
               >
                 {isShowConfirmPassword ? (
-                  <FaRegEye className="icon" /> // Show when password is visible
+                  <FaRegEye className="icon" />
                 ) : (
-                  <FaRegEyeSlash className="icon" /> // Show when password is hidden
+                  <FaRegEyeSlash className="icon" />
                 )}
               </span>
             </div>

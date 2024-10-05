@@ -44,16 +44,17 @@
   margin-left: 50px;
 }
 
-.nav-list {
+.nav_list {
   display: flex;
   list-style-type: none;
   justify-content: space-evenly;
   width: 100%;
   margin: 0;
   padding: 0;
+  cursor: pointer;
 }
 
-.nav-list li a {
+.nav_list li a {
   text-decoration: none;
   color: black;
   font-family: "Chilanka", system-ui;
@@ -62,11 +63,11 @@
   font-size: 26px;
 }
 
-.nav-list li a:hover {
+.nav_list li a:hover {
   color: #dead6f;
 }
 
-.nav-icons_header {
+.nav_icons_header {
   display: flex;
   align-items: center;
   gap: 20px;
