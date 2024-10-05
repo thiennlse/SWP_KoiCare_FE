@@ -44,13 +44,18 @@ const LoginForm = () => {
           password: loginPassword,
         }
       );
-      toast.success("thanh cong");
-      navigate("/");
+      toast.success("Login successful!", { autoClose: 1000 });
+
+      // Đợi 2 giây trước khi điều hướng
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+
       setLoginEmail("");
       setLoginPassword("");
       console.log("Login successful:", response.data);
     } catch (error) {
-      toast.error("that bai me roi");
+      toast.error("Login failed!");
       if (error.response) {
         console.log("Login error:", error.response.data);
       } else {
