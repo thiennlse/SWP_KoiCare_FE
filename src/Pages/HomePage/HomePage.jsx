@@ -101,28 +101,19 @@ function Banner() {
 function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [quantities, setQuantities] = useState({}); // Store quantities for products
 
   useEffect(() => {
-    // Fetch products from the API
     axios
       .get("https://koicare.azurewebsites.net/api/Product")
       .then((response) => {
-        setProducts(response.data); // Update the state with the fetched products
-        setLoading(false); // Set loading to false after the data is fetched
+        setProducts(response.data);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching products:", error);
         setLoading(false);
       });
   }, []);
-
-  const updateQuantity = (index, newQuantity) => {
-    setQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [index]: newQuantity,
-    }));
-  };
 
   return (
     <div id="products_scroll" className="product_wrapper">
@@ -133,12 +124,7 @@ function Products() {
       ) : (
         <ul className="products">
           {products.map((product, index) => (
-            <Product
-              key={index}
-              productObj={product}
-              quantity={quantities[index] || 1} // Get the stored quantity or default to 1
-              updateQuantity={updateQuantity} // Pass the update function
-            />
+            <Product key={index} productObj={product} />
           ))}
         </ul>
       )}
