@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Login.css";
 import { FaUser } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
@@ -16,6 +16,7 @@ const LoginForm = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [action, setAction] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   const registerLink = () => {
@@ -25,19 +26,15 @@ const LoginForm = () => {
     setAction("");
   };
 
-  // const checkPassword = () => {
-  //   registerPassword !== confirmPassword
-  //     ? toast.error("Wrong Password!")
-  //     : toast.success("Register Successful");
-  // };
-
   const [checkBox, setCheckBox] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
+
   const handleLogin = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await axios.post(
+      let res = await axios.post(
         "https://koicare.azurewebsites.net/api/Member/login",
         {
           email: loginEmail,
@@ -45,21 +42,20 @@ const LoginForm = () => {
         }
       );
       toast.success("Login successful!", { autoClose: 1000 });
-
-      // Đợi 2 giây trước khi điều hướng
       setTimeout(() => {
         navigate("/");
       }, 1000);
-
       setLoginEmail("");
       setLoginPassword("");
-      console.log("Login successful:", response.data);
+
+      if (res) {
+        localStorage.setItem("data", JSON.stringify(res.data));
+        console.log(res);
+      } else {
+        console.error("data not found in response");
+      }
     } catch (error) {
       toast.error("Login failed!");
-      if (error.response) {
-        console.log("Login error:", error.response.data);
-      } else {
-      }
     }
   };
 
@@ -90,7 +86,8 @@ const LoginForm = () => {
     <div className="login-wrapper">
       <div className={`wrapper ${action}`}>
         <div className="form-box login">
-          <form onSubmit={handleLogin}>
+          {/* onSubmit={handleLogin} */}
+          <form>
             <h1>Login</h1>
             <div className="input-box">
               <input
@@ -98,6 +95,7 @@ const LoginForm = () => {
                 placeholder="Email"
                 value={loginEmail}
                 onChange={(event) => setLoginEmail(event.target.value)}
+                autoComplete="email"
               />
               <FaUser className="icon" />
             </div>
@@ -127,6 +125,7 @@ const LoginForm = () => {
               className="login_button"
               type="submit"
               disabled={loginEmail && loginPassword ? false : true}
+              onClick={handleLogin}
             >
               Log in
             </button>
