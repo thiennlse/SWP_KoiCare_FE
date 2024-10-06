@@ -7,6 +7,8 @@ import { FaHeart } from "react-icons/fa";
 import { TiShoppingCart } from "react-icons/ti";
 import { useState, useEffect } from "react";
 
+import koiFood from "../../Components/Assets/KoiFood.jpeg";
+
 import banner_image_1 from "../../Components/Assets/banner_image_1.png";
 import banner_image_2 from "../../Components/Assets/banner_image_2.png";
 import banner_image_3 from "../../Components/Assets/banner_image_3.png";
@@ -99,9 +101,7 @@ function Banner() {
 function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
   const [quantities, setQuantities] = useState({}); // Store quantities for products
-  const productsPerPage = 8; // Display 8 products per page
 
   useEffect(() => {
     // Fetch products from the API
@@ -117,27 +117,6 @@ function Products() {
       });
   }, []);
 
-  // Get current products for the page
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
-
-  // Function to handle page change
-  const handleNextPage = () => {
-    if (currentPage < Math.ceil(products.length / productsPerPage)) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
   const updateQuantity = (index, newQuantity) => {
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
@@ -152,32 +131,16 @@ function Products() {
       {loading ? (
         <p>Loading products...</p>
       ) : (
-        <>
-          <ul className="products">
-            {currentProducts.map((product, index) => (
-              <Product
-                key={index}
-                productObj={product}
-                quantity={quantities[index] || 1} // Get the stored quantity or default to 1
-                updateQuantity={updateQuantity} // Pass the update function
-              />
-            ))}
-          </ul>
-
-          <div className="pagination_buttons">
-            <button onClick={handlePrevPage} disabled={currentPage === 1}>
-              Previous Page
-            </button>
-            <button
-              onClick={handleNextPage}
-              disabled={
-                currentPage >= Math.ceil(products.length / productsPerPage)
-              }
-            >
-              Next Page
-            </button>
-          </div>
-        </>
+        <ul className="products">
+          {products.map((product, index) => (
+            <Product
+              key={index}
+              productObj={product}
+              quantity={quantities[index] || 1} // Get the stored quantity or default to 1
+              updateQuantity={updateQuantity} // Pass the update function
+            />
+          ))}
+        </ul>
       )}
     </div>
   );
@@ -185,15 +148,20 @@ function Products() {
 
 function Product({ productObj }) {
   const [count, setCount] = useState(1);
-
+  const formattedCost = productObj.cost.toLocaleString("en-US");
   return (
     <li>
-      <a href="Purchase">
-        <img src={productObj.image} alt={productObj.name} />
-      </a>
+      <div className="image_product">
+        <a href="Purchase">
+          <img
+            src={productObj.image === "" ? koiFood : productObj.image}
+            alt={productObj.name}
+          ></img>
+        </a>
+      </div>
       <div className="product_price">
         <p>{productObj.name}</p>
-        <p>{productObj.cost} Vnd</p>
+        <p>{formattedCost} Vnd</p>
       </div>
 
       <div className="calc">

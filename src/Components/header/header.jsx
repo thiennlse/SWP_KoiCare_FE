@@ -59,6 +59,9 @@ function Header() {
             </a>
             {user ? (
               <div className="user_info">
+                <span className="img_profile">
+                  <img src={user.image}></img>
+                </span>
                 <span className="user_name" onClick={() => navigate("/")}>
                   {user.fullName} |
                 </span>
