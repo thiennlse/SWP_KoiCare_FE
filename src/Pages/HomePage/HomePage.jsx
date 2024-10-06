@@ -22,35 +22,43 @@ const bannerImages = [
 const data = [
   {
     img: img1,
-    name: "Sản phẩm A",
+    name: "Sản phẩm A Sản phẩm ASản phẩm ASản phẩm ASản phẩm ASản phẩm A ",
+    price: "200.000đ",
   },
   {
     img: img1,
     name: "Sản phẩm B",
+    price: "250.000đ",
   },
   {
     img: img1,
     name: "Sản phẩm C",
+    price: "300.000đ",
   },
   {
     img: img1,
     name: "Sản phẩm D",
+    price: "350.000đ",
   },
   {
     img: img1,
     name: "Sản phẩm E",
+    price: "400.000đ",
   },
   {
     img: img1,
     name: "Sản phẩm F",
+    price: "450.000đ",
   },
   {
     img: img1,
     name: "Sản phẩm G",
+    price: "500.000đ",
   },
   {
     img: img1,
     name: "Sản phẩm H",
+    price: "550.000đ",
   },
 ];
 
@@ -152,9 +160,12 @@ function Product({ productObj }) {
   return (
     <li>
       <a href="Purchase">
-        <img src={productObj.img} alt="product"></img>
+        <img src={productObj.img} alt="product" />
       </a>
-      <p>{productObj.name}</p>
+      <div className="product_price">
+        <p>{productObj.name}</p>
+        <p>{productObj.price}</p>
+      </div>
       <div>
         <button className="product_btn">Add To Cart</button>
         <button className="product_btn" onClick={toggleFavorite}>
