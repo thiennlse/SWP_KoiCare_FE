@@ -184,7 +184,6 @@ function Products() {
 }
 
 function Product({ productObj }) {
-  const [isFavorite, setIsFavorite] = useState(false);
   const [count, setCount] = useState(1);
 
   return (

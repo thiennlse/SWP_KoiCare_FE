@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Login.css";
 import { FaUser } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
@@ -16,7 +16,6 @@ const LoginForm = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [action, setAction] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   const registerLink = () => {
@@ -41,15 +40,15 @@ const LoginForm = () => {
           password: loginPassword,
         }
       );
-      toast.success("Login successful!", { autoClose: 1000 });
+      toast.success("Login successful!", { autoClose: 1500 });
       setTimeout(() => {
         navigate("/");
-      }, 1000);
+      }, 1500);
       setLoginEmail("");
       setLoginPassword("");
 
       if (res) {
-        localStorage.setItem("data", JSON.stringify(res.data));
+        localStorage.setItem("user", JSON.stringify(res.data));
         console.log(res);
       } else {
         console.error("data not found in response");
@@ -143,6 +142,7 @@ const LoginForm = () => {
             <a href="#" className="btn google">
               Login with Google
             </a>
+            <a href="/">Home</a>
           </form>
         </div>
 
