@@ -21,49 +21,6 @@ const bannerImages = [
   { img: banner_image_3, title: "Your Fish" },
 ];
 
-const data = [
-  {
-    img: img1,
-    name: "Sản phẩm A Sản phẩm ASản phẩm ASản phẩm ASản phẩm ASản phẩm A ",
-    price: "200.000đ",
-  },
-  {
-    img: img1,
-    name: "Sản phẩm B",
-    price: "250.000đ",
-  },
-  {
-    img: img1,
-    name: "Sản phẩm C",
-    price: "300.000đ",
-  },
-  {
-    img: img1,
-    name: "Sản phẩm D",
-    price: "350.000đ",
-  },
-  {
-    img: img1,
-    name: "Sản phẩm E",
-    price: "400.000đ",
-  },
-  {
-    img: img1,
-    name: "Sản phẩm F",
-    price: "450.000đ",
-  },
-  {
-    img: img1,
-    name: "Sản phẩm G",
-    price: "500.000đ",
-  },
-  {
-    img: img1,
-    name: "Sản phẩm H",
-    price: "550.000đ",
-  },
-];
-
 const HomePage = () => {
   return (
     <div>
