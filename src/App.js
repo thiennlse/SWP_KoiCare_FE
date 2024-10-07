@@ -7,6 +7,7 @@ import CreatePool from "./Pages/CreatePool/CreatePool";
 import ManageAdmin from "./Pages/ManageAdmin/Manage_Admin";
 import { Routes, Route } from "react-router-dom";
 import Purchase from "./Pages/PurchasePage/purchase";
+import Cart from "./Pages/Cart/cart";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/createfish" element={<CreateFish />} />
         <Route path="/createpool" element={<CreatePool />} />
         <Route path="/admin" element={<ManageAdmin />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
     </div>
   );
