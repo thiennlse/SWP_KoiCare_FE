@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./header.css";
 import logo from "../Assets/logo.png";
@@ -7,7 +7,6 @@ import { TiShoppingCart } from "react-icons/ti";
 import { ToastContainer, toast } from "react-toastify";
 
 function Header() {
-  const [dropdownVisible, setDropdownVisible] = useState(false);
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -37,10 +36,9 @@ function Header() {
         </div>
 
         <nav className="nav_links">
-          <ul className="nav-list">
-            {" "}
+          <ul className="nav_list">
             <li>
-              <a href="/home">Home</a>
+              <a onClick={() => handleNavigation("banner_scroll")}>Home</a>
             </li>
             <li>
               <a onClick={() => handleNavigation("products_scroll")}>Product</a>

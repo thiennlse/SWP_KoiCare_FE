@@ -1,24 +1,27 @@
+
 import "./HomePage.css";
 import axios from "axios";
 import Header from "../../Components/header/header";
 import Footer from "../../Components/footer/footer";
-import { useState, useEffect } from "react"; 
+import img1 from "../../Components/Assets/KoiFood.jpeg";
+import { FaHeart } from "react-icons/fa";
+import { TiShoppingCart } from "react-icons/ti";
+import { useState, useEffect } from "react";
+
+import koiFood from "../../Components/Assets/KoiFood.jpeg";
 
 import banner_image_1 from "../../Components/Assets/banner_image_1.png";
 import banner_image_2 from "../../Components/Assets/banner_image_2.png";
 import banner_image_3 from "../../Components/Assets/banner_image_3.png";
 
+import blog_image_1 from "../../Components/Assets/blog_imgae_1.png";
+import blog_image_2 from "../../Components/Assets/blog_imgae_2.png";
+import blog_image_3 from "../../Components/Assets/blog_imgae_3.png";
+
 const bannerImages = [
   { img: banner_image_1, title: "Your Fish" },
   { img: banner_image_2, title: "Your Fish" },
-  { img: banner_image_3, title: "Your Fish" }
-];
-
-const data = [
-  { img: "", name: "Sản phẩm A" },
-  { img: "", name: "Sản phẩm B" },
-  { img: "", name: "Sản phẩm C" },
-  { img: "", name: "Sản phẩm D" },
+  { img: banner_image_3, title: "Your Fish" },
 ];
 
 const HomePage = () => {
@@ -36,106 +39,16 @@ const HomePage = () => {
 function Home() {
   return (
     <>
-      <Banner />
-      <Products />
+      <div id="banner_scroll">
+        <Banner />
+      </div>
+      <div id="products_scroll">
+        <Products />
+      </div>
+      <div id="blog_scroll">
+        <BlogSection blogs={blogData} />
+      </div>
     </>
-  );
-}
-
-function Banner() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % bannerImages.length);
-    }, 5000); 
-    return () => clearInterval(interval);
-  }, []);
-
-  const goToSlide = (index) => {
-    setCurrentIndex(index);
-  };
-
-  return (
-    <div className="banner">
-      <div className="banner_content">
-        <img
-          src={bannerImages[currentIndex].img}
-          alt="Banner"
-          className="banner_image"
-        />
-        <div className="banner_text">
-          <h1>
-            Best Destination <br />
-            For <span>{bannerImages[currentIndex].title}</span>
-          </h1>
-          <div className="banner_actions">
-            <button className="shop_now_btn">SHOP NOW ➔</button>
-            <p className="save_text">Save 10-20% OFF</p>
-          </div>
-        </div>
-      </div>
-      <div className="banner_dots">
-        {bannerImages.map((_, index) => (
-          <span
-            key={index}
-            className={`dot ${index === currentIndex ? "active" : ""}`}
-            onClick={() => goToSlide(index)}
-          ></span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Products() {
-  return (
-    <ul className="products">
-      {data.map((product, index) => (
-        <Product key={index} productObj={product} />
-      ))}
-    </ul>
-  );
-}
-
-function Product({ productObj }) {
-  return (
-    <li>
-      <img src={productObj.img} alt="product"></img>
-      <p>{productObj.name}</p>
-      <div>
-        <button>Add To Cart</button>
-        <button>❤️</button>
-      </div>
-    </li>
-  );
-}
-
-x
-
-function BlogSection({ blogs }) {
-  return (
-    <div className="blog_section">
-      <div className="blog_header">
-        <h1 className="blog_title">Latest Blog Post</h1>
-        <button className="read_all_btn">READ ALL ➔</button>
-      </div>
-      <div className="blog_container">
-        {blogs.map((blog, index) => (
-          <div key={index} className="blog_card">
-            <img src={blog.image} alt={blog.title} className="blog_image" />
-            <div className="blog_content">
-              <div className="blog_date">
-                <span>{blog.date}</span>
-              </div>
-              <h2 className="blog_card_title">{blog.title}</h2>
-              <p className="blog_excerpt">{blog.content}</p>
-              <a href="#" className="read_more">READ MORE</a>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
   );
 }
 
