@@ -5,6 +5,8 @@ import HomePage from "./Pages/HomePage/HomePage";
 import CreateFish from "./Pages/CreateFish/CreateFish";
 import CreatePool from "./Pages/CreatePool/CreatePool";
 import ManageAdmin from "./Pages/ManageAdmin/Manage_Admin";
+import AquariumManagement from "./Pages/Manage/Aquarium/AquariumManagement";
+import FishManagement from "./Pages/Manage/Fish/FishManagement";
 import { Routes, Route } from "react-router-dom";
 import Purchase from "./Pages/PurchasePage/purchase";
 
@@ -20,6 +22,8 @@ function App() {
         <Route path="/createfish" element={<CreateFish />} />
         <Route path="/createpool" element={<CreatePool />} />
         <Route path="/admin" element={<ManageAdmin />} />
+        <Route path="/aquariummanagement" element={<AquariumManagement />} />
+        <Route path="/fishmanagement" element={<FishManagement />} />
       </Routes>
     </div>
   );

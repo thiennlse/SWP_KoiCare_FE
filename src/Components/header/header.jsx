@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./header.css";
 import logo from "../Assets/logo.png";
@@ -7,6 +7,7 @@ import { TiShoppingCart } from "react-icons/ti";
 import { ToastContainer, toast } from "react-toastify";
 
 function Header() {
+  const [dropdownVisible, setDropdownVisible] = useState(false);
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
 

@@ -71,12 +71,14 @@
   display: flex;
   align-items: center;
   gap: 20px;
+  position: relative;
 }
 
 .icon_header {
   font-size: 34px;
   color: black;
   margin-right: 50px;
+  cursor: pointer;
 }
 
 .icon_header:hover {

@@ -1,0 +1,66 @@
+.fish-management-container {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 50px;
+  }
+  
+  .management-title {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 30px;
+  }
+  
+  .fish-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .fish-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 60%;
+    margin: 0 auto;
+  }
+  
+  .fish-card img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-right: 20px;
+  }
+  
+  .fish-card h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .fish-card p {
+    font-size: 18px;
+    margin: 5px 0;
+  }
+  
+  .fish-info {
+    width: 60%;
+  }
+  
+  
+  .fish-name {
+    text-align: center;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .fish-card:last-child {
+    margin-bottom: 50px;
+  }
+  
+  
+  
