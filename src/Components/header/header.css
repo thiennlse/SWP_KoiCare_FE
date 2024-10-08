@@ -63,7 +63,7 @@
   font-size: 26px;
 }
 
-.nav_list li a:hover {
+.nav_list li:hover {
   color: #dead6f;
 }
 
