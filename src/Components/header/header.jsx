@@ -75,7 +75,7 @@ function Header() {
                   onMouseLeave={() => toggleDropdown(false)}
                 >
                   <span className="user_name" onClick={() => navigate("/")}>
-                    {user.fullName}
+                    {user.fullName} 
                   </span>
                   {dropdownVisible && (
                     <div className="dropdown_menu">
@@ -86,7 +86,6 @@ function Header() {
                     </div>
                   )}
                 </div>
-
                 <span className="logout_button" onClick={handleLogout}>
                   Logout
                 </span>
