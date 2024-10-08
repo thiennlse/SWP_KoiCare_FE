@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./header.css";
 import logo from "../Assets/logo.png";
@@ -7,6 +7,8 @@ import { TiShoppingCart } from "react-icons/ti";
 import { ToastContainer, toast } from "react-toastify";
 
 function Header() {
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -26,6 +28,10 @@ function Header() {
       localStorage.removeItem("user");
       navigate("/login");
     }, 1500);
+  };
+
+  const toggleDropdown = (visible) => {
+    setDropdownVisible(visible);
   };
 
   return (
@@ -57,14 +63,30 @@ function Header() {
             <a href="/cart">
               <TiShoppingCart className="icon_header" />
             </a>
+
             {user ? (
               <div className="user_info">
                 <span className="img_profile">
                   <img src={user.image}></img>
                 </span>
-                <span className="user_name" onClick={() => navigate("/")}>
-                  {user.fullName} |
-                </span>
+                <div
+                  className="profile_dropdown"
+                  onMouseEnter={() => toggleDropdown(true)}
+                  onMouseLeave={() => toggleDropdown(false)}
+                >
+                  <span className="user_name" onClick={() => navigate("/")}>
+                    {user.fullName}
+                  </span>
+                  {dropdownVisible && (
+                    <div className="dropdown_menu">
+                      <a href="/profile">My Account</a>
+                      <a href="/aquariummanagement">Aquarium Management</a>
+                      <a href="fishmanagement">Koi Fish Management</a>
+                      <a href="/orders">Purchase Order</a>
+                    </div>
+                  )}
+                </div>
+
                 <span className="logout_button" onClick={handleLogout}>
                   Logout
                 </span>

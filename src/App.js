@@ -9,6 +9,7 @@ import AquariumManagement from "./Pages/Manage/Aquarium/AquariumManagement";
 import FishManagement from "./Pages/Manage/Fish/FishManagement";
 import { Routes, Route } from "react-router-dom";
 import Purchase from "./Pages/PurchasePage/purchase";
+import Cart from "./Pages/Cart/cart";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/admin" element={<ManageAdmin />} />
         <Route path="/aquariummanagement" element={<AquariumManagement />} />
         <Route path="/fishmanagement" element={<FishManagement />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
     </div>
   );
