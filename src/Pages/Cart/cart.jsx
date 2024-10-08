@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./cart.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "../../Components/header/header";
 import Footer from "../../Components/footer/footer";
+import axios from "axios";
 
 const Cart = () => {
   return (
@@ -11,27 +12,25 @@ const Cart = () => {
       {/* lam cai header khac co search san pham va Ve trang chu */}
       <div className="body-cart">
         <Products />
-        <Payment />
       </div>
       <Footer />
     </>
   );
 };
 
-const mockProducts = [
-  { id: 1, name: "Product 1", price: 100000, quantity: 2, stock: 5 },
-  { id: 2, name: "Product 2", price: 200000, quantity: 1, stock: 3 },
-  { id: 3, name: "Product 3", price: 150000, quantity: 3, stock: 8 },
-  { id: 4, name: "Product 4", price: 300000, quantity: 1, stock: 10 },
-  { id: 5, name: "Product 5", price: 250000, quantity: 2, stock: 6 },
-  { id: 6, name: "Product 6", price: 120000, quantity: 5, stock: 2 },
-  { id: 7, name: "Product 7", price: 400000, quantity: 1, stock: 4 },
-  { id: 8, name: "Product 8", price: 600000, quantity: 1, stock: 1 },
-  { id: 9, name: "Product 9", price: 350000, quantity: 4, stock: 7 },
-  { id: 10, name: "Product 10", price: 450000, quantity: 2, stock: 3 },
-];
-
 function Products() {
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    axios
+      .get("https://koicare.azurewebsites.net/api/Product")
+      .then((response) => {
+        setProducts(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
+  }, []);
+
   return (
     <div className="container product-container">
       <div className="row bg-light py-2 text-center">
@@ -46,10 +45,15 @@ function Products() {
       </div>
 
       <div className="cart-container">
-        {mockProducts.map((item) => (
+        {products.map((item) => (
           <Product key={item.id} item={item} />
         ))}
       </div>
+
+      <Payment
+      // totalPayment={totalPayment}
+      // selectedProducts={selectedProducts}
+      />
     </div>
   );
 }
@@ -57,8 +61,10 @@ function Products() {
 function Product({ item }) {
   const [count, setCount] = useState(1);
 
+  const handleDelete = () => {};
+
   const handleIncrease = () => {
-    if (count < item.stock) setCount(count + 1);
+    if (count < item.inStock) setCount(count + 1);
   };
 
   const handleDecrease = () => {
@@ -72,11 +78,15 @@ function Product({ item }) {
       </div>
 
       <div className="col-5 product-detail">
-        <img src="#" alt={item.name} className="img-fluid"></img>
+        <img
+          src={item.image}
+          alt={item.name}
+          style={{ width: "80px", height: "80px", marginRight: "20px" }}
+        ></img>
         <div>{item.name}</div>
       </div>
 
-      <div className="col-2">{item.price}đ</div>
+      <div className="col-2">{item.cost} vnd</div>
       <div className="col-2">
         <div className="calc-count d-flex justify-content-center">
           <button
@@ -88,10 +98,14 @@ function Product({ item }) {
           </button>
           <input
             type="text"
-            value={count}
-            onChange={(e) => setCount(Number(e.target.value))}
+            value={count < item.inStock ? count : item.inStock}
+            onChange={(e) =>
+              count < item.inStock
+                ? setCount(Number(e.target.value))
+                : setCount(Number(item.inStock))
+            }
             className="form-control mx-2 text-center"
-            style={{ width: "40px" }}
+            style={{ width: "100px" }}
           />
           <button
             className="btn btn-outline-secondary"
@@ -102,19 +116,35 @@ function Product({ item }) {
           </button>
         </div>
         <div className="product-remain text-danger">
-          Còn {item.stock} sản phẩm
+          Còn {item.inStock} sản phẩm
         </div>
       </div>
-      <div className="col-2 text-danger">{item.price * count}đ</div>
+      <div className="col-2 text-danger">
+        {count === item.inStock ? item.cost * item.inStock : item.cost * count}{" "}
+        vnd
+      </div>
       <div className="col-12 text-end mt-2">
-        <button className="btn btn-danger btn-sm">Xóa</button>
+        <button className="btn btn-danger btn-sm" onclick={handleDelete}>
+          Xóa
+        </button>
       </div>
     </div>
   );
 }
 
-function Payment() {
-  return <></>;
+function Payment({ totalPayment, selectedProducts }) {
+  return (
+    <div className="row align-items-center text-center py-2">
+      <div className="col-1">
+        <input type="checkbox" />
+      </div>
+      <div className="col">Chọn tất cả</div>
+      <div className="col">Tổng thanh toán vnd</div>
+      <div className="col">
+        <button className="btn btn-primary">Mua hàng</button>
+      </div>
+    </div>
+  );
 }
 
 export default Cart;
