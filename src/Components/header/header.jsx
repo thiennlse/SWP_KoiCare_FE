@@ -37,9 +37,10 @@ function Header() {
         </div>
 
         <nav className="nav_links">
-          <ul className="nav_list">
+          <ul className="nav-list">
+            {" "}
             <li>
-              <a onClick={() => handleNavigation("banner_scroll")}>Home</a>
+              <a href="/home">Home</a>
             </li>
             <li>
               <a onClick={() => handleNavigation("products_scroll")}>Product</a>
