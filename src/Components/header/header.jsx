@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./header.css";
 import logo from "../Assets/logo.png";
@@ -6,6 +6,7 @@ import { CgProfile } from "react-icons/cg";
 import { TiShoppingCart } from "react-icons/ti";
 
 function Header() {
+  const [dropdownVisible, setDropdownVisible] = useState(false);
   const navigate = useNavigate();
 
   const handleNavigation = (target) => {
@@ -13,9 +14,13 @@ function Header() {
     setTimeout(() => {
       const element = document.getElementById(target);
       if (element) {
-        element.scrollIntoView({ behavior: "smooth" }); 
+        element.scrollIntoView({ behavior: "smooth" });
       }
     }, 100);
+  };
+
+  const toggleDropdown = (visible) => {
+    setDropdownVisible(visible);
   };
 
   return (
@@ -45,9 +50,22 @@ function Header() {
             <a href="#">
               <TiShoppingCart className="icon_header" />
             </a>
-            <a href="/login">
+            
+            <div 
+              className="profile_dropdown" 
+              onMouseEnter={() => toggleDropdown(true)} 
+              onMouseLeave={() => toggleDropdown(false)}
+            >
               <CgProfile className="icon_header" />
-            </a>
+              {dropdownVisible && (
+                <div className="dropdown_menu">
+                  <a href="/profile">My Account</a>
+                  <a href="/aquariummanagement">Aquarium Management</a>
+                  <a href="fishmanagement">Koi Fish Management</a>
+                  <a href="/orders">Purchase Order</a>
+                </div>
+              )}
+            </div>
           </div>
         </nav>
       </div>

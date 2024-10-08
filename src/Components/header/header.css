@@ -71,14 +71,47 @@
   display: flex;
   align-items: center;
   gap: 20px;
+  position: relative;
 }
 
 .icon_header {
   font-size: 34px;
   color: black;
   margin-right: 50px;
+  cursor: pointer;
 }
 
 .icon_header:hover {
   color: #dead6f;
+}
+
+.profile_dropdown {
+  position: relative;
+}
+
+.dropdown_menu {
+  position: absolute;
+  top: 100%; 
+  right: 0;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown_menu a {
+  display: block;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: black;
+  font-family: "Chilanka", system-ui;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.dropdown_menu a:hover {
+  background-color: #f1f1f1;
+  color: #333;
 }
