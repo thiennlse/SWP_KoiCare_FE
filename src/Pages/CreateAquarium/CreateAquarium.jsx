@@ -1,37 +1,37 @@
-import "./CreatePool.css";
+import "./CreateAquarium.css";
 import Header from "../../Components/header/header";
 import Footer from "../../Components/footer/footer";
 
-const CreatePool = () => {
+const CreateAquarium = () => {
   return (
     <div>
       <Header />
-      <CreatePoolForm />
+      <CreateAquariumForm />
       <Footer />
     </div>
   );
 };
 
-function CreatePoolForm() {
+function CreateAquariumForm() {
   return (
     <form className="form_pool">
-      <p className="form_title">Create Pool</p>
+      <p className="form_title">Create Aquarium</p>
 
       <div className="form_grid_pool">
         <div className="column">
           <div className="input_infor">
-            <label>Pool Name:</label>
-            <input type="text" placeholder="Enter pool name"></input>
+            <label>Aquarium Name:</label>
+            <input type="text" placeholder="Enter aquarium name"></input>
           </div>
 
           <div className="input_infor">
-            <label>Width:</label>
-            <input type="text" placeholder="Enter width"></input>
+            <label>Size:</label>
+            <input type="text" placeholder="Enter size"></input>
           </div>
 
           <div className="input_infor">
-            <label>Height:</label>
-            <input type="text" placeholder="Enter height"></input>
+            <label>Depth:</label>
+            <input type="text" placeholder="Enter depth"></input>
           </div>
         </div>
       </div>
@@ -44,4 +44,4 @@ function CreatePoolForm() {
   );
 }
 
-export default CreatePool;
+export default CreateAquarium;
