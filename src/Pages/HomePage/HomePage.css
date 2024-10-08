@@ -118,11 +118,16 @@ body {
   padding: 0;
 }
 
+.product_price {
+  display: flex;
+  flex-direction: column;
+}
+
 .products li {
   flex-basis: 22%;
   max-width: 22%;
   background-color: #fff;
-  text-align: center;
+  padding-left: 20px;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
