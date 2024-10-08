@@ -29,7 +29,6 @@ const HomePage = () => {
       <Header />
       <div>
         <Home />
-        <BlogSection blogs={blogData} />
       </div>
       <Footer />
     </div>
