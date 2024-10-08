@@ -3,9 +3,6 @@ import "./HomePage.css";
 import axios from "axios";
 import Header from "../../Components/header/header";
 import Footer from "../../Components/footer/footer";
-import img1 from "../../Components/Assets/KoiFood.jpeg";
-import { FaHeart } from "react-icons/fa";
-import { TiShoppingCart } from "react-icons/ti";
 import { useState, useEffect } from "react";
 
 import koiFood from "../../Components/Assets/KoiFood.jpeg";
