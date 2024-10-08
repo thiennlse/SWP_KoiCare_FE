@@ -12,7 +12,7 @@ const AquariumManagement = () => {
   const navigate = useNavigate(); // for navigation
 
   useEffect(() => {
-    fetchPools(); // Fetch pools on component mount
+    fetchPools();
   }, []);
 
   const fetchPools = () => {
