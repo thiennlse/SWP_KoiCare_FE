@@ -25,41 +25,36 @@ const LoginForm = () => {
     setAction("");
   };
 
-  // const checkPassword = () => {
-  //   registerPassword !== confirmPassword
-  //     ? toast.error("Wrong Password!")
-  //     : toast.success("Register Successful");
-  // };
-
   const [checkBox, setCheckBox] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
+
   const handleLogin = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await axios.post(
+      let res = await axios.post(
         "https://koicare.azurewebsites.net/api/Member/login",
         {
           email: loginEmail,
           password: loginPassword,
         }
       );
-      toast.success("Login successful!", { autoClose: 1000 });
-
-      // Đợi 2 giây trước khi điều hướng
+      toast.success("Login successful!", { autoClose: 1500 });
       setTimeout(() => {
         navigate("/");
-      }, 1000);
-
+      }, 1500);
       setLoginEmail("");
       setLoginPassword("");
-      console.log("Login successful:", response.data);
+
+      if (res) {
+        localStorage.setItem("user", JSON.stringify(res.data));
+        console.log(res);
+      } else {
+        console.error("data not found in response");
+      }
     } catch (error) {
       toast.error("Login failed!");
-      if (error.response) {
-        console.log("Login error:", error.response.data);
-      } else {
-      }
     }
   };
 
@@ -90,7 +85,8 @@ const LoginForm = () => {
     <div className="login-wrapper">
       <div className={`wrapper ${action}`}>
         <div className="form-box login">
-          <form onSubmit={handleLogin}>
+          {/* onSubmit={handleLogin} */}
+          <form>
             <h1>Login</h1>
             <div className="input-box">
               <input
@@ -98,6 +94,7 @@ const LoginForm = () => {
                 placeholder="Email"
                 value={loginEmail}
                 onChange={(event) => setLoginEmail(event.target.value)}
+                autoComplete="email"
               />
               <FaUser className="icon" />
             </div>
@@ -127,6 +124,7 @@ const LoginForm = () => {
               className="login_button"
               type="submit"
               disabled={loginEmail && loginPassword ? false : true}
+              onClick={handleLogin}
             >
               Log in
             </button>
@@ -144,6 +142,7 @@ const LoginForm = () => {
             <a href="#" className="btn google">
               Login with Google
             </a>
+            <a href="/">Home</a>
           </form>
         </div>
 

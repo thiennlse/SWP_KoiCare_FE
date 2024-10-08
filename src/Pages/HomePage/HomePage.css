@@ -121,13 +121,14 @@ body {
 .product_price {
   display: flex;
   flex-direction: column;
+  margin-left: 20px;
+  font-family: "sans-serif", sans-serif;
 }
 
 .products li {
   flex-basis: 22%;
   max-width: 22%;
   background-color: #fff;
-  padding-left: 20px;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -146,13 +147,13 @@ body {
 }
 
 .products img {
-  width: 100%;
-  height: auto;
+  width: auto;
+  height: 200px;
   border-bottom: 1px solid #eee;
 }
 
 .products p {
-  font-size: 14px;
+  font-size: 20px;
   color: #333;
   padding: 10px 0;
   margin: 0;
@@ -165,27 +166,18 @@ body {
 }
 
 .product_btn {
-  background-color: #ff6f61;
+  background-color: #e65a50;
   color: white;
   border: none;
   padding: 8px 10px;
-  font-size: 12px;
+  font-size: 15px;
   cursor: pointer;
   border-radius: 5px;
   transition: background-color 0.3s ease;
 }
 
-.product_btn {
-  background-color: #e65a50;
-}
-
-.product_btn:last-child {
-  background-color: #eee;
-  color: #333;
-}
-
-.product_btn:last-child:hover {
-  background-color: #ddd;
+.product_btn:hover {
+  background-color: #ff6f61;
 }
 
 .heart_icon {
@@ -310,4 +302,66 @@ body {
 .read_more:hover {
   color: #333;
   border-bottom: 2px solid #333;
+}
+
+.pagination_buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination_buttons button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pagination_buttons button:hover {
+  background-color: #0056b3;
+}
+
+.pagination_buttons button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.calc {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.calc button {
+  background-color: #e65a50;
+  color: white;
+  border: none;
+  font-size: 20px;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.calc button:hover {
+  background-color: #ff6f61;
+}
+
+.calc input {
+  width: 180px;
+  text-align: center;
+  font-size: 18px;
+  padding: 10px;
+  margin: 0 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.image_product {
+  margin-top: 20px;
 }

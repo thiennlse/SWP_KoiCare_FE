@@ -82,3 +82,34 @@
 .icon_header:hover {
   color: #dead6f;
 }
+
+.user_info {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.user_name {
+  font-size: 18px;
+  white-space: nowrap;
+}
+
+.user_name:hover {
+  color: #dead6f;
+}
+
+.logout_button {
+  padding: 5px 10px;
+  font-size: 18px;
+}
+
+.logout_button:hover {
+  color: red;
+}
+
+.img_profile img {
+  border-radius: 100%;
+  width: 50px;
+  height: 50px;
+}

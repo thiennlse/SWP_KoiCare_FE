@@ -1,9 +1,13 @@
 import "./HomePage.css";
+import axios from "axios";
 import Header from "../../Components/header/header";
 import Footer from "../../Components/footer/footer";
 import img1 from "../../Components/Assets/KoiFood.jpeg";
 import { FaHeart } from "react-icons/fa";
+import { TiShoppingCart } from "react-icons/ti";
 import { useState, useEffect } from "react";
+
+import koiFood from "../../Components/Assets/KoiFood.jpeg";
 
 import banner_image_1 from "../../Components/Assets/banner_image_1.png";
 import banner_image_2 from "../../Components/Assets/banner_image_2.png";
@@ -17,49 +21,6 @@ const bannerImages = [
   { img: banner_image_1, title: "Your Fish" },
   { img: banner_image_2, title: "Your Fish" },
   { img: banner_image_3, title: "Your Fish" },
-];
-
-const data = [
-  {
-    img: img1,
-    name: "Sản phẩm A Sản phẩm ASản phẩm ASản phẩm ASản phẩm ASản phẩm A ",
-    price: "200.000đ",
-  },
-  {
-    img: img1,
-    name: "Sản phẩm B",
-    price: "250.000đ",
-  },
-  {
-    img: img1,
-    name: "Sản phẩm C",
-    price: "300.000đ",
-  },
-  {
-    img: img1,
-    name: "Sản phẩm D",
-    price: "350.000đ",
-  },
-  {
-    img: img1,
-    name: "Sản phẩm E",
-    price: "400.000đ",
-  },
-  {
-    img: img1,
-    name: "Sản phẩm F",
-    price: "450.000đ",
-  },
-  {
-    img: img1,
-    name: "Sản phẩm G",
-    price: "500.000đ",
-  },
-  {
-    img: img1,
-    name: "Sản phẩm H",
-    price: "550.000đ",
-  },
 ];
 
 const HomePage = () => {
@@ -94,7 +55,7 @@ function Banner() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {  
+    const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % bannerImages.length);
     }, 5000);
     return () => clearInterval(interval);
@@ -137,43 +98,73 @@ function Banner() {
 }
 
 function Products() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get("https://koicare.azurewebsites.net/api/Product")
+      .then((response) => {
+        setProducts(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+        setLoading(false);
+      });
+  }, []);
+
   return (
     <div id="products_scroll" className="product_wrapper">
       <h1 className="product_title">Best Selling Products</h1>
 
-      <ul className="products">
-        {data.map((product, index) => (
-          <Product key={index} productObj={product} />
-        ))}
-      </ul>
+      {loading ? (
+        <p>Loading products...</p>
+      ) : (
+        <ul className="products">
+          {products.map((product, index) => (
+            <Product key={index} productObj={product} />
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
 
 function Product({ productObj }) {
-  const [isFavorite, setIsFavorite] = useState(false);
-
-  const toggleFavorite = () => {
-    setIsFavorite(!isFavorite);
-  };
-
+  const [count, setCount] = useState(1);
+  const formattedCost = productObj.cost.toLocaleString("en-US");
   return (
     <li>
-      <a href="Purchase">
-        <img src={productObj.img} alt="product" />
-      </a>
+      <div className="image_product">
+        <a href="Purchase">
+          <img
+            src={productObj.image === "" ? koiFood : productObj.image}
+            alt={productObj.name}
+          ></img>
+        </a>
+      </div>
       <div className="product_price">
         <p>{productObj.name}</p>
-        <p>{productObj.price}</p>
+        <p>{formattedCost} Vnd</p>
       </div>
+
+      <div className="calc">
+        {count > 1 ? (
+          <button onClick={() => setCount((c) => c - 1)}>-</button>
+        ) : (
+          <button onClick={() => setCount((c) => c)}>-</button>
+        )}
+        <input
+          type="text"
+          value={count}
+          onChange={(e) => setCount(Number(e.target.value))}
+        ></input>
+        <button onClick={() => setCount((c) => c + 1)}>+</button>
+      </div>
+
       <div>
         <button className="product_btn">Add To Cart</button>
-        <button className="product_btn" onClick={toggleFavorite}>
-          <FaHeart
-            className="heart_icon"
-            style={{ color: isFavorite ? "red" : "black" }}
-          />
-        </button>
       </div>
     </li>
   );
