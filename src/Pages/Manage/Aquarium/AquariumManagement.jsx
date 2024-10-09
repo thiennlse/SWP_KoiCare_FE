@@ -32,18 +32,21 @@ const AquariumManagement = () => {
 
   const deletePool = (id) => {
     if (window.confirm('Are you sure you want to delete this aquarium?')) {
-      axios.delete(`https://koicare.azurewebsites.net/api/Pool/Delete/${id}`)
-        .then(() => {
-          alert("Aquarium deleted successfully");
-          fetchPools();
+      axios.delete(`https://koicare.azurewebsites.net/api/Pool/Delete?id=${id}`)
+        .then((response) => {
+          if (response.status === 204) {
+            alert("Aquarium deleted successfully");
+            fetchPools();
+          } else {
+            alert(`Failed to delete aquarium. Status: ${response.status}`);
+          }
         })
         .catch((error) => {
-          console.error("Error deleting aquarium:", error.response.data);
+          console.error("Error deleting aquarium:", error.response ? error.response.data : error);
           alert("Failed to delete aquarium. Please try again.");
         });
     }
   };
-  
 
   const handleEdit = (id) => {
     navigate(`/updateaquarium/${id}`);
