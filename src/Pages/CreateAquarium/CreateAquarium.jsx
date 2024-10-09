@@ -33,6 +33,11 @@ function CreateAquariumForm() {
             <label>Depth:</label>
             <input type="text" placeholder="Enter depth"></input>
           </div>
+
+          <div className="input_infor">
+            <label>Description:</label>
+            <input type="text" placeholder="Enter description"></input>
+          </div>
         </div>
       </div>
 

@@ -37,6 +37,10 @@ const AquariumManagement = () => {
       });
   };
 
+  const handleEdit = (id) => {
+    navigate(`/updateaquarium/${id}`); // Chuyển hướng tới trang update với ID
+  };
+
   return (
     <div>
       <Header />
@@ -78,7 +82,7 @@ const AquariumManagement = () => {
                 <td>{aquarium.depth}</td>
                 <td>{aquarium.description}</td>
                 <td>
-                  <button onClick={() => alert('Edit Pool functionality to be implemented')}>Edit</button>
+                  <button onClick={() => handleEdit(aquarium.id)}>Edit</button>
                   <button onClick={() => deletePool(aquarium.id)}>Delete</button>
                 </td>
               </tr>
