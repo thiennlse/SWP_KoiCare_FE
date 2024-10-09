@@ -36,7 +36,7 @@ const UpdateAquarium = () => {
         navigate("/aquariummanagement");
       })
       .catch((error) => {
-        console.error("Error updating aquarium:", error.response.data); // Kiểm tra lỗi trả về
+        console.error("Error updating aquarium:", error.response.data);
         alert("Failed to update aquarium. Please try again.");
       });
   };

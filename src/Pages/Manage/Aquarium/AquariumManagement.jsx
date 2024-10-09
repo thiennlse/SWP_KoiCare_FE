@@ -31,14 +31,22 @@ const AquariumManagement = () => {
   };
 
   const deletePool = (id) => {
-    axios.delete(`https://koicare.azurewebsites.net/api/Pool/${id}`)
-      .then(() => {
-        fetchPools();
-      });
+    if (window.confirm('Are you sure you want to delete this aquarium?')) {
+      axios.delete(`https://koicare.azurewebsites.net/api/Pool/Delete/${id}`)
+        .then(() => {
+          alert("Aquarium deleted successfully");
+          fetchPools();
+        })
+        .catch((error) => {
+          console.error("Error deleting aquarium:", error.response.data);
+          alert("Failed to delete aquarium. Please try again.");
+        });
+    }
   };
+  
 
   const handleEdit = (id) => {
-    navigate(`/updateaquarium/${id}`); // Chuyển hướng tới trang update với ID
+    navigate(`/updateaquarium/${id}`);
   };
 
   return (
