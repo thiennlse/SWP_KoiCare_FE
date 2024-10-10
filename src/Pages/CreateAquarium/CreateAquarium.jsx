@@ -5,7 +5,6 @@ import Footer from "../../Components/footer/footer";
 
 const CreateAquarium = () => {
   const [aquarium, setAquarium] = useState({
-    id: 0,
     memberId: 1, 
     name: "",
     size: 0,
@@ -16,15 +15,18 @@ const CreateAquarium = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     const aquariumData = {
-      ...aquarium,
-      size: aquarium.size ? Number(aquarium.size) : 0,  
-      depth: aquarium.depth ? Number(aquarium.depth) : 0  
+      memberId: 1,
+      name: aquarium.name.trim(),
+      size: Number(aquarium.size),
+      depth: Number(aquarium.depth),
+      description: aquarium.description.trim(),
+      waterId: 1,
     };
-
+  
     console.log("Dữ liệu gửi đi:", aquariumData);
-
+  
     axios.post("https://koicare.azurewebsites.net/api/Pool/add", aquariumData, {
       headers: {
         "Content-Type": "application/json",
@@ -35,20 +37,15 @@ const CreateAquarium = () => {
         alert("Aquarium created successfully!");
       })
       .catch((error) => {
-        if (error.response) {
-          console.error("Error response:", error.response.data);
-          console.error("Status:", error.response.status);
-          console.error("Headers:", error.response.headers);
-          alert(`Failed to create aquarium. Status: ${error.response.status}`);
-        } else if (error.request) {
-          console.error("Error request:", error.request);
-          alert("Failed to create aquarium. No response from server.");
-        } else {
-          console.error("Error setting up request:", error.message);
-          alert("Failed to create aquarium. Please try again.");
-        }
+        console.error("Error response:", error.response.data);
+        console.error("Status:", error.response.status);
+        console.error("Headers:", error.response.headers);
+        console.error("Error message:", error.message);
+        console.error("Error config:", error.config);
+        console.error("Error request:", error.request);
+        alert(`Failed to create aquarium. Status: ${error.response.status}`);
       });
-  };
+  };  
 
   return (
     <div>
@@ -105,7 +102,7 @@ const CreateAquarium = () => {
 
         <div className="buttons">
           <button type="submit">Save</button>
-          <button type="button" onClick={() => setAquarium({ id: 0, memberId: 1, name: "", size: 0, depth: 0, description: "", waterId: 1 })}>Cancel</button>
+          <button type="button" onClick={() => setAquarium({ memberId: 1, name: "", size: 0, depth: 0, description: "", waterId: 1 })}>Cancel</button>
         </div>
       </form>
       <Footer />
