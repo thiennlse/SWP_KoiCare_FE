@@ -16,12 +16,17 @@ const AquariumManagement = () => {
   }, []);
 
   const fetchPools = (options = {}) => {
-    axios.get("https://koicare.azurewebsites.net/api/Pool", options)
-      .then((res) => {
-        setAquaList(res.data);
-        setFilteredAquaList(res.data);
-      });
+    axios.get("https://koicare.azurewebsites.net/api/Pool", {
+      params: {
+        _timestamp: new Date().getTime(), 
+      },
+      ...options
+    }).then((res) => {
+      setAquaList(res.data);
+      setFilteredAquaList(res.data);
+    });
   };
+  
 
   const handleSearch = () => {
     const filtered = aquaList.filter(pool =>
@@ -35,24 +40,10 @@ const AquariumManagement = () => {
       axios.delete(`https://koicare.azurewebsites.net/api/Pool/Delete?id=${id}`)
         .then((response) => {
           if (response.status === 204) {
-            alert("Aquarium deleted successfully");
-            // Cập nhật danh sách hồ cá sau khi xóa
             const updatedAquaList = aquaList.filter(pool => pool.id !== id);
             setAquaList(updatedAquaList);
-            // Cập nhật danh sách hồ cá đã lọc sau khi xóa
-            const updatedFilteredAquaList = filteredAquaList.filter(pool => pool.id !== id);
-            setFilteredAquaList(updatedFilteredAquaList);
-  
-            // Add the code snippet here
-            localStorage.removeItem(`aquarium-${id}`);
-            const storedAquaList = JSON.parse(localStorage.getItem('aquariums'));
-            console.log(storedAquaList); // Check the stored list
-            const updatedStoredAquaList = storedAquaList.filter(pool => pool.id !== id);
-            console.log(updatedStoredAquaList); // Check the updated list
-            localStorage.setItem('aquariums', JSON.stringify(updatedStoredAquaList));
-  
-            // Gọi hàm fetchPools để cập nhật dữ liệu hồ cá từ server
-            fetchPools({ cache: false }); // Add cache: false to force a fresh fetch
+            setFilteredAquaList(updatedAquaList);
+            alert("Aquarium deleted successfully");
           } else {
             alert(`Failed to delete aquarium. Status: ${response.status}`);
           }
