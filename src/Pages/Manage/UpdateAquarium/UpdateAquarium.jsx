@@ -6,8 +6,8 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 const UpdateAquarium = () => {
-  const { id } = useParams(); // Get aquarium ID from URL
-  const navigate = useNavigate(); // For navigation after update
+  const { id } = useParams(); 
+  const navigate = useNavigate();
   const [aquariumData, setAquariumData] = useState({
     name: "",
     size: "",
@@ -15,12 +15,11 @@ const UpdateAquarium = () => {
     description: "",
   });
 
-  // Fetch aquarium data for the given ID on component mount
   useEffect(() => {
     axios
       .get(`https://koicare.azurewebsites.net/api/Pool/${id}`)
       .then((response) => {
-        setAquariumData(response.data); // Set form data with the fetched aquarium data
+        setAquariumData(response.data);
       })
       .catch((error) => {
         console.error("Error fetching aquarium details:", error);
@@ -28,21 +27,19 @@ const UpdateAquarium = () => {
       });
   }, [id]);
 
-  // Handle form submission and update aquarium
   const handleUpdate = (e) => {
     e.preventDefault();
     const updatedAquariumData = {
-      memberId: 1, // You may change this value as needed
+      memberId: 1, 
       name: aquariumData.name.trim(),
-      size: Number(aquariumData.size),  // Ensure size is a number
-      depth: Number(aquariumData.depth),  // Ensure depth is a number
+      size: Number(aquariumData.size),  
+      depth: Number(aquariumData.depth),  
       description: aquariumData.description.trim(),
-      waterId: 1,  // You may change this value as needed
+      waterId: 1,  
     };
 
     console.log("Sending updated data:", updatedAquariumData);
 
-    // Send PUT request to the update endpoint
     axios
       .put(`https://koicare.azurewebsites.net/api/Pool/update/${id}`, updatedAquariumData, {
         headers: {
@@ -52,31 +49,22 @@ const UpdateAquarium = () => {
       .then((response) => {
         alert("Aquarium updated successfully!");
 
-        // **Update localStorage** after successful API response
+        // Update localStorage after successful API response
         const storedAquariums = JSON.parse(localStorage.getItem("aquariums")) || [];
-
-        // Find the index of the aquarium to be updated
-        const aquariumIndex = storedAquariums.findIndex((aqua) => aqua.id === Number(id));
+        const aquariumIndex = storedAquariums.findIndex(aqua => aqua.id === Number(id));
 
         if (aquariumIndex !== -1) {
-          // Update the aquarium in the localStorage list
+          // Update the aquarium data in localStorage
           storedAquariums[aquariumIndex] = { ...updatedAquariumData, id: Number(id) };
-
-          // Save the updated list back to localStorage
           localStorage.setItem("aquariums", JSON.stringify(storedAquariums));
         }
 
-        // Navigate back to the aquarium management page
         navigate("/aquariummanagement");
       })
       .catch((error) => {
         if (error.response) {
           console.error("Error updating aquarium:", error.response.data);
-          console.error("Status:", error.response.status);
           alert(`Failed to update aquarium. Error: ${error.response.data}`);
-        } else if (error.request) {
-          console.error("No response received:", error.request);
-          alert("Failed to update aquarium. No response from the server.");
         } else {
           console.error("Error setting up request:", error.message);
           alert(`Failed to update aquarium. Error: ${error.message}`);
@@ -84,7 +72,6 @@ const UpdateAquarium = () => {
       });
   };
 
-  // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setAquariumData((prevData) => ({
