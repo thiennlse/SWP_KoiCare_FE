@@ -8,6 +8,7 @@ import ManageAdmin from "./Pages/ManageAdmin/Manage_Admin";
 import AquariumManagement from "./Pages/Manage/Aquarium/AquariumManagement";
 import FishManagement from "./Pages/Manage/Fish/FishManagement";
 import UpdateAquarium from "./Pages/Manage/UpdateAquarium/UpdateAquarium";
+import UpdateFish from "./Pages/Manage/UpdateFish/UpdateFish";
 import { Routes, Route } from "react-router-dom";
 import Purchase from "./Pages/PurchasePage/purchase";
 import Cart from "./Pages/Cart/cart";
@@ -27,6 +28,7 @@ function App() {
         <Route path="/aquariummanagement" element={<AquariumManagement />} />
         <Route path="/fishmanagement" element={<FishManagement />} />
         <Route path="/updateaquarium/:id" element={<UpdateAquarium />} />
+        <Route path="/updatefish/:id" element={<UpdateFish />} />
         <Route path="/cart" element={<Cart />} />
       </Routes>
     </div>
