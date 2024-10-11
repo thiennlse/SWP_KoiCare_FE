@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from "../../Components/header/header";
 import Footer from "../../Components/footer/footer";
 
@@ -12,6 +13,7 @@ const CreateAquarium = () => {
     description: "",
     waterId: 1,
   });
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -35,6 +37,8 @@ const CreateAquarium = () => {
       .then((response) => {
         console.log("Aquarium created successfully:", response.data);
         alert("Aquarium created successfully!");
+        // Navigate to AquariumManagement page
+        navigate('/aquariummanagement');
       })
       .catch((error) => {
         console.error("Error response:", error.response.data);
