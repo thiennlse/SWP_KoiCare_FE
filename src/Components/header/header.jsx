@@ -1,16 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./header.css";
 import logo from "../Assets/logo.png";
 import { CgProfile } from "react-icons/cg";
 import { TiShoppingCart } from "react-icons/ti";
 import { ToastContainer, toast } from "react-toastify";
+import Avatar, { genConfig } from "react-nice-avatar";
 
 function Header() {
   const [dropdownVisible, setDropdownVisible] = useState(false);
-
+  const [totalQuantity, setTotalQuantity] = useState(0);
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
+
+  const config = genConfig({ sex: "man", hairStyle: "mohawk" });
+
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    const total = storedCart.reduce(
+      (sum, product) => sum + product.quantity,
+      0
+    );
+    setTotalQuantity(total);
+  }, []);
 
   const handleNavigation = (target) => {
     navigate("/home");
@@ -60,14 +72,23 @@ function Header() {
           </ul>
 
           <div className="nav_icons_header">
-            <a href="/cart">
-              <TiShoppingCart className="icon_header" />
-            </a>
-
+            <div>
+              <a href="/cart">
+                <TiShoppingCart className="icon_header" />
+                {/* <p>{totalQuantity}</p> */}
+              </a>
+            </div>
             {user ? (
               <div className="user_info">
                 <span className="img_profile">
-                  <img src={user.image}></img>
+                  {user.image ? (
+                    <img src={user.image} alt="User Profile" />
+                  ) : (
+                    <Avatar
+                      style={{ width: "4rem", height: "4rem" }}
+                      {...config}
+                    />
+                  )}
                 </span>
                 <div
                   className="profile_dropdown"
@@ -75,7 +96,7 @@ function Header() {
                   onMouseLeave={() => toggleDropdown(false)}
                 >
                   <span className="user_name" onClick={() => navigate("/")}>
-                    {user.fullName}
+                    {user.fullName ? user.fullName : "New customer"}
                   </span>
                   {dropdownVisible && (
                     <div className="dropdown_menu">
