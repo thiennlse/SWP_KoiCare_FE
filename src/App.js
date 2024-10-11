@@ -26,8 +26,12 @@ function App() {
           <Route path="/product" element={<HomePage />} />
           <Route path="/purchase" element={<Purchase />} />
           <Route path="/createfish" element={<CreateFish />} />
-          <Route path="/createpool" element={<CreatePool />} />
+          <Route path="/createaquarium" element={<CreateAquarium />} />
           <Route path="/admin" element={<ManageAdmin />} />
+          <Route path="/aquariummanagement" element={<AquariumManagement />} />
+          <Route path="/fishmanagement" element={<FishManagement />} />
+          <Route path="/updateaquarium/:id" element={<UpdateAquarium />} />
+          <Route path="/updatefish/:id" element={<UpdateFish />} />
           <Route path="/cart" element={<Cart />} />
         </Route>
       </Routes>
