@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import "./cart.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Header from "../../Components/header/header";
-import Footer from "../../Components/footer/footer";
 
 const Cart = () => {
   const [products, setProducts] = useState([]);
@@ -99,7 +97,6 @@ const Cart = () => {
 
   return (
     <>
-      <Header />
       {products.length > 0 ? (
         <div className="body-cart">
           <Products
@@ -115,14 +112,13 @@ const Cart = () => {
           />
         </div>
       ) : (
-        <div className="main-content">
+        <div className="empty-cart">
           <p>Giỏ hàng của bạn còn trống</p>
           <a href="/product">
             <button className="btn btn-warning">Mua ngay</button>
           </a>
         </div>
       )}
-      <Footer />
     </>
   );
 };
@@ -170,7 +166,7 @@ function Products({
           <input type="checkbox" onChange={handleSelectAll} />
           <span className="ms-2">Chọn tất cả</span>
         </div>
-        <div className="col">Tổng thanh toán: {totalPayment} vnd</div>
+        <div className="col ">Tổng thanh toán: {totalPayment} vnd</div>
         <div className="col">
           <button className="btn btn-primary">Mua hàng</button>
         </div>

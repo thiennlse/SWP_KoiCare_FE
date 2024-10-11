@@ -1,14 +1,10 @@
 import "./CreatePool.css";
-import Header from "../../Components/header/header";
-import Footer from "../../Components/footer/footer";
 
 const CreatePool = () => {
   return (
-    <div>
-      <Header />
+    <>
       <CreatePoolForm />
-      <Footer />
-    </div>
+    </>
   );
 };
 
