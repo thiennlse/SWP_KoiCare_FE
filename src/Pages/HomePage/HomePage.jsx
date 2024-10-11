@@ -1,9 +1,9 @@
 
 import "./HomePage.css";
 import axios from "axios";
-import Header from "../../Components/header/header";
-import Footer from "../../Components/footer/footer";
 import { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import koiFood from "../../Components/Assets/KoiFood.jpeg";
 
@@ -23,13 +23,10 @@ const bannerImages = [
 
 const HomePage = () => {
   return (
-    <div>
-      <Header />
-      <div>
-        <Home />
-      </div>
-      <Footer />
-    </div>
+    <>
+      <Home />
+      <ToastContainer />
+    </>
   );
 };
 
@@ -97,31 +94,39 @@ function Banner() {
   );
 }
 
-function Products({ cart }) {
+function Products() {
   const [products, setProducts] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const [items, SetItems] = useState();
 
   function handleAddToCart(productId) {
-    // Lấy giỏ hàng từ local storage, nếu chưa có thì tạo mảng rỗng
+    const isLogin = localStorage.getItem("user");
+
+    if (!isLogin) {
+      toast.warn("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!", {
+        autoClose: 3000,
+      });
+
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 3000);
+      return;
+    }
+
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
     const productInCart = cart.find((item) => item.id === productId);
 
     if (productInCart) {
-      // Nếu sản phẩm đã có, tăng số lượng
       productInCart.quantity += 1;
     } else {
-      // Nếu sản phẩm chưa có, thêm mới với số lượng 1
       const selectedProduct = products.find(
         (product) => product.id === productId
       );
       cart.push({ ...selectedProduct, quantity: 1 });
     }
 
-    // Lưu giỏ hàng đã cập nhật vào local storage
     localStorage.setItem("cart", JSON.stringify(cart));
   }
 
@@ -161,7 +166,7 @@ function Products({ cart }) {
   );
 }
 
-function Product({ productObj, onAddToCart, items, SetItems }) {
+function Product({ productObj, onAddToCart }) {
   const formattedCost = productObj.cost.toLocaleString("en-US");
   return (
     <li>

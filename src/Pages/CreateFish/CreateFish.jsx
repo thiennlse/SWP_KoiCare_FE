@@ -1,14 +1,10 @@
 import "./CreateFish.css";
-import Header from "../../Components/header/header";
-import Footer from "../../Components/footer/footer";
 
 const CreateFish = () => {
   return (
-    <div>
-      <Header />
+    <>
       <CreateFishForm />
-      <Footer />
-    </div>
+    </>
   );
 };
 

@@ -1,16 +1,12 @@
 import "./purchase.css";
-import Header from "../../Components/header/header";
-import Footer from "../../Components/footer/footer";
 import img1 from "../../Components/Assets/KoiFood.jpeg";
 
 const Purchase = () => {
   return (
     <>
-      <Header />
       <div className="page-container">
         <ProductInfo />
       </div>
-      <Footer />
     </>
   );
 };
