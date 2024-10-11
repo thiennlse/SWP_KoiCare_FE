@@ -41,7 +41,7 @@ const UpdateAquarium = () => {
     console.log("Sending updated data:", updatedAquariumData);
 
     axios
-      .put(`https://koicare.azurewebsites.net/api/Pool/update/${id}`, updatedAquariumData, {
+      .patch(`https://koicare.azurewebsites.net/api/Pool/update/${id}`, updatedAquariumData, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -49,12 +49,10 @@ const UpdateAquarium = () => {
       .then((response) => {
         alert("Aquarium updated successfully!");
 
-        // Update localStorage after successful API response
         const storedAquariums = JSON.parse(localStorage.getItem("aquariums")) || [];
         const aquariumIndex = storedAquariums.findIndex(aqua => aqua.id === Number(id));
 
         if (aquariumIndex !== -1) {
-          // Update the aquarium data in localStorage
           storedAquariums[aquariumIndex] = { ...updatedAquariumData, id: Number(id) };
           localStorage.setItem("aquariums", JSON.stringify(storedAquariums));
         }
