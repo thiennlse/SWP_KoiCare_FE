@@ -5,7 +5,7 @@
   margin-bottom: 20px;
 }
 
-.create-fish-button {
+.create-aquarium-button {
   padding: 10px 20px;
   background-color: #007bff;
   color: white;
@@ -14,18 +14,18 @@
   cursor: pointer;
 }
 
-.create-fish-button:hover {
+.create-aquarium-button:hover {
   background-color: #0056b3;
 }
 
-.search_pool_form {
+.search_aqua_form {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.search_pool_form input {
+.search_aqua_form input {
   width: 100%;
   max-width: 400px;
   padding: 10px;
@@ -34,7 +34,7 @@
   font-size: 16px;
 }
 
-.search_pool_form .search-button {
+.search_aqua_form .search-button {
   margin-left: 10px;
   padding: 10px 15px;
   background-color: #007bff;
@@ -45,7 +45,7 @@
   font-size: 18px;
 }
 
-.search_pool_form .search-button:hover {
+.search_aqua_form .search-button:hover {
   background-color: #0056b3;
 }
 

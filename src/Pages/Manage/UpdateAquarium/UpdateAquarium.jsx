@@ -3,11 +3,11 @@ import Header from "../../../Components/header/header";
 import Footer from "../../../Components/footer/footer";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom"; 
+import { useParams, useNavigate } from "react-router-dom";
 
 const UpdateAquarium = () => {
-  const { id } = useParams(); 
-  const navigate = useNavigate();
+  const { id } = useParams(); // Get aquarium ID from URL
+  const navigate = useNavigate(); // For navigation after update
   const [aquariumData, setAquariumData] = useState({
     name: "",
     size: "",
@@ -15,33 +15,76 @@ const UpdateAquarium = () => {
     description: "",
   });
 
+  // Fetch aquarium data for the given ID on component mount
   useEffect(() => {
     axios
       .get(`https://koicare.azurewebsites.net/api/Pool/${id}`)
       .then((response) => {
-        setAquariumData(response.data);
+        setAquariumData(response.data); // Set form data with the fetched aquarium data
       })
       .catch((error) => {
         console.error("Error fetching aquarium details:", error);
+        alert("Failed to load aquarium details.");
       });
   }, [id]);
 
+  // Handle form submission and update aquarium
   const handleUpdate = (e) => {
     e.preventDefault();
-    console.log(aquariumData);
+    const updatedAquariumData = {
+      memberId: 1, // You may change this value as needed
+      name: aquariumData.name.trim(),
+      size: Number(aquariumData.size),  // Ensure size is a number
+      depth: Number(aquariumData.depth),  // Ensure depth is a number
+      description: aquariumData.description.trim(),
+      waterId: 1,  // You may change this value as needed
+    };
+
+    console.log("Sending updated data:", updatedAquariumData);
+
+    // Send PUT request to the update endpoint
     axios
-      .put(`https://koicare.azurewebsites.net/api/Pool/${id}`, aquariumData)
+      .put(`https://koicare.azurewebsites.net/api/Pool/update/${id}`, updatedAquariumData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       .then((response) => {
         alert("Aquarium updated successfully!");
+
+        // **Update localStorage** after successful API response
+        const storedAquariums = JSON.parse(localStorage.getItem("aquariums")) || [];
+
+        // Find the index of the aquarium to be updated
+        const aquariumIndex = storedAquariums.findIndex((aqua) => aqua.id === Number(id));
+
+        if (aquariumIndex !== -1) {
+          // Update the aquarium in the localStorage list
+          storedAquariums[aquariumIndex] = { ...updatedAquariumData, id: Number(id) };
+
+          // Save the updated list back to localStorage
+          localStorage.setItem("aquariums", JSON.stringify(storedAquariums));
+        }
+
+        // Navigate back to the aquarium management page
         navigate("/aquariummanagement");
       })
       .catch((error) => {
-        console.error("Error updating aquarium:", error.response.data);
-        alert("Failed to update aquarium. Please try again.");
+        if (error.response) {
+          console.error("Error updating aquarium:", error.response.data);
+          console.error("Status:", error.response.status);
+          alert(`Failed to update aquarium. Error: ${error.response.data}`);
+        } else if (error.request) {
+          console.error("No response received:", error.request);
+          alert("Failed to update aquarium. No response from the server.");
+        } else {
+          console.error("Error setting up request:", error.message);
+          alert(`Failed to update aquarium. Error: ${error.message}`);
+        }
       });
   };
-  
 
+  // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setAquariumData((prevData) => ({
@@ -78,28 +121,31 @@ function UpdateAquariumForm({ aquariumData, handleChange, handleUpdate }) {
               placeholder="Enter aquarium name"
               value={aquariumData.name}
               onChange={handleChange}
+              required
             />
           </div>
 
           <div className="input_infor">
             <label>Size:</label>
             <input
-              type="text"
+              type="number"   
               name="size"
               placeholder="Enter size"
               value={aquariumData.size}
               onChange={handleChange}
+              required
             />
           </div>
 
           <div className="input_infor">
             <label>Depth:</label>
             <input
-              type="text"
+              type="number"  
               name="depth"
               placeholder="Enter depth"
               value={aquariumData.depth}
               onChange={handleChange}
+              required
             />
           </div>
 

@@ -65,15 +65,15 @@ const AquariumManagement = () => {
       <div className="aquarium_list_container">
         <div className="header-with-button">
           <h2 className="aquarium_list_title">Aquarium Management</h2>
-          <button className="create-fish-button" onClick={() => navigate("/createaquarium")}>
+          <button className="create-aquarium-button" onClick={() => navigate("/createaquarium")}>
             Create Aquarium
           </button>
         </div>
 
-        <div className="search_pool_form">
+        <div className="search_aqua_form">
           <input
             type="text"
-            placeholder="Search by Pool Name"
+            placeholder="Search by Aquarium Name"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
