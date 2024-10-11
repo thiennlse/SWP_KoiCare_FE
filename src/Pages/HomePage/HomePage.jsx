@@ -34,13 +34,15 @@ const HomePage = () => {
 };
 
 function Home() {
+  const cart = [];
+
   return (
     <>
       <div id="banner_scroll">
         <Banner />
       </div>
       <div id="products_scroll">
-        <Products />
+        <Products cart={cart} />
       </div>
       <div id="blog_scroll">
         <BlogSection blogs={blogData} />
@@ -95,9 +97,33 @@ function Banner() {
   );
 }
 
-function Products() {
+function Products({ cart }) {
   const [products, setProducts] = useState([]);
+
   const [loading, setLoading] = useState(true);
+  const [items, SetItems] = useState();
+
+  function handleAddToCart(productId) {
+    // Lấy giỏ hàng từ local storage, nếu chưa có thì tạo mảng rỗng
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
+    const productInCart = cart.find((item) => item.id === productId);
+
+    if (productInCart) {
+      // Nếu sản phẩm đã có, tăng số lượng
+      productInCart.quantity += 1;
+    } else {
+      // Nếu sản phẩm chưa có, thêm mới với số lượng 1
+      const selectedProduct = products.find(
+        (product) => product.id === productId
+      );
+      cart.push({ ...selectedProduct, quantity: 1 });
+    }
+
+    // Lưu giỏ hàng đã cập nhật vào local storage
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
 
   useEffect(() => {
     axios
@@ -121,7 +147,13 @@ function Products() {
       ) : (
         <ul className="products">
           {products.map((product, index) => (
-            <Product key={index} productObj={product} />
+            <Product
+              key={index}
+              productObj={product}
+              onAddToCart={handleAddToCart}
+              items={items}
+              SetItems={SetItems}
+            />
           ))}
         </ul>
       )}
@@ -129,8 +161,7 @@ function Products() {
   );
 }
 
-function Product({ productObj }) {
-  const [count, setCount] = useState(1);
+function Product({ productObj, onAddToCart, items, SetItems }) {
   const formattedCost = productObj.cost.toLocaleString("en-US");
   return (
     <li>
@@ -147,22 +178,13 @@ function Product({ productObj }) {
         <p>{formattedCost} Vnd</p>
       </div>
 
-      <div className="calc">
-        {count > 1 ? (
-          <button onClick={() => setCount((c) => c - 1)}>-</button>
-        ) : (
-          <button onClick={() => setCount((c) => c)}>-</button>
-        )}
-        <input
-          type="text"
-          value={count}
-          onChange={(e) => setCount(Number(e.target.value))}
-        ></input>
-        <button onClick={() => setCount((c) => c + 1)}>+</button>
-      </div>
-
       <div>
-        <button className="product_btn">Add To Cart</button>
+        <button
+          className="product_btn"
+          onClick={() => onAddToCart(productObj.id)}
+        >
+          Add To Cart
+        </button>
       </div>
     </li>
   );
