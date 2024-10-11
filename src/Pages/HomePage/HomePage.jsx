@@ -1,8 +1,9 @@
 import "./HomePage.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 import koiFood from "../../Components/Assets/KoiFood.jpeg";
 
@@ -24,7 +25,6 @@ const HomePage = () => {
   return (
     <>
       <Home />
-      <ToastContainer />
     </>
   );
 };
@@ -104,12 +104,12 @@ function Products() {
 
     if (!isLogin) {
       toast.warn("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!", {
-        autoClose: 3000,
+        autoClose: 2000,
       });
 
       setTimeout(() => {
         window.location.href = "/login";
-      }, 3000);
+      }, 2000);
       return;
     }
 
@@ -167,15 +167,20 @@ function Products() {
 
 function Product({ productObj, onAddToCart }) {
   const formattedCost = productObj.cost.toLocaleString("en-US");
+  const navigate = useNavigate();
+
+  function handleClick() {
+    console.log(productObj);
+    navigate(`/product/${productObj.id}`, { state: { product: productObj } });
+  }
   return (
     <li>
       <div className="image_product">
-        <a href="Purchase">
-          <img
-            src={productObj.image === "" ? koiFood : productObj.image}
-            alt={productObj.name}
-          ></img>
-        </a>
+        <img
+          src={productObj.image === "" ? koiFood : productObj.image}
+          alt={productObj.name}
+          onClick={handleClick}
+        ></img>
       </div>
       <div className="product_price">
         <p>{productObj.name}</p>
