@@ -1,19 +1,37 @@
 import { useEffect, useState } from "react";
 import "./cart.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import { toast } from "react-toastify";
 const Cart = () => {
   const [products, setProducts] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [totalPayment, setTotalPayment] = useState(0);
+  const [isSelectAll, setIsSelectAll] = useState(false);
 
   useEffect(() => {
-    // Get cart from localStorage
+    const message = localStorage.getItem("toastMessage");
+    if (message) {
+      toast.success(message, { autoClose: 2000 });
+    }
+
+    setTimeout(() => {
+      localStorage.removeItem("toastMessage");
+    }, 3000);
+  }, []);
+
+  useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
     setProducts(storedCart);
   }, []);
 
-  // Calculate total payment for selected products
+  useEffect(() => {
+    if (selectedProducts.length === products.length && products.length > 0) {
+      setIsSelectAll(true);
+    } else {
+      setIsSelectAll(false);
+    }
+  }, [selectedProducts, products]);
+
   const calculateTotalPayment = (selected) => {
     const total = selected.reduce(
       (sum, item) => sum + item.cost * item.quantity,
@@ -22,20 +40,17 @@ const Cart = () => {
     setTotalPayment(total);
   };
 
-  // Select or deselect all products
   const handleSelectAll = (e) => {
     if (e.target.checked) {
-      // If checked, select all products
       setSelectedProducts(products.map((product) => ({ ...product })));
-      calculateTotalPayment(products); // Calculate total for all products
+      calculateTotalPayment(products);
     } else {
-      // If unchecked, deselect all products
       setSelectedProducts([]);
-      setTotalPayment(0); // Reset total to 0
+      setTotalPayment(0);
     }
+    setIsSelectAll(e.target.checked);
   };
 
-  // Handle product selection
   const handleSelectProduct = (item) => {
     const isSelected = selectedProducts.find(
       (product) => product.id === item.id
@@ -43,20 +58,17 @@ const Cart = () => {
     let updatedSelectedProducts;
 
     if (isSelected) {
-      // If the product is already selected, deselect it
       updatedSelectedProducts = selectedProducts.filter(
         (product) => product.id !== item.id
       );
     } else {
-      // If the product is not selected, add it to the selected list
       updatedSelectedProducts = [...selectedProducts, item];
     }
 
     setSelectedProducts(updatedSelectedProducts);
-    calculateTotalPayment(updatedSelectedProducts); // Recalculate total payment
+    calculateTotalPayment(updatedSelectedProducts);
   };
 
-  // Update quantity and recalculate total
   const handleUpdateQuantityAndRecalculate = (productId, newQuantity) => {
     let updatedProducts = products.map((product) => {
       if (product.id === productId) {
@@ -67,7 +79,6 @@ const Cart = () => {
 
     setProducts(updatedProducts);
 
-    // Update selected products and recalculate total if the product is selected
     const updatedSelectedProducts = selectedProducts.map((product) => {
       if (product.id === productId) {
         return { ...product, quantity: newQuantity };
@@ -76,23 +87,20 @@ const Cart = () => {
     });
 
     setSelectedProducts(updatedSelectedProducts);
-    calculateTotalPayment(updatedSelectedProducts); // Update total payment
+    calculateTotalPayment(updatedSelectedProducts);
   };
 
-  // Delete product from cart and update total payment
   const handleDeleteProduct = (item) => {
     let updatedProducts = products.filter((product) => product.id !== item.id);
     setProducts(updatedProducts);
 
-    // Update cart in localStorage
     localStorage.setItem("cart", JSON.stringify(updatedProducts));
 
-    // Update selected products
     const updatedSelectedProducts = selectedProducts.filter(
       (product) => product.id !== item.id
     );
     setSelectedProducts(updatedSelectedProducts);
-    calculateTotalPayment(updatedSelectedProducts); // Update total payment
+    calculateTotalPayment(updatedSelectedProducts);
   };
 
   return (
@@ -109,6 +117,7 @@ const Cart = () => {
             totalPayment={totalPayment}
             handleSelectAll={handleSelectAll}
             selectedProducts={selectedProducts}
+            isSelectAll={isSelectAll}
           />
         </div>
       ) : (
@@ -131,6 +140,7 @@ function Products({
   totalPayment,
   handleSelectAll,
   selectedProducts,
+  isSelectAll,
 }) {
   return (
     <div className="container product-container">
@@ -160,10 +170,13 @@ function Products({
         )}
       </div>
 
-      {/* Checkbox for Select All */}
       <div className="row align-items-center text-center py-2 payment-cart">
         <div className="col-2 tick-all">
-          <input type="checkbox" onChange={handleSelectAll} />
+          <input
+            type="checkbox"
+            checked={isSelectAll}
+            onChange={handleSelectAll}
+          />
           <span className="ms-2">Chọn tất cả</span>
         </div>
         <div className="col ">Tổng thanh toán: {totalPayment} vnd</div>
