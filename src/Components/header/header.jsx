@@ -38,7 +38,6 @@ function Header() {
     toast.success("Logout successful!", { autoClose: 1500 });
     setTimeout(() => {
       localStorage.removeItem("user");
-      localStorage.removeItem("cart");
       navigate("/login");
     }, 1500);
   };
