@@ -51,6 +51,20 @@ const CreateAquarium = () => {
       });
   };
 
+  const handleCancel = () => {
+    // Navigate back to the aquarium management page
+    navigate("/aquariummanagement");
+    // Optionally reset the state
+    setAquarium({
+      memberId: memberId,
+      name: "",
+      size: 0,
+      depth: 0,
+      description: "",
+      waterId: 1,
+    });
+  };
+
   return (
     <div>
       <Header />
@@ -114,19 +128,7 @@ const CreateAquarium = () => {
 
         <div className="buttons">
           <button type="submit">Save</button>
-          <button
-            type="button"
-            onClick={() =>
-              setAquarium({
-                memberId: memberId, // Reset to original memberId
-                name: "",
-                size: 0,
-                depth: 0,
-                description: "",
-                waterId: 1,
-              })
-            }
-          >
+          <button type="button" onClick={handleCancel}>
             Cancel
           </button>
         </div>
