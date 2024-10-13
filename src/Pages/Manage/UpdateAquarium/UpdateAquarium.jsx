@@ -6,9 +6,10 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 const UpdateAquarium = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const navigate = useNavigate();
   const [aquariumData, setAquariumData] = useState({
+    memberId: 0, // Initialize memberId
     name: "",
     size: "",
     depth: "",
@@ -19,6 +20,7 @@ const UpdateAquarium = () => {
     axios
       .get(`https://koicare.azurewebsites.net/api/Pool/${id}`)
       .then((response) => {
+        // Set the aquariumData including memberId from fetched data
         setAquariumData(response.data);
       })
       .catch((error) => {
@@ -30,30 +32,40 @@ const UpdateAquarium = () => {
   const handleUpdate = (e) => {
     e.preventDefault();
     const updatedAquariumData = {
-      memberId: 1, 
+      memberId: aquariumData.memberId, // Keep the original memberId
       name: aquariumData.name.trim(),
-      size: Number(aquariumData.size),  
-      depth: Number(aquariumData.depth),  
+      size: Number(aquariumData.size),
+      depth: Number(aquariumData.depth),
       description: aquariumData.description.trim(),
-      waterId: 1,  
+      waterId: 1,
     };
 
     console.log("Sending updated data:", updatedAquariumData);
 
     axios
-      .patch(`https://koicare.azurewebsites.net/api/Pool/update/${id}`, updatedAquariumData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      .patch(
+        `https://koicare.azurewebsites.net/api/Pool/update/${id}`,
+        updatedAquariumData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((response) => {
         alert("Aquarium updated successfully!");
 
-        const storedAquariums = JSON.parse(localStorage.getItem("aquariums")) || [];
-        const aquariumIndex = storedAquariums.findIndex(aqua => aqua.id === Number(id));
+        const storedAquariums =
+          JSON.parse(localStorage.getItem("aquariums")) || [];
+        const aquariumIndex = storedAquariums.findIndex(
+          (aqua) => aqua.id === Number(id)
+        );
 
         if (aquariumIndex !== -1) {
-          storedAquariums[aquariumIndex] = { ...updatedAquariumData, id: Number(id) };
+          storedAquariums[aquariumIndex] = {
+            ...updatedAquariumData,
+            id: Number(id),
+          };
           localStorage.setItem("aquariums", JSON.stringify(storedAquariums));
         }
 
@@ -113,7 +125,7 @@ function UpdateAquariumForm({ aquariumData, handleChange, handleUpdate }) {
           <div className="input_infor">
             <label>Size:</label>
             <input
-              type="number"   
+              type="number"
               name="size"
               placeholder="Enter size"
               value={aquariumData.size}
@@ -125,7 +137,7 @@ function UpdateAquariumForm({ aquariumData, handleChange, handleUpdate }) {
           <div className="input_infor">
             <label>Depth:</label>
             <input
-              type="number"  
+              type="number"
               name="depth"
               placeholder="Enter depth"
               value={aquariumData.depth}

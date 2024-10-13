@@ -6,73 +6,79 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 const UpdateFish = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const navigate = useNavigate();
-  const [aquariumData, setAquariumData] = useState({
+  const [fishData, setFishData] = useState({
     name: "",
+    species: "",
     size: "",
-    depth: "",
-    description: "",
+    color: "",
   });
 
   useEffect(() => {
     axios
-      .get(`https://koicare.azurewebsites.net/api/Pool/${id}`)
+      .get(`https://koicare.azurewebsites.net/api/Fish/${id}`)
       .then((response) => {
-        setAquariumData(response.data);
+        setFishData(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching aquarium details:", error);
-        alert("Failed to load aquarium details.");
+        console.error("Error fetching fish details:", error);
+        alert("Failed to load fish details.");
       });
   }, [id]);
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    const updatedAquariumData = {
-      memberId: 1, 
-      name: aquariumData.name.trim(),
-      size: Number(aquariumData.size),  
-      depth: Number(aquariumData.depth),  
-      description: aquariumData.description.trim(),
-      waterId: 1,  
+    const updatedFishData = {
+      name: fishData.name.trim(),
+      species: fishData.species.trim(),
+      size: fishData.size.trim(),
+      color: fishData.color.trim(),
     };
 
-    console.log("Sending updated data:", updatedAquariumData);
+    console.log("Sending updated data:", updatedFishData);
 
     axios
-      .patch(`https://koicare.azurewebsites.net/api/Pool/update/${id}`, updatedAquariumData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      .put(
+        `https://koicare.azurewebsites.net/api/Fish/update/${id}`,
+        updatedFishData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((response) => {
-        alert("Aquarium updated successfully!");
+        alert("Fish updated successfully!");
 
-        const storedAquariums = JSON.parse(localStorage.getItem("aquariums")) || [];
-        const aquariumIndex = storedAquariums.findIndex(aqua => aqua.id === Number(id));
+        // Update localStorage after successful API response
+        const storedFish = JSON.parse(localStorage.getItem("fish")) || [];
+        const fishIndex = storedFish.findIndex(
+          (fish) => fish.id === Number(id)
+        );
 
-        if (aquariumIndex !== -1) {
-          storedAquariums[aquariumIndex] = { ...updatedAquariumData, id: Number(id) };
-          localStorage.setItem("aquariums", JSON.stringify(storedAquariums));
+        if (fishIndex !== -1) {
+          // Update the fish data in localStorage
+          storedFish[fishIndex] = { ...updatedFishData, id: Number(id) };
+          localStorage.setItem("fish", JSON.stringify(storedFish));
         }
 
-        navigate("/aquariummanagement");
+        navigate("/fishmanagement");
       })
       .catch((error) => {
         if (error.response) {
-          console.error("Error updating aquarium:", error.response.data);
-          alert(`Failed to update aquarium. Error: ${error.response.data}`);
+          console.error("Error updating fish:", error.response.data);
+          alert(`Failed to update fish. Error: ${error.response.data}`);
         } else {
           console.error("Error setting up request:", error.message);
-          alert(`Failed to update aquarium. Error: ${error.message}`);
+          alert(`Failed to update fish. Error: ${error.message}`);
         }
       });
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setAquariumData((prevData) => ({
+    setFishData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
@@ -81,8 +87,8 @@ const UpdateFish = () => {
   return (
     <div>
       <Header />
-      <UpdateAquariumForm
-        aquariumData={aquariumData}
+      <UpdateFishForm
+        fishData={fishData}
         handleChange={handleChange}
         handleUpdate={handleUpdate}
       />
@@ -91,44 +97,44 @@ const UpdateFish = () => {
   );
 };
 
-function UpdateAquariumForm({ aquariumData, handleChange, handleUpdate }) {
+function UpdateFishForm({ fishData, handleChange, handleUpdate }) {
   return (
-    <form className="form_pool" onSubmit={handleUpdate}>
-      <p className="form_title">Update Aquarium</p>
+    <form className="form_fish" onSubmit={handleUpdate}>
+      <p className="form_title">Update Fish</p>
 
-      <div className="form_grid_pool">
+      <div className="form_grid_fish">
         <div className="column">
           <div className="input_infor">
-            <label>Aquarium Name:</label>
+            <label>Fish Name:</label>
             <input
               type="text"
               name="name"
-              placeholder="Enter aquarium name"
-              value={aquariumData.name}
+              placeholder="Enter fish name"
+              value={fishData.name}
               onChange={handleChange}
               required
             />
           </div>
 
           <div className="input_infor">
-            <label>Size:</label>
+            <label>Age:</label>
             <input
-              type="number"   
+              type="number"
               name="size"
               placeholder="Enter size"
-              value={aquariumData.size}
+              value={fishData.age}
               onChange={handleChange}
               required
             />
           </div>
 
           <div className="input_infor">
-            <label>Depth:</label>
+            <label>Cost:</label>
             <input
-              type="number"  
+              type="number"
               name="depth"
               placeholder="Enter depth"
-              value={aquariumData.depth}
+              value={fishData.cost}
               onChange={handleChange}
               required
             />
@@ -140,7 +146,7 @@ function UpdateAquariumForm({ aquariumData, handleChange, handleUpdate }) {
               type="text"
               name="description"
               placeholder="Enter description"
-              value={aquariumData.description}
+              value={fishData.description}
               onChange={handleChange}
             />
           </div>

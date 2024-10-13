@@ -16,7 +16,8 @@ const FishManagement = () => {
   }, []);
 
   const fetchFish = () => {
-    axios.get("https://koicare.azurewebsites.net/api/Fish")
+    axios
+      .get("https://koicare.azurewebsites.net/api/Fish")
       .then((res) => {
         setFishList(res.data);
         setFilteredFishList(res.data);
@@ -28,19 +29,20 @@ const FishManagement = () => {
   };
 
   const handleSearch = () => {
-    const filtered = fishList.filter(fish =>
+    const filtered = fishList.filter((fish) =>
       fish.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredFishList(filtered);
   };
 
   const deleteFish = (id) => {
-    if (window.confirm('Are you sure you want to delete this fish?')) {
-      axios.delete(`https://koicare.azurewebsites.net/api/Fish/Delete?id=${id}`)
+    if (window.confirm("Are you sure you want to delete this fish?")) {
+      axios
+        .delete(`https://koicare.azurewebsites.net/api/Fish/Delete?id=${id}`)
         .then((response) => {
           if (response.status === 204) {
             alert("Fish deleted successfully");
-            const updatedFishList = fishList.filter(fish => fish.id !== id);
+            const updatedFishList = fishList.filter((fish) => fish.id !== id);
             setFishList(updatedFishList);
             setFilteredFishList(updatedFishList);
           } else {
@@ -48,7 +50,10 @@ const FishManagement = () => {
           }
         })
         .catch((error) => {
-          console.error("Error deleting fish:", error.response ? error.response.data : error);
+          console.error(
+            "Error deleting fish:",
+            error.response ? error.response.data : error
+          );
           alert("Failed to delete fish. Please try again.");
         });
     }

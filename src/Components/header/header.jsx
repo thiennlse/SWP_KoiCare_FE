@@ -96,7 +96,7 @@ function Header() {
                   onMouseLeave={() => toggleDropdown(false)}
                 >
                   <span className="user_name" onClick={() => navigate("/")}>
-                    {user.fullName} 
+                    {user.fullName ? user.fullName : " New Customer"}
                   </span>
                   {dropdownVisible && (
                     <div className="dropdown_menu">
