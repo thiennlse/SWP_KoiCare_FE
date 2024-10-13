@@ -213,6 +213,13 @@ function Product({
     }
   };
 
+  const confirmDeleteProduct = () => {
+    const confirmed = window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?");
+    if (confirmed) {
+      handleDeleteProduct(item);
+    }
+  };
+
   return (
     <div className="row align-items-center text-center border-bottom py-2">
       <div className="col-1">
@@ -266,7 +273,7 @@ function Product({
       <div className="col-12 text-end mt-2">
         <button
           className="btn btn-danger btn-sm"
-          onClick={() => handleDeleteProduct(item)}
+          onClick={confirmDeleteProduct}
         >
           Xóa
         </button>

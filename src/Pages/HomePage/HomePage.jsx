@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import koiFood from "../../Components/Assets/KoiFood.jpeg";
 
@@ -23,15 +24,13 @@ const bannerImages = [
 ];
 
 const HomePage = () => {
-  return (
-    <>
-      <Home />
-    </>
-  );
-};
+  const [blogData, setBlogData] = useState([]);
 
-function Home() {
-  const cart = [];
+  useEffect(() => {
+    axios.get("https://koicare.azurewebsites.net/api/Blog").then((res) => {
+      setBlogData(res.data);
+    });
+  });
 
   return (
     <>
@@ -39,14 +38,14 @@ function Home() {
         <Banner />
       </div>
       <div id="products_scroll">
-        <Products cart={cart} />
+        <Products />
       </div>
       <div id="blog_scroll">
         <BlogSection blogs={blogData} />
       </div>
     </>
   );
-}
+};
 
 function Banner() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -96,39 +95,9 @@ function Banner() {
 
 function Products() {
   const [products, setProducts] = useState([]);
-
   const [loading, setLoading] = useState(true);
-  const [items, SetItems] = useState();
-
-  function handleAddToCart(productId) {
-    const isLogin = localStorage.getItem("user");
-
-    if (!isLogin) {
-      toast.warn("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!", {
-        autoClose: 2000,
-      });
-
-      setTimeout(() => {
-        window.location.href = "/login";
-      }, 2000);
-      return;
-    }
-
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    const productInCart = cart.find((item) => item.id === productId);
-
-    if (productInCart) {
-      productInCart.quantity += 1;
-    } else {
-      const selectedProduct = products.find(
-        (product) => product.id === productId
-      );
-      cart.push({ ...selectedProduct, quantity: 1 });
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 4;
 
   useEffect(() => {
     axios
@@ -143,6 +112,57 @@ function Products() {
       });
   }, []);
 
+  const totalPages = Math.ceil(products.length / productsPerPage);
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  function handleAddToCart(productObj) {
+    const isLogin = localStorage.getItem("user");
+    if (!isLogin) {
+      toast.warn("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!", {
+        autoClose: 2000,
+      });
+
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 2000);
+      return;
+    }
+    toast.success(`${productObj.name} đã được thêm vào giỏ hàng!`, {
+      autoClose: 2000,
+    });
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const productInCart = cart.find((item) => item.id === productObj.id);
+
+    if (productInCart) {
+      productInCart.quantity += 1;
+    } else {
+      const selectedProduct = products.find(
+        (product) => product.id === productObj.id
+      );
+      cart.push({ ...selectedProduct, quantity: 1 });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
     <div id="products_scroll" className="product_wrapper">
       <h1 className="product_title">Best Selling Products</h1>
@@ -151,17 +171,50 @@ function Products() {
         <p>Loading products...</p>
       ) : (
         <ul className="products">
-          {products.map((product, index) => (
+          {currentProducts.map((product, index) => (
             <Product
               key={index}
               productObj={product}
               onAddToCart={handleAddToCart}
-              items={items}
-              SetItems={SetItems}
             />
           ))}
         </ul>
       )}
+
+      <nav
+        aria-label="Page navigation"
+        className="d-flex justify-content-center mt-4"
+      >
+        <ul className="pagination">
+          <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+            <button
+              className="page-link"
+              onClick={goToPreviousPage}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+          </li>
+          <li className="page-item disabled">
+            <span className="page-link">
+              Page {currentPage} of {totalPages}
+            </span>
+          </li>
+          <li
+            className={`page-item ${
+              currentPage === totalPages ? "disabled" : ""
+            }`}
+          >
+            <button
+              className="page-link"
+              onClick={goToNextPage}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 }
@@ -189,10 +242,7 @@ function Product({ productObj, onAddToCart }) {
       </div>
 
       <div>
-        <button
-          className="product_btn"
-          onClick={() => onAddToCart(productObj.id)}
-        >
+        <button className="product_btn" onClick={() => onAddToCart(productObj)}>
           Add To Cart
         </button>
       </div>
@@ -200,58 +250,98 @@ function Product({ productObj, onAddToCart }) {
   );
 }
 
-const blogData = [
-  {
-    date: "20 Feb",
-    title: "10 Reasons To Be Helpful Towards Animals",
-    content:
-      "At the core of our practice is the idea that cities are the incubators of our greatest achievements...",
-    image: blog_image_1,
-  },
-  {
-    date: "21 Feb",
-    title: "How To Know Your Pet Is Hungry",
-    content:
-      "At the core of our practice is the idea that cities are the incubators of our greatest achievements...",
-    image: blog_image_2,
-  },
-  {
-    date: "22 Feb",
-    title: "Best Home For Your Pets",
-    content:
-      "At the core of our practice is the idea that cities are the incubators of our greatest achievements...",
-    image: blog_image_3,
-  },
-];
-
 function BlogSection({ blogs }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [showAll, setShowAll] = useState(false);
+  const blogsPerPage = 3;
+  const totalPages = Math.ceil(blogs.length / blogsPerPage);
+
+  const indexOfLastBlog = currentPage * blogsPerPage;
+  const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
+  const currentBlogs = blogs.slice(indexOfFirstBlog, indexOfLastBlog);
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleReadAll = () => {
+    setShowAll(!showAll);
+  };
+
   return (
-    <div id="blog_scroll" className="blog_section">
-      <div className="blog_header">
-        <h1 className="blog_title">Latest Blog Post</h1>
-        <button className="read_all_btn">READ ALL ➔</button>
+    <div id="blog_scroll" className="container my-5">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h1 className="display-4">Latest Blog Posts</h1>
+        <button className="btn btn-primary" onClick={handleReadAll}>
+          {showAll ? "SHOW LESS" : "READ ALL"} ➔
+        </button>
       </div>
-      <div className="blog_container">
-        {blogs.map((blog, index) => (
-          <div key={index} className="blog_card">
-            <a href="#">
-              <img src={blog.image} alt={blog.title} className="blog_image" />
-            </a>
-            <div className="blog_content">
-              <div className="blog_date">
-                <span>{blog.date}</span>
+
+      <div className="row">
+        {(showAll ? blogs : currentBlogs).map((blog, index) => (
+          <div key={index} className="col-md-4 mb-4">
+            <div className="card h-100">
+              <img
+                src={blog.image ? blog.image : blog_image_1}
+                className="card-img-top"
+                alt={blog.title}
+              />
+              <div className="card-body">
+                <h5 className="card-title">{blog.title}</h5>
+                <p className="card-text">{blog.content}</p>
+                <a href="#" className="btn btn-outline-primary">
+                  READ MORE
+                </a>
               </div>
-              <a href="#">
-                <h2 className="blog_card_title">{blog.title}</h2>
-              </a>
-              <p className="blog_excerpt">{blog.content}</p>
-              <a href="#" className="read_more">
-                READ MORE
-              </a>
             </div>
           </div>
         ))}
       </div>
+
+      {!showAll && (
+        <nav
+          aria-label="Page navigation"
+          className="d-flex justify-content-center mt-4"
+        >
+          <ul className="pagination">
+            <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+              <button
+                className="page-link"
+                onClick={goToPreviousPage}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
+            </li>
+            <li className="page-item disabled">
+              <span className="page-link">
+                Page {currentPage} of {totalPages}
+              </span>
+            </li>
+            <li
+              className={`page-item ${
+                currentPage === totalPages ? "disabled" : ""
+              }`}
+            >
+              <button
+                className="page-link"
+                onClick={goToNextPage}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </li>
+          </ul>
+        </nav>
+      )}
     </div>
   );
 }
