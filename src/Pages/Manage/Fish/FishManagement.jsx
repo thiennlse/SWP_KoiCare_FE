@@ -1,6 +1,4 @@
 import "./FishManagement.css";
-import Header from "../../../Components/header/header";
-import Footer from "../../../Components/footer/footer";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -115,7 +113,6 @@ const FishManagement = () => {
 
   return (
     <div>
-      <Header />
       <div className="fish-management-container">
         <div className="header-with-button">
           <h2 className="fish-list-title">Fish Management</h2>

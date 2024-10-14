@@ -2,8 +2,6 @@ import "./CreateFish.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../../Components/header/header";
-import Footer from "../../Components/footer/footer";
 
 const CreateFish = () => {
   const navigate = useNavigate();
@@ -105,14 +103,12 @@ const CreateFish = () => {
 
   return (
     <div>
-      <Header />
       <CreateFishForm
         fishData={fishData}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         pools={pools}
       />
-      <Footer />
     </div>
   );
 };

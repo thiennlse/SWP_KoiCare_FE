@@ -1,6 +1,4 @@
 import "./UpdateFish.css";
-import Header from "../../../Components/header/header";
-import Footer from "../../../Components/footer/footer";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -36,8 +34,6 @@ const UpdateFish = () => {
       color: fishData.color.trim(),
     };
 
-    console.log("Sending updated data:", updatedFishData);
-
     axios
       .put(
         `https://koicare.azurewebsites.net/api/Fish/update/${id}`,
@@ -50,19 +46,6 @@ const UpdateFish = () => {
       )
       .then((response) => {
         alert("Fish updated successfully!");
-
-        // Update localStorage after successful API response
-        const storedFish = JSON.parse(localStorage.getItem("fish")) || [];
-        const fishIndex = storedFish.findIndex(
-          (fish) => fish.id === Number(id)
-        );
-
-        if (fishIndex !== -1) {
-          // Update the fish data in localStorage
-          storedFish[fishIndex] = { ...updatedFishData, id: Number(id) };
-          localStorage.setItem("fish", JSON.stringify(storedFish));
-        }
-
         navigate("/fishmanagement");
       })
       .catch((error) => {
@@ -86,13 +69,11 @@ const UpdateFish = () => {
 
   return (
     <div>
-      <Header />
       <UpdateFishForm
         fishData={fishData}
         handleChange={handleChange}
         handleUpdate={handleUpdate}
       />
-      <Footer />
     </div>
   );
 };

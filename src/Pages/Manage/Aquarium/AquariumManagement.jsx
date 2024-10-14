@@ -1,6 +1,4 @@
 import "./AquariumManagement.css";
-import Header from "../../../Components/header/header";
-import Footer from "../../../Components/footer/footer";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -77,7 +75,6 @@ const AquariumManagement = () => {
 
   return (
     <div>
-      <Header />
       <div className="aquarium_list_container">
         <div className="header-with-button">
           <h2 className="aquarium_list_title">Aquarium Management</h2>
@@ -129,7 +126,6 @@ const AquariumManagement = () => {
           </tbody>
         </table>
       </div>
-      <Footer />
     </div>
   );
 };

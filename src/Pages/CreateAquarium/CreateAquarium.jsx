@@ -1,8 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../../Components/header/header";
-import Footer from "../../Components/footer/footer";
 
 const CreateAquarium = () => {
   // Retrieve the logged-in user's info from localStorage
@@ -67,7 +65,6 @@ const CreateAquarium = () => {
 
   return (
     <div>
-      <Header />
       <form className="form_pool" onSubmit={handleSubmit}>
         <p className="form_title">Create Aquarium</p>
 
@@ -133,7 +130,6 @@ const CreateAquarium = () => {
           </button>
         </div>
       </form>
-      <Footer />
     </div>
   );
 };

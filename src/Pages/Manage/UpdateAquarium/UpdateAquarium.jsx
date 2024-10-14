@@ -1,6 +1,4 @@
 import "./UpdateAquarium.css";
-import Header from "../../../Components/header/header";
-import Footer from "../../../Components/footer/footer";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -9,7 +7,7 @@ const UpdateAquarium = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [aquariumData, setAquariumData] = useState({
-    memberId: 0, // Initialize memberId
+    memberId: 0,
     name: "",
     size: "",
     depth: "",
@@ -20,7 +18,6 @@ const UpdateAquarium = () => {
     axios
       .get(`https://koicare.azurewebsites.net/api/Pool/${id}`)
       .then((response) => {
-        // Set the aquariumData including memberId from fetched data
         setAquariumData(response.data);
       })
       .catch((error) => {
@@ -32,15 +29,13 @@ const UpdateAquarium = () => {
   const handleUpdate = (e) => {
     e.preventDefault();
     const updatedAquariumData = {
-      memberId: aquariumData.memberId, // Keep the original memberId
+      memberId: aquariumData.memberId,
       name: aquariumData.name.trim(),
       size: Number(aquariumData.size),
       depth: Number(aquariumData.depth),
       description: aquariumData.description.trim(),
       waterId: 1,
     };
-
-    console.log("Sending updated data:", updatedAquariumData);
 
     axios
       .patch(
@@ -54,21 +49,6 @@ const UpdateAquarium = () => {
       )
       .then((response) => {
         alert("Aquarium updated successfully!");
-
-        const storedAquariums =
-          JSON.parse(localStorage.getItem("aquariums")) || [];
-        const aquariumIndex = storedAquariums.findIndex(
-          (aqua) => aqua.id === Number(id)
-        );
-
-        if (aquariumIndex !== -1) {
-          storedAquariums[aquariumIndex] = {
-            ...updatedAquariumData,
-            id: Number(id),
-          };
-          localStorage.setItem("aquariums", JSON.stringify(storedAquariums));
-        }
-
         navigate("/aquariummanagement");
       })
       .catch((error) => {
@@ -92,13 +72,11 @@ const UpdateAquarium = () => {
 
   return (
     <div>
-      <Header />
       <UpdateAquariumForm
         aquariumData={aquariumData}
         handleChange={handleChange}
         handleUpdate={handleUpdate}
       />
-      <Footer />
     </div>
   );
 };

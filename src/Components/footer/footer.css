@@ -70,11 +70,11 @@
 }
 
 .nav_lists {
-    display: flex;
-    list-style: none;
-    text-decoration: none;
-    color: black;
-    font-size: 22px;
+  display: flex;
+  list-style: none;
+  text-decoration: none;
+  color: black;
+  font-size: 22px;
 }
 
 .nav_lists li {
@@ -98,27 +98,27 @@
 }
 
 .sub_services_list {
-    /* list-style: none; */
-    gap: 20px;
-    padding-left: 0;
-    white-space: nowrap;
-    font-size: 18px;
-  }
-  
-  .sub_services_list li {
-    margin: 0;
-    margin-top: 20px;
-  }
-  
-  .sub_services_list a {
-    text-decoration: none;
-    color: black;
-    font-size: 18px;
-  }
-  
-  .sub_services_list a:hover {
-    color: #DEAD6F;
-  }
+  /* list-style: none; */
+  gap: 20px;
+  padding-left: 0;
+  white-space: nowrap;
+  font-size: 18px;
+}
+
+.sub_services_list li {
+  margin: 0;
+  margin-top: 20px;
+}
+
+.sub_services_list a {
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
+}
+
+.sub_services_list a:hover {
+  color: #dead6f;
+}
 
 .copyright {
   font-size: 18px;
