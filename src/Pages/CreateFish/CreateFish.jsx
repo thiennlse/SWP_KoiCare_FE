@@ -18,7 +18,6 @@ const CreateFish = () => {
     age: 0,
     gender: "Male",
     origin: "",
-    dob: new Date().toISOString().split("T")[0], // Sử dụng timestamp hiện tại
   });
 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -51,7 +50,7 @@ const CreateFish = () => {
     const { name, value } = e.target;
     setFishData((prevData) => ({
       ...prevData,
-      [name]: name === "dob" ? new Date(value).getTime() : value, // Chuyển đổi nếu là dob
+      [name]: value,
     }));
   };
 
@@ -59,21 +58,21 @@ const CreateFish = () => {
     e.preventDefault();
 
     const newFish = {
-      id: 0,
       poolId: Number(fishData.poolId),
       foodId: Number(fishData.foodId),
       name: fishData.name.trim(),
       image: fishData.image.trim(),
       size: Number(fishData.size),
       weight: Number(fishData.weight),
-      dob: Math.floor(new Date(fishData.dob).getTime() / 1000), // Convert to Unix timestamp
       gender: fishData.gender,
       origin: fishData.origin.trim(),
     };
 
     const newFishData = {
-      _fish: newFish,
+      _fish: newFish, // Send only relevant fields, excluding dob
     };
+
+    console.log("Data being sent to API:", newFishData);
 
     axios
       .post("https://koicare.azurewebsites.net/api/Fish/add", newFishData, {
@@ -112,6 +111,7 @@ const CreateFish = () => {
         handleSubmit={handleSubmit}
         pools={pools}
       />
+      <Footer />
     </div>
   );
 };
@@ -135,7 +135,7 @@ function CreateFishForm({ fishData, handleChange, handleSubmit, pools }) {
             />
           </div>
 
-          <div className="input _infor">
+          <div className="input_infor">
             <label>
               Pool:
               <span className="dropdown-arrow"> ▼</span>
@@ -217,17 +217,6 @@ function CreateFishForm({ fishData, handleChange, handleSubmit, pools }) {
               name="age"
               placeholder="Enter age"
               value={fishData.age}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="input_infor">
-            <label>Date of Birth:</label>
-            <input
-              type="date"
-              name="dob"
-              value={new Date(fishData.dob).toISOString().split("T")[0]} // Để đảm bảo định dạng đúng cho input date
               onChange={handleChange}
               required
             />
