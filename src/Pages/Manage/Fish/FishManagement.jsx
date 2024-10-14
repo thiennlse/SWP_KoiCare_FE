@@ -93,7 +93,16 @@ const FishManagement = () => {
             alert("Fish deleted successfully");
             const updatedFishList = fishList.filter((fish) => fish.id !== id);
             setFishList(updatedFishList);
-            setFilteredFishList(updatedFishList);
+
+            // Re-filter the fish list based on the current selected pool
+            if (selectedPoolId === 0) {
+              setFilteredFishList(updatedFishList); // If "All Pools" is selected, show all remaining fish
+            } else {
+              const filtered = updatedFishList.filter(
+                (fish) => fish.poolId === selectedPoolId
+              );
+              setFilteredFishList(filtered); // Only show fish for the selected pool
+            }
           } else {
             alert(`Failed to delete fish. Status: ${response.status}`);
           }
@@ -116,6 +125,23 @@ const FishManagement = () => {
     navigate("/createfish");
   };
 
+  // Function to calculate age from dob
+  const calculateAge = (dob) => {
+    if (!dob) return "N/A"; // Handle case where dob is not available
+    const birthDate = new Date(dob);
+    const today = new Date();
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+    // Adjust age if the birthday hasn't occurred yet this year
+    if (
+      monthDifference < 0 ||
+      (monthDifference === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      return age - 1;
+    }
+    return age;
+  };
+
   return (
     <div>
       <div className="fish-management-container">
@@ -129,7 +155,7 @@ const FishManagement = () => {
         <div className="pool-selection">
           <label>Select Pool:</label>
           <select onChange={handlePoolChange} value={selectedPoolId}>
-            <option value="0">All Aquarium</option>
+            <option value="0">All Pools</option>
             {poolList.map((pool) => (
               <option key={pool.id} value={pool.id}>
                 {pool.name}
@@ -157,6 +183,9 @@ const FishManagement = () => {
               <th>Age</th>
               <th>Size</th>
               <th>Weight</th>
+              <th>Food</th> {/* New column for Food */}
+              <th>Origin</th> {/* New column for Origin */}
+              <th>Image</th> {/* New column for Image */}
               <th>Actions</th>
             </tr>
           </thead>
@@ -164,9 +193,24 @@ const FishManagement = () => {
             {filteredFishList.map((fish, index) => (
               <tr key={index}>
                 <td>{fish.name}</td>
-                <td>{fish.age}</td>
+                <td>{calculateAge(fish.dob)}</td> {/* Calculate age from dob */}
                 <td>{fish.size}</td>
                 <td>{fish.weight}</td>
+                <td>{fish.foodId}</td>{" "}
+                {/* Display foodId or food name if available */}
+                <td>{fish.origin}</td> {/* Display origin */}
+                <td>
+                  {fish.image ? (
+                    <img
+                      src={fish.image}
+                      alt={fish.name}
+                      style={{ width: "50px", height: "50px" }}
+                    />
+                  ) : (
+                    "No Image"
+                  )}
+                </td>{" "}
+                {/* Display image or placeholder */}
                 <td>
                   <button onClick={() => handleEdit(fish.id)}>Edit</button>
                   <button onClick={() => deleteFish(fish.id)}>Delete</button>

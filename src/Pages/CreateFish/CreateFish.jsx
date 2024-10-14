@@ -6,14 +6,16 @@ import { useNavigate } from "react-router-dom";
 const CreateFish = () => {
   const navigate = useNavigate();
   const [pools, setPools] = useState([]);
+  const [foods, setFoods] = useState([]); // All foods from the API
+  const [filteredFoods, setFilteredFoods] = useState([]); // Filtered foods based on weight
   const [fishData, setFishData] = useState({
     poolId: 0,
-    foodId: 1,
+    foodId: 0,
     name: "",
     image: "",
     size: 0,
     weight: 0,
-    age: 0,
+    dob: "",
     gender: "Male",
     origin: "",
   });
@@ -24,9 +26,8 @@ const CreateFish = () => {
   useEffect(() => {
     if (memberId !== 0) {
       fetchPoolsForMember(memberId);
-    } else {
-      console.error("No memberId found. Please log in.");
     }
+    fetchFoods(); // Fetch available foods
   }, [memberId]);
 
   const fetchPoolsForMember = (memberId) => {
@@ -44,12 +45,32 @@ const CreateFish = () => {
       });
   };
 
+  const fetchFoods = () => {
+    axios
+      .get("https://koicare.azurewebsites.net/api/Food")
+      .then((res) => {
+        setFoods(res.data); // Store all foods
+      })
+      .catch((err) => {
+        console.error("Error fetching foods data:", err);
+        alert("Failed to fetch foods data.");
+      });
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setFishData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
+
+    if (name === "weight") {
+      // Filter food based on the entered weight
+      const weightValue = Number(value);
+      const availableFoods = foods.filter((food) => food.weight <= weightValue);
+      setFilteredFoods(availableFoods);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -59,27 +80,25 @@ const CreateFish = () => {
       poolId: Number(fishData.poolId),
       foodId: Number(fishData.foodId),
       name: fishData.name.trim(),
-      image: fishData.image.trim(),
+      image:
+        fishData.image.trim() ||
+        "https://png.pngtree.com/thumb_back/fw800/background/20231221/pngtree-red-koi-carp-in-water-photo-image_15554800.png",
       size: Number(fishData.size),
       weight: Number(fishData.weight),
       gender: fishData.gender,
       origin: fishData.origin.trim(),
-      dob: new Date().toISOString(), // ISO 8601 full format
+      dob: fishData.dob ? new Date(fishData.dob).toISOString() : null,
     };
 
-    const newFishData = {
-      _fish: newFish,
-    };
-
-    console.log("Data being sent to API:", newFishData);
+    console.log("Data being sent to API:", newFish);
 
     axios
-      .post("https://koicare.azurewebsites.net/api/Fish/add", newFishData, {
+      .post("https://koicare.azurewebsites.net/api/Fish/add", newFish, {
         headers: {
           "Content-Type": "application/json",
         },
       })
-      .then((response) => {
+      .then(() => {
         alert("Fish created successfully!");
         navigate("/fishmanagement");
       })
@@ -108,12 +127,19 @@ const CreateFish = () => {
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         pools={pools}
+        filteredFoods={filteredFoods} // Pass filtered foods
       />
     </div>
   );
 };
 
-function CreateFishForm({ fishData, handleChange, handleSubmit, pools }) {
+function CreateFishForm({
+  fishData,
+  handleChange,
+  handleSubmit,
+  pools,
+  filteredFoods,
+}) {
   return (
     <form className="form_fish" onSubmit={handleSubmit}>
       <p className="form_title">Create Fish</p>
@@ -208,19 +234,36 @@ function CreateFishForm({ fishData, handleChange, handleSubmit, pools }) {
           </div>
 
           <div className="input_infor">
-            <label>Age:</label>
+            <label>Food:</label>
+            <select
+              name="foodId"
+              value={fishData.foodId}
+              onChange={handleChange}
+              className="custom-select"
+              required
+            >
+              <option value="0">Select food</option>
+              {filteredFoods.map((food) => (
+                <option key={food.id} value={food.id}>
+                  {food.name} (Weight: {food.weight} kg)
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="input_infor">
+            <label>Date of Birth (DOB):</label>
             <input
-              type="number"
-              name="age"
-              placeholder="Enter age"
-              value={fishData.age}
+              type="date"
+              name="dob"
+              value={fishData.dob}
               onChange={handleChange}
               required
             />
           </div>
 
           <div className="input_infor">
-            <label>Image:</label>
+            <label>Image (optional):</label>
             <input
               type="text"
               name="image"
