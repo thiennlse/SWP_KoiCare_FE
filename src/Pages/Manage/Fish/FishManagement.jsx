@@ -34,7 +34,7 @@ const FishManagement = () => {
     axios
       .get("https://koicare.azurewebsites.net/api/Fish")
       .then((res) => {
-        // Lọc cá theo poolId
+        // Filter fish based on the pools
         const filteredFish = res.data.filter((fish) =>
           poolList.some((pool) => pool.id === fish.poolId)
         );
@@ -67,9 +67,14 @@ const FishManagement = () => {
     const poolId = Number(e.target.value);
     setSelectedPoolId(poolId); // Update selected poolId
 
-    // Filter fish based on selected poolId
-    const filtered = fishList.filter((fish) => fish.poolId === poolId);
-    setFilteredFishList(filtered);
+    if (poolId === 0) {
+      // If "All Pools" is selected, set filteredFishList to the full fishList
+      setFilteredFishList(fishList);
+    } else {
+      // Filter fish based on selected poolId
+      const filtered = fishList.filter((fish) => fish.poolId === poolId);
+      setFilteredFishList(filtered);
+    }
   };
 
   const handleSearch = () => {
@@ -124,7 +129,7 @@ const FishManagement = () => {
         <div className="pool-selection">
           <label>Select Pool:</label>
           <select onChange={handlePoolChange} value={selectedPoolId}>
-            <option value="0">All Pools</option>
+            <option value="0">All Aquarium</option>
             {poolList.map((pool) => (
               <option key={pool.id} value={pool.id}>
                 {pool.name}
