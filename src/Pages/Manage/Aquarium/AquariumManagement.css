@@ -51,7 +51,7 @@
 
 .aquarium_list_container {
   width: 60%;
-  margin: 40px auto;
+  margin: 30px auto;
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 10px;
@@ -71,7 +71,8 @@
   margin-top: 20px;
 }
 
-.aquarium_table th, .aquarium_table td {
+.aquarium_table th,
+.aquarium_table td {
   border: 1px solid #ddd;
   padding: 12px;
   text-align: left;

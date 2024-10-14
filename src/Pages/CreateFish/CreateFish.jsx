@@ -66,10 +66,11 @@ const CreateFish = () => {
       weight: Number(fishData.weight),
       gender: fishData.gender,
       origin: fishData.origin.trim(),
+      dob: new Date().toISOString(), // ISO 8601 full format
     };
 
     const newFishData = {
-      _fish: newFish, // Send only relevant fields, excluding dob
+      _fish: newFish,
     };
 
     console.log("Data being sent to API:", newFishData);

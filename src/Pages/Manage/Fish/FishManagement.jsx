@@ -7,30 +7,41 @@ import { useNavigate } from "react-router-dom";
 
 const FishManagement = () => {
   const [fishList, setFishList] = useState([]);
-  const [poolList, setPoolList] = useState([]); // State to hold pools
-  const [selectedPoolId, setSelectedPoolId] = useState(0); // State for selected pool
+  const [poolList, setPoolList] = useState([]);
+  const [selectedPoolId, setSelectedPoolId] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredFishList, setFilteredFishList] = useState([]);
   const navigate = useNavigate();
 
   // Fetch memberId from local storage
-  const memberId = JSON.parse(localStorage.getItem("loggedInUser"))?.id || 0;
+  const user = JSON.parse(localStorage.getItem("user"));
+  const memberId = user ? user.id : 0;
 
   useEffect(() => {
     if (memberId !== 0) {
       fetchPoolsForMember(memberId); // Fetch pools for the logged-in user
-      fetchFish(); // Fetch fish data
     } else {
       console.error("No memberId found. Please log in.");
     }
   }, [memberId]);
 
+  useEffect(() => {
+    // Fetch fish data once pools have been fetched
+    if (poolList.length > 0) {
+      fetchFish();
+    }
+  }, [poolList]);
+
   const fetchFish = () => {
     axios
       .get("https://koicare.azurewebsites.net/api/Fish")
       .then((res) => {
-        setFishList(res.data);
-        setFilteredFishList(res.data);
+        // Lọc cá theo poolId
+        const filteredFish = res.data.filter((fish) =>
+          poolList.some((pool) => pool.id === fish.poolId)
+        );
+        setFishList(filteredFish);
+        setFilteredFishList(filteredFish);
       })
       .catch((err) => {
         console.error("Error fetching fish data:", err);

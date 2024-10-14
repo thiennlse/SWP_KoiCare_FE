@@ -5,7 +5,7 @@
   background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  margin-top: 140px;
+  margin-top: 50px;
 }
 
 .header-with-button {
@@ -71,7 +71,8 @@
   margin-top: 20px;
 }
 
-.fish-table th, .fish-table td {
+.fish-table th,
+.fish-table td {
   border: 1px solid #ddd;
   padding: 12px;
   text-align: left;
