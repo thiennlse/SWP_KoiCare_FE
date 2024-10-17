@@ -5,12 +5,10 @@ import { useNavigate } from "react-router-dom";
 
 const AquariumManagement = () => {
   const [aquaList, setAquaList] = useState([]);
-  const [filteredAquaList, setFilteredAquaList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
   // Fetch the memberId of the logged-in user from local storage or session
   const memberId = JSON.parse(localStorage.getItem("user"))?.id || 0;
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,9 +19,10 @@ const AquariumManagement = () => {
     }
   }, [memberId]);
 
+  // Fetch pools for a specific member
   const fetchPoolsForMember = (memberId) => {
     axios
-      .get("https://koicare.azurewebsites.net/api/Pool", {
+      .get("https://koicareapi.azurewebsites.net/api/Pool?page=1&pageSize=5", {
         params: { _timestamp: new Date().getTime() },
       })
       .then((res) => {
@@ -31,29 +30,44 @@ const AquariumManagement = () => {
           (pool) => pool.memberId === memberId
         );
         setAquaList(memberPools);
-        setFilteredAquaList(memberPools);
       })
       .catch((err) => {
         console.error("Error fetching pools:", err);
       });
   };
 
+  // Handle search query
   const handleSearch = () => {
-    const filtered = aquaList.filter((pool) =>
-      pool.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredAquaList(filtered);
+    if (searchQuery.trim() !== "") {
+      axios
+        .get("https://koicareapi.azurewebsites.net/api/Pool", {
+          params: {
+            page: 1,
+            pageSize: 10,
+            searchTerm: searchQuery, // Search by the term entered by the user
+          },
+        })
+        .then((res) => {
+          setAquaList(res.data); // Set the filtered aquarium list
+        })
+        .catch((err) => {
+          console.error("Error searching aquariums:", err);
+          alert("Failed to search aquariums.");
+        });
+    } else {
+      // If search query is empty, refetch the original data
+      fetchPoolsForMember(memberId);
+    }
   };
 
   const deletePool = (id) => {
     if (window.confirm("Are you sure you want to delete this aquarium?")) {
       axios
-        .delete(`https://koicare.azurewebsites.net/api/Pool/Delete?id=${id}`)
+        .delete(`https://koicareapi.azurewebsites.net/api/Pool/Delete?id=${id}`)
         .then((response) => {
           if (response.status === 204) {
             const updatedAquaList = aquaList.filter((pool) => pool.id !== id);
             setAquaList(updatedAquaList);
-            setFilteredAquaList(updatedAquaList);
             alert("Aquarium deleted successfully");
           } else {
             alert(`Failed to delete aquarium. Status: ${response.status}`);
@@ -101,15 +115,15 @@ const AquariumManagement = () => {
         <table className="aquarium_table">
           <thead>
             <tr>
-              <th>Aquarium Name</th>
+              <th>Name</th>
               <th>Size</th>
-              <th>Depth</th>
+              <th>Depth (m)</th>
               <th>Description</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {filteredAquaList.map((aquarium, index) => (
+            {aquaList.map((aquarium, index) => (
               <tr key={index}>
                 <td>{aquarium.name}</td>
                 <td>{aquarium.size}</td>

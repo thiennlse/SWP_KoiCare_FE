@@ -32,7 +32,7 @@ const FishManagement = () => {
 
   const fetchFish = () => {
     axios
-      .get("https://koicare.azurewebsites.net/api/Fish")
+      .get("https://koicareapi.azurewebsites.net/api/Fish")
       .then((res) => {
         // Filter fish based on the pools
         const filteredFish = res.data.filter((fish) =>
@@ -49,7 +49,7 @@ const FishManagement = () => {
 
   const fetchPoolsForMember = (memberId) => {
     axios
-      .get("https://koicare.azurewebsites.net/api/Pool")
+      .get("https://koicareapi.azurewebsites.net/api/Pool")
       .then((res) => {
         // Filter pools based on the memberId
         const memberPools = res.data.filter(
@@ -87,7 +87,7 @@ const FishManagement = () => {
   const deleteFish = (id) => {
     if (window.confirm("Are you sure you want to delete this fish?")) {
       axios
-        .delete(`https://koicare.azurewebsites.net/api/Fish/Delete?id=${id}`)
+        .delete(`https://koicareapi.azurewebsites.net/api/Fish/Delete?id=${id}`)
         .then((response) => {
           if (response.status === 204) {
             alert("Fish deleted successfully");

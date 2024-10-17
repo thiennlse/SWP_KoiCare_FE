@@ -16,7 +16,7 @@ const UpdateAquarium = () => {
 
   useEffect(() => {
     axios
-      .get(`https://koicare.azurewebsites.net/api/Pool/${id}`)
+      .get(`https://koicareapi.azurewebsites.net/api/Pool/${id}`)
       .then((response) => {
         setAquariumData(response.data);
       })
@@ -39,7 +39,7 @@ const UpdateAquarium = () => {
 
     axios
       .patch(
-        `https://koicare.azurewebsites.net/api/Pool/update/${id}`,
+        `https://koicareapi.azurewebsites.net/api/Pool/update/${id}`,
         updatedAquariumData,
         {
           headers: {

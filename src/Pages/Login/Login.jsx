@@ -34,7 +34,7 @@ const LoginForm = () => {
 
     try {
       let res = await axios.post(
-        "https://koicare.azurewebsites.net/api/Member/login",
+        "https://koicareapi.azurewebsites.net/api/Member/login",
         {
           email: loginEmail,
           password: loginPassword,
@@ -66,7 +66,7 @@ const LoginForm = () => {
     }
 
     axios
-      .post("https://koicare.azurewebsites.net/api/Member/register", {
+      .post("https://koicareapi.azurewebsites.net/api/Member/register", {
         email: registerEmail,
         password: registerPassword,
       })

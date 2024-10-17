@@ -33,7 +33,7 @@ const CreateAquarium = () => {
     console.log("Data being sent:", aquariumData);
 
     axios
-      .post("https://koicare.azurewebsites.net/api/Pool/add", aquariumData, {
+      .post("https://koicareapi.azurewebsites.net/api/Pool/add", aquariumData, {
         headers: {
           "Content-Type": "application/json",
         },

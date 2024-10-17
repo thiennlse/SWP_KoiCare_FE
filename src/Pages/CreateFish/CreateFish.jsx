@@ -32,7 +32,7 @@ const CreateFish = () => {
 
   const fetchPoolsForMember = (memberId) => {
     axios
-      .get("https://koicare.azurewebsites.net/api/Pool")
+      .get("https://koicareapi.azurewebsites.net/api/Pool")
       .then((res) => {
         const memberPools = res.data.filter(
           (pool) => pool.memberId === memberId
@@ -47,7 +47,7 @@ const CreateFish = () => {
 
   const fetchFoods = () => {
     axios
-      .get("https://koicare.azurewebsites.net/api/Food")
+      .get("https://koicareapi.azurewebsites.net/api/Food")
       .then((res) => {
         setFoods(res.data); // Store all foods
       })
@@ -93,7 +93,7 @@ const CreateFish = () => {
     console.log("Data being sent to API:", newFish);
 
     axios
-      .post("https://koicare.azurewebsites.net/api/Fish/add", newFish, {
+      .post("https://koicareapi.azurewebsites.net/api/Fish/add", newFish, {
         headers: {
           "Content-Type": "application/json",
         },

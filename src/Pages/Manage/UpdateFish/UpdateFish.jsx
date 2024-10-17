@@ -24,7 +24,7 @@ const UpdateFish = () => {
   useEffect(() => {
     // Fetch fish details
     axios
-      .get(`https://koicare.azurewebsites.net/api/Fish/${id}`)
+      .get(`https://koicareapi.azurewebsites.net/api/Fish/${id}`)
       .then((response) => {
         const fishDetails = response.data;
         setFishData(fishDetails);
@@ -45,7 +45,7 @@ const UpdateFish = () => {
 
   const fetchFoodData = () => {
     axios
-      .get("https://koicare.azurewebsites.net/api/Food")
+      .get("https://koicareapi.azurewebsites.net/api/Food")
       .then((response) => {
         setFoods(response.data);
         // After fetching food data, filter it based on the current weight
@@ -63,7 +63,7 @@ const UpdateFish = () => {
 
     if (memberId !== 0) {
       axios
-        .get("https://koicare.azurewebsites.net/api/Pool")
+        .get("https://koicareapi.azurewebsites.net/api/Pool")
         .then((res) => {
           const memberPools = res.data.filter(
             (pool) => pool.memberId === memberId
@@ -90,7 +90,7 @@ const UpdateFish = () => {
 
     axios
       .patch(
-        `https://koicare.azurewebsites.net/api/Fish/update/${id}`,
+        `https://koicareapi.azurewebsites.net/api/Fish/update/${id}`,
         updatedFishData,
         {
           headers: {
