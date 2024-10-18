@@ -26,10 +26,19 @@ const HomePage = () => {
   const [blogData, setBlogData] = useState([]);
 
   useEffect(() => {
-    axios.get("https://koicare.azurewebsites.net/api/Blog").then((res) => {
-      setBlogData(res.data);
-    });
-  });
+    const fetchBlogData = async () => {
+      try {
+        const res = await axios.get(
+          "https://koicareapi.azurewebsites.net/api/Blog"
+        );
+        setBlogData(res.data);
+      } catch (error) {
+        console.error("Error fetching blog data:", error);
+      }
+    };
+
+    fetchBlogData();
+  }, []);
 
   return (
     <>
@@ -100,7 +109,7 @@ function Products() {
 
   useEffect(() => {
     axios
-      .get("https://koicare.azurewebsites.net/api/Product")
+      .get("https://koicareapi.azurewebsites.net/api/Product")
       .then((response) => {
         setProducts(response.data);
         setLoading(false);
