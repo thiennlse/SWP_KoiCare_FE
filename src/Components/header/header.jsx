@@ -1,19 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./header.css";
 import logo from "../Assets/logo.png";
 import { CgProfile } from "react-icons/cg";
 import { TiShoppingCart } from "react-icons/ti";
 import { ToastContainer, toast } from "react-toastify";
 import Avatar, { genConfig } from "react-nice-avatar";
+import axios from "axios";
 
 function Header() {
+  const [user, setUser] = useState(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user"));
 
+  const userId = localStorage.getItem("userId");
   const config = genConfig({ sex: "man", hairStyle: "mohawk" });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(
+          `https://koicareapi.azurewebsites.net/api/Member/${userId}`
+        );
+        setUser(res.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    if (userId) {
+      fetchData();
+    }
+  }, [userId]);
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -37,7 +55,7 @@ function Header() {
   const handleLogout = () => {
     toast.success("Logout successful!", { autoClose: 1500 });
     setTimeout(() => {
-      localStorage.removeItem("user");
+      localStorage.removeItem("token");
       localStorage.removeItem("cart");
       navigate("/login");
     }, 1500);

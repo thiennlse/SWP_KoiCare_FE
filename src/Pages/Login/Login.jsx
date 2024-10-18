@@ -41,15 +41,20 @@ const LoginForm = () => {
         }
       );
       toast.success("Login successful!", { autoClose: 1500 });
+      const token = res.data.token;
+      console.log(token);
       setTimeout(() => {
         navigate("/");
       }, 1500);
+
       setLoginEmail("");
       setLoginPassword("");
 
       if (res) {
-        localStorage.setItem("user", JSON.stringify(res.data));
-        console.log(res);
+        localStorage.setItem("token", JSON.stringify(token));
+        localStorage.setItem("userId", JSON.stringify(res.data.userId));
+        localStorage.setItem("role", JSON.stringify(res.data.role));
+        localStorage.setItem("userDetail", JSON.stringify(res.data.role));
       } else {
         console.error("data not found in response");
       }
