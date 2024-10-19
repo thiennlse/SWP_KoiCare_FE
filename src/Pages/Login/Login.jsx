@@ -12,11 +12,11 @@ const LoginForm = () => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
-  const [rememberMe, setRememberMe] = useState(false);
-
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [rememberMe, setRememberMe] = useState(false);
 
   const [action, setAction] = useState("");
   const navigate = useNavigate();
@@ -73,6 +73,7 @@ const LoginForm = () => {
       );
       toast.success("Login successful!", { autoClose: 1500 });
       const token = res.data.token;
+      console.log(token);
       setTimeout(() => {
         navigate("/");
       }, 1500);
@@ -96,6 +97,7 @@ const LoginForm = () => {
         localStorage.setItem("token", JSON.stringify(token));
         localStorage.setItem("userId", JSON.stringify(res.data.userId));
         localStorage.setItem("role", JSON.stringify(res.data.role));
+        localStorage.setItem("userDetail", JSON.stringify(res.data.role));
       } else {
         console.error("data not found in response");
       }
@@ -189,12 +191,7 @@ const LoginForm = () => {
             </div>
             <div className="remember-forgot">
               <label>
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                ></input>
-                Remember
+                <input type="checkbox"></input>Remember
               </label>
               <a href="#">Forgotten password?</a>
             </div>
