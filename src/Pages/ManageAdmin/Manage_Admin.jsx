@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios"; // Import axios để gọi API
+import { useNavigate } from "react-router-dom";
 import { IoSearch } from "react-icons/io5";
 import { HiOutlineLogout } from "react-icons/hi";
 import { FaChevronDown, FaRegCircle, FaCircle } from "react-icons/fa";
@@ -8,6 +10,37 @@ import "./Manage_Admin.css";
 const ManageAdmin = () => {
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState("");
+  const [user, setUser] = useState(null); // State để lưu thông tin người dùng
+
+  const navigate = useNavigate();
+
+  // Lấy userId từ localStorage để fetch dữ liệu người dùng
+  const userId = JSON.parse(localStorage.getItem("userId"));
+
+  useEffect(() => {
+    if (!userId) {
+      navigate("/login");
+      return;
+    }
+
+    axios
+      .get(`https://koicareapi.azurewebsites.net/api/Member/${userId}`)
+      .then((response) => {
+        const userData = response.data;
+        console.log("User data:", userData); // Kiểm tra dữ liệu người dùng
+
+        setUser(userData);
+
+        if (userData.role.id !== 1) {
+          alert("You do not have access to this page.");
+          navigate("/login");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+        navigate("/login");
+      });
+  }, [userId, navigate]);
 
   const toggleDashboardMenu = () => {
     setIsDashboardOpen(!isDashboardOpen);
@@ -17,12 +50,12 @@ const ManageAdmin = () => {
     setActiveSubmenu(submenu);
   };
 
-  return (
+  return user ? ( // Render nếu thông tin người dùng tồn tại
     <div className="admin_dashboard">
       <aside className="sidebar">
         <div className="profile">
           <img src="/path/to/profile_pic.png" alt="Admin" />
-          <h2>Alexander Lacazette</h2>
+          <h2>{user.fullName}</h2>
         </div>
 
         <div className="sidebar_search">
@@ -146,6 +179,8 @@ const ManageAdmin = () => {
         </main>
       </div>
     </div>
+  ) : (
+    <p>Loading...</p>
   );
 };
 

@@ -14,6 +14,7 @@ import ProductDetail from "./Pages/ProductDetail/productDetail";
 import Cart from "./Pages/Cart/cart";
 import MainLayout from "./MainLayout";
 import Profile from "./Pages/profileDetail/profile";
+import PrivateRoute from "./Pages/ManageAdmin/PrivateRoute";
 
 function App() {
   return (
@@ -28,13 +29,20 @@ function App() {
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/createfish" element={<CreateFish />} />
           <Route path="/createaquarium" element={<CreateAquarium />} />
-          <Route path="/admin" element={<ManageAdmin />} />
           <Route path="/aquariummanagement" element={<AquariumManagement />} />
           <Route path="/fishmanagement" element={<FishManagement />} />
           <Route path="/updateaquarium/:id" element={<UpdateAquarium />} />
           <Route path="/updatefish/:id" element={<UpdateFish />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/profile" element={<Profile />} />
+          <Route
+            path="/admin"
+            element={
+              <PrivateRoute allowedRole={1}>
+                <ManageAdmin />
+              </PrivateRoute>
+            }
+          />
         </Route>
       </Routes>
     </div>
