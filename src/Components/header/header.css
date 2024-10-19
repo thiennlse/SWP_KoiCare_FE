@@ -28,7 +28,7 @@
   align-items: center;
   padding: 0 40px;
   background-color: #f9f3ec;
-  height: 100px;
+  height: 110px;
 }
 
 .header_logo img {
@@ -63,7 +63,7 @@
   font-size: 26px;
 }
 
-.nav_list li a:hover {
+.nav_list li:hover {
   color: #dead6f;
 }
 

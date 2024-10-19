@@ -52,6 +52,7 @@ function Header() {
     localStorage.removeItem("cart");
 
     setTimeout(() => {
+      localStorage.removeItem("user");
       navigate("/login");
     }, 1500);
   };
@@ -109,7 +110,7 @@ function Header() {
                   onMouseLeave={() => toggleDropdown(false)}
                 >
                   <span className="user_name" onClick={() => navigate("/")}>
-                    {user.fullName ? user.fullName : "New customer"}
+                    {user.fullName ? user.fullName : " New Customer"}
                   </span>
                   {dropdownVisible && (
                     <div className="dropdown_menu">
@@ -120,7 +121,6 @@ function Header() {
                     </div>
                   )}
                 </div>
-
                 <span className="logout_button" onClick={handleLogout}>
                   Logout
                 </span>

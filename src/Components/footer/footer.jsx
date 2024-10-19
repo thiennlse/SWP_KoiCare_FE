@@ -26,11 +26,18 @@ function Footer() {
                 <nav className="nav_links_lists">
                         <li><strong>Quick Links</strong></li>
                     <ul className="nav_lists">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">About us</a></li>
-                        <li><a href="#">Offer</a></li>
-                        <li><a href="#">Services</a></li>
-                        <li><a href="#">Contact us</a></li>
+                        <li>Home</li>
+                        <li>About us</li>
+                        <li>Offer</li>
+                        <li>
+                            Services
+                            <ul className="sub_services_list">  
+                                <li><a href="#">Calculate Food</a></li>
+                                <li><a href="#">Calculate Water</a></li>
+                                <li><a href="#">Calculate Salt</a></li>
+                            </ul>
+                        </li>
+                        <li>Contact us</li>
                     </ul>             
                 </nav>
             </div>
