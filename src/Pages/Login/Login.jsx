@@ -191,7 +191,11 @@ const LoginForm = () => {
             </div>
             <div className="remember-forgot">
               <label>
-                <input type="checkbox"></input>Remember
+                <input
+                  type="checkbox"
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                ></input>
+                Remember
               </label>
               <a href="#">Forgotten password?</a>
             </div>
