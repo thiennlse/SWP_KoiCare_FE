@@ -219,6 +219,8 @@ function CreateFishForm({
               placeholder="Enter size"
               value={fishData.size}
               onChange={handleChange}
+              onFocus={(e) => e.target.value === "0" && (e.target.value = "")}
+              onBlur={(e) => e.target.value === "" && (e.target.value = "0")}
               required
             />
           </div>
@@ -231,6 +233,8 @@ function CreateFishForm({
               placeholder="Enter weight"
               value={fishData.weight}
               onChange={handleChange}
+              onFocus={(e) => e.target.value === "0" && (e.target.value = "")}
+              onBlur={(e) => e.target.value === "" && (e.target.value = "0")}
               required
             />
           </div>
