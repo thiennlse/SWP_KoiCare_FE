@@ -29,6 +29,22 @@ const LoginForm = () => {
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
 
+  const isValidPassword = (password) => {
+    const minLength = 8;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*]/.test(password);
+
+    return (
+      password.length >= minLength &&
+      hasUppercase &&
+      hasLowercase &&
+      hasNumber &&
+      hasSpecialChar
+    );
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -63,27 +79,53 @@ const LoginForm = () => {
     }
   };
 
-  const handleRegister = (event) => {
+  const handleRegister = async (event) => {
     event.preventDefault();
+
+    // Check if email ends with @gmail.com
+    if (!registerEmail.endsWith("@gmail.com")) {
+      toast.error("Email must end with @gmail.com!");
+      return;
+    }
+
+    // Check password validity
+    if (!isValidPassword(registerPassword)) {
+      toast.error(
+        "Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character!"
+      );
+      return;
+    }
+
+    // Check if passwords match
     if (registerPassword !== confirmPassword) {
       toast.error("Passwords do not match!");
       return;
     }
 
-    axios
-      .post("https://koicareapi.azurewebsites.net/api/Member/register", {
-        email: registerEmail,
-        password: registerPassword,
-      })
-      .then((response) => {
-        console.log("Registration Successful:", response.data);
-        toast.success("Registration successful! Please log in.");
-        setAction("");
-      })
-      .catch((error) => {
+    try {
+      const response = await axios.post(
+        "https://koicareapi.azurewebsites.net/api/Member/register",
+        {
+          email: registerEmail,
+          password: registerPassword,
+        }
+      );
+
+      console.log("Registration Successful:", response.data);
+      toast.success("Registration successful! Please log in.");
+      setAction("");
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        if (error.response.data.message === "Email đã được sử dụng") {
+          toast.error("This email is already registered.");
+        } else {
+          toast.error("Registration failed, please try again.");
+        }
+      } else {
         console.error("Registration Error:", error);
         toast.error("Registration failed, please try again.");
-      });
+      }
+    }
   };
 
   return (
