@@ -55,8 +55,7 @@ function Header() {
   const handleLogout = () => {
     toast.success("Logout successful!", { autoClose: 1500 });
     setTimeout(() => {
-      localStorage.removeItem("token");
-      localStorage.removeItem("cart");
+      localStorage.clear()
       navigate("/login");
     }, 1500);
   };

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./cart.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { toast } from "react-toastify";
+import axios from "axios";
 const Cart = () => {
   const [products, setProducts] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
@@ -142,6 +143,39 @@ function Products({
   selectedProducts,
   isSelectAll,
 }) {
+  const handlePurchase = async () => {
+    if (selectedProducts.length === 0) {
+      toast.warn("Vui lòng chọn ít nhất một sản phẩm!", { autoClose: 2000 });
+      return;
+    }
+
+    try {
+      const payload = selectedProducts.map((product) => ({
+        productId: product.id,
+        cost: product.cost,
+        quantity: product.quantity,
+      }));
+
+      // Ensure the correct URLs are passed
+      const cancelUrl = encodeURIComponent("http://localhost:3000/cart");
+      const returnUrl = encodeURIComponent("http://localhost:3000/home");
+
+      const response = await axios.post(
+        `https://koicareapi.azurewebsites.net/api/Checkout/create-payment-link?cancelUrl=${cancelUrl}&returnUrl=${returnUrl}`,
+        payload
+      );
+
+      if (response.status === 200 && response.data) {
+        const paymentUrl = response.data;
+        // Redirect to the payment URL
+        window.location.href = paymentUrl;
+      }
+    } catch (error) {
+      toast.error("Thanh toán thất bại!", { autoClose: 2000 });
+      console.error("Payment Error:", error);
+    }
+  };
+
   return (
     <div className="container product-container">
       <div className="row bg-secondary py-2 text-center head-cart">
@@ -181,7 +215,9 @@ function Products({
         </div>
         <div className="col ">Tổng thanh toán: {totalPayment} vnd</div>
         <div className="col">
-          <button className="btn btn-primary">Mua hàng</button>
+          <button className="btn btn-primary" onClick={handlePurchase}>
+            Mua hàng
+          </button>
         </div>
       </div>
     </div>
