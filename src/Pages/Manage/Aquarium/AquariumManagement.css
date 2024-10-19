@@ -93,6 +93,12 @@
   background-color: #f1f1f1;
 }
 
+/* Styles for the buttons in the action column */
+.aquarium_table td .action-buttons {
+  display: flex;
+  gap: 10px; /* Adds spacing between buttons */
+}
+
 .aquarium_table button {
   padding: 8px 12px;
   background-color: #007bff;
@@ -101,17 +107,17 @@
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
+  min-width: 80px; /* Ensures buttons have the same width */
 }
 
 .aquarium_table button:hover {
   background-color: #0056b3;
 }
 
-.aquarium_table button + button {
-  margin-left: 10px;
+.aquarium_table .delete-button {
   background-color: #dc3545;
 }
 
-.aquarium_table button + button:hover {
+.aquarium_table .delete-button:hover {
   background-color: #c82333;
 }

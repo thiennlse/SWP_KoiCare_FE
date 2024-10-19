@@ -130,10 +130,17 @@ const AquariumManagement = () => {
                 <td>{aquarium.depth}</td>
                 <td>{aquarium.description}</td>
                 <td>
-                  <button onClick={() => handleEdit(aquarium.id)}>Edit</button>
-                  <button onClick={() => deletePool(aquarium.id)}>
-                    Delete
-                  </button>
+                  <div className="action-buttons">
+                    <button onClick={() => handleEdit(aquarium.id)}>
+                      Edit
+                    </button>
+                    <button
+                      className="delete-button"
+                      onClick={() => deletePool(aquarium.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
