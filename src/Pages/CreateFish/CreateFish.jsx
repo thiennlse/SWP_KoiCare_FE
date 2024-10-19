@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 const CreateFish = () => {
   const navigate = useNavigate();
   const [pools, setPools] = useState([]);
-  const [foods, setFoods] = useState([]); // All foods from the API
-  const [filteredFoods, setFilteredFoods] = useState([]); // Filtered foods based on weight
+  const [foods, setFoods] = useState([]);
+  const [filteredFoods, setFilteredFoods] = useState([]);
   const [fishData, setFishData] = useState({
     poolId: 0,
     foodId: 0,
@@ -20,24 +20,26 @@ const CreateFish = () => {
     origin: "",
   });
 
-  const user = JSON.parse(localStorage.getItem("user"));
-  const memberId = user ? user.id : 0;
+  const userId = JSON.parse(localStorage.getItem("userId"));
+  const memberId = userId ? userId : 0;
 
+  console.log(memberId);
   useEffect(() => {
     if (memberId !== 0) {
       fetchPoolsForMember(memberId);
     }
-    fetchFoods(); // Fetch available foods
+    fetchFoods();
   }, [memberId]);
 
   const fetchPoolsForMember = (memberId) => {
     axios
-      .get("https://koicareapi.azurewebsites.net/api/Pool")
+      .get("https://koicareapi.azurewebsites.net/api/Pool?page=1&pageSize=100")
       .then((res) => {
         const memberPools = res.data.filter(
           (pool) => pool.memberId === memberId
         );
         setPools(memberPools);
+        console.log(memberPools);
       })
       .catch((err) => {
         console.error("Error fetching pools data:", err);
@@ -49,7 +51,7 @@ const CreateFish = () => {
     axios
       .get("https://koicareapi.azurewebsites.net/api/Food")
       .then((res) => {
-        setFoods(res.data); // Store all foods
+        setFoods(res.data);
       })
       .catch((err) => {
         console.error("Error fetching foods data:", err);

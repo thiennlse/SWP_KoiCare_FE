@@ -8,7 +8,7 @@ const AquariumManagement = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   // Fetch the memberId of the logged-in user from local storage or session
-  const memberId = JSON.parse(localStorage.getItem("user"))?.id || 0;
+  const memberId = JSON.parse(localStorage.getItem("userId"));
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,9 +22,12 @@ const AquariumManagement = () => {
   // Fetch pools for a specific member
   const fetchPoolsForMember = (memberId) => {
     axios
-      .get("https://koicareapi.azurewebsites.net/api/Pool?page=1&pageSize=5", {
-        params: { _timestamp: new Date().getTime() },
-      })
+      .get(
+        "https://koicareapi.azurewebsites.net/api/Pool?page=1&pageSize=100",
+        {
+          params: { _timestamp: new Date().getTime() },
+        }
+      )
       .then((res) => {
         const memberPools = res.data.filter(
           (pool) => pool.memberId === memberId

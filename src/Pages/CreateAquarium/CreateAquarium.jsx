@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 const CreateAquarium = () => {
   // Retrieve the logged-in user's info from localStorage
-  const user = JSON.parse(localStorage.getItem("user"));
-  const memberId = user ? user.id : 1; // Default to 1 if not found
+  const userId = JSON.parse(localStorage.getItem("userId"));
+  const memberId = userId ? userId : 1; // Default to 1 if not found
 
   const [aquarium, setAquarium] = useState({
     memberId: memberId, // Set memberId to the logged-in user's id

@@ -2,7 +2,6 @@ import "./FishManagement.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 const FishManagement = () => {
   const [fishList, setFishList] = useState([]);
   const [poolList, setPoolList] = useState([]);
@@ -12,8 +11,8 @@ const FishManagement = () => {
   const navigate = useNavigate();
 
   // Fetch memberId from local storage
-  const user = JSON.parse(localStorage.getItem("user"));
-  const memberId = user ? user.id : 0;
+  const userId = JSON.parse(localStorage.getItem("userId"));
+  const memberId = userId ? userId : 1;
 
   useEffect(() => {
     if (memberId !== 0) {
@@ -32,12 +31,13 @@ const FishManagement = () => {
 
   const fetchFish = () => {
     axios
-      .get("https://koicareapi.azurewebsites.net/api/Fish")
+      .get("https://koicareapi.azurewebsites.net/api/Fish?page=1&pageSize=100")
       .then((res) => {
         // Filter fish based on the pools
         const filteredFish = res.data.filter((fish) =>
           poolList.some((pool) => pool.id === fish.poolId)
         );
+        console.log(res.data);
         setFishList(filteredFish);
         setFilteredFishList(filteredFish);
       })
@@ -49,7 +49,7 @@ const FishManagement = () => {
 
   const fetchPoolsForMember = (memberId) => {
     axios
-      .get("https://koicareapi.azurewebsites.net/api/Pool")
+      .get("https://koicareapi.azurewebsites.net/api/Pool?page=1&pageSize=100")
       .then((res) => {
         // Filter pools based on the memberId
         const memberPools = res.data.filter(
@@ -183,9 +183,9 @@ const FishManagement = () => {
               <th>Age</th>
               <th>Size</th>
               <th>Weight</th>
-              <th>Food</th> {/* New column for Food */}
-              <th>Origin</th> {/* New column for Origin */}
-              <th>Image</th> {/* New column for Image */}
+              <th>Food</th>
+              <th>Origin</th>
+              <th>Image</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -193,12 +193,11 @@ const FishManagement = () => {
             {filteredFishList.map((fish, index) => (
               <tr key={index}>
                 <td>{fish.name}</td>
-                <td>{calculateAge(fish.dob)}</td> {/* Calculate age from dob */}
+                <td>{calculateAge(fish.dob)}</td>
                 <td>{fish.size}</td>
                 <td>{fish.weight}</td>
-                <td>{fish.foodId}</td>{" "}
-                {/* Display foodId or food name if available */}
-                <td>{fish.origin}</td> {/* Display origin */}
+                <td>{fish.foodId}</td>
+                <td>{fish.origin}</td>
                 <td>
                   {fish.image ? (
                     <img
@@ -209,8 +208,7 @@ const FishManagement = () => {
                   ) : (
                     "No Image"
                   )}
-                </td>{" "}
-                {/* Display image or placeholder */}
+                </td>
                 <td>
                   <button onClick={() => handleEdit(fish.id)}>Edit</button>
                   <button onClick={() => deleteFish(fish.id)}>Delete</button>

@@ -97,6 +97,7 @@ const LoginForm = () => {
         localStorage.setItem("token", JSON.stringify(token));
         localStorage.setItem("userId", JSON.stringify(res.data.userId));
         localStorage.setItem("role", JSON.stringify(res.data.role));
+        localStorage.setItem("")
       } else {
         console.error("data not found in response");
       }
