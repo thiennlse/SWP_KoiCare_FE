@@ -141,8 +141,7 @@ const LoginForm = () => {
       .catch((error) => {
         console.error("Registration Error:", error);
         toast.error("Registration failed, please try again.");
-      }
-    }
+      });
   };
 
   return (
