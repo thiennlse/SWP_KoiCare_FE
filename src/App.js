@@ -9,6 +9,7 @@ import { Routes, Route } from "react-router-dom";
 import ProductDetail from "./Pages/ProductDetail/productDetail";
 import Cart from "./Pages/Cart/cart";
 import MainLayout from "./MainLayout";
+import Profile from "./Pages/profileDetail/profile";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/createpool" element={<CreatePool />} />
           <Route path="/admin" element={<ManageAdmin />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
     </div>

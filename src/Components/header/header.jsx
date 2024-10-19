@@ -11,7 +11,6 @@ import axios from "axios";
 function Header() {
   const [user, setUser] = useState(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [totalQuantity, setTotalQuantity] = useState(0);
   const navigate = useNavigate();
 
   const userId = localStorage.getItem("userId");
@@ -33,15 +32,6 @@ function Header() {
     }
   }, [userId]);
 
-  useEffect(() => {
-    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-    const total = storedCart.reduce(
-      (sum, product) => sum + product.quantity,
-      0
-    );
-    setTotalQuantity(total);
-  }, []);
-
   const handleNavigation = (target) => {
     navigate("/home");
     setTimeout(() => {
@@ -55,7 +45,7 @@ function Header() {
   const handleLogout = () => {
     toast.success("Logout successful!", { autoClose: 1500 });
     setTimeout(() => {
-      localStorage.clear()
+      localStorage.clear();
       navigate("/login");
     }, 1500);
   };
@@ -93,7 +83,6 @@ function Header() {
             <div>
               <a href="/cart">
                 <TiShoppingCart className="icon_header" />
-                {/* <p>{totalQuantity}</p> */}
               </a>
             </div>
             {user ? (

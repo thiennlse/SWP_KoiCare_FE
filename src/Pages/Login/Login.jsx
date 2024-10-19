@@ -104,7 +104,7 @@ const LoginForm = () => {
 
     try {
       const response = await axios.post(
-        "https://koicareapi.azurewebsites.net/api/Member/register",
+        "https://koicare.azurewebsites.net/api/Member/register",
         {
           email: registerEmail,
           password: registerPassword,
@@ -116,7 +116,8 @@ const LoginForm = () => {
       setAction("");
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        if (error.response.data.message === "Email đã được sử dụng") {
+        // Check for the "email already registered" error from backend
+        if (error.response.data.message === "Email already registered") {
           toast.error("This email is already registered.");
         } else {
           toast.error("Registration failed, please try again.");
