@@ -97,12 +97,12 @@ const LoginForm = () => {
         localStorage.setItem("token", JSON.stringify(token));
         localStorage.setItem("userId", JSON.stringify(res.data.userId));
         localStorage.setItem("role", JSON.stringify(res.data.role));
-        localStorage.setItem("")
       } else {
         console.error("data not found in response");
       }
     } catch (error) {
       toast.error("Login failed!");
+      console.log("asdassadsa");
     }
   };
 
@@ -129,20 +129,31 @@ const LoginForm = () => {
       return;
     }
 
-    axios
-      .post("https://koicareapi.azurewebsites.net/api/Member/register", {
-        email: registerEmail,
-        password: registerPassword,
-      })
-      .then((response) => {
-        console.log("Registration Successful:", response.data);
-        toast.success("Registration successful! Please log in.");
-        setAction("");
-      })
-      .catch((error) => {
+    try {
+      const response = await axios.post(
+        "https://koicare.azurewebsites.net/api/Member/register",
+        {
+          email: registerEmail,
+          password: registerPassword,
+        }
+      );
+
+      console.log("Registration Successful:", response.data);
+      toast.success("Registration successful! Please log in.");
+      setAction("");
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        // Check for the "email already registered" error from backend
+        if (error.response.data.message === "Email already registered") {
+          toast.error("This email is already registered.");
+        } else {
+          toast.error("Registration failed, please try again.");
+        }
+      } else {
         console.error("Registration Error:", error);
         toast.error("Registration failed, please try again.");
-      });
+      }
+    }
   };
 
   return (
