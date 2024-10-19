@@ -52,7 +52,6 @@ function Header() {
     localStorage.removeItem("cart");
 
     setTimeout(() => {
-      localStorage.clear();
       navigate("/login");
     }, 1500);
   };
