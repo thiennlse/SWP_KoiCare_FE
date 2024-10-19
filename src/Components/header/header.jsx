@@ -45,7 +45,6 @@ function Header() {
   const handleLogout = () => {
     toast.success("Logout successful!", { autoClose: 1500 });
 
-    // Clear the token, userId, role, and userDetail
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     localStorage.removeItem("role");

@@ -8,7 +8,7 @@ function ProductDetail() {
   const { product } = location.state;
 
   const handleBuyNow = () => {
-    const isLogin = localStorage.getItem("user");
+    const isLogin = localStorage.getItem("userId");
 
     if (!isLogin) {
       toast.warn("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!", {

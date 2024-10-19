@@ -6,6 +6,7 @@ import { FaRegEye } from "react-icons/fa";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import CryptoJS from "crypto-js";
 
 const LoginForm = () => {
   const [loginEmail, setLoginEmail] = useState("");
@@ -31,7 +32,12 @@ const LoginForm = () => {
     const savedEmail = localStorage.getItem("email");
     const savedPassword = localStorage.getItem("password");
     if (savedEmail) setLoginEmail(savedEmail);
-    if (savedPassword) setLoginPassword(savedPassword);
+    if (savedPassword)
+      setLoginPassword(
+        CryptoJS.AES.decrypt(savedPassword, "secret-key").toString(
+          CryptoJS.enc.Utf8
+        )
+      );
   }, []);
 
   const [checkBox, setCheckBox] = useState("");
@@ -73,7 +79,11 @@ const LoginForm = () => {
 
       if (rememberMe) {
         localStorage.setItem("email", loginEmail);
-        localStorage.setItem("password", loginPassword);
+        const encryptedPassword = CryptoJS.AES.encrypt(
+          loginPassword,
+          "secret-key"
+        ).toString();
+        localStorage.setItem("password", encryptedPassword);
       } else {
         localStorage.removeItem("email");
         localStorage.removeItem("password");
