@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Login.css";
 import { FaUser } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
@@ -10,6 +10,8 @@ import { ToastContainer, toast } from "react-toastify";
 const LoginForm = () => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+
+  const [rememberMe, setRememberMe] = useState(false);
 
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
@@ -24,6 +26,13 @@ const LoginForm = () => {
   const loginLink = () => {
     setAction("");
   };
+
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("email");
+    const savedPassword = localStorage.getItem("password");
+    if (savedEmail) setLoginEmail(savedEmail);
+    if (savedPassword) setLoginPassword(savedPassword);
+  }, []);
 
   const [checkBox, setCheckBox] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
@@ -58,10 +67,17 @@ const LoginForm = () => {
       );
       toast.success("Login successful!", { autoClose: 1500 });
       const token = res.data.token;
-      console.log(token);
       setTimeout(() => {
         navigate("/");
       }, 1500);
+
+      if (rememberMe) {
+        localStorage.setItem("email", loginEmail);
+        localStorage.setItem("password", loginPassword);
+      } else {
+        localStorage.removeItem("email");
+        localStorage.removeItem("password");
+      }
 
       setLoginEmail("");
       setLoginPassword("");
@@ -70,7 +86,6 @@ const LoginForm = () => {
         localStorage.setItem("token", JSON.stringify(token));
         localStorage.setItem("userId", JSON.stringify(res.data.userId));
         localStorage.setItem("role", JSON.stringify(res.data.role));
-        localStorage.setItem("userDetail", JSON.stringify(res.data.role));
       } else {
         console.error("data not found in response");
       }
@@ -164,7 +179,12 @@ const LoginForm = () => {
             </div>
             <div className="remember-forgot">
               <label>
-                <input type="checkbox"></input>Remember
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                ></input>
+                Remember
               </label>
               <a href="#">Forgotten password?</a>
             </div>
