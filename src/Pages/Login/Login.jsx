@@ -71,33 +71,38 @@ const LoginForm = () => {
           password: loginPassword,
         }
       );
-
+      toast.success("Login successful!", { autoClose: 1500 });
       const token = res.data.token;
-      const roleId = res.data.roleId; // Kiểm tra roleId từ phản hồi API
+      console.log(token);
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
 
-      console.log("Login response:", res.data); // Log phản hồi API
-      console.log("Role ID:", roleId); // Log roleId
-
-      if (roleId === undefined || roleId === null) {
-        console.error("Invalid roleId: ", roleId); // Log lỗi nếu roleId không hợp lệ
-        toast.error("Login failed: Invalid role data.");
-        return;
+      if (rememberMe) {
+        localStorage.setItem("email", loginEmail);
+        const encryptedPassword = CryptoJS.AES.encrypt(
+          loginPassword,
+          "secret-key"
+        ).toString();
+        localStorage.setItem("password", encryptedPassword);
+      } else {
+        localStorage.removeItem("email");
+        localStorage.removeItem("password");
       }
 
-      // Lưu vào localStorage nếu roleId hợp lệ
-      localStorage.setItem("token", JSON.stringify(token));
-      localStorage.setItem("userId", JSON.stringify(res.data.userId));
-      localStorage.setItem("roleId", JSON.stringify(roleId)); // Lưu roleId
+      setLoginEmail("");
+      setLoginPassword("");
 
-      // Điều hướng sau khi đăng nhập thành công
-      if (roleId === 1) {
-        navigate("/admin");
+      if (res) {
+        localStorage.setItem("token", JSON.stringify(token));
+        localStorage.setItem("userId", JSON.stringify(res.data.userId));
+        localStorage.setItem("role", JSON.stringify(res.data.role));
       } else {
-        navigate("/");
+        console.error("data not found in response");
       }
     } catch (error) {
-      console.error("Login failed:", error);
       toast.error("Login failed!");
+      console.log("asdassadsa");
     }
   };
 
