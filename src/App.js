@@ -36,15 +36,15 @@ function App() {
           <Route path="/updatefish/:id" element={<UpdateFish />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/profile" element={<Profile />} />
-          <Route
-            path="/admin"
-            element={
-              <PrivateRoute allowedRole="Admin">
-                <ManageAdmin />
-              </PrivateRoute>
-            }
-          />
         </Route>
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute allowedRole="Admin">
+              <ManageAdmin />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </div>
   );

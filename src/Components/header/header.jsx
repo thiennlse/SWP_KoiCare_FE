@@ -10,7 +10,7 @@ import axios from "axios";
 
 function Header() {
   // Mã cũ: Quản lý trạng thái người dùng và dropdown
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState("");
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const navigate = useNavigate();
 
@@ -104,7 +104,7 @@ function Header() {
             </div>
 
             {/* Mã mới: Kiểm tra role và hiển thị avatar và thông tin người dùng */}
-            {user && role === "member" ? (
+            {role === "Member" ? (
               <div className="user_info">
                 <span className="img_profile">
                   {user.image ? (

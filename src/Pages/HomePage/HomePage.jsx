@@ -129,8 +129,8 @@ function Products() {
   );
 
   function handleAddToCart(productObj) {
-    const role = localStorage.getItem("role");
-    if (role !== "member") {
+    const role = JSON.parse(localStorage.getItem("role"));
+    if (role !== "Member") {
       toast.warn("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!", {
         autoClose: 2000,
       });
