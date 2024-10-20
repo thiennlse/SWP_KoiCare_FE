@@ -14,6 +14,7 @@ import ProductDetail from "./Pages/ProductDetail/productDetail";
 import Cart from "./Pages/Cart/cart";
 import MainLayout from "./MainLayout";
 import Profile from "./Pages/profileDetail/profile";
+import Order from "./Pages/OrderHistory/order";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/updatefish/:id" element={<UpdateFish />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/orderHistory" element={<Order />} />
         </Route>
       </Routes>
     </div>

@@ -73,7 +73,6 @@ const LoginForm = () => {
       );
       toast.success("Login successful!", { autoClose: 1500 });
       const token = res.data.token;
-      console.log(token);
       setTimeout(() => {
         navigate("/");
       }, 1500);

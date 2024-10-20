@@ -149,6 +149,8 @@ function Products({
       return;
     }
 
+    localStorage.setItem("selectedProducts", JSON.stringify(selectedProducts));
+
     try {
       const payload = selectedProducts.map((product) => ({
         productId: product.id,
@@ -175,6 +177,20 @@ function Products({
       console.error("Payment Error:", error);
     }
   };
+
+  const handleClearSelectedOnCancel = () => {
+    if (
+      window.location.pathname === "/cart" &&
+      localStorage.getItem("cancelPayment")
+    ) {
+      localStorage.removeItem("selectedProducts"); 
+      localStorage.removeItem("cancelPayment"); 
+    }
+  };
+
+  useEffect(() => {
+    handleClearSelectedOnCancel();
+  }, []);
 
   return (
     <div className="container product-container">

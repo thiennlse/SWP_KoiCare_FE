@@ -109,7 +109,9 @@ function Products() {
 
   useEffect(() => {
     axios
-      .get("https://koicareapi.azurewebsites.net/api/Product")
+      .get(
+        "https://koicareapi.azurewebsites.net/api/Product?page=1&pagesize=100"
+      )
       .then((response) => {
         setProducts(response.data);
         setLoading(false);

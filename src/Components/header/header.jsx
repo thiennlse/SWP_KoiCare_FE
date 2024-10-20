@@ -52,7 +52,6 @@ function Header() {
     localStorage.removeItem("cart");
 
     setTimeout(() => {
-      localStorage.removeItem("user");
       navigate("/login");
     }, 1500);
   };
@@ -117,7 +116,7 @@ function Header() {
                       <a href="/profile">My Account</a>
                       <a href="/aquariummanagement">Aquarium Management</a>
                       <a href="fishmanagement">Koi Fish Management</a>
-                      <a href="/orders">Purchase Order</a>
+                      <a href="/orderHistory">Order History</a>
                     </div>
                   )}
                 </div>
