@@ -14,6 +14,7 @@ function Header() {
   const navigate = useNavigate();
 
   const userId = localStorage.getItem("userId");
+  const role = localStorage.getItem("role");
   const config = genConfig({ sex: "man", hairStyle: "mohawk" });
 
   useEffect(() => {
@@ -92,7 +93,7 @@ function Header() {
                 <TiShoppingCart className="icon_header" />
               </a>
             </div>
-            {user ? (
+            {role === "member" ? (
               <div className="user_info">
                 <span className="img_profile">
                   {user.image ? (
