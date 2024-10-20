@@ -7,7 +7,7 @@
 }
 
 /* Header cố định */
-.header {
+.header-admin {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -20,7 +20,7 @@
 }
 
 /* Main content chứa Sidebar và Nội dung */
-.main_content {
+.main_content_admin {
   display: flex;
   flex-grow: 1;
   height: 100%;
@@ -28,7 +28,7 @@
 }
 
 /* Sidebar */
-.sidebar {
+.sidebar-admin {
   width: 250px;
   background-color: #1e407c;
   color: white;
@@ -39,13 +39,13 @@
   overflow-y: auto;
 }
 
-nav ul {
+.nav_admin ul {
   list-style: none;
   padding: 0;
   width: 100%;
 }
 
-nav li {
+.nav_admin li {
   padding: 12px;
   margin: 5px 0;
   text-align: center;
@@ -65,7 +65,7 @@ nav li:hover {
 }
 
 /* Nút quay lại */
-.back_button {
+.back_button_admin {
   margin-top: auto;
   background-color: #ff6600;
   color: white;
@@ -77,7 +77,7 @@ nav li:hover {
 }
 
 /* Nội dung chính */
-.content {
+.content_admin {
   flex-grow: 1;
   padding: 20px;
   overflow-y: auto;
@@ -85,7 +85,7 @@ nav li:hover {
 }
 
 /* Card */
-.card {
+.card_admin {
   background-color: white;
   border-radius: 8px;
   padding: 20px;
@@ -94,7 +94,7 @@ nav li:hover {
 }
 
 /* Chỉnh khoảng cách giữa các phần tử */
-.card h3 {
+.card_admin h3 {
   margin-top: 0;
   margin-bottom: 10px;
 }

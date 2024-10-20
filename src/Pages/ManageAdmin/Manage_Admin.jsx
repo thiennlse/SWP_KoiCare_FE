@@ -48,22 +48,20 @@ const ManageAdmin = () => {
 
   return (
     <div className="admin_dashboard">
-      <header className="header">
-        <h2>Admin Dashboard</h2>
+      <header className="header-admin">
         <HiOutlineLogout className="logout_icon" />
       </header>
 
       <div style={{ display: "flex", flexGrow: 1 }}>
-        <aside className="sidebar">
+        <aside className="sidebar-admin">
           <div className="profile">
             <img
               src="/path/to/profile_pic.png"
               alt="Admin"
               className="avatar"
             />
-            <p className="username">Admin Dashboard</p>
           </div>
-          <nav>
+          <nav className="nav_admin">
             <ul>
               <li
                 className={activeTab === "users" ? "active" : ""}
@@ -91,12 +89,12 @@ const ManageAdmin = () => {
               </li>
             </ul>
           </nav>
-          <button className="back_button">Back to Home</button>
+          <button className="back_button_admin">Back to Home</button>
         </aside>
 
-        <main className="content">
+        <main className="content_admin">
           {activeTab === "users" && (
-            <div className="card">
+            <div className="card_admin">
               <h3>User Management</h3>
               <ul>
                 {users.map((user) => (
