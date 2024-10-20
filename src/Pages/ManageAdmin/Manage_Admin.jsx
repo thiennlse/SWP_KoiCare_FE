@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { HiOutlineLogout } from "react-icons/hi";
-import { FaRegCircle } from "react-icons/fa";
 import axios from "axios";
-import "./Manage_Admin.css";
+import "./Manage_Admin.css"; // CSS mới
 
 const ManageAdmin = () => {
-  const [activeSubmenu, setActiveSubmenu] = useState("users");
+  const [activeTab, setActiveTab] = useState("users");
   const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [blogs, setBlogs] = useState([]);
-  const [newBlog, setNewBlog] = useState({ title: "", content: "" });
 
   const token = JSON.parse(localStorage.getItem("token"));
 
@@ -34,104 +32,70 @@ const ManageAdmin = () => {
       .catch((err) => console.error("Error fetching products:", err));
 
     axios
-      .get("https://koicareapi.azurewebsites.net/api/Blog", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => setBlogs(res.data))
-      .catch((err) => console.error("Error fetching blogs:", err));
-
-    axios
       .get("https://koicareapi.azurewebsites.net/api/Order", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setOrders(res.data))
       .catch((err) => console.error("Error fetching orders:", err));
-  };
 
-  const updateOrderStatus = (orderId, status) => {
     axios
-      .patch(
-        `https://koicareapi.azurewebsites.net/api/Order/update/${orderId}`,
-        { status },
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
-      .then(() => alert("Order status updated"))
-      .catch((err) => console.error("Error updating order:", err));
-  };
-
-  const handleCreateBlog = () => {
-    axios
-      .post("https://koicareapi.azurewebsites.net/api/Blog/add", newBlog, {
+      .get("https://koicareapi.azurewebsites.net/api/Blog", {
         headers: { Authorization: `Bearer ${token}` },
       })
-      .then(() => {
-        setNewBlog({ title: "", content: "" });
-        fetchData();
-        alert("Blog created successfully");
-      })
-      .catch((err) => console.error("Error creating blog:", err));
-  };
-
-  const handleDeleteBlog = (id) => {
-    axios
-      .delete(`https://koicareapi.azurewebsites.net/api/Blog/delete?id=${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(() => {
-        fetchData();
-        alert("Blog deleted successfully");
-      })
-      .catch((err) => console.error("Error deleting blog:", err));
+      .then((res) => setBlogs(res.data))
+      .catch((err) => console.error("Error fetching blogs:", err));
   };
 
   return (
     <div className="admin_dashboard">
-      <aside className="sidebar">
-        <div className="profile">
-          <img src="/path/to/profile_pic.png" alt="Admin" />
-        </div>
+      <header className="header">
+        <h2>Admin Dashboard</h2>
+        <HiOutlineLogout className="logout_icon" />
+      </header>
 
-        <nav>
-          <ul>
-            <a
-              href="#"
-              onClick={() => setActiveSubmenu("users")}
-              className={activeSubmenu === "users" ? "active" : ""}
-            >
-              <FaRegCircle /> User Management
-            </a>
-            <a
-              href="#"
-              onClick={() => setActiveSubmenu("products")}
-              className={activeSubmenu === "products" ? "active" : ""}
-            >
-              <FaRegCircle /> Product Management
-            </a>
-            <a
-              href="#"
-              onClick={() => setActiveSubmenu("blogs")}
-              className={activeSubmenu === "blogs" ? "active" : ""}
-            >
-              <FaRegCircle /> Blog Management
-            </a>
-            <a
-              href="#"
-              onClick={() => setActiveSubmenu("orders")}
-              className={activeSubmenu === "orders" ? "active" : ""}
-            >
-              <FaRegCircle /> Order Management
-            </a>
-          </ul>
-        </nav>
-      </aside>
+      <div style={{ display: "flex", flexGrow: 1 }}>
+        <aside className="sidebar">
+          <div className="profile">
+            <img
+              src="/path/to/profile_pic.png"
+              alt="Admin"
+              className="avatar"
+            />
+            <p className="username">Admin Dashboard</p>
+          </div>
+          <nav>
+            <ul>
+              <li
+                className={activeTab === "users" ? "active" : ""}
+                onClick={() => setActiveTab("users")}
+              >
+                User Management
+              </li>
+              <li
+                className={activeTab === "products" ? "active" : ""}
+                onClick={() => setActiveTab("products")}
+              >
+                Product Management
+              </li>
+              <li
+                className={activeTab === "blogs" ? "active" : ""}
+                onClick={() => setActiveTab("blogs")}
+              >
+                Blog Management
+              </li>
+              <li
+                className={activeTab === "orders" ? "active" : ""}
+                onClick={() => setActiveTab("orders")}
+              >
+                Order Management
+              </li>
+            </ul>
+          </nav>
+          <button className="back_button">Back to Home</button>
+        </aside>
 
-      <div className="main_content_admin">
-        <header className="toolbar">
-          <HiOutlineLogout /> Logout
-        </header>
-
-        <main className="dashboard_content">
-          {activeSubmenu === "users" && (
+        <main className="content">
+          {activeTab === "users" && (
             <div className="card">
               <h3>User Management</h3>
               <ul>
@@ -144,7 +108,7 @@ const ManageAdmin = () => {
             </div>
           )}
 
-          {activeSubmenu === "products" && (
+          {activeTab === "products" && (
             <div className="card">
               <h3>Product Management</h3>
               <ul>
@@ -159,54 +123,27 @@ const ManageAdmin = () => {
             </div>
           )}
 
-          {activeSubmenu === "blogs" && (
+          {activeTab === "blogs" && (
             <div className="card">
               <h3>Blog Management</h3>
-              <input
-                type="text"
-                placeholder="Blog Title"
-                value={newBlog.title}
-                onChange={(e) =>
-                  setNewBlog({ ...newBlog, title: e.target.value })
-                }
-              />
-              <textarea
-                placeholder="Blog Content"
-                value={newBlog.content}
-                onChange={(e) =>
-                  setNewBlog({ ...newBlog, content: e.target.value })
-                }
-              />
-              <button onClick={handleCreateBlog}>Create Blog</button>
               <ul>
                 {blogs.map((blog) => (
                   <li key={blog.id}>
                     {blog.title}
-                    <button onClick={() => handleDeleteBlog(blog.id)}>
-                      Delete
-                    </button>
+                    <button>Delete</button>
                   </li>
                 ))}
               </ul>
             </div>
           )}
 
-          {activeSubmenu === "orders" && (
+          {activeTab === "orders" && (
             <div className="card">
               <h3>Order Management</h3>
               <ul>
                 {orders.map((order) => (
                   <li key={order.id}>
                     Order #{order.id} - Status: {order.status}
-                    <select
-                      onChange={(e) =>
-                        updateOrderStatus(order.id, e.target.value)
-                      }
-                    >
-                      <option value="Pending">Pending</option>
-                      <option value="Shipping">Shipping</option>
-                      <option value="Delivered">Delivered</option>
-                    </select>
                   </li>
                 ))}
               </ul>
