@@ -127,3 +127,9 @@ ul {
 .logout_button_admin:hover {
   color: red;
 }
+
+.img-admin {
+  width: 299px;
+  height: 168px;
+  object-fit: cover;
+}

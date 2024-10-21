@@ -10,6 +10,10 @@ const ManageAdmin = () => {
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [blogs, setBlogs] = useState([]);
+  const [selectedBlogId, setSelectedBlogId] = useState(null);
+  const [selectedProductId, setSelectedProductId] = useState(null);
+  const [editProduct, setEditProduct] = useState(null);
+  const [editBlog, setEditBlog] = useState(null);
 
   // New states for creating a product
   const [newProduct, setNewProduct] = useState({
@@ -28,11 +32,11 @@ const ManageAdmin = () => {
   const [newBlog, setNewBlog] = useState({
     memberId: 0,
     title: "",
+    image: "",
     content: "",
     dateOfPublish: new Date().toISOString(),
     status: "",
   });
-  const [editBlog, setEditBlog] = useState(null); // State for the blog being edited
 
   const token = JSON.parse(localStorage.getItem("token"));
 
@@ -103,14 +107,76 @@ const ManageAdmin = () => {
     });
   };
 
+  const handleEditProduct = (product) => {
+    setEditProduct(product); // Set the product to be edited
+  };
+
+  const handleUpdateProduct = (e) => {
+    e.preventDefault();
+
+    const updatedProduct = {
+      ...editProduct,
+      userId: JSON.parse(localStorage.getItem("userId")) || 0, // Assuming userId is stored in localStorage
+    };
+
+    axios
+      .patch(
+        `https://koicareapi.azurewebsites.net/api/Product/update/${editProduct.id}`,
+        updatedProduct,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((res) => {
+        toast.success("Product updated successfully!");
+        fetchData(); // Fetch updated products
+        setEditProduct(null); // Clear the edit state
+      })
+      .catch((err) => {
+        console.error("Error updating product:", err);
+        toast.error("Failed to update product.");
+      });
+  };
+
+  const handleDeleteProduct = (productId) => {
+    axios
+      .delete(
+        `https://koicareapi.azurewebsites.net/api/Product/Delete?id=${productId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((res) => {
+        toast.success("Product deleted successfully!");
+        fetchData(); // Fetch updated products after deletion
+      })
+      .catch((err) => {
+        console.error("Error deleting product:", err);
+        toast.error("Failed to delete product.");
+      });
+  };
+
+  const handleViewProductDetails = (product) => {
+    setSelectedProductId(product.id); // Lưu blog được chọn vào state
+  };
+
+  const handleCloseProductDetails = () => {
+    setSelectedProductId(null); // Đặt lại state
+  };
+
   // Handle product creation
   const handleCreateProduct = (e) => {
     e.preventDefault();
 
+    const updatedProduct = {
+      ...newProduct,
+      userId: JSON.parse(localStorage.getItem("userId")) || 0, // Assuming userId is stored in localStorage
+    };
+
     axios
       .post(
         "https://koicareapi.azurewebsites.net/api/Product/add",
-        newProduct,
+        updatedProduct,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -118,6 +184,17 @@ const ManageAdmin = () => {
       .then((res) => {
         toast.success("Product created successfully!");
         fetchData(); // Fetch updated products
+        setNewProduct({
+          image: "",
+          userId: 0,
+          name: "",
+          cost: 0,
+          description: "",
+          origin: "",
+          productivity: 0,
+          code: "",
+          inStock: 0,
+        });
       })
       .catch((err) => {
         console.error("Error creating product:", err);
@@ -187,6 +264,33 @@ const ManageAdmin = () => {
         console.error("Error updating blog:", err);
         toast.error("Failed to update blog.");
       });
+  };
+
+  // Function to handle blog deletion
+  const handleDeleteBlog = (blogId) => {
+    axios
+      .delete(
+        `https://koicareapi.azurewebsites.net/api/Blog/delete?id=${blogId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((res) => {
+        toast.success("Blog deleted successfully!");
+        fetchData(); // Fetch updated blogs after deletion
+      })
+      .catch((err) => {
+        console.error("Error deleting blog:", err);
+        toast.error("Failed to delete blog.");
+      });
+  };
+
+  const handleViewBlogDetails = (blog) => {
+    setSelectedBlogId(blog.id); // Lưu blog được chọn vào state
+  };
+
+  const handleCloseBlogDetails = () => {
+    setSelectedBlogId(null); // Đặt lại state
   };
 
   return (
@@ -259,12 +363,157 @@ const ManageAdmin = () => {
               <ul>
                 {products.map((product) => (
                   <li key={product.id}>
+                    {product.title}
                     {product.name} - ${product.cost}
-                    <button>Edit</button>
-                    <button>Delete</button>
+                    <button onClick={() => handleEditProduct(product)}>
+                      Edit
+                    </button>
+                    <button onClick={() => handleViewProductDetails(product)}>
+                      Details
+                    </button>
+                    <button onClick={() => handleDeleteProduct(product.id)}>
+                      Delete
+                    </button>
                   </li>
                 ))}
               </ul>
+
+              {selectedProductId && (
+                <div className="product-details">
+                  {products
+                    .filter((product) => product.id === selectedProductId)
+                    .map((product) => (
+                      <div key={product.id} className="details-content-product">
+                        <h3>Product Details</h3> <hr />
+                        <h4>Name: {product.name}</h4>
+                        <p>
+                          Image:{" "}
+                          <img
+                            className="img-admin"
+                            src={product.image}
+                            alt={product.name}
+                          />
+                        </p>
+                        <p>Cost: {product.cost}</p>
+                        <p>Description: {product.description}</p>
+                        <p>Origin: {product.origin}</p>
+                        <p>Productivity: {product.productivitys}</p>
+                        <p>Code: {product.code}</p>
+                        <p>Stock: {product.inStock}</p>
+                        <button onClick={handleCloseProductDetails}>
+                          Close
+                        </button>
+                      </div>
+                    ))}
+                </div>
+              )}
+
+              {editProduct && (
+                <>
+                  <h3>Edit Product</h3>
+                  <form onSubmit={handleUpdateProduct}>
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Product Name"
+                      value={editProduct.name}
+                      onChange={(e) =>
+                        setEditProduct({ ...editProduct, name: e.target.value })
+                      }
+                      required
+                    />
+                    <input
+                      type="text"
+                      name="image"
+                      placeholder="Image URL"
+                      value={editProduct.image}
+                      onChange={(e) =>
+                        setEditProduct({
+                          ...editProduct,
+                          image: e.target.value,
+                        })
+                      }
+                      required
+                    />
+                    <input
+                      type="number"
+                      name="cost"
+                      placeholder="Cost"
+                      value={editProduct.cost}
+                      onChange={(e) =>
+                        setEditProduct({
+                          ...editProduct,
+                          cost: parseFloat(e.target.value),
+                        })
+                      }
+                      required
+                    />
+                    <input
+                      type="text"
+                      name="description"
+                      placeholder="Description"
+                      value={editProduct.description}
+                      onChange={(e) =>
+                        setEditProduct({
+                          ...editProduct,
+                          description: e.target.value,
+                        })
+                      }
+                      required
+                    />
+                    <input
+                      type="text"
+                      name="origin"
+                      placeholder="Origin"
+                      value={editProduct.origin}
+                      onChange={(e) =>
+                        setEditProduct({
+                          ...editProduct,
+                          origin: e.target.value,
+                        })
+                      }
+                      required
+                    />
+                    <input
+                      type="number"
+                      name="productivity"
+                      placeholder="Productivity"
+                      value={editProduct.productivity}
+                      onChange={(e) =>
+                        setEditProduct({
+                          ...editProduct,
+                          productivity: parseInt(e.target.value),
+                        })
+                      }
+                      required
+                    />
+                    <input
+                      type="text"
+                      name="code"
+                      placeholder="Product Code"
+                      value={editProduct.code}
+                      onChange={(e) =>
+                        setEditProduct({ ...editProduct, code: e.target.value })
+                      }
+                      required
+                    />
+                    <input
+                      type="number"
+                      name="inStock"
+                      placeholder="Stock"
+                      value={editProduct.inStock}
+                      onChange={(e) =>
+                        setEditProduct({
+                          ...editProduct,
+                          inStock: parseInt(e.target.value),
+                        })
+                      }
+                      required
+                    />
+                    <button type="submit">Update Product</button>
+                  </form>
+                </>
+              )}
 
               <h3>Add New Product</h3>
               <form onSubmit={handleCreateProduct}>
@@ -275,6 +524,13 @@ const ManageAdmin = () => {
                   value={newProduct.name}
                   onChange={handleProductChange}
                   required
+                />
+                <input
+                  type="text"
+                  name="image"
+                  placeholder="Image URL"
+                  value={newProduct.image}
+                  onChange={handleProductChange}
                 />
                 <input
                   type="number"
@@ -337,10 +593,40 @@ const ManageAdmin = () => {
                   <li key={blog.id}>
                     {blog.title}
                     <button onClick={() => handleEditBlog(blog)}>Edit</button>
-                    <button>Delete</button>
+                    <button onClick={() => handleViewBlogDetails(blog)}>
+                      Details
+                    </button>
+                    <button onClick={() => handleDeleteBlog(blog.id)}>
+                      Delete
+                    </button>
                   </li>
                 ))}
               </ul>
+
+              {selectedBlogId && (
+                <div className="blog-details">
+                  {blogs
+                    .filter((blog) => blog.id === selectedBlogId)
+                    .map((blog) => (
+                      <div key={blog.id} className="details-content-blog">
+                        <h3>Blog Details</h3> <hr />
+                        <h4>Title: {blog.title}</h4>
+                        <p>
+                          Image:{" "}
+                          <img
+                            className="img-admin"
+                            src={blog.image}
+                            alt={blog.title}
+                          />
+                        </p>
+                        <p>Content: {blog.content}</p>
+                        <p>Date of Publish: {blog.dateOfPublish}</p>
+                        <p>Status: {blog.status}</p>
+                        <button onClick={handleCloseBlogDetails}>Close</button>
+                      </div>
+                    ))}
+                </div>
+              )}
 
               <h3>Add New Blog</h3>
               <form onSubmit={handleCreateBlog}>
@@ -351,6 +637,13 @@ const ManageAdmin = () => {
                   value={newBlog.title}
                   onChange={handleBlogChange}
                   required
+                />
+                <input
+                  type="text"
+                  name="image"
+                  placeholder="Image URL"
+                  value={newBlog.image}
+                  onChange={handleBlogChange}
                 />
                 <textarea
                   name="content"
@@ -390,6 +683,15 @@ const ManageAdmin = () => {
                         setEditBlog({ ...editBlog, title: e.target.value })
                       }
                       required
+                    />
+                    <input
+                      type="text"
+                      name="image"
+                      placeholder="Image URL"
+                      value={editBlog.image}
+                      onChange={(e) =>
+                        setEditBlog({ ...editBlog, image: e.target.value })
+                      }
                     />
                     <textarea
                       name="content"
