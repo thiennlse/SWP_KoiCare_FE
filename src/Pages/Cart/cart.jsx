@@ -149,8 +149,6 @@ function Products({
       return;
     }
 
-    localStorage.setItem("selectedProducts", JSON.stringify(selectedProducts));
-
     try {
       const payload = selectedProducts.map((product) => ({
         productId: product.id,
@@ -158,18 +156,19 @@ function Products({
         quantity: product.quantity,
       }));
 
-      // Ensure the correct URLs are passed
-      const cancelUrl = encodeURIComponent("http://localhost:3000/cart");
-      const returnUrl = encodeURIComponent("http://localhost:3000/home");
-
       const response = await axios.post(
-        `https://koicareapi.azurewebsites.net/api/Checkout/create-payment-link?cancelUrl=${cancelUrl}&returnUrl=${returnUrl}`,
-        payload
+        "https://koicareapi.azurewebsites.net/api/Checkout/create-payment-link",
+        payload,
+        {
+          params: {
+            cancelUrl: "http://localhost:3000/cart",
+            returnUrl: "http://localhost:3000/home",
+          },
+        }
       );
 
       if (response.status === 200 && response.data) {
         const paymentUrl = response.data;
-        // Redirect to the payment URL
         window.location.href = paymentUrl;
       }
     } catch (error) {
@@ -183,8 +182,8 @@ function Products({
       window.location.pathname === "/cart" &&
       localStorage.getItem("cancelPayment")
     ) {
-      localStorage.removeItem("selectedProducts"); 
-      localStorage.removeItem("cancelPayment"); 
+      localStorage.removeItem("selectedProducts");
+      localStorage.removeItem("cancelPayment");
     }
   };
 
