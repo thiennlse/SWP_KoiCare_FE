@@ -36,7 +36,6 @@ function App() {
           <Route path="/updatefish/:id" element={<UpdateFish />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/orderHistory" element={<Order />} />
         </Route>
         <Route
           path="/admin"
