@@ -9,16 +9,16 @@
 /* Header cố định */
 .header-admin {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end; /* This will move the Logout button to the right */
   align-items: center;
   background-color: #ffffff;
-  padding: 5px 15px; /* Reduce padding for a shorter header */
-  height: 50px; /* Fixed height for a compact header */
+  padding: 5px 15px;
+  height: 50px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: fixed; /* Fix header at the top */
+  position: fixed;
   top: 0;
-  left: 250px; /* Start header after the sidebar */
-  width: calc(100% - 250px); /* Adjust width to account for sidebar */
+  left: 250px;
+  width: calc(100% - 250px);
   z-index: 1000;
 }
 
@@ -79,7 +79,7 @@
 
 /* Nút quay lại */
 .back_button_admin {
-  margin-top: 395px;
+  margin-top: 360px;
   background-color: #ff6600;
   color: white;
   border: none;
@@ -115,4 +115,15 @@
 
 ul {
   padding-left: 20px;
+}
+
+.logout_button_admin {
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  color: #ff6600;
+}
+
+.logout_button_admin:hover {
+  color: red;
 }

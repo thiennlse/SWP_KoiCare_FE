@@ -29,7 +29,6 @@ function App() {
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/createfish" element={<CreateFish />} />
           <Route path="/createaquarium" element={<CreateAquarium />} />
-          {/* <Route path="/admin" element={<ManageAdmin />} /> */}
           <Route path="/aquariummanagement" element={<AquariumManagement />} />
           <Route path="/fishmanagement" element={<FishManagement />} />
           <Route path="/updateaquarium/:id" element={<UpdateAquarium />} />
