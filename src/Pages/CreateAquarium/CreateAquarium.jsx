@@ -92,6 +92,8 @@ const CreateAquarium = () => {
                 onChange={(e) =>
                   setAquarium({ ...aquarium, size: e.target.value })
                 }
+                onFocus={(e) => e.target.value === "0" && (e.target.value = "")}
+                onBlur={(e) => e.target.value === "" && (e.target.value = "0")}
                 required
               />
             </div>
@@ -105,6 +107,8 @@ const CreateAquarium = () => {
                 onChange={(e) =>
                   setAquarium({ ...aquarium, depth: e.target.value })
                 }
+                onFocus={(e) => e.target.value === "0" && (e.target.value = "")}
+                onBlur={(e) => e.target.value === "" && (e.target.value = "0")}
                 required
               />
             </div>

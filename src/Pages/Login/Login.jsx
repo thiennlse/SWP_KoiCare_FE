@@ -73,6 +73,7 @@ const LoginForm = () => {
       );
       toast.success("Login successful!", { autoClose: 1500 });
       const token = res.data.token;
+
       setTimeout(() => {
         navigate("/");
       }, 1500);
@@ -93,18 +94,25 @@ const LoginForm = () => {
       setLoginPassword("");
 
       if (res) {
+        // Lưu token, userId, role name và role id vào localStorage
         localStorage.setItem("token", JSON.stringify(token));
         localStorage.setItem("userId", JSON.stringify(res.data.userId));
         localStorage.setItem("role", JSON.stringify(res.data.role));
-      } else {
-        console.error("data not found in response");
+
+        // Kiểm tra và điều hướng dựa trên role name và id
+        if (res.data.role === "Admin") {
+          console.log("Navigating to /admin");
+          window.location.href = "/admin";
+        } else {
+          console.log("Navigating to /");
+          navigate("/");
+        }
       }
     } catch (error) {
       toast.error("Login failed!");
-      console.log("asdassadsa");
+      console.error("Login Error:", error);
     }
   };
-
   const handleRegister = async (event) => {
     event.preventDefault();
 

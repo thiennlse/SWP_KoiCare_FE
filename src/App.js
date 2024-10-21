@@ -14,7 +14,7 @@ import ProductDetail from "./Pages/ProductDetail/productDetail";
 import Cart from "./Pages/Cart/cart";
 import MainLayout from "./MainLayout";
 import Profile from "./Pages/profileDetail/profile";
-import Order from "./Pages/OrderHistory/order";
+import PrivateRoute from "./Pages/ManageAdmin/PrivateRoute";
 
 function App() {
   return (
@@ -29,7 +29,7 @@ function App() {
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/createfish" element={<CreateFish />} />
           <Route path="/createaquarium" element={<CreateAquarium />} />
-          <Route path="/admin" element={<ManageAdmin />} />
+          {/* <Route path="/admin" element={<ManageAdmin />} /> */}
           <Route path="/aquariummanagement" element={<AquariumManagement />} />
           <Route path="/fishmanagement" element={<FishManagement />} />
           <Route path="/updateaquarium/:id" element={<UpdateAquarium />} />
@@ -38,6 +38,14 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/orderHistory" element={<Order />} />
         </Route>
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute allowedRole="Admin">
+              <ManageAdmin />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </div>
   );

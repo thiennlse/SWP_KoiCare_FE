@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./header.css";
 import logo from "../Assets/logo.png";
 import { CgProfile } from "react-icons/cg";
@@ -9,40 +9,36 @@ import Avatar, { genConfig } from "react-nice-avatar";
 import axios from "axios";
 
 function Header() {
-  const [user, setUser] = useState(null);
+  // Mã cũ: Quản lý trạng thái người dùng và dropdown
+  const [user, setUser] = useState("");
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const navigate = useNavigate();
 
+  // Mã cũ: Lấy thông tin từ localStorage
   const userId = localStorage.getItem("userId");
-  const config = genConfig({ sex: "man", hairStyle: "mohawk" });
+  const role = JSON.parse(localStorage.getItem("role")); // Đảm bảo đúng định dạng
+  const config = genConfig({ sex: "man", hairStyle: "mohawk" }); // Avatar mặc định
 
   useEffect(() => {
+    // Mã cũ: Gọi API để lấy thông tin người dùng
     const fetchData = async () => {
       try {
         const res = await axios.get(
           `https://koicareapi.azurewebsites.net/api/Member/${userId}`
         );
-        setUser(res.data);
+        setUser(res.data); // Lưu thông tin người dùng vào state
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching user data:", error);
       }
     };
+
     if (userId) {
       fetchData();
     }
   }, [userId]);
 
-  const handleNavigation = (target) => {
-    navigate("/home");
-    setTimeout(() => {
-      const element = document.getElementById(target);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
-    }, 100);
-  };
-
   const handleLogout = () => {
+    // Mã cũ: Đăng xuất người dùng
     toast.success("Logout successful!", { autoClose: 1500 });
 
     localStorage.removeItem("token");
@@ -60,13 +56,26 @@ function Header() {
     setDropdownVisible(visible);
   };
 
+  const handleNavigation = (target) => {
+    // Mã mới: Điều hướng và cuộn trang mượt
+    navigate("/home");
+    setTimeout(() => {
+      const element = document.getElementById(target);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 100);
+  };
+
   return (
     <header className="header">
       <div className="content">
+        {/* Logo */}
         <div className="header_logo">
           <img src={logo} width={148} height={100} alt="logo" />
         </div>
 
+        {/* Navigation */}
         <nav className="nav_links">
           <ul className="nav_list">
             <li>
@@ -85,13 +94,16 @@ function Header() {
             </li>
           </ul>
 
+          {/* Icons Section */}
           <div className="nav_icons_header">
             <div>
               <a href="/cart">
                 <TiShoppingCart className="icon_header" />
               </a>
             </div>
-            {user ? (
+
+            {/* Mã mới: Kiểm tra role và hiển thị avatar và thông tin người dùng */}
+            {role === "Member" ? (
               <div className="user_info">
                 <span className="img_profile">
                   {user.image ? (
@@ -103,14 +115,16 @@ function Header() {
                     />
                   )}
                 </span>
+
                 <div
                   className="profile_dropdown"
                   onMouseEnter={() => toggleDropdown(true)}
                   onMouseLeave={() => toggleDropdown(false)}
                 >
                   <span className="user_name" onClick={() => navigate("/")}>
-                    {user.fullName ? user.fullName : " New Customer"}
+                    {user.fullName ? user.fullName : "New Customer"}
                   </span>
+
                   {dropdownVisible && (
                     <div className="dropdown_menu">
                       <a href="/profile">My Account</a>
@@ -120,11 +134,13 @@ function Header() {
                     </div>
                   )}
                 </div>
+
                 <span className="logout_button" onClick={handleLogout}>
                   Logout
                 </span>
               </div>
             ) : (
+              // Nếu chưa đăng nhập, hiển thị biểu tượng đăng nhập
               <a href="/login">
                 <CgProfile className="icon_header" />
               </a>
@@ -132,6 +148,7 @@ function Header() {
           </div>
         </nav>
       </div>
+
       <ToastContainer />
     </header>
   );

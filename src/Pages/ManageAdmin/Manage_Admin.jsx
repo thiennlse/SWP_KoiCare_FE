@@ -1,148 +1,152 @@
-import React, { useState } from "react";
-import { IoSearch } from "react-icons/io5";
+import React, { useState, useEffect } from "react";
 import { HiOutlineLogout } from "react-icons/hi";
-import { FaChevronDown, FaRegCircle, FaCircle } from "react-icons/fa";
-import { AiOutlineDashboard } from "react-icons/ai";
-import "./Manage_Admin.css";
+import axios from "axios";
+import "./Manage_Admin.css"; // CSS mới
 
 const ManageAdmin = () => {
-  const [isDashboardOpen, setIsDashboardOpen] = useState(false);
-  const [activeSubmenu, setActiveSubmenu] = useState("");
+  const [activeTab, setActiveTab] = useState("users");
+  const [users, setUsers] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [blogs, setBlogs] = useState([]);
 
-  const toggleDashboardMenu = () => {
-    setIsDashboardOpen(!isDashboardOpen);
-  };
+  const token = JSON.parse(localStorage.getItem("token"));
 
-  const handleSubmenuClick = (submenu) => {
-    setActiveSubmenu(submenu);
+  useEffect(() => {
+    fetchData();
+  }, [token]);
+
+  const fetchData = () => {
+    axios
+      .get("https://koicareapi.azurewebsites.net/api/Member", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => setUsers(res.data))
+      .catch((err) => console.error("Error fetching users:", err));
+
+    axios
+      .get("https://koicareapi.azurewebsites.net/api/Product", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => setProducts(res.data))
+      .catch((err) => console.error("Error fetching products:", err));
+
+    axios
+      .get("https://koicareapi.azurewebsites.net/api/Order", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => setOrders(res.data))
+      .catch((err) => console.error("Error fetching orders:", err));
+
+    axios
+      .get("https://koicareapi.azurewebsites.net/api/Blog", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => setBlogs(res.data))
+      .catch((err) => console.error("Error fetching blogs:", err));
   };
 
   return (
     <div className="admin_dashboard">
-      <aside className="sidebar">
-        <div className="profile">
-          <img src="/path/to/profile_pic.png" alt="Admin" />
-          <h2>Alexander Lacazette</h2>
-        </div>
+      <header className="header-admin">
+        <HiOutlineLogout className="logout_icon" />
+      </header>
 
-        <div className="sidebar_search">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="sidebar_search_input"
-          />
-          <button className="sidebar_search_button">
-            <IoSearch />
-          </button>
-        </div>
-
-        <nav>
-          <ul>
-            <a
-              href="#"
-              onClick={toggleDashboardMenu}
-              className="dashboard_link"
-            >
-              <AiOutlineDashboard className="icon_left" /> Dashboard
-              <FaChevronDown className="icon_right" />
-            </a>
-            {isDashboardOpen && (
-              <ul className="submenu">
-                <li>
-                  <a
-                    href="#"
-                    className={activeSubmenu === "total" ? "active" : ""}
-                    onClick={() => handleSubmenuClick("total")}
-                  >
-                    {activeSubmenu === "total" ? <FaCircle /> : <FaRegCircle />}
-                    Total
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className={activeSubmenu === "users" ? "active" : ""}
-                    onClick={() => handleSubmenuClick("users")}
-                  >
-                    {activeSubmenu === "users" ? <FaCircle /> : <FaRegCircle />}
-                    Users Management
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className={activeSubmenu === "blogs" ? "active" : ""}
-                    onClick={() => handleSubmenuClick("blogs")}
-                  >
-                    {activeSubmenu === "blogs" ? <FaCircle /> : <FaRegCircle />}
-                    Blogs Management
-                  </a>
-                </li>
-              </ul>
-            )}
-          </ul>
-        </nav>
-      </aside>
-
-      <div className="main_content_admin">
-        <header className="toolbar">
-          <nav className="toolbar_admin">
-            <a href="#" className="nav_link_admin home_admin">
-              Home
-            </a>
-            <a href="#" className="nav_link_admin">
-              Contact
-            </a>
-            <a href="#" className="logout">
-              <HiOutlineLogout />
-            </a>
+      <div style={{ display: "flex", flexGrow: 1 }}>
+        <aside className="sidebar-admin">
+          <div className="profile">
+            <img
+              src="/path/to/profile_pic.png"
+              alt="Admin"
+              className="avatar"
+            />
+          </div>
+          <nav className="nav_admin">
+            <ul>
+              <li
+                className={activeTab === "users" ? "active" : ""}
+                onClick={() => setActiveTab("users")}
+              >
+                User Management
+              </li>
+              <li
+                className={activeTab === "products" ? "active" : ""}
+                onClick={() => setActiveTab("products")}
+              >
+                Product Management
+              </li>
+              <li
+                className={activeTab === "blogs" ? "active" : ""}
+                onClick={() => setActiveTab("blogs")}
+              >
+                Blog Management
+              </li>
+              <li
+                className={activeTab === "orders" ? "active" : ""}
+                onClick={() => setActiveTab("orders")}
+              >
+                Order Management
+              </li>
+            </ul>
           </nav>
-        </header>
+          <button className="back_button_admin">Back to Home</button>
+        </aside>
 
-        <main className="dashboard_content">
-          <div className="dashboard_stats">
-            <div className="stat_card blue">
-              <h3>18</h3>
-              <p>Visitors</p>
-              <a href="#">
-                More info <i className="fas fa_info_circle"></i>
-              </a>
+        <main className="content_admin">
+          {activeTab === "users" && (
+            <div className="card_admin">
+              <h3>User Management</h3>
+              <ul>
+                {users.map((user) => (
+                  <li key={user.id}>
+                    {user.fullName} - {user.role.name}
+                  </li>
+                ))}
+              </ul>
             </div>
-            <div className="stat_card green">
-              <h3>0</h3>
-              <p>Requirements</p>
-              <a href="#">
-                More info <i className="fas fa_info_circle"></i>
-              </a>
-            </div>
-            <div className="stat_card yellow">
-              <h3>4</h3>
-              <p>User Registrations</p>
-              <a href="#">
-                More info <i className="fas fa_info_circle"></i>
-              </a>
-            </div>
-            <div className="stat_card red">
-              <h3>0</h3>
-              <p>Reports</p>
-              <a href="#">
-                More info <i className="fas fa_info_circle"></i>
-              </a>
-            </div>
-          </div>
+          )}
 
-          <div className="dashboard_finances">
-            <div className="finance_card">
-              <h4>Platform fees</h4>
-              <p>$18,230.00</p>
-              <a href="#">View Report</a>
+          {activeTab === "products" && (
+            <div className="card">
+              <h3>Product Management</h3>
+              <ul>
+                {products.map((product) => (
+                  <li key={product.id}>
+                    {product.name} - ${product.cost}
+                    <button>Edit</button>
+                    <button>Delete</button>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <div className="finance_card">
-              <h4>Turnover</h4>
-              <p>820</p>
-              <a href="#">View Report</a>
+          )}
+
+          {activeTab === "blogs" && (
+            <div className="card">
+              <h3>Blog Management</h3>
+              <ul>
+                {blogs.map((blog) => (
+                  <li key={blog.id}>
+                    {blog.title}
+                    <button>Delete</button>
+                  </li>
+                ))}
+              </ul>
             </div>
-          </div>
+          )}
+
+          {activeTab === "orders" && (
+            <div className="card">
+              <h3>Order Management</h3>
+              <ul>
+                {orders.map((order) => (
+                  <li key={order.id}>
+                    Order #{order.id} - Status: {order.status}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </main>
       </div>
     </div>

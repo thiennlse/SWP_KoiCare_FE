@@ -1,274 +1,118 @@
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: Arial, sans-serif;
-}
-
+/* Tổng thể layout */
 .admin_dashboard {
-    display: flex;
-    height: 100vh;
+  display: flex;
+  height: 100vh;
+  background-color: #f5f5f5;
+  flex-direction: column;
 }
 
-.sidebar {
-    width: 250px;
-    background-color: #353A40;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
+/* Header cố định */
+.header-admin {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 5px 15px; /* Reduce padding for a shorter header */
+  height: 50px; /* Fixed height for a compact header */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed; /* Fix header at the top */
+  top: 0;
+  left: 250px; /* Start header after the sidebar */
+  width: calc(100% - 250px); /* Adjust width to account for sidebar */
+  z-index: 1000;
+}
+
+/* Main content chứa Sidebar và Nội dung */
+.main_content_admin {
+  display: flex;
+  flex-grow: 1;
+  height: 100%;
+  overflow: hidden;
 }
 
 .profile {
-    text-align: center;
-    margin-bottom: 20px;
+  margin-bottom: 50px; /* Add space between profile and nav menu */
 }
 
-.profile img {
-    border-radius: 50%;
-    width: 100px;
+/* Sidebar */
+.sidebar-admin {
+  width: 250px;
+  background-color: #1e407c;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0; /* Remove extra padding */
+  margin: 0; /* Remove margin */
+  overflow-y: auto;
+  height: 100vh; /* Full height of the viewport */
+  position: fixed; /* Fix to the left side of the page */
+  top: 0; /* Align with the top of the page */
+  left: 0; /* Align with the left of the page */
+  padding-top: 20px; /* Add some space at the top */
 }
 
-.profile h2 {
-    margin-top: 10px;
-    font-size: 18px;
+.nav_admin ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
 }
 
-.sidebar_search {
-    display: flex;
-    align-items: center;
-    padding: 8px;
-    background-color: #353A40;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    position: relative;
+.nav_admin li {
+  padding: 12px;
+  margin: 5px 0;
+  text-align: center;
+  cursor: pointer;
+  background-color: #264e86;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
 }
 
-.sidebar_search_input {
-    flex-grow: 1;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #1c1f26;
-    color: white;
-    font-size: 14px;
-    outline: none;
+.nav_admin li.active {
+  background-color: #ff6600;
+  color: white;
 }
 
-.sidebar_search_button {
-    background-color: transparent;
-    border: none;
-    color: white;
-    cursor: pointer;
-    font-size: 18px; 
-    margin-left: -30px;
-    margin-top: 8px;
+.nav_admin li:hover {
+  background-color: #3b6ea5;
 }
 
-.sidebar_search_input::placeholder {
-    color: #b5b5b5;
+/* Nút quay lại */
+.back_button_admin {
+  margin-top: 395px;
+  background-color: #ff6600;
+  color: white;
+  border: none;
+  padding: 12px;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 8px;
 }
 
-.dashboard_link {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    color: white;
-    text-decoration: none;
-    background-color: #007AFF;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    font-size: 16px;
+/* Nội dung chính */
+.content_admin {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  margin-top: 50px; /* Align content below the header */
+  margin-left: 250px; /* Adjust content to start after sidebar */
 }
 
-.dashboard_link:hover {
-    background-color: #1c7bbb;
+/* Card */
+.card_admin {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.dashboard_link .icon-left {
-    margin-right: 10px;
+/* Chỉnh khoảng cách giữa các phần tử */
+.card_admin h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
 }
 
-.dashboard_link .icon-right {
-    margin-left: auto;
+ul {
+  padding-left: 20px;
 }
-
-.submenu {
-    list-style-type: none;
-    padding-left: 20px;
-    margin-top: 10px;
-}
-
-.submenu li {
-    margin-bottom: 8px;
-}
-
-.submenu li a {
-    display: flex;
-    align-items: center;
-    color: #333;
-    background-color: white;
-    padding: 8px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.submenu li a:hover {
-    background-color: #eaeaea;
-}
-
-.submenu li a.active {
-    background-color: #3498db;
-    color: white;
-}
-
-.submenu li a svg {
-    margin-right: 10px; 
-}
-
-.submenu li a.active svg {
-    color: #0e0c25;
-}
-
-.home_admin {
-    margin-left: 40px;
-}
-
-.main_content_admin {
-    flex-grow: 1;
-    background-color: #ffffff;
-    display: flex;
-    flex-direction: column;
-}
-
-.toolbar {
-    background-color: #F9F3EC;
-    border-bottom: 1px solid #ddd;
-    padding: 25px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.toolbar_admin {
-    display: flex;
-}
-
-.toolbar_admin a {
-    font-size: 20px;
-}
-
-.nav_link_admin {
-    text-decoration: none;
-    color: #333;
-    font-size: 16px;
-    margin-left: 80px;
-}
-
-.nav_link_admin:hover {
-    text-decoration: underline;
-}
-
-.logout {
-    color: black;
-    margin-left: 900px;
-}
-
-.dashboard_content {
-    padding: 20px;
-    background-color: #f4f6f9;
-}
-
-.dashboard_stats {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.stat_card {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    width: 23%;
-    position: relative;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.stat_card h3 {
-    font-size: 36px;
-    margin: 0;
-}
-
-.stat_card p {
-    margin: 5px 0;
-    font-size: 16px;
-}
-
-.stat_card a {
-    margin-top: auto;
-    color: white;
-    display: flex;
-    align-items: center;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-.stat_card.blue {
-    background-color: #17a2b8;
-    color: white;
-}
-
-.stat_card.green {
-    background-color: #28a745;
-    color: white;
-}
-
-.stat_card.yellow {
-    background-color: #ffc107;
-    color: white;
-}
-
-.stat_card.red {
-    background-color: #dc3545;
-    color: white;
-}
-
-.stat_card a i {
-    margin-left: 5px;
-}
-
-.dashboard_finances {
-    display: flex;
-    justify-content: space-between;
-}
-
-.finance_card {
-    background-color: white;
-    padding: 20px;
-    width: 48%;
-    border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.finance_card h4 {
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
-.finance_card p {
-    font-size: 24px;
-    margin-bottom: 5px;
-}
-
-.finance_card a {
-    text-decoration: none;
-    color: #007bff;
-    font-weight: bold;
-}
-
-
