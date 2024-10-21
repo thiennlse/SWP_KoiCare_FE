@@ -12,10 +12,13 @@
   justify-content: space-between;
   align-items: center;
   background-color: #ffffff;
-  padding: 10px 20px;
+  padding: 5px 15px; /* Reduce padding for a shorter header */
+  height: 50px; /* Fixed height for a compact header */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: sticky;
+  position: fixed; /* Fix header at the top */
   top: 0;
+  left: 250px; /* Start header after the sidebar */
+  width: calc(100% - 250px); /* Adjust width to account for sidebar */
   z-index: 1000;
 }
 
@@ -27,6 +30,10 @@
   overflow: hidden;
 }
 
+.profile {
+  margin-bottom: 50px; /* Add space between profile and nav menu */
+}
+
 /* Sidebar */
 .sidebar-admin {
   width: 250px;
@@ -35,8 +42,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 0; /* Remove extra padding */
+  margin: 0; /* Remove margin */
   overflow-y: auto;
+  height: 100vh; /* Full height of the viewport */
+  position: fixed; /* Fix to the left side of the page */
+  top: 0; /* Align with the top of the page */
+  left: 0; /* Align with the left of the page */
+  padding-top: 20px; /* Add some space at the top */
 }
 
 .nav_admin ul {
@@ -55,18 +68,18 @@
   transition: background-color 0.3s ease;
 }
 
-nav li.active {
+.nav_admin li.active {
   background-color: #ff6600;
   color: white;
 }
 
-nav li:hover {
+.nav_admin li:hover {
   background-color: #3b6ea5;
 }
 
 /* Nút quay lại */
 .back_button_admin {
-  margin-top: auto;
+  margin-top: 395px;
   background-color: #ff6600;
   color: white;
   border: none;
@@ -81,7 +94,8 @@ nav li:hover {
   flex-grow: 1;
   padding: 20px;
   overflow-y: auto;
-  margin-top: 10px; /* Đẩy nội dung lên gần phía trên */
+  margin-top: 50px; /* Align content below the header */
+  margin-left: 250px; /* Adjust content to start after sidebar */
 }
 
 /* Card */
