@@ -71,12 +71,7 @@ const LoginForm = () => {
           password: loginPassword,
         }
       );
-      toast.success("Login successful!", { autoClose: 1500 });
       const token = res.data.token;
-
-      setTimeout(() => {
-        navigate("/");
-      }, 1500);
 
       if (rememberMe) {
         localStorage.setItem("email", loginEmail);
@@ -105,11 +100,14 @@ const LoginForm = () => {
           window.location.href = "/admin";
         } else {
           console.log("Navigating to /");
-          navigate("/");
+          toast.success("Login successful!", { autoClose: 1500 });
+          setTimeout(() => {
+            navigate("/");
+          }, 1500);
         }
       }
     } catch (error) {
-      toast.error("Login failed!");
+      toast.error("Login failed!", { autoClose: 1500 });
       console.error("Login Error:", error);
     }
   };
