@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./cart.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { toast } from "react-toastify";
-import axios from "axios";
+import axiosInstance from "../axiosInstance";
 const Cart = () => {
   const [products, setProducts] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
@@ -155,32 +155,47 @@ function Products({
         cost: product.cost,
         quantity: product.quantity,
       }));
+      console.log(JSON.parse(localStorage.getItem("token")));
 
-      // Ensure the correct URLs are passed
-      const cancelUrl = encodeURIComponent("http://localhost:3000/cart");
-      const returnUrl = encodeURIComponent("http://localhost:3000/home");
-
-      const response = await axios.post(
-        `https://koicareapi.azurewebsites.net/api/Checkout/create-payment-link?cancelUrl=${cancelUrl}&returnUrl=${returnUrl}`,
-        payload
+      const response = await axiosInstance.post(
+        "/api/Checkout/create-payment-link",
+        payload,
+        {
+          params: {
+            cancelUrl: "http://localhost:3000/cart",
+            returnUrl: "http://localhost:3000/orderHistory",
+          },
+        }
       );
 
       if (response.status === 200 && response.data) {
         const paymentUrl = response.data;
-        // Redirect to the payment URL
         window.location.href = paymentUrl;
       }
     } catch (error) {
       toast.error("Thanh toán thất bại!", { autoClose: 2000 });
-      console.error("Payment Error:", error);
     }
   };
+
+  const handleClearSelectedOnCancel = () => {
+    if (
+      window.location.pathname === "/cart" &&
+      localStorage.getItem("cancelPayment")
+    ) {
+      localStorage.removeItem("selectedProducts");
+      localStorage.removeItem("cancelPayment");
+    }
+  };
+
+  useEffect(() => {
+    handleClearSelectedOnCancel();
+  }, []);
 
   return (
     <div className="container product-container">
       <div className="row bg-secondary py-2 text-center head-cart">
-        <div className="col-5 product-name">Sản phẩm</div>
-        <div className="col-2">Đơn Giá</div>
+        <div className="col-5 product-name text-center ">Sản phẩm</div>
+        <div className="col-3">Đơn Giá</div>
         <div className="col-2">Số Lượng</div>
         <div className="col-2">Số tiền</div>
       </div>
@@ -275,7 +290,7 @@ function Product({
         <div>{item.name}</div>
       </div>
 
-      <div className="col-2">{item.cost} vnd</div>
+      <div className="col-3">{item.cost} vnd</div>
 
       <div className="col-2">
         <div className="calc-count d-flex justify-content-center">

@@ -1,5 +1,6 @@
 import "./HomePage.css";
-import axios from "axios";
+import axiosInstance from "../axiosInstance";
+
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -28,7 +29,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchBlogData = async () => {
       try {
-        const res = await axios.get(
+        const res = await axiosInstance.get(
           "https://koicareapi.azurewebsites.net/api/Blog"
         );
         setBlogData(res.data);
@@ -108,8 +109,10 @@ function Products() {
   const productsPerPage = 4;
 
   useEffect(() => {
-    axios
-      .get("https://koicareapi.azurewebsites.net/api/Product")
+    axiosInstance
+      .get(
+        "https://koicareapi.azurewebsites.net/api/Product?page=1&pagesize=100"
+      )
       .then((response) => {
         setProducts(response.data);
         setLoading(false);
@@ -235,6 +238,7 @@ function Product({ productObj, onAddToCart }) {
     console.log(productObj);
     navigate(`/product/${productObj.id}`, { state: { product: productObj } });
   }
+
   return (
     <li>
       <div className="image_product">
@@ -242,7 +246,7 @@ function Product({ productObj, onAddToCart }) {
           src={productObj.image === "" ? koiFood : productObj.image}
           alt={productObj.name}
           onClick={handleClick}
-        ></img>
+        />
       </div>
       <div className="product_price">
         <p>{productObj.name}</p>
@@ -250,9 +254,18 @@ function Product({ productObj, onAddToCart }) {
       </div>
 
       <div>
-        <button className="product_btn" onClick={() => onAddToCart(productObj)}>
-          Add To Cart
-        </button>
+        {productObj.inStock === 0 ? (
+          <button className="product_btn out_of_stock" disabled>
+            Out of Stock
+          </button>
+        ) : (
+          <button
+            className="product_btn"
+            onClick={() => onAddToCart(productObj)}
+          >
+            Add To Cart
+          </button>
+        )}
       </div>
     </li>
   );

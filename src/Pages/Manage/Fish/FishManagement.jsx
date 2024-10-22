@@ -1,5 +1,6 @@
 import "./FishManagement.css";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 const FishManagement = () => {
@@ -30,7 +31,7 @@ const FishManagement = () => {
   }, [poolList]);
 
   const fetchFish = () => {
-    axios
+    axiosInstance
       .get("https://koicareapi.azurewebsites.net/api/Fish?page=1&pageSize=100")
       .then((res) => {
         // Filter fish based on the pools
@@ -48,7 +49,7 @@ const FishManagement = () => {
   };
 
   const fetchPoolsForMember = (memberId) => {
-    axios
+    axiosInstance
       .get("https://koicareapi.azurewebsites.net/api/Pool?page=1&pageSize=100")
       .then((res) => {
         // Filter pools based on the memberId
@@ -86,7 +87,7 @@ const FishManagement = () => {
 
   const deleteFish = (id) => {
     if (window.confirm("Are you sure you want to delete this fish?")) {
-      axios
+      axiosInstance
         .delete(`https://koicareapi.azurewebsites.net/api/Fish/Delete?id=${id}`)
         .then((response) => {
           if (response.status === 204) {

@@ -186,3 +186,22 @@ body {
   font-style: normal;
   text-decoration: none;
 }
+
+.sold-out {
+  color: #888;
+}
+
+.sold-out img {
+  filter: grayscale();
+  opacity: 0.8;
+}
+
+.product_btn.out_of_stock {
+  background-color: gray;
+  color: white;
+  cursor: not-allowed;
+}
+
+.product_btn.out_of_stock:hover {
+  background-color: #333;
+}

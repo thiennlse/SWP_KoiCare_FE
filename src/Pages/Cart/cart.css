@@ -58,10 +58,6 @@
   text-align: center;
 }
 
-.product-name {
-  text-align: justify;
-}
-
 .product-detail {
   text-align: justify;
   display: flex;
@@ -94,4 +90,8 @@
 .tick-all {
   display: flex;
   gap: 20px;
+}
+
+.product-name {
+  padding-right: 50px;
 }

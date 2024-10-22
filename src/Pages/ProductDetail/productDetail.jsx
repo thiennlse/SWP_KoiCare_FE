@@ -6,6 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 function ProductDetail() {
   const location = useLocation();
   const { product } = location.state;
+  console.log(product);
 
   const handleBuyNow = () => {
     const isLogin = localStorage.getItem("userId");
@@ -39,7 +40,7 @@ function ProductDetail() {
   return (
     <div className="page-container">
       <div className="product-wrapper">
-        <img src={img1} alt="Koi Food" />
+        <img src={product.image ? product.image : img1} alt="Koi Food" />
         <div className="product-details">
           <h2>{product.name}</h2>
           <p>{product.description}</p>
