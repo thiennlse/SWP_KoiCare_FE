@@ -1,5 +1,6 @@
 import "./AquariumManagement.css";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -21,7 +22,7 @@ const AquariumManagement = () => {
 
   // Fetch pools for a specific member
   const fetchPoolsForMember = (memberId) => {
-    axios
+    axiosInstance
       .get(
         "https://koicareapi.azurewebsites.net/api/Pool?page=1&pageSize=100",
         {
@@ -42,7 +43,7 @@ const AquariumManagement = () => {
   // Handle search query
   const handleSearch = () => {
     if (searchQuery.trim() !== "") {
-      axios
+      axiosInstance
         .get("https://koicareapi.azurewebsites.net/api/Pool", {
           params: {
             page: 1,
@@ -65,7 +66,7 @@ const AquariumManagement = () => {
 
   const deletePool = (id) => {
     if (window.confirm("Are you sure you want to delete this aquarium?")) {
-      axios
+      axiosInstance
         .delete(`https://koicareapi.azurewebsites.net/api/Pool/Delete?id=${id}`)
         .then((response) => {
           if (response.status === 204) {

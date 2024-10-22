@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "../axiosInstance";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -32,7 +32,7 @@ const CreateAquarium = () => {
 
     console.log("Data being sent:", aquariumData);
 
-    axios
+    axiosInstance
       .post("https://koicareapi.azurewebsites.net/api/Pool/add", aquariumData, {
         headers: {
           "Content-Type": "application/json",

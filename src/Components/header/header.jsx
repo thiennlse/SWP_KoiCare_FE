@@ -9,24 +9,22 @@ import Avatar, { genConfig } from "react-nice-avatar";
 import axios from "axios";
 
 function Header() {
-  // Mã cũ: Quản lý trạng thái người dùng và dropdown
   const [user, setUser] = useState("");
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [servicesDropdownVisible, setServicesDropdownVisible] = useState(false); // State for services dropdown
   const navigate = useNavigate();
 
-  // Mã cũ: Lấy thông tin từ localStorage
   const userId = localStorage.getItem("userId");
-  const role = JSON.parse(localStorage.getItem("role")); // Đảm bảo đúng định dạng
-  const config = genConfig({ sex: "man", hairStyle: "mohawk" }); // Avatar mặc định
+  const role = JSON.parse(localStorage.getItem("role"));
+  const config = genConfig({ sex: "man", hairStyle: "mohawk" });
 
   useEffect(() => {
-    // Mã cũ: Gọi API để lấy thông tin người dùng
     const fetchData = async () => {
       try {
         const res = await axios.get(
           `https://koicareapi.azurewebsites.net/api/Member/${userId}`
         );
-        setUser(res.data); // Lưu thông tin người dùng vào state
+        setUser(res.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -38,7 +36,6 @@ function Header() {
   }, [userId]);
 
   const handleLogout = () => {
-    // Mã cũ: Đăng xuất người dùng
     toast.success("Logout successful!", { autoClose: 1500 });
 
     localStorage.removeItem("token");
@@ -56,8 +53,11 @@ function Header() {
     setDropdownVisible(visible);
   };
 
+  const toggleServicesDropdown = (visible) => {
+    setServicesDropdownVisible(visible);
+  };
+
   const handleNavigation = (target) => {
-    // Mã mới: Điều hướng và cuộn trang mượt
     navigate("/home");
     setTimeout(() => {
       const element = document.getElementById(target);
@@ -70,12 +70,10 @@ function Header() {
   return (
     <header className="header">
       <div className="content">
-        {/* Logo */}
         <div className="header_logo">
           <img src={logo} width={148} height={100} alt="logo" />
         </div>
 
-        {/* Navigation */}
         <nav className="nav_links">
           <ul className="nav_list">
             <li>
@@ -83,6 +81,21 @@ function Header() {
             </li>
             <li>
               <a onClick={() => handleNavigation("products_scroll")}>Product</a>
+            </li>
+            <li
+              onMouseEnter={() => toggleServicesDropdown(true)} // Show dropdown on hover
+              onMouseLeave={() => toggleServicesDropdown(false)} // Hide dropdown on leave
+            >
+              <a className="services_link">Services</a>
+              {servicesDropdownVisible && (
+                <div className="nav_list ">
+                  <li className="services_menu">
+                    <a href="/calcFood">Calculate Food</a>
+                    <a href="/calculate-water">Calculate Water</a>
+                    <a href="/calcSalt">Calculate Salt</a>
+                  </li>
+                </div>
+              )}
             </li>
             <li>
               <a onClick={() => handleNavigation("contact_scroll")}>
@@ -94,7 +107,6 @@ function Header() {
             </li>
           </ul>
 
-          {/* Icons Section */}
           <div className="nav_icons_header">
             <div>
               <a href="/cart">
@@ -102,7 +114,6 @@ function Header() {
               </a>
             </div>
 
-            {/* Mã mới: Kiểm tra role và hiển thị avatar và thông tin người dùng */}
             {role === "Member" ? (
               <div className="user_info">
                 <span className="img_profile">
@@ -122,14 +133,16 @@ function Header() {
                   onMouseLeave={() => toggleDropdown(false)}
                 >
                   <span className="user_name" onClick={() => navigate("/")}>
-                    {role === "Member" ? user.fullName : "New Customer"}
+                    {role === "Member" && user.fullName
+                      ? user.fullName
+                      : "New Customer"}
                   </span>
 
                   {dropdownVisible && (
                     <div className="dropdown_menu">
                       <a href="/profile">My Account</a>
                       <a href="/aquariummanagement">Aquarium Management</a>
-                      <a href="fishmanagement">Koi Fish Management</a>
+                      <a href="/fishmanagement">Koi Fish Management</a>
                       <a href="/orderHistory">Order History</a>
                     </div>
                   )}
@@ -140,7 +153,6 @@ function Header() {
                 </span>
               </div>
             ) : (
-              // Nếu chưa đăng nhập, hiển thị biểu tượng đăng nhập
               <a href="/login">
                 <CgProfile className="icon_header" />
               </a>

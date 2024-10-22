@@ -144,3 +144,26 @@
   background-color: #f1f1f1;
   color: #333;
 }
+
+.services_menu {
+  position: absolute;
+  padding: 20px;
+
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.services_menu a {
+  position: relative;
+  display: block;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: black;
+  font-family: "Chilanka", system-ui;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+  font-size: 14px;
+}

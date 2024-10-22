@@ -1,5 +1,7 @@
 import "./CreateFish.css";
-import axios from "axios";
+
+import axiosInstance from "../axiosInstance";
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -32,7 +34,7 @@ const CreateFish = () => {
   }, [memberId]);
 
   const fetchPoolsForMember = (memberId) => {
-    axios
+    axiosInstance
       .get("https://koicareapi.azurewebsites.net/api/Pool?page=1&pageSize=100")
       .then((res) => {
         const memberPools = res.data.filter(
@@ -48,7 +50,7 @@ const CreateFish = () => {
   };
 
   const fetchFoods = () => {
-    axios
+    axiosInstance
       .get("https://koicareapi.azurewebsites.net/api/Food")
       .then((res) => {
         setFoods(res.data);
@@ -94,7 +96,7 @@ const CreateFish = () => {
 
     console.log("Data being sent to API:", newFish);
 
-    axios
+    axiosInstance
       .post("https://koicareapi.azurewebsites.net/api/Fish/add", newFish, {
         headers: {
           "Content-Type": "application/json",
