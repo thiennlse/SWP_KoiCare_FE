@@ -3,6 +3,12 @@ import axiosInstance from "../axiosInstance";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Manage_Admin.css";
+import Modal from "react-modal";
+import ProductForm from "./ProductForm";
+import ProductDetails from "./ProductDetails";
+import BlogForm from "./BlogForm";
+import BlogDetails from "./BlogDetails";
+Modal.setAppElement("#root");
 
 const ManageAdmin = () => {
   const [activeTab, setActiveTab] = useState("users");
@@ -14,6 +20,21 @@ const ManageAdmin = () => {
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [editProduct, setEditProduct] = useState(null);
   const [editBlog, setEditBlog] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+  const [modalType, setModalType] = useState("");
+
+  const openModal = (type, content = null) => {
+    setModalType(type);
+    setModalContent(content);
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+    setModalContent(null);
+    setModalContent(null);
+  };
 
   const [newProduct, setNewProduct] = useState({
     image: "",
@@ -312,6 +333,27 @@ const ManageAdmin = () => {
       });
   };
 
+  const renderModalContent = () => {
+    switch (modalType) {
+      case "createProduct":
+        return <ProductForm onSubmit={handleCreateProduct} />;
+      case "editProduct":
+        return (
+          <ProductForm product={modalContent} onSubmit={handleUpdateProduct} />
+        );
+      case "productDetails":
+        return modalContent ? <ProductDetails product={modalContent} /> : null;
+      case "createBlog":
+        return <BlogForm onSubmit={handleCreateBlog} />;
+      case "editBlog":
+        return <BlogForm blog={modalContent} onSubmit={handleUpdateBlog} />;
+      case "blogDetails":
+        return modalContent ? <BlogDetails blog={modalContent} /> : null;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="admin_dashboard">
       <header className="header-admin">
@@ -379,6 +421,9 @@ const ManageAdmin = () => {
           {activeTab === "products" && (
             <div className="card">
               <h3>Product Management</h3>
+              <button onClick={() => openModal("createProduct")}>
+                Create Product
+              </button>
               <ul className="list-group">
                 {products.map((product) => (
                   <li
@@ -392,13 +437,13 @@ const ManageAdmin = () => {
                     <div className="btn-group-admin" role="group">
                       <button
                         className="btn-admin btn-sm btn-outline-primary"
-                        onClick={() => handleEditProduct(product)}
+                        onClick={() => openModal("editProduct", product)}
                       >
                         Edit
                       </button>
                       <button
                         className="btn-admin btn-sm btn-outline-info"
-                        onClick={() => handleViewProductDetails(product)}
+                        onClick={() => openModal("productDetails", product)}
                       >
                         Details
                       </button>
@@ -623,6 +668,9 @@ const ManageAdmin = () => {
           {activeTab === "blogs" && (
             <div className="card">
               <h3>Blog Management</h3>
+              <button onClick={() => openModal("createBlog")}>
+                Create Blog
+              </button>
               <ul className="list-group">
                 {blogs.map((blog) => (
                   <li
@@ -635,13 +683,13 @@ const ManageAdmin = () => {
                     <div className="btn-group-admin" role="group">
                       <button
                         className="btn-admin btn-sm btn-outline-primary"
-                        onClick={() => handleEditBlog(blog)}
+                        onClick={() => openModal("editBlog", blog)}
                       >
                         Edit
                       </button>
                       <button
                         className="btn-admin btn-sm btn-outline-info"
-                        onClick={() => handleViewBlogDetails(blog)}
+                        onClick={() => openModal("blogDetails", blog)}
                       >
                         Details
                       </button>
@@ -806,6 +854,15 @@ const ManageAdmin = () => {
           )}
         </main>
       </div>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="Modal"
+        className="modal_admin"
+        overlayClassName="overlay_admin"
+      >
+        {renderModalContent()}
+      </Modal>
       <ToastContainer />
     </div>
   );
