@@ -16,10 +16,10 @@ const ManageAdmin = () => {
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [blogs, setBlogs] = useState([]);
-  const [selectedBlogId, setSelectedBlogId] = useState(null);
-  const [selectedProductId, setSelectedProductId] = useState(null);
-  const [editProduct, setEditProduct] = useState(null);
-  const [editBlog, setEditBlog] = useState(null);
+  // const [selectedBlogId, setSelectedBlogId] = useState(null);
+  // const [selectedProductId, setSelectedProductId] = useState(null);
+  // const [editProduct, setEditProduct] = useState(null);
+  // const [editBlog, setEditBlog] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [modalType, setModalType] = useState("");
@@ -125,9 +125,9 @@ const ManageAdmin = () => {
     });
   };
 
-  const handleEditProduct = (product) => {
-    setEditProduct(product);
-  };
+  // const handleEditProduct = (product) => {
+  //   setEditProduct(product);
+  // };
 
   const handleUpdateProduct = (blogData) => {
     axiosInstance
@@ -214,9 +214,9 @@ const ManageAdmin = () => {
       });
   };
 
-  const handleEditBlog = (blog) => {
-    setEditBlog(blog);
-  };
+  // const handleEditBlog = (blog) => {
+  //   setEditBlog(blog);
+  // };
 
   const handleUpdateBlog = (blogData) => {
     axiosInstance
@@ -428,211 +428,6 @@ const ManageAdmin = () => {
                   </li>
                 ))}
               </ul>
-
-              {/* {selectedProductId && (
-                <div className="product-details">
-                  {products
-                    .filter((product) => product.id === selectedProductId)
-                    .map((product) => (
-                      <div key={product.id} className="details-content-product">
-                        <h3>Product Details</h3> <hr />
-                        <h4>Name: {product.name}</h4>
-                        <p>
-                          Image:{" "}
-                          <img
-                            className="img-admin"
-                            src={product.image}
-                            alt={product.name}
-                          />
-                        </p>
-                        <p>Cost: {product.cost}</p>
-                        <p>Description: {product.description}</p>
-                        <p>Origin: {product.origin}</p>
-                        <p>Productivity: {product.productivitys}</p>
-                        <p>Code: {product.code}</p>
-                        <p>Stock: {product.inStock}</p>
-                        <button onClick={handleCloseProductDetails}>
-                          Close
-                        </button>
-                      </div>
-                    ))}
-                </div>
-              )} */}
-
-              {/* {editProduct && (
-                <>
-                  <h3>Edit Product</h3>
-                  <form onSubmit={handleUpdateProduct}>
-                    <input
-                      type="text"
-                      name="name"
-                      placeholder="Product Name"
-                      value={editProduct.name}
-                      onChange={(e) =>
-                        setEditProduct({ ...editProduct, name: e.target.value })
-                      }
-                      required
-                    />
-                    <input
-                      type="text"
-                      name="image"
-                      placeholder="Image URL"
-                      value={editProduct.image}
-                      onChange={(e) =>
-                        setEditProduct({
-                          ...editProduct,
-                          image: e.target.value,
-                        })
-                      }
-                      required
-                    />
-                    <input
-                      type="number"
-                      name="cost"
-                      placeholder="Cost"
-                      value={editProduct.cost}
-                      onChange={(e) =>
-                        setEditProduct({
-                          ...editProduct,
-                          cost: parseFloat(e.target.value),
-                        })
-                      }
-                      required
-                    />
-                    <input
-                      type="text"
-                      name="description"
-                      placeholder="Description"
-                      value={editProduct.description}
-                      onChange={(e) =>
-                        setEditProduct({
-                          ...editProduct,
-                          description: e.target.value,
-                        })
-                      }
-                      required
-                    />
-                    <input
-                      type="text"
-                      name="origin"
-                      placeholder="Origin"
-                      value={editProduct.origin}
-                      onChange={(e) =>
-                        setEditProduct({
-                          ...editProduct,
-                          origin: e.target.value,
-                        })
-                      }
-                      required
-                    />
-                    <input
-                      type="number"
-                      name="productivity"
-                      placeholder="Productivity"
-                      value={editProduct.productivity}
-                      onChange={(e) =>
-                        setEditProduct({
-                          ...editProduct,
-                          productivity: parseInt(e.target.value),
-                        })
-                      }
-                      required
-                    />
-                    <input
-                      type="text"
-                      name="code"
-                      placeholder="Product Code"
-                      value={editProduct.code}
-                      onChange={(e) =>
-                        setEditProduct({ ...editProduct, code: e.target.value })
-                      }
-                      required
-                    />
-                    <input
-                      type="number"
-                      name="inStock"
-                      placeholder="Stock"
-                      value={editProduct.inStock}
-                      onChange={(e) =>
-                        setEditProduct({
-                          ...editProduct,
-                          inStock: parseInt(e.target.value),
-                        })
-                      }
-                      required
-                    />
-                    <button type="submit">Update Product</button>
-                  </form>
-                </>
-              )} */}
-
-              {/* <h3>Add New Product</h3>
-              <form onSubmit={handleCreateProduct}>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Product Name"
-                  value={newProduct.name}
-                  onChange={handleProductChange}
-                  required
-                />
-                <input
-                  type="text"
-                  name="image"
-                  placeholder="Image URL"
-                  value={newProduct.image}
-                  onChange={handleProductChange}
-                />
-                <input
-                  type="number"
-                  name="cost"
-                  placeholder="Cost"
-                  value={newProduct.cost}
-                  onChange={handleProductChange}
-                  required
-                />
-                <input
-                  type="text"
-                  name="description"
-                  placeholder="Description"
-                  value={newProduct.description}
-                  onChange={handleProductChange}
-                  required
-                />
-                <input
-                  type="text"
-                  name="origin"
-                  placeholder="Origin"
-                  value={newProduct.origin}
-                  onChange={handleProductChange}
-                  required
-                />
-                <input
-                  type="number"
-                  name="productivity"
-                  placeholder="Productivity"
-                  value={newProduct.productivity}
-                  onChange={handleProductChange}
-                  required
-                />
-                <input
-                  type="text"
-                  name="code"
-                  placeholder="Product Code"
-                  value={newProduct.code}
-                  onChange={handleProductChange}
-                  required
-                />
-                <input
-                  type="number"
-                  name="inStock"
-                  placeholder="Stock"
-                  value={newProduct.inStock}
-                  onChange={handleProductChange}
-                  required
-                />
-                <button type="submit">Create Product</button>
-              </form> */}
             </div>
           )}
 
@@ -674,132 +469,6 @@ const ManageAdmin = () => {
                   </li>
                 ))}
               </ul>
-
-              {/* {selectedBlogId && (
-                <div className="blog-details">
-                  {blogs
-                    .filter((blog) => blog.id === selectedBlogId)
-                    .map((blog) => (
-                      <div key={blog.id} className="details-content-blog">
-                        <h3>Blog Details</h3> <hr />
-                        <h4>Title: {blog.title}</h4>
-                        <p>
-                          Image:{" "}
-                          <img
-                            className="img-admin"
-                            src={blog.image}
-                            alt={blog.title}
-                          />
-                        </p>
-                        <p>Content: {blog.content}</p>
-                        <p>Date of Publish: {blog.dateOfPublish}</p>
-                        <p>Status: {blog.status}</p>
-                        <button onClick={handleCloseBlogDetails}>Close</button>
-                      </div>
-                    ))}
-                </div>
-              )} */}
-
-              {/* <h3>Add New Blog</h3>
-              <form onSubmit={handleCreateBlog}>
-                <input
-                  type="text"
-                  name="title"
-                  placeholder="Blog Title"
-                  value={newBlog.title}
-                  onChange={handleBlogChange}
-                  required
-                />
-                <input
-                  type="text"
-                  name="image"
-                  placeholder="Image URL"
-                  value={newBlog.image}
-                  onChange={handleBlogChange}
-                />
-                <textarea
-                  name="content"
-                  placeholder="Blog Content"
-                  value={newBlog.content}
-                  onChange={handleBlogChange}
-                  required
-                />
-                <input
-                  type="date"
-                  name="dateOfPublish"
-                  value={newBlog.dateOfPublish.substring(0, 10)} // Ensure it's in YYYY-MM-DD format
-                  onChange={handleBlogChange}
-                  required
-                />
-                <input
-                  type="text"
-                  name="status"
-                  placeholder="Status"
-                  value={newBlog.status}
-                  onChange={handleBlogChange}
-                  required
-                />
-                <button type="submit">Create Blog</button>
-              </form> */}
-
-              {/* {editBlog && (
-                <>
-                  <h3>Edit Blog</h3>
-                  <form onSubmit={handleUpdateBlog}>
-                    <input
-                      type="text"
-                      name="title"
-                      placeholder="Blog Title"
-                      value={editBlog.title}
-                      onChange={(e) =>
-                        setEditBlog({ ...editBlog, title: e.target.value })
-                      }
-                      required
-                    />
-                    <input
-                      type="text"
-                      name="image"
-                      placeholder="Image URL"
-                      value={editBlog.image}
-                      onChange={(e) =>
-                        setEditBlog({ ...editBlog, image: e.target.value })
-                      }
-                    />
-                    <textarea
-                      name="content"
-                      placeholder="Blog Content"
-                      value={editBlog.content}
-                      onChange={(e) =>
-                        setEditBlog({ ...editBlog, content: e.target.value })
-                      }
-                      required
-                    />
-                    <input
-                      type="date"
-                      name="dateOfPublish"
-                      value={editBlog.dateOfPublish.substring(0, 10)}
-                      onChange={(e) =>
-                        setEditBlog({
-                          ...editBlog,
-                          dateOfPublish: e.target.value,
-                        })
-                      }
-                      required
-                    />
-                    <input
-                      type="text"
-                      name="status"
-                      placeholder="Status"
-                      value={editBlog.status}
-                      onChange={(e) =>
-                        setEditBlog({ ...editBlog, status: e.target.value })
-                      }
-                      required
-                    />
-                    <button type="submit">Update Blog</button>
-                  </form>
-                </>
-              )} */}
             </div>
           )}
 
