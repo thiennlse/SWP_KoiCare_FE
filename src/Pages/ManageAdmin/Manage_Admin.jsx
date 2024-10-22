@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../axiosInstance";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import the CSS for Toast notifications
 import "./Manage_Admin.css"; // CSS for styling
@@ -45,14 +45,14 @@ const ManageAdmin = () => {
   }, [token]);
 
   const fetchData = () => {
-    axios
+    axiosInstance
       .get("https://koicareapi.azurewebsites.net/api/Member", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setUsers(res.data))
       .catch((err) => console.error("Error fetching users:", err));
 
-    axios
+    axiosInstance
       .get(
         "https://koicareapi.azurewebsites.net/api/Product?page=1&pagesize=100",
         {
@@ -62,14 +62,14 @@ const ManageAdmin = () => {
       .then((res) => setProducts(res.data))
       .catch((err) => console.error("Error fetching products:", err));
 
-    axios
+    axiosInstance
       .get("https://koicareapi.azurewebsites.net/api/Order", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setOrders(res.data))
       .catch((err) => console.error("Error fetching orders:", err));
 
-    axios
+    axiosInstance
       .get(
         "https://koicareapi.azurewebsites.net/api/Blog?page=1&pageSize=100",
         {
@@ -119,7 +119,7 @@ const ManageAdmin = () => {
       userId: JSON.parse(localStorage.getItem("userId")) || 0, // Assuming userId is stored in localStorage
     };
 
-    axios
+    axiosInstance
       .patch(
         `https://koicareapi.azurewebsites.net/api/Product/update/${editProduct.id}`,
         updatedProduct,
@@ -139,7 +139,7 @@ const ManageAdmin = () => {
   };
 
   const handleDeleteProduct = (productId) => {
-    axios
+    axiosInstance
       .delete(
         `https://koicareapi.azurewebsites.net/api/Product/Delete?id=${productId}`,
         {
@@ -173,7 +173,7 @@ const ManageAdmin = () => {
       userId: JSON.parse(localStorage.getItem("userId")) || 0, // Assuming userId is stored in localStorage
     };
 
-    axios
+    axiosInstance
       .post(
         "https://koicareapi.azurewebsites.net/api/Product/add",
         updatedProduct,
@@ -218,7 +218,7 @@ const ManageAdmin = () => {
       memberId: JSON.parse(localStorage.getItem("userId")) || 0, // Assuming userId is stored in localStorage
     };
 
-    axios
+    axiosInstance
       .post("https://koicareapi.azurewebsites.net/api/Blog/add", updatedBlog, {
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -247,7 +247,7 @@ const ManageAdmin = () => {
   const handleUpdateBlog = (e) => {
     e.preventDefault();
     // Send the edited blog data to the API
-    axios
+    axiosInstance
       .patch(
         `https://koicareapi.azurewebsites.net/api/Blog/update/${editBlog.id}`,
         editBlog,
@@ -268,7 +268,7 @@ const ManageAdmin = () => {
 
   // Function to handle blog deletion
   const handleDeleteBlog = (blogId) => {
-    axios
+    axiosInstance
       .delete(
         `https://koicareapi.azurewebsites.net/api/Blog/delete?id=${blogId}`,
         {
@@ -303,7 +303,7 @@ const ManageAdmin = () => {
       status: order.status, // Cập nhật status mới
     };
 
-    axios
+    axiosInstance
       .patch(
         `https://koicareapi.azurewebsites.net/api/Order/update/${order.id}`,
         updatedOrder,
