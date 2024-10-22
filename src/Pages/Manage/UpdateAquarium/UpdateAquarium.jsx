@@ -1,8 +1,9 @@
 import "./UpdateAquarium.css";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const UpdateAquarium = () => {
   const { id } = useParams();
@@ -16,29 +17,29 @@ const UpdateAquarium = () => {
   });
 
   useEffect(() => {
-    axios
+    axiosInstance
       .get(`https://koicareapi.azurewebsites.net/api/Pool/${id}`)
       .then((response) => {
         setAquariumData(response.data);
       })
       .catch((error) => {
         console.error("Error fetching aquarium details:", error);
-        alert("Failed to load aquarium details.");
+        toast.error("Failed to load aquarium details.", { autoClose: 1500 });
       });
   }, [id]);
 
   const handleUpdate = (e) => {
     e.preventDefault();
     const updatedAquariumData = {
-      memberId: aquariumData.memberId,
+      memberId: aquariumData.id,
       name: aquariumData.name.trim(),
       size: Number(aquariumData.size),
       depth: Number(aquariumData.depth),
       description: aquariumData.description.trim(),
-      waterId: 1,
+      waterId: aquariumData.waterId,
     };
 
-    axios
+    axiosInstance
       .patch(
         `https://koicareapi.azurewebsites.net/api/Pool/update/${id}`,
         updatedAquariumData,
@@ -49,16 +50,21 @@ const UpdateAquarium = () => {
         }
       )
       .then((response) => {
-        alert("Aquarium updated successfully!");
+        toast.success("Aquarium updated successfully!", { autoClose: 1500 });
         navigate("/aquariummanagement");
       })
       .catch((error) => {
         if (error.response) {
           console.error("Error updating aquarium:", error.response.data);
-          alert(`Failed to update aquarium. Error: ${error.response.data}`);
+          toast.error(
+            `Failed to update aquarium. Error: ${error.response.data}`,
+            { autoClose: 1500 }
+          );
         } else {
           console.error("Error setting up request:", error.message);
-          alert(`Failed to update aquarium. Error: ${error.message}`);
+          toast.error(`Failed to update aquarium. Error: ${error.message}`, {
+            autoClose: 1500,
+          });
         }
       });
   };

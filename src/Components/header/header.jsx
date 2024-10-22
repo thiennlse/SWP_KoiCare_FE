@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./header.css";
 import logo from "../Assets/logo.png";
 import { CgProfile } from "react-icons/cg";
@@ -11,7 +11,7 @@ import axios from "axios";
 function Header() {
   const [user, setUser] = useState("");
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [servicesDropdownVisible, setServicesDropdownVisible] = useState(false); // State for services dropdown
+  const [servicesDropdownVisible, setServicesDropdownVisible] = useState(false);
   const navigate = useNavigate();
 
   const userId = localStorage.getItem("userId");
@@ -83,17 +83,16 @@ function Header() {
               <a onClick={() => handleNavigation("products_scroll")}>Product</a>
             </li>
             <li
-              onMouseEnter={() => toggleServicesDropdown(true)} // Show dropdown on hover
-              onMouseLeave={() => toggleServicesDropdown(false)} // Hide dropdown on leave
+              onMouseEnter={() => toggleServicesDropdown(true)}
+              onMouseLeave={() => toggleServicesDropdown(false)}
             >
               <a className="services_link">Services</a>
               {servicesDropdownVisible && (
                 <div className="nav_list ">
-                  <li className="services_menu">
-                    <a href="/calcFood">Calculate Food</a>
-                    <a href="/calculate-water">Calculate Water</a>
-                    <a href="/calcSalt">Calculate Salt</a>
-                  </li>
+                  <div className="services_menu">
+                    <Link to="/calcFood">Calculate Food</Link>
+                    <Link to="/calcSalt">Calculate Salt</Link>
+                  </div>
                 </div>
               )}
             </li>
@@ -132,7 +131,7 @@ function Header() {
                   onMouseEnter={() => toggleDropdown(true)}
                   onMouseLeave={() => toggleDropdown(false)}
                 >
-                  <span className="user_name" onClick={() => navigate("/")}>
+                  <span className="user_name">
                     {role === "Member" && user.fullName
                       ? user.fullName
                       : "New Customer"}
@@ -140,10 +139,12 @@ function Header() {
 
                   {dropdownVisible && (
                     <div className="dropdown_menu">
-                      <a href="/profile">My Account</a>
-                      <a href="/aquariummanagement">Aquarium Management</a>
-                      <a href="/fishmanagement">Koi Fish Management</a>
-                      <a href="/orderHistory">Order History</a>
+                      <Link to="/profile">Profile Information</Link>
+
+                      <Link to="/aquariummanagement">Aquarium Management</Link>
+                      <Link to="/water">Water Management</Link>
+                      <Link to="/fishmanagement">Koi Fish Management</Link>
+                      <Link to="/orderHistory">Order History</Link>
                     </div>
                   )}
                 </div>

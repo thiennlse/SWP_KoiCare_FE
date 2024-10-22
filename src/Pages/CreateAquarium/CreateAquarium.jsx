@@ -1,14 +1,14 @@
 import axiosInstance from "../axiosInstance";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const CreateAquarium = () => {
-  // Retrieve the logged-in user's info from localStorage
   const userId = JSON.parse(localStorage.getItem("userId"));
-  const memberId = userId ? userId : 1; // Default to 1 if not found
+  const memberId = userId ? userId : 1;
 
   const [aquarium, setAquarium] = useState({
-    memberId: memberId, // Set memberId to the logged-in user's id
+    memberId: memberId,
     name: "",
     size: 0,
     depth: 0,
@@ -22,12 +22,10 @@ const CreateAquarium = () => {
     e.preventDefault();
 
     const aquariumData = {
-      memberId: aquarium.memberId, // Ensure we're using the correct memberId
       name: aquarium.name.trim(),
       size: Number(aquarium.size),
       depth: Number(aquarium.depth),
       description: aquarium.description.trim(),
-      waterId: 1,
     };
 
     console.log("Data being sent:", aquariumData);
@@ -40,19 +38,20 @@ const CreateAquarium = () => {
       })
       .then((response) => {
         console.log("Aquarium created successfully:", response.data);
-        alert("Aquarium created successfully!");
-        navigate("/aquariummanagement"); // Navigate to the management page
+        toast.success("Aquarium created successfully!", { autoClose: 1500 });
+        navigate("/aquariummanagement");
       })
       .catch((error) => {
         console.error("Error response:", error.response.data);
-        alert(`Failed to create aquarium. Status: ${error.response.status}`);
+        toast.error(
+          `Failed to create aquarium. Status: ${error.response.status}`,
+          { autoClose: 1500 }
+        );
       });
   };
 
   const handleCancel = () => {
-    // Navigate back to the aquarium management page
     navigate("/aquariummanagement");
-    // Optionally reset the state
     setAquarium({
       memberId: memberId,
       name: "",
