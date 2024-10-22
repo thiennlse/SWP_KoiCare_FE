@@ -293,6 +293,34 @@ const ManageAdmin = () => {
     setSelectedBlogId(null); // Đặt lại state
   };
 
+  const handleStatusChange = (order) => {
+    const updatedOrder = {
+      productId: order.productId || [], // Duy trì danh sách productId
+      totalCost: order.totalCost || 0, // Cần truyền totalCost
+      closeDate: order.closeDate || new Date().toISOString(), // Cần truyền closeDate
+      code: order.code || "", // Cần truyền code
+      description: order.description || "", // Cần truyền description
+      status: order.status, // Cập nhật status mới
+    };
+
+    axios
+      .patch(
+        `https://koicareapi.azurewebsites.net/api/Order/update/${order.id}`,
+        updatedOrder,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((res) => {
+        toast.success("Order status updated successfully!");
+        fetchData(); // Fetch updated orders
+      })
+      .catch((err) => {
+        console.error("Error updating order status:", err);
+        toast.error("Failed to update order status.");
+      });
+  };
+
   return (
     <div className="admin_dashboard">
       <header className="header-admin">
@@ -738,6 +766,14 @@ const ManageAdmin = () => {
                 {orders.map((order) => (
                   <li key={order.id}>
                     Order #{order.id} - Status: {order.status}
+                    <select
+                      value={order.status}
+                      onChange={(e) => handleStatusChange(order)}
+                    >
+                      <option value="paid">Thanh toán</option>
+                      <option value="shipping">Đang giao</option>
+                      <option value="delivered">Đã giao</option>
+                    </select>
                   </li>
                 ))}
               </ul>
