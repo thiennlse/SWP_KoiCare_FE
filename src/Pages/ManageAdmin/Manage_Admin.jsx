@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../axiosInstance";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import the CSS for Toast notifications
-import "./Manage_Admin.css"; // CSS for styling
+import "react-toastify/dist/ReactToastify.css";
+import "./Manage_Admin.css";
 
 const ManageAdmin = () => {
   const [activeTab, setActiveTab] = useState("users");
@@ -15,7 +15,6 @@ const ManageAdmin = () => {
   const [editProduct, setEditProduct] = useState(null);
   const [editBlog, setEditBlog] = useState(null);
 
-  // New states for creating a product
   const [newProduct, setNewProduct] = useState({
     image: "",
     userId: 0,
@@ -28,7 +27,6 @@ const ManageAdmin = () => {
     inStock: 0,
   });
 
-  // States for creating and editing blogs
   const [newBlog, setNewBlog] = useState({
     memberId: 0,
     title: "",
@@ -96,10 +94,9 @@ const ManageAdmin = () => {
   };
 
   const handleBackToHome = () => {
-    window.location.href = "/home"; // Redirect to homepage
+    window.location.href = "/home";
   };
 
-  // Handle changes to product input fields
   const handleProductChange = (e) => {
     setNewProduct({
       ...newProduct,
@@ -108,7 +105,7 @@ const ManageAdmin = () => {
   };
 
   const handleEditProduct = (product) => {
-    setEditProduct(product); // Set the product to be edited
+    setEditProduct(product);
   };
 
   const handleUpdateProduct = (e) => {
@@ -116,7 +113,7 @@ const ManageAdmin = () => {
 
     const updatedProduct = {
       ...editProduct,
-      userId: JSON.parse(localStorage.getItem("userId")) || 0, // Assuming userId is stored in localStorage
+      userId: JSON.parse(localStorage.getItem("userId")) || 0,
     };
 
     axiosInstance
@@ -129,8 +126,8 @@ const ManageAdmin = () => {
       )
       .then((res) => {
         toast.success("Product updated successfully!");
-        fetchData(); // Fetch updated products
-        setEditProduct(null); // Clear the edit state
+        fetchData();
+        setEditProduct(null);
       })
       .catch((err) => {
         console.error("Error updating product:", err);
@@ -148,7 +145,7 @@ const ManageAdmin = () => {
       )
       .then((res) => {
         toast.success("Product deleted successfully!");
-        fetchData(); // Fetch updated products after deletion
+        fetchData();
       })
       .catch((err) => {
         console.error("Error deleting product:", err);
@@ -157,20 +154,19 @@ const ManageAdmin = () => {
   };
 
   const handleViewProductDetails = (product) => {
-    setSelectedProductId(product.id); // Lưu blog được chọn vào state
+    setSelectedProductId(product.id);
   };
 
   const handleCloseProductDetails = () => {
-    setSelectedProductId(null); // Đặt lại state
+    setSelectedProductId(null);
   };
 
-  // Handle product creation
   const handleCreateProduct = (e) => {
     e.preventDefault();
 
     const updatedProduct = {
       ...newProduct,
-      userId: JSON.parse(localStorage.getItem("userId")) || 0, // Assuming userId is stored in localStorage
+      userId: JSON.parse(localStorage.getItem("userId")) || 0,
     };
 
     axiosInstance
@@ -183,7 +179,7 @@ const ManageAdmin = () => {
       )
       .then((res) => {
         toast.success("Product created successfully!");
-        fetchData(); // Fetch updated products
+        fetchData();
         setNewProduct({
           image: "",
           userId: 0,
@@ -202,7 +198,6 @@ const ManageAdmin = () => {
       });
   };
 
-  // Handle blog input changes
   const handleBlogChange = (e) => {
     setNewBlog({
       ...newBlog,
@@ -212,10 +207,9 @@ const ManageAdmin = () => {
 
   const handleCreateBlog = (e) => {
     e.preventDefault();
-    // Make sure memberId is set to the logged-in user's ID
     const updatedBlog = {
       ...newBlog,
-      memberId: JSON.parse(localStorage.getItem("userId")) || 0, // Assuming userId is stored in localStorage
+      memberId: JSON.parse(localStorage.getItem("userId")) || 0,
     };
 
     axiosInstance
@@ -224,7 +218,7 @@ const ManageAdmin = () => {
       })
       .then((res) => {
         toast.success("Blog created successfully!");
-        fetchData(); // Fetch updated blogs
+        fetchData();
         setNewBlog({
           memberId: 0,
           title: "",
@@ -239,14 +233,12 @@ const ManageAdmin = () => {
       });
   };
 
-  // Handle editing an existing blog
   const handleEditBlog = (blog) => {
-    setEditBlog(blog); // Set the blog to be edited
+    setEditBlog(blog);
   };
 
   const handleUpdateBlog = (e) => {
     e.preventDefault();
-    // Send the edited blog data to the API
     axiosInstance
       .patch(
         `https://koicareapi.azurewebsites.net/api/Blog/update/${editBlog.id}`,
@@ -257,8 +249,8 @@ const ManageAdmin = () => {
       )
       .then((res) => {
         toast.success("Blog updated successfully!");
-        fetchData(); // Fetch updated blogs
-        setEditBlog(null); // Clear the edit state
+        fetchData();
+        setEditBlog(null);
       })
       .catch((err) => {
         console.error("Error updating blog:", err);
@@ -266,7 +258,6 @@ const ManageAdmin = () => {
       });
   };
 
-  // Function to handle blog deletion
   const handleDeleteBlog = (blogId) => {
     axiosInstance
       .delete(
@@ -277,7 +268,7 @@ const ManageAdmin = () => {
       )
       .then((res) => {
         toast.success("Blog deleted successfully!");
-        fetchData(); // Fetch updated blogs after deletion
+        fetchData();
       })
       .catch((err) => {
         console.error("Error deleting blog:", err);
@@ -286,21 +277,21 @@ const ManageAdmin = () => {
   };
 
   const handleViewBlogDetails = (blog) => {
-    setSelectedBlogId(blog.id); // Lưu blog được chọn vào state
+    setSelectedBlogId(blog.id);
   };
 
   const handleCloseBlogDetails = () => {
-    setSelectedBlogId(null); // Đặt lại state
+    setSelectedBlogId(null);
   };
 
   const handleStatusChange = (order) => {
     const updatedOrder = {
-      productId: order.productId || [], // Duy trì danh sách productId
-      totalCost: order.totalCost || 0, // Cần truyền totalCost
-      closeDate: order.closeDate || new Date().toISOString(), // Cần truyền closeDate
-      code: order.code || "", // Cần truyền code
-      description: order.description || "", // Cần truyền description
-      status: order.status, // Cập nhật status mới
+      productId: order.productId || [],
+      totalCost: order.totalCost || 0,
+      closeDate: order.closeDate || new Date().toISOString(),
+      code: order.code || "",
+      description: order.description || "",
+      status: order.status,
     };
 
     axiosInstance
@@ -313,7 +304,7 @@ const ManageAdmin = () => {
       )
       .then((res) => {
         toast.success("Order status updated successfully!");
-        fetchData(); // Fetch updated orders
+        fetchData();
       })
       .catch((err) => {
         console.error("Error updating order status:", err);
@@ -388,20 +379,36 @@ const ManageAdmin = () => {
           {activeTab === "products" && (
             <div className="card">
               <h3>Product Management</h3>
-              <ul>
+              <ul className="list-group">
                 {products.map((product) => (
-                  <li key={product.id}>
+                  <li
+                    key={product.id}
+                    className="list-group-item d-flex justify-content-between align-items-center"
+                  >
                     {product.title}
-                    {product.name} - ${product.cost}
-                    <button onClick={() => handleEditProduct(product)}>
-                      Edit
-                    </button>
-                    <button onClick={() => handleViewProductDetails(product)}>
-                      Details
-                    </button>
-                    <button onClick={() => handleDeleteProduct(product.id)}>
-                      Delete
-                    </button>
+                    <span>
+                      {product.name} - ${product.cost} - {product.description}
+                    </span>
+                    <div className="btn-group-admin" role="group">
+                      <button
+                        className="btn-admin btn-sm btn-outline-primary"
+                        onClick={() => handleEditProduct(product)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn-admin btn-sm btn-outline-info"
+                        onClick={() => handleViewProductDetails(product)}
+                      >
+                        Details
+                      </button>
+                      <button
+                        className="btn-admin btn-sm btn-outline-danger"
+                        onClick={() => handleDeleteProduct(product.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </li>
                 ))}
               </ul>
@@ -616,17 +623,35 @@ const ManageAdmin = () => {
           {activeTab === "blogs" && (
             <div className="card">
               <h3>Blog Management</h3>
-              <ul>
+              <ul className="list-group">
                 {blogs.map((blog) => (
-                  <li key={blog.id}>
-                    {blog.title}
-                    <button onClick={() => handleEditBlog(blog)}>Edit</button>
-                    <button onClick={() => handleViewBlogDetails(blog)}>
-                      Details
-                    </button>
-                    <button onClick={() => handleDeleteBlog(blog.id)}>
-                      Delete
-                    </button>
+                  <li
+                    key={blog.id}
+                    className="list-group-item d-flex justify-content-between align-items-center"
+                  >
+                    <span>
+                      {blog.title} - {blog.content}
+                    </span>
+                    <div className="btn-group-admin" role="group">
+                      <button
+                        className="btn-admin btn-sm btn-outline-primary"
+                        onClick={() => handleEditBlog(blog)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn-admin btn-sm btn-outline-info"
+                        onClick={() => handleViewBlogDetails(blog)}
+                      >
+                        Details
+                      </button>
+                      <button
+                        className="btn-admin btn-sm btn-outline-danger"
+                        onClick={() => handleDeleteBlog(blog.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </li>
                 ))}
               </ul>

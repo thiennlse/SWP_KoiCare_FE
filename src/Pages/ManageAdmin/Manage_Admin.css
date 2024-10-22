@@ -1,4 +1,3 @@
-/* Tổng thể layout */
 .admin_dashboard {
   display: flex;
   height: 100vh;
@@ -6,10 +5,9 @@
   flex-direction: column;
 }
 
-/* Header cố định */
 .header-admin {
   display: flex;
-  justify-content: flex-end; /* This will move the Logout button to the right */
+  justify-content: flex-end;
   align-items: center;
   background-color: #ffffff;
   padding: 5px 15px;
@@ -22,7 +20,6 @@
   z-index: 1000;
 }
 
-/* Main content chứa Sidebar và Nội dung */
 .main_content_admin {
   display: flex;
   flex-grow: 1;
@@ -31,10 +28,9 @@
 }
 
 .profile {
-  margin-bottom: 50px; /* Add space between profile and nav menu */
+  margin-bottom: 50px;
 }
 
-/* Sidebar */
 .sidebar-admin {
   width: 250px;
   background-color: #1e407c;
@@ -42,14 +38,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0; /* Remove extra padding */
-  margin: 0; /* Remove margin */
+  padding: 0;
+  margin: 0;
   overflow-y: auto;
-  height: 100vh; /* Full height of the viewport */
-  position: fixed; /* Fix to the left side of the page */
-  top: 0; /* Align with the top of the page */
-  left: 0; /* Align with the left of the page */
-  padding-top: 20px; /* Add some space at the top */
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 20px;
 }
 
 .nav_admin ul {
@@ -89,13 +85,12 @@
   border-radius: 8px;
 }
 
-/* Nội dung chính */
 .content_admin {
   flex-grow: 1;
   padding: 30px;
   overflow-y: auto;
-  margin-top: 50px; /* Align content below the header */
-  margin-left: 250px; /* Adjust content to start after sidebar */
+  margin-top: 50px;
+  margin-left: 250px;
 }
 
 .content_admin ul {
@@ -114,7 +109,6 @@
   align-items: center;
 }
 
-/* Styles cho các nút */
 .content_admin button {
   background-color: #1e407c;
   color: white;
@@ -129,7 +123,6 @@
   background-color: #15305d;
 }
 
-/* Styles cho form */
 .content_admin form {
   display: flex;
   flex-direction: column;
@@ -144,7 +137,6 @@
   border-radius: 4px;
 }
 
-/* Card */
 .card_admin {
   background-color: white;
   border-radius: 8px;
@@ -153,7 +145,6 @@
   margin-bottom: 20px;
 }
 
-/* Chỉnh khoảng cách giữa các phần tử */
 .card_admin h3 {
   color: #333;
   font-size: 1.5rem;
@@ -197,6 +188,18 @@ ul {
   height: auto;
   border-radius: 4px;
   margin-bottom: 10px;
+}
+
+.list-group-item {
+  transition: background-color 0.3s ease;
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa;
+}
+
+.btn-group-admin .btn-admin {
+  margin-left: 5px;
 }
 
 /* .overlay {
