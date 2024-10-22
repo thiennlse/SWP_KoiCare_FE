@@ -1,76 +1,108 @@
 import React, { useState, useEffect } from "react";
+// import "./BlogForm.css";
 
-const BlogForm = ({ blog, onSubmit }) => {
+const BlogForm = ({ blog, onSubmit, closeModal }) => {
   const [formData, setFormData] = useState({
+    memberId: 0,
     title: "",
     image: "",
     content: "",
-    dateOfPubl: "",
-    author: "",
+    dateOfPublish: new Date().toISOString().split("T")[0],
+    status: "",
   });
 
   useEffect(() => {
     if (blog) {
-      setFormData(blog);
+      setFormData({
+        ...blog,
+        dateOfPublish: blog.dateOfPublish.split("T")[0],
+      });
     }
   }, [blog]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    const submitData = {
+      ...formData,
+      memberId: JSON.parse(localStorage.getItem("userId")) || 0,
+    };
+    onSubmit(submitData);
+    if (closeModal) closeModal();
   };
 
   return (
-    <form onSubmit={handleSubmit} className="blog-form">
-      <h2>{blog ? "Edit Blog" : "Create Blog"}</h2>
-      <input
-        type="text"
-        name="title"
-        value={formData.title}
-        onChange={handleChange}
-        placeholder="Blog Title"
-        required
-      />
-      <input
-        type="text"
-        name="image"
-        value={formData.image}
-        onChange={handleChange}
-        placeholder="Image URL"
-      />
-      <textarea
-        name="content"
-        value={formData.content}
-        onChange={handleChange}
-        placeholder="Blog Content"
-        required
-      ></textarea>
-      <input
-        type="date"
-        name="dateOfPubl"
-        value={formData.dateOfPubl}
-        onChange={handleChange}
-        placeholder="Date of Publication"
-        required
-      />
-      <input
-        type="text"
-        name="author"
-        value={formData.author}
-        onChange={handleChange}
-        placeholder="Author"
-        required
-      />
-      <button type="submit">{blog ? "Update Blog" : "Create Blog"}</button>
-    </form>
+    <div className="blog-form-container">
+      <h3>{blog ? "Edit Blog" : "Create New Blog"}</h3>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Title:</label>
+          <input
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Image URL:</label>
+          <input
+            type="text"
+            name="image"
+            value={formData.image}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Content:</label>
+          <textarea
+            name="content"
+            value={formData.content}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Date of Publish:</label>
+          <input
+            type="date"
+            name="dateOfPublish"
+            value={formData.dateOfPublish}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Status:</label>
+          <input
+            type="text"
+            name="status"
+            value={formData.status}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="button-group">
+          <button type="submit">{blog ? "Update Blog" : "Create Blog"}</button>
+          <button type="button" onClick={closeModal}>
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };
 

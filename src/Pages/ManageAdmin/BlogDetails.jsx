@@ -4,7 +4,7 @@ const BlogDetails = ({ blog }) => {
   return (
     <div className="blog-details">
       <h2>Blog Details</h2>
-      <img src={blog.image} alt={blog.title} className="blog-image" />
+      <img src={blog.image} alt={blog.title} className="blog-image-admin" />
       <p>
         <strong>Title:</strong> {blog.title}
       </p>

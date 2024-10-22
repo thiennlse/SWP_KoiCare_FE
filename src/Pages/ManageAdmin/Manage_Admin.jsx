@@ -129,18 +129,11 @@ const ManageAdmin = () => {
     setEditProduct(product);
   };
 
-  const handleUpdateProduct = (e) => {
-    e.preventDefault();
-
-    const updatedProduct = {
-      ...editProduct,
-      userId: JSON.parse(localStorage.getItem("userId")) || 0,
-    };
-
+  const handleUpdateProduct = (blogData) => {
     axiosInstance
       .patch(
-        `https://koicareapi.azurewebsites.net/api/Product/update/${editProduct.id}`,
-        updatedProduct,
+        `https://koicareapi.azurewebsites.net/api/Product/update/${blogData.id}`,
+        blogData,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -148,7 +141,7 @@ const ManageAdmin = () => {
       .then((res) => {
         toast.success("Product updated successfully!");
         fetchData();
-        setEditProduct(null);
+        closeModal();
       })
       .catch((err) => {
         console.error("Error updating product:", err);
@@ -174,44 +167,23 @@ const ManageAdmin = () => {
       });
   };
 
-  const handleViewProductDetails = (product) => {
-    setSelectedProductId(product.id);
-  };
+  // const handleViewProductDetails = (product) => {
+  //   setSelectedProductId(product.id);
+  // };
 
-  const handleCloseProductDetails = () => {
-    setSelectedProductId(null);
-  };
+  // const handleCloseProductDetails = () => {
+  //   setSelectedProductId(null);
+  // };
 
-  const handleCreateProduct = (e) => {
-    e.preventDefault();
-
-    const updatedProduct = {
-      ...newProduct,
-      userId: JSON.parse(localStorage.getItem("userId")) || 0,
-    };
-
+  const handleCreateProduct = (blogData) => {
     axiosInstance
-      .post(
-        "https://koicareapi.azurewebsites.net/api/Product/add",
-        updatedProduct,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
+      .post("https://koicareapi.azurewebsites.net/api/Product/add", blogData, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         toast.success("Product created successfully!");
         fetchData();
-        setNewProduct({
-          image: "",
-          userId: 0,
-          name: "",
-          cost: 0,
-          description: "",
-          origin: "",
-          productivity: 0,
-          code: "",
-          inStock: 0,
-        });
+        closeModal();
       })
       .catch((err) => {
         console.error("Error creating product:", err);
@@ -226,27 +198,15 @@ const ManageAdmin = () => {
     });
   };
 
-  const handleCreateBlog = (e) => {
-    e.preventDefault();
-    const updatedBlog = {
-      ...newBlog,
-      memberId: JSON.parse(localStorage.getItem("userId")) || 0,
-    };
-
+  const handleCreateBlog = (blogData) => {
     axiosInstance
-      .post("https://koicareapi.azurewebsites.net/api/Blog/add", updatedBlog, {
+      .post("https://koicareapi.azurewebsites.net/api/Blog/add", blogData, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
         toast.success("Blog created successfully!");
         fetchData();
-        setNewBlog({
-          memberId: 0,
-          title: "",
-          content: "",
-          dateOfPublish: new Date().toISOString(),
-          status: "",
-        });
+        closeModal();
       })
       .catch((err) => {
         console.error("Error creating blog:", err);
@@ -258,12 +218,11 @@ const ManageAdmin = () => {
     setEditBlog(blog);
   };
 
-  const handleUpdateBlog = (e) => {
-    e.preventDefault();
+  const handleUpdateBlog = (blogData) => {
     axiosInstance
       .patch(
-        `https://koicareapi.azurewebsites.net/api/Blog/update/${editBlog.id}`,
-        editBlog,
+        `https://koicareapi.azurewebsites.net/api/Blog/update/${blogData.id}`,
+        blogData,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -271,7 +230,7 @@ const ManageAdmin = () => {
       .then((res) => {
         toast.success("Blog updated successfully!");
         fetchData();
-        setEditBlog(null);
+        closeModal();
       })
       .catch((err) => {
         console.error("Error updating blog:", err);
@@ -297,13 +256,13 @@ const ManageAdmin = () => {
       });
   };
 
-  const handleViewBlogDetails = (blog) => {
-    setSelectedBlogId(blog.id);
-  };
+  // const handleViewBlogDetails = (blog) => {
+  //   setSelectedBlogId(blog.id);
+  // };
 
-  const handleCloseBlogDetails = () => {
-    setSelectedBlogId(null);
-  };
+  // const handleCloseBlogDetails = () => {
+  //   setSelectedBlogId(null);
+  // };
 
   const handleStatusChange = (order) => {
     const updatedOrder = {
@@ -336,17 +295,29 @@ const ManageAdmin = () => {
   const renderModalContent = () => {
     switch (modalType) {
       case "createProduct":
-        return <ProductForm onSubmit={handleCreateProduct} />;
+        return (
+          <ProductForm onSubmit={handleCreateProduct} closeModal={closeModal} />
+        );
       case "editProduct":
         return (
-          <ProductForm product={modalContent} onSubmit={handleUpdateProduct} />
+          <ProductForm
+            product={modalContent}
+            onSubmit={handleUpdateProduct}
+            closeModal={closeModal}
+          />
         );
       case "productDetails":
         return modalContent ? <ProductDetails product={modalContent} /> : null;
       case "createBlog":
-        return <BlogForm onSubmit={handleCreateBlog} />;
+        return <BlogForm onSubmit={handleCreateBlog} closeModal={closeModal} />;
       case "editBlog":
-        return <BlogForm blog={modalContent} onSubmit={handleUpdateBlog} />;
+        return (
+          <BlogForm
+            blog={modalContent}
+            onSubmit={handleUpdateBlog}
+            closeModal={closeModal}
+          />
+        );
       case "blogDetails":
         return modalContent ? <BlogDetails blog={modalContent} /> : null;
       default:
@@ -458,7 +429,7 @@ const ManageAdmin = () => {
                 ))}
               </ul>
 
-              {selectedProductId && (
+              {/* {selectedProductId && (
                 <div className="product-details">
                   {products
                     .filter((product) => product.id === selectedProductId)
@@ -486,9 +457,9 @@ const ManageAdmin = () => {
                       </div>
                     ))}
                 </div>
-              )}
+              )} */}
 
-              {editProduct && (
+              {/* {editProduct && (
                 <>
                   <h3>Edit Product</h3>
                   <form onSubmit={handleUpdateProduct}>
@@ -593,9 +564,9 @@ const ManageAdmin = () => {
                     <button type="submit">Update Product</button>
                   </form>
                 </>
-              )}
+              )} */}
 
-              <h3>Add New Product</h3>
+              {/* <h3>Add New Product</h3>
               <form onSubmit={handleCreateProduct}>
                 <input
                   type="text"
@@ -661,7 +632,7 @@ const ManageAdmin = () => {
                   required
                 />
                 <button type="submit">Create Product</button>
-              </form>
+              </form> */}
             </div>
           )}
 
@@ -704,7 +675,7 @@ const ManageAdmin = () => {
                 ))}
               </ul>
 
-              {selectedBlogId && (
+              {/* {selectedBlogId && (
                 <div className="blog-details">
                   {blogs
                     .filter((blog) => blog.id === selectedBlogId)
@@ -727,9 +698,9 @@ const ManageAdmin = () => {
                       </div>
                     ))}
                 </div>
-              )}
+              )} */}
 
-              <h3>Add New Blog</h3>
+              {/* <h3>Add New Blog</h3>
               <form onSubmit={handleCreateBlog}>
                 <input
                   type="text"
@@ -769,9 +740,9 @@ const ManageAdmin = () => {
                   required
                 />
                 <button type="submit">Create Blog</button>
-              </form>
+              </form> */}
 
-              {editBlog && (
+              {/* {editBlog && (
                 <>
                   <h3>Edit Blog</h3>
                   <form onSubmit={handleUpdateBlog}>
@@ -828,7 +799,7 @@ const ManageAdmin = () => {
                     <button type="submit">Update Blog</button>
                   </form>
                 </>
-              )}
+              )} */}
             </div>
           )}
 

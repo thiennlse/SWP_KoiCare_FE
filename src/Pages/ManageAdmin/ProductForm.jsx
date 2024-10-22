@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-const ProductForm = ({ product, onSubmit }) => {
+const ProductForm = ({ product, onSubmit, closeModal }) => {
   const [formData, setFormData] = useState({
-    name: "",
     image: "",
+    userId: 0,
+    name: "",
     cost: 0,
     description: "",
     origin: "",
@@ -14,95 +15,125 @@ const ProductForm = ({ product, onSubmit }) => {
 
   useEffect(() => {
     if (product) {
-      setFormData(product);
+      setFormData({
+        ...product,
+      });
     }
   }, [product]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]:
-        name === "cost" || name === "productivity" || name === "inStock"
-          ? parseFloat(value)
-          : value,
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    const submitData = {
+      ...formData,
+      memberId: JSON.parse(localStorage.getItem("userId")) || 0,
+    };
+    onSubmit(submitData);
+    if (closeModal) closeModal();
   };
 
   return (
-    <form onSubmit={handleSubmit} className="product-form">
-      <h2>{product ? "Edit Product" : "Create Product"}</h2>
-      <input
-        type="text"
-        name="name"
-        value={formData.name}
-        onChange={handleChange}
-        placeholder="Product Name"
-        required
-      />
-      <input
-        type="text"
-        name="image"
-        value={formData.image}
-        onChange={handleChange}
-        placeholder="Image URL"
-      />
-      <input
-        type="number"
-        name="cost"
-        value={formData.cost}
-        onChange={handleChange}
-        placeholder="Cost"
-        required
-      />
-      <textarea
-        name="description"
-        value={formData.description}
-        onChange={handleChange}
-        placeholder="Description"
-        required
-      ></textarea>
-      <input
-        type="text"
-        name="origin"
-        value={formData.origin}
-        onChange={handleChange}
-        placeholder="Origin"
-        required
-      />
-      <input
-        type="number"
-        name="productivity"
-        value={formData.productivity}
-        onChange={handleChange}
-        placeholder="Productivity"
-        required
-      />
-      <input
-        type="text"
-        name="code"
-        value={formData.code}
-        onChange={handleChange}
-        placeholder="Product Code"
-        required
-      />
-      <input
-        type="number"
-        name="inStock"
-        value={formData.inStock}
-        onChange={handleChange}
-        placeholder="In Stock"
-        required
-      />
-      <button type="submit">
-        {product ? "Update Product" : "Create Product"}
-      </button>
-    </form>
+    <div className="product-form-container">
+      <h3>{product ? "Edit Product" : "Create New Product"}</h3>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Name:</label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Image URL:</label>
+          <input
+            type="text"
+            name="image"
+            value={formData.image}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Cost:</label>
+          <input
+            type="number"
+            name="cost"
+            value={formData.cost}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Description:</label>
+          <input
+            type="text"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Origin:</label>
+          <input
+            type="text"
+            name="origin"
+            value={formData.origin}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Productivity:</label>
+          <input
+            type="text"
+            name="productivity"
+            value={formData.productivity}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Code:</label>
+          <input
+            type="text"
+            name="code"
+            value={formData.code}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Stock:</label>
+          <input
+            type="text"
+            name="inStock"
+            value={formData.inStock}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="button-group">
+          <button type="submit">
+            {product ? "Update Product" : "Create Product"}
+          </button>{" "}
+          <button type="button" onClick={closeModal}>
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };
 
