@@ -93,10 +93,9 @@
   background-color: #f1f1f1;
 }
 
-/* Styles for the buttons in the action column */
 .aquarium_table td .action-buttons {
   display: flex;
-  gap: 10px; /* Adds spacing between buttons */
+  gap: 10px;
 }
 
 .aquarium_table button {
@@ -107,7 +106,7 @@
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
-  min-width: 80px; /* Ensures buttons have the same width */
+  min-width: 80px;
 }
 
 .aquarium_table button:hover {

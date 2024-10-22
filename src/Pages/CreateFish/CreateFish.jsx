@@ -131,7 +131,7 @@ const CreateFish = () => {
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         pools={pools}
-        filteredFoods={filteredFoods} // Pass filtered foods
+        filteredFoods={filteredFoods}
       />
     </div>
   );

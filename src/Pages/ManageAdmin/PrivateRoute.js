@@ -5,13 +5,13 @@ const PrivateRoute = ({ children, allowedRole }) => {
   const [storedRole, setStoredRole] = useState(null);
 
   useEffect(() => {
-    const role = JSON.parse(localStorage.getItem("role")); // Giải mã JSON đúng cách
+    const role = JSON.parse(localStorage.getItem("role"));
     console.log("PrivateRoute - Fetched Role:", role);
     setStoredRole(role);
   }, []);
 
   if (storedRole === null) {
-    return <div>Loading...</div>; // Hiển thị khi đang tải vai trò
+    return <div>Loading...</div>;
   }
 
   if (storedRole !== allowedRole) {

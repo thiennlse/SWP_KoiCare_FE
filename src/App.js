@@ -18,6 +18,7 @@ import PrivateRoute from "./Pages/ManageAdmin/PrivateRoute";
 import Order from "./Pages/OrderHistory/order";
 import CalcFood from "./Pages/Services/CalcFood/calcFood";
 import CalcSalt from "./Pages/Services/CalcSalt/calcSalt";
+import Water from "./Pages/Manage/WaterManagement/water";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="/orderHistory" element={<Order />} />
           <Route path="/calcFood" element={<CalcFood />} />
           <Route path="/calcSalt" element={<CalcSalt />} />
+          <Route path="/water" element={<Water />} />
         </Route>
         <Route
           path="/admin"

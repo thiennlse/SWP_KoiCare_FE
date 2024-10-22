@@ -3,24 +3,23 @@ import axiosInstance from "../../axiosInstance";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AquariumManagement = () => {
   const [aquaList, setAquaList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Fetch the memberId of the logged-in user from local storage or session
   const memberId = JSON.parse(localStorage.getItem("userId"));
   const navigate = useNavigate();
 
   useEffect(() => {
     if (memberId !== 0) {
-      fetchPoolsForMember(memberId); // Fetch pools for the logged-in user
+      fetchPoolsForMember(memberId);
     } else {
       console.error("No memberId found. Please log in.");
     }
   }, [memberId]);
 
-  // Fetch pools for a specific member
   const fetchPoolsForMember = (memberId) => {
     axiosInstance
       .get(
@@ -40,7 +39,6 @@ const AquariumManagement = () => {
       });
   };
 
-  // Handle search query
   const handleSearch = () => {
     if (searchQuery.trim() !== "") {
       axiosInstance
@@ -48,18 +46,17 @@ const AquariumManagement = () => {
           params: {
             page: 1,
             pageSize: 10,
-            searchTerm: searchQuery, // Search by the term entered by the user
+            searchTerm: searchQuery,
           },
         })
         .then((res) => {
-          setAquaList(res.data); // Set the filtered aquarium list
+          setAquaList(res.data);
         })
         .catch((err) => {
           console.error("Error searching aquariums:", err);
           alert("Failed to search aquariums.");
         });
     } else {
-      // If search query is empty, refetch the original data
       fetchPoolsForMember(memberId);
     }
   };
@@ -72,9 +69,12 @@ const AquariumManagement = () => {
           if (response.status === 204) {
             const updatedAquaList = aquaList.filter((pool) => pool.id !== id);
             setAquaList(updatedAquaList);
-            alert("Aquarium deleted successfully");
+            toast.success("Aquarium deleted successfully", { autoClose: 1500 });
           } else {
-            alert(`Failed to delete aquarium. Status: ${response.status}`);
+            toast.error(
+              `Failed to delete aquarium. Status: ${response.status}`,
+              { autoClose: 1500 }
+            );
           }
         })
         .catch((error) => {

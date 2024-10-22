@@ -130,14 +130,17 @@
   flex-direction: column;
 }
 
-.dropdown_menu a {
+.dropdown_menu a,
+.services_menu a {
   display: block;
   padding: 10px 20px;
   text-decoration: none;
   color: black;
   font-family: "Chilanka", system-ui;
+  font-size: 16px !important;
   transition: background-color 0.2s ease;
   white-space: nowrap;
+  font-weight: bold !important;
 }
 
 .dropdown_menu a:hover {
@@ -147,8 +150,7 @@
 
 .services_menu {
   position: absolute;
-  padding: 20px;
-
+  padding: 10px;
   background-color: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
@@ -156,14 +158,7 @@
   flex-direction: column;
 }
 
-.services_menu a {
-  position: relative;
-  display: block;
-  padding: 10px 20px;
-  text-decoration: none;
-  color: black;
-  font-family: "Chilanka", system-ui;
-  transition: background-color 0.2s ease;
-  white-space: nowrap;
-  font-size: 14px;
+.services_menu a:hover {
+  background-color: #f1f1f1;
+  color: #333;
 }
