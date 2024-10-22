@@ -92,25 +92,74 @@
 /* Nội dung chính */
 .content_admin {
   flex-grow: 1;
-  padding: 20px;
+  padding: 30px;
   overflow-y: auto;
   margin-top: 50px; /* Align content below the header */
   margin-left: 250px; /* Adjust content to start after sidebar */
+}
+
+.content_admin ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.content_admin li {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Styles cho các nút */
+.content_admin button {
+  background-color: #1e407c;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.content_admin button:hover {
+  background-color: #15305d;
+}
+
+/* Styles cho form */
+.content_admin form {
+  display: flex;
+  flex-direction: column;
+}
+
+.content_admin input,
+.content_admin textarea,
+.content_admin select {
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
 /* Card */
 .card_admin {
   background-color: white;
   border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin-bottom: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Chỉnh khoảng cách giữa các phần tử */
 .card_admin h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
+  color: #333;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
 }
 
 ul {
@@ -128,8 +177,70 @@ ul {
   color: red;
 }
 
-.img-admin {
-  width: 299px;
-  height: 168px;
-  object-fit: cover;
+.product-details,
+.blog-details {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
+
+.details-content-product,
+.details-content-blog {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.img-admin {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+/* .overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal button {
+  background-color: #1e407c;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal button:hover {
+  background-color: #15305d;
+} */
