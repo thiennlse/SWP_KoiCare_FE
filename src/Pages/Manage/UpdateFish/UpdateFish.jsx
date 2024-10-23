@@ -26,7 +26,6 @@ const UpdateFish = () => {
   });
 
   useEffect(() => {
-    // Fetch fish details
     axiosInstance
       .get(`https://koicareapi.azurewebsites.net/api/Fish/${id}`)
       .then((response) => {
@@ -42,7 +41,6 @@ const UpdateFish = () => {
         alert("Failed to load fish details.");
       });
 
-    // Fetch pools for member
     fetchPoolsForMember();
   }, [id]);
 
@@ -160,7 +158,7 @@ const UpdateFish = () => {
   };
 
   useEffect(() => {
-    console.log("Pools State:", pools); // Kiểm tra giá trị của pools
+    console.log("Pools State:", pools);
   }, [pools]);
 
   return (
