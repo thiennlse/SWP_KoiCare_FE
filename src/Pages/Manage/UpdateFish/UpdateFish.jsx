@@ -6,6 +6,7 @@ import { useParams, useNavigate } from "react-router-dom";
 const UpdateFish = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
   const [fishData, setFishData] = useState({
     name: "",
     size: 0,
@@ -17,6 +18,7 @@ const UpdateFish = () => {
     poolId: 0,
     foodId: 0,
   });
+
   const [pools, setPools] = useState([]);
   const [foodData, setFoodData] = useState({
     name: "",
@@ -24,6 +26,7 @@ const UpdateFish = () => {
   });
 
   useEffect(() => {
+    // Fetch fish details
     axiosInstance
       .get(`https://koicareapi.azurewebsites.net/api/Fish/${id}`)
       .then((response) => {
@@ -39,6 +42,7 @@ const UpdateFish = () => {
         alert("Failed to load fish details.");
       });
 
+    // Fetch pools for member
     fetchPoolsForMember();
   }, [id]);
 
@@ -60,22 +64,26 @@ const UpdateFish = () => {
 
   const fetchPoolsForMember = () => {
     const memberId = JSON.parse(localStorage.getItem("userId"));
+    console.log("Member ID:", memberId);
 
-    if (memberId !== 0) {
+    if (memberId) {
       axiosInstance
-        .get("https://koicareapi.azurewebsites.net/api/Pool")
+        .get(
+          "https://koicareapi.azurewebsites.net/api/Pool?page=1&pageSize=100"
+        )
         .then((res) => {
           const memberPools = res.data.filter(
             (pool) => pool.memberId === memberId
           );
-          console.log(`???? memberPools ${memberPools}`);
-          console.log(memberPools); // null
+          console.log("Filtered Pools:", memberPools);
           setPools(memberPools);
         })
         .catch((err) => {
           console.error("Error fetching pools data:", err);
           alert("Failed to fetch pools data.");
         });
+    } else {
+      console.error("Member ID is invalid or not found in local storage.");
     }
   };
 
@@ -123,8 +131,9 @@ const UpdateFish = () => {
   };
 
   const addFood = (food) => {
+    console.log("Data being sent:", food);
     return axiosInstance.post(
-      "https://koicareapi.azurewebsites.net/api/Food/addfood",
+      "https://koicareapi.azurewebsites.net/api/Food/add",
       food,
       {
         headers: {
@@ -150,6 +159,10 @@ const UpdateFish = () => {
     }
   };
 
+  useEffect(() => {
+    console.log("Pools State:", pools); // Kiểm tra giá trị của pools
+  }, [pools]);
+
   return (
     <div>
       <UpdateFishForm
@@ -164,14 +177,14 @@ const UpdateFish = () => {
   );
 };
 
-function UpdateFishForm({
+const UpdateFishForm = ({
   fishData,
   handleChange,
   handleUpdate,
   pools,
   foodData,
   navigate,
-}) {
+}) => {
   return (
     <form className="form_fish" onSubmit={handleUpdate}>
       <p className="form_title">Update Fish</p>
@@ -328,6 +341,6 @@ function UpdateFishForm({
       </div>
     </form>
   );
-}
+};
 
 export default UpdateFish;
