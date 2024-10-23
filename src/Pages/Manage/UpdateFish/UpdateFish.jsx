@@ -1,5 +1,5 @@
 import "./UpdateFish.css";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -24,7 +24,7 @@ const UpdateFish = () => {
   });
 
   useEffect(() => {
-    axios
+    axiosInstance
       .get(`https://koicareapi.azurewebsites.net/api/Fish/${id}`)
       .then((response) => {
         const fishDetails = response.data;
@@ -39,12 +39,11 @@ const UpdateFish = () => {
         alert("Failed to load fish details.");
       });
 
-    // Fetch pools data for the dropdown
     fetchPoolsForMember();
   }, [id]);
 
   const fetchFoodDetails = (foodId) => {
-    axios
+    axiosInstance
       .get(`https://koicareapi.azurewebsites.net/api/Food/${foodId}`)
       .then((response) => {
         const foodDetails = response.data;
@@ -60,16 +59,17 @@ const UpdateFish = () => {
   };
 
   const fetchPoolsForMember = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const memberId = user ? user.id : 0;
+    const memberId = JSON.parse(localStorage.getItem("userId"));
 
     if (memberId !== 0) {
-      axios
+      axiosInstance
         .get("https://koicareapi.azurewebsites.net/api/Pool")
         .then((res) => {
           const memberPools = res.data.filter(
             (pool) => pool.memberId === memberId
           );
+          console.log(`???? memberPools ${memberPools}`);
+          console.log(memberPools); // null
           setPools(memberPools);
         })
         .catch((err) => {
@@ -97,7 +97,7 @@ const UpdateFish = () => {
           foodId: foodId,
         };
 
-        return axios.patch(
+        return axiosInstance.patch(
           `https://koicareapi.azurewebsites.net/api/Fish/update/${id}`,
           updatedFishWithFood,
           {
@@ -123,7 +123,7 @@ const UpdateFish = () => {
   };
 
   const addFood = (food) => {
-    return axios.post(
+    return axiosInstance.post(
       "https://koicareapi.azurewebsites.net/api/Food/addfood",
       food,
       {

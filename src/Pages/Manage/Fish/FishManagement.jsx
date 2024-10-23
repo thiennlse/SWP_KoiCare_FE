@@ -3,6 +3,8 @@ import axiosInstance from "../../axiosInstance";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 const FishManagement = () => {
   const [fishList, setFishList] = useState([]);
   const [poolList, setPoolList] = useState([]);
@@ -11,20 +13,18 @@ const FishManagement = () => {
   const [filteredFishList, setFilteredFishList] = useState([]);
   const navigate = useNavigate();
 
-  // Fetch memberId from local storage
   const userId = JSON.parse(localStorage.getItem("userId"));
   const memberId = userId ? userId : 1;
 
   useEffect(() => {
     if (memberId !== 0) {
-      fetchPoolsForMember(memberId); // Fetch pools for the logged-in user
+      fetchPoolsForMember(memberId);
     } else {
       console.error("No memberId found. Please log in.");
     }
   }, [memberId]);
 
   useEffect(() => {
-    // Fetch fish data once pools have been fetched
     if (poolList.length > 0) {
       fetchFish();
     }
@@ -34,17 +34,15 @@ const FishManagement = () => {
     axiosInstance
       .get("https://koicareapi.azurewebsites.net/api/Fish?page=1&pageSize=100")
       .then((res) => {
-        // Filter fish based on the pools
         const filteredFish = res.data.filter((fish) =>
           poolList.some((pool) => pool.id === fish.poolId)
         );
-        console.log(res.data);
         setFishList(filteredFish);
         setFilteredFishList(filteredFish);
       })
       .catch((err) => {
         console.error("Error fetching fish data:", err);
-        alert("Failed to fetch fish data.");
+        toast.error("Failed to fetch fish data.", { autoClose: 1500 });
       });
   };
 
@@ -52,27 +50,24 @@ const FishManagement = () => {
     axiosInstance
       .get("https://koicareapi.azurewebsites.net/api/Pool?page=1&pageSize=100")
       .then((res) => {
-        // Filter pools based on the memberId
         const memberPools = res.data.filter(
           (pool) => pool.memberId === memberId
         );
-        setPoolList(memberPools); // Store pools in state
+        setPoolList(memberPools);
       })
       .catch((err) => {
         console.error("Error fetching pools data:", err);
-        alert("Failed to fetch pools data.");
+        toast.error("Failed to fetch pools data.", { autoClose: 1500 });
       });
   };
 
   const handlePoolChange = (e) => {
     const poolId = Number(e.target.value);
-    setSelectedPoolId(poolId); // Update selected poolId
+    setSelectedPoolId(poolId);
 
     if (poolId === 0) {
-      // If "All Pools" is selected, set filteredFishList to the full fishList
       setFilteredFishList(fishList);
     } else {
-      // Filter fish based on selected poolId
       const filtered = fishList.filter((fish) => fish.poolId === poolId);
       setFilteredFishList(filtered);
     }
@@ -91,21 +86,22 @@ const FishManagement = () => {
         .delete(`https://koicareapi.azurewebsites.net/api/Fish/Delete?id=${id}`)
         .then((response) => {
           if (response.status === 204) {
-            alert("Fish deleted successfully");
+            toast.success("Fish deleted successfully", { autoClose: 1500 });
             const updatedFishList = fishList.filter((fish) => fish.id !== id);
             setFishList(updatedFishList);
 
-            // Re-filter the fish list based on the current selected pool
             if (selectedPoolId === 0) {
-              setFilteredFishList(updatedFishList); // If "All Pools" is selected, show all remaining fish
+              setFilteredFishList(updatedFishList);
             } else {
               const filtered = updatedFishList.filter(
                 (fish) => fish.poolId === selectedPoolId
               );
-              setFilteredFishList(filtered); // Only show fish for the selected pool
+              setFilteredFishList(filtered);
             }
           } else {
-            alert(`Failed to delete fish. Status: ${response.status}`);
+            toast.error(`Failed to delete fish. Status: ${response.status}`, {
+              autoClose: 1500,
+            });
           }
         })
         .catch((error) => {
@@ -113,7 +109,9 @@ const FishManagement = () => {
             "Error deleting fish:",
             error.response ? error.response.data : error
           );
-          alert("Failed to delete fish. Please try again.");
+          toast.error("Failed to delete fish. Please try again.", {
+            autoClose: 1500,
+          });
         });
     }
   };
@@ -126,14 +124,12 @@ const FishManagement = () => {
     navigate("/createfish");
   };
 
-  // Function to calculate age from dob
   const calculateAge = (dob) => {
-    if (!dob) return "N/A"; // Handle case where dob is not available
+    if (!dob) return "N/A";
     const birthDate = new Date(dob);
     const today = new Date();
     const age = today.getFullYear() - birthDate.getFullYear();
     const monthDifference = today.getMonth() - birthDate.getMonth();
-    // Adjust age if the birthday hasn't occurred yet this year
     if (
       monthDifference < 0 ||
       (monthDifference === 0 && today.getDate() < birthDate.getDate())

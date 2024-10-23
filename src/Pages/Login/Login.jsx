@@ -72,7 +72,6 @@ const LoginForm = () => {
         }
       );
       const token = res.data.token;
-
       if (rememberMe) {
         localStorage.setItem("email", loginEmail);
         const encryptedPassword = CryptoJS.AES.encrypt(
@@ -89,12 +88,11 @@ const LoginForm = () => {
       setLoginPassword("");
 
       if (res) {
-        // Lưu token, userId, role name và role id vào localStorage
         localStorage.setItem("token", JSON.stringify(token));
         localStorage.setItem("userId", JSON.stringify(res.data.userId));
         localStorage.setItem("role", JSON.stringify(res.data.role));
+        localStorage.setItem("emailUser", JSON.stringify(loginEmail));
 
-        // Kiểm tra và điều hướng dựa trên role name và id
         if (res.data.role === "Admin") {
           console.log("Navigating to /admin");
           window.location.href = "/admin";
@@ -114,13 +112,11 @@ const LoginForm = () => {
   const handleRegister = async (event) => {
     event.preventDefault();
 
-    // Check if email ends with @gmail.com
     if (!registerEmail.endsWith("@gmail.com")) {
       toast.error("Email must end with @gmail.com!");
       return;
     }
 
-    // Check password validity
     if (!isValidPassword(registerPassword)) {
       toast.error(
         "Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character!"
@@ -128,7 +124,6 @@ const LoginForm = () => {
       return;
     }
 
-    // Check if passwords match
     if (registerPassword !== confirmPassword) {
       toast.error("Passwords do not match!");
       return;
@@ -136,27 +131,28 @@ const LoginForm = () => {
 
     try {
       const response = await axios.post(
-        "https://koicare.azurewebsites.net/api/Member/register",
+        "https://koicareapi.azurewebsites.net/api/Member/register",
         {
           email: registerEmail,
           password: registerPassword,
         }
       );
 
-      console.log("Registration Successful:", response.data);
       toast.success("Registration successful! Please log in.");
       setAction("");
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        // Check for the "email already registered" error from backend
-        if (error.response.data.message === "Email already registered") {
-          toast.error("This email is already registered.");
+        if (error.response.data.message === "Email đã được sử dụng") {
+          toast.error("This email is already registered.", { autoClose: 1500 });
         } else {
-          toast.error("Registration failed, please try again.");
+          toast.error("Registration failed, please try again.", {
+            autoClose: 1500,
+          });
         }
       } else {
-        console.error("Registration Error:", error);
-        toast.error("Registration failed, please try again.");
+        toast.error("Registration failed, please try again.", {
+          autoClose: 1500,
+        });
       }
     }
   };
@@ -165,7 +161,6 @@ const LoginForm = () => {
     <div className="login-wrapper">
       <div className={`wrapper ${action}`}>
         <div className="form-box login">
-          {/* onSubmit={handleLogin} */}
           <form>
             <h1>Login</h1>
             <div className="input-box">
@@ -288,7 +283,6 @@ const LoginForm = () => {
             <button
               className="register_button"
               type="submit"
-              // onClick={checkPassword}
               disabled={
                 registerEmail && registerPassword && confirmPassword && checkBox
                   ? false

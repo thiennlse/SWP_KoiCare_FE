@@ -45,16 +45,19 @@ const AquariumManagement = () => {
         .get("https://koicareapi.azurewebsites.net/api/Pool", {
           params: {
             page: 1,
-            pageSize: 10,
+            pageSize: 100,
             searchTerm: searchQuery,
           },
         })
         .then((res) => {
-          setAquaList(res.data);
+          const filterPool = res.data.filter(
+            (pool) => pool.memberId === memberId
+          );
+          setAquaList(filterPool);
         })
         .catch((err) => {
           console.error("Error searching aquariums:", err);
-          alert("Failed to search aquariums.");
+          toast.error("Failed to search aquariums.");
         });
     } else {
       fetchPoolsForMember(memberId);
