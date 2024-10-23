@@ -9,7 +9,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  background-color: #ffffff;
+  background-color: #f2f2f2;
   padding: 5px 15px;
   height: 50px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -18,13 +18,6 @@
   left: 250px;
   width: calc(100% - 250px);
   z-index: 1000;
-}
-
-.main_content_admin {
-  display: flex;
-  flex-grow: 1;
-  height: 100%;
-  overflow: hidden;
 }
 
 .profile {
@@ -73,7 +66,6 @@
   background-color: #3b6ea5;
 }
 
-/* Nút quay lại */
 .back_button_admin {
   margin-top: 360px;
   background-color: #ff6600;
@@ -153,9 +145,9 @@
   padding-bottom: 10px;
 }
 
-ul {
+/* ul {
   padding-left: 20px;
-}
+} */
 
 .logout_button_admin {
   cursor: pointer;
