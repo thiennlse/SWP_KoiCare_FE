@@ -239,6 +239,17 @@ function UpdateFishForm({
               required
             />
           </div>
+
+          <div className="input_infor">
+            <label>Image URL:</label>
+            <input
+              type="text"
+              name="image"
+              placeholder="Enter image URL"
+              value={fishData.image}
+              onChange={handleChange}
+            />
+          </div>
         </div>
 
         <div className="column">
@@ -298,17 +309,6 @@ function UpdateFishForm({
               value={fishData.dob.substring(0, 10)}
               onChange={handleChange}
               required
-            />
-          </div>
-
-          <div className="input_infor">
-            <label>Image URL:</label>
-            <input
-              type="text"
-              name="image"
-              placeholder="Enter image URL"
-              value={fishData.image}
-              onChange={handleChange}
             />
           </div>
         </div>

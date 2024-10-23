@@ -132,6 +132,12 @@ const CreateFish = () => {
 };
 
 function CreateFishForm({ fishData, handleChange, handleSubmit, pools }) {
+  const handleFocus = (e) => {
+    if (e.target.value === "0") {
+      e.target.value = ""; // Clear the input value if it's '0'
+    }
+  };
+
   return (
     <form className="form_fish" onSubmit={handleSubmit}>
       <p className="form_title">Create Fish</p>
@@ -195,6 +201,17 @@ function CreateFishForm({ fishData, handleChange, handleSubmit, pools }) {
               required
             />
           </div>
+
+          <div className="input_infor">
+            <label>Image (optional):</label>
+            <input
+              type="text"
+              name="image"
+              placeholder="Image URL (optional)"
+              value={fishData.image}
+              onChange={handleChange}
+            />
+          </div>
         </div>
 
         <div className="column">
@@ -206,6 +223,7 @@ function CreateFishForm({ fishData, handleChange, handleSubmit, pools }) {
               placeholder="Enter size"
               value={fishData.size}
               onChange={handleChange}
+              onFocus={handleFocus} // Add onFocus handler
               required
             />
           </div>
@@ -218,6 +236,7 @@ function CreateFishForm({ fishData, handleChange, handleSubmit, pools }) {
               placeholder="Enter weight"
               value={fishData.weight}
               onChange={handleChange}
+              onFocus={handleFocus} // Add onFocus handler
               required
             />
           </div>
@@ -242,6 +261,7 @@ function CreateFishForm({ fishData, handleChange, handleSubmit, pools }) {
               placeholder="Enter food weight"
               value={fishData.foodWeight}
               onChange={handleChange}
+              onFocus={handleFocus} // Add onFocus handler
               required
             />
           </div>
@@ -254,17 +274,6 @@ function CreateFishForm({ fishData, handleChange, handleSubmit, pools }) {
               value={fishData.dob}
               onChange={handleChange}
               required
-            />
-          </div>
-
-          <div className="input_infor">
-            <label>Image (optional):</label>
-            <input
-              type="text"
-              name="image"
-              placeholder="Image URL (optional)"
-              value={fishData.image}
-              onChange={handleChange}
             />
           </div>
         </div>
