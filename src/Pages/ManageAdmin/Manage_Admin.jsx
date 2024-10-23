@@ -447,7 +447,7 @@ const ManageAdmin = () => {
                       value={order.status}
                       onChange={(e) =>
                         handleStatusChange(order, e.target.value)
-                      } // Pass the new status
+                      }
                     >
                       <option value="Chưa thanh toán">Chưa thanh toán</option>
                       <option value="Đã thanh toán">Đã thanh toán</option>
