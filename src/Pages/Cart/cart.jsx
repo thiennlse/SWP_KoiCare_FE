@@ -3,11 +3,38 @@ import "./cart.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { toast } from "react-toastify";
 import axiosInstance from "../axiosInstance";
+import { useLocation } from "react-router-dom";
+import koiFood from "../../Components/Assets/KoiFood.jpeg";
+
 const Cart = () => {
+  const location = useLocation();
   const [products, setProducts] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [totalPayment, setTotalPayment] = useState(0);
   const [isSelectAll, setIsSelectAll] = useState(false);
+
+  const email = JSON.parse(localStorage.getItem("emailUser"));
+  console.log(`"${email}"`);
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const cancel = searchParams.get("cancel");
+    const status = searchParams.get("status");
+    const orderCode = searchParams.get("orderCode");
+
+    if (status === "PAID") {
+      axiosInstance.post(`/api/Checkout/send/${orderCode}`, {
+        recipientEmail: `"${email}"`,
+        subject: "Thông tin đơn hàng",
+      });
+      localStorage.removeItem("selectedProducts");
+      localStorage.removeItem("cart");
+    }
+
+    if (cancel === "true" && status === "CANCELLED") {
+      toast.warn("Thanh toán đã bị hủy!", { autoClose: 2000 });
+    }
+  }, [location.search]);
 
   useEffect(() => {
     const message = localStorage.getItem("toastMessage");
@@ -167,29 +194,14 @@ function Products({
           },
         }
       );
-
       if (response.status === 200 && response.data) {
-        const paymentUrl = response.data;
+        const paymentUrl = response.data.url;
         window.location.href = paymentUrl;
       }
     } catch (error) {
       toast.error("Thanh toán thất bại!", { autoClose: 2000 });
     }
   };
-
-  const handleClearSelectedOnCancel = () => {
-    if (
-      window.location.pathname === "/cart" &&
-      localStorage.getItem("cancelPayment")
-    ) {
-      localStorage.removeItem("selectedProducts");
-      localStorage.removeItem("cancelPayment");
-    }
-  };
-
-  useEffect(() => {
-    handleClearSelectedOnCancel();
-  }, []);
 
   return (
     <div className="container product-container">
@@ -264,12 +276,13 @@ function Product({
     }
   };
 
-  const confirmDeleteProduct = () => {
-    const confirmed = window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?");
-    if (confirmed) {
-      handleDeleteProduct(item);
-    }
-  };
+  // const confirmDeleteProduct = () => {
+  //   const confirmed = window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?");
+  //   if (confirmed) {
+  //     handleDeleteProduct(item);
+  //     toast.success("Xóa sản phẩm thành công !");
+  //   }
+  // };
 
   return (
     <div className="row align-items-center text-center border-bottom py-2">
@@ -283,7 +296,7 @@ function Product({
 
       <div className="col-5 product-detail">
         <img
-          src={item.image}
+          src={item.image ? item.image : koiFood}
           alt={item.name}
           style={{ width: "80px", height: "80px", marginRight: "20px" }}
         />
@@ -321,14 +334,14 @@ function Product({
         </div>
       </div>
       <div className="col-2 text-danger">{item.cost * count} vnd</div>
-      <div className="col-12 text-end mt-2">
+      {/* <div className="col-12 text-end mt-2">
         <button
-          className="btn btn-danger btn-sm"
+          className="btn btn-danger btn-sm "
           onClick={confirmDeleteProduct}
         >
           Xóa
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }

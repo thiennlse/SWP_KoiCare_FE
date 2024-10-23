@@ -14,8 +14,6 @@ import banner_image_2 from "../../Components/Assets/banner_image_2.png";
 import banner_image_3 from "../../Components/Assets/banner_image_3.png";
 
 import blog_image_1 from "../../Components/Assets/blog_imgae_1.png";
-import blog_image_2 from "../../Components/Assets/blog_imgae_2.png";
-import blog_image_3 from "../../Components/Assets/blog_imgae_3.png";
 
 const bannerImages = [
   { img: banner_image_1, title: "Your Fish" },

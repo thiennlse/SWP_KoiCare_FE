@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axiosInstance from "../axiosInstance";
+import { toast } from "react-toastify";
 
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
@@ -10,17 +11,16 @@ const OrderHistory = () => {
     const fetchOrders = async () => {
       try {
         const response = await axiosInstance.get(
-          "/api/Order?page=1&pageSize=10"
+          "/api/Order?page=1&pageSize=100"
         );
         if (response.status === 200) {
           const filteredOrders = response.data.filter(
             (order) => order.memberId === parseInt(memberId)
           );
           setOrders(filteredOrders);
-          console.log("Filtered Orders:", ...filteredOrders);
         }
       } catch (error) {
-        console.error("Error fetching orders:", error);
+        toast.error("Error fetching orders:", error);
       }
     };
 

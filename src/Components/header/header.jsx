@@ -43,6 +43,7 @@ function Header() {
     localStorage.removeItem("role");
     localStorage.removeItem("userDetail");
     localStorage.removeItem("cart");
+    localStorage.removeItem("emailUser");
 
     setTimeout(() => {
       navigate("/login");
