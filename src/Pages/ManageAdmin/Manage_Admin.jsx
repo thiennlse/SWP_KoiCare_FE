@@ -29,7 +29,6 @@ const ManageAdmin = () => {
   const closeModal = () => {
     setModalIsOpen(false);
     setModalContent(null);
-    setModalContent(null);
   };
 
   const token = JSON.parse(localStorage.getItem("token"));
@@ -57,9 +56,12 @@ const ManageAdmin = () => {
       .catch((err) => console.error("Error fetching products:", err));
 
     axiosInstance
-      .get("https://koicareapi.azurewebsites.net/api/Order", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get(
+        "https://koicareapi.azurewebsites.net/api/Order?page=1&pageSize=100",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((res) => setOrders(res.data))
       .catch((err) => console.error("Error fetching orders:", err));
 
@@ -90,6 +92,15 @@ const ManageAdmin = () => {
   };
 
   const handleBackToHome = () => {
+    // Xóa các mục trong local storage
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("role");
+    localStorage.removeItem("userDetail");
+    localStorage.removeItem("cart");
+    localStorage.removeItem("user");
+
+    // Chuyển hướng về trang home
     window.location.href = "/home";
   };
 
@@ -211,14 +222,14 @@ const ManageAdmin = () => {
     }
   };
 
-  const handleStatusChange = (order) => {
+  const handleStatusChange = (order, newStatus) => {
     const updatedOrder = {
-      productId: order.productId || [],
-      totalCost: order.totalCost || 0,
-      closeDate: order.closeDate || new Date().toISOString(),
-      code: order.code || "",
-      description: order.description || "",
-      status: order.status,
+      memberId: order.memberId,
+      totalCost: order.totalCost,
+      closeDate: order.closeDate,
+      code: order.code,
+      description: order.description,
+      status: newStatus,
     };
 
     axiosInstance
@@ -432,12 +443,16 @@ const ManageAdmin = () => {
                   <li key={order.id}>
                     Order #{order.id} - Status: {order.status}
                     <select
+                      className="select-order-admin"
                       value={order.status}
-                      onChange={(e) => handleStatusChange(order)}
+                      onChange={(e) =>
+                        handleStatusChange(order, e.target.value)
+                      } // Pass the new status
                     >
-                      <option value="paid">Thanh toán</option>
-                      <option value="shipping">Đang giao</option>
-                      <option value="delivered">Đã giao</option>
+                      <option value="Chưa thanh toán">Chưa thanh toán</option>
+                      <option value="Đã thanh toán">Đã thanh toán</option>
+                      <option value="Đang giao">Đang giao</option>
+                      <option value="Đã giao">Đã giao</option>
                     </select>
                   </li>
                 ))}
@@ -451,7 +466,7 @@ const ManageAdmin = () => {
         onRequestClose={closeModal}
         contentLabel="Modal"
         className="modal_admin"
-        overlayClassName="overlay_admin"
+        overlayClassName=" overlay_admin"
       >
         {renderModalContent()}
       </Modal>

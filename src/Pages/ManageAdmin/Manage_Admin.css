@@ -220,3 +220,7 @@
   z-index: 999;
   backdrop-filter: blur(5px);
 }
+
+.select-order-admin {
+  cursor: pointer;
+}
