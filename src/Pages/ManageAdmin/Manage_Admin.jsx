@@ -4,10 +4,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Manage_Admin.css";
 import Modal from "react-modal";
-import ProductForm from "./ProductForm";
-import ProductDetails from "./ProductDetails";
-import BlogForm from "./BlogForm";
-import BlogDetails from "./BlogDetails";
+import ProductForm from "./Modal/ProductForm";
+import ProductDetails from "./Modal/ProductDetails";
+import BlogForm from "./Modal/BlogForm";
+import BlogDetails from "./Modal/BlogDetails";
 Modal.setAppElement("#root");
 
 const ManageAdmin = () => {
@@ -36,26 +36,26 @@ const ManageAdmin = () => {
     setModalContent(null);
   };
 
-  const [newProduct, setNewProduct] = useState({
-    image: "",
-    userId: 0,
-    name: "",
-    cost: 0,
-    description: "",
-    origin: "",
-    productivity: 0,
-    code: "",
-    inStock: 0,
-  });
+  // const [newProduct, setNewProduct] = useState({
+  //   image: "",
+  //   userId: 0,
+  //   name: "",
+  //   cost: 0,
+  //   description: "",
+  //   origin: "",
+  //   productivity: 0,
+  //   code: "",
+  //   inStock: 0,
+  // });
 
-  const [newBlog, setNewBlog] = useState({
-    memberId: 0,
-    title: "",
-    image: "",
-    content: "",
-    dateOfPublish: new Date().toISOString(),
-    status: "",
-  });
+  // const [newBlog, setNewBlog] = useState({
+  //   memberId: 0,
+  //   title: "",
+  //   image: "",
+  //   content: "",
+  //   dateOfPublish: new Date().toISOString(),
+  //   status: "",
+  // });
 
   const token = JSON.parse(localStorage.getItem("token"));
 
@@ -118,12 +118,12 @@ const ManageAdmin = () => {
     window.location.href = "/home";
   };
 
-  const handleProductChange = (e) => {
-    setNewProduct({
-      ...newProduct,
-      [e.target.name]: e.target.value,
-    });
-  };
+  // const handleProductChange = (e) => {
+  //   setNewProduct({
+  //     ...newProduct,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
 
   // const handleEditProduct = (product) => {
   //   setEditProduct(product);
@@ -191,12 +191,12 @@ const ManageAdmin = () => {
       });
   };
 
-  const handleBlogChange = (e) => {
-    setNewBlog({
-      ...newBlog,
-      [e.target.name]: e.target.value,
-    });
-  };
+  // const handleBlogChange = (e) => {
+  //   setNewBlog({
+  //     ...newBlog,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
 
   const handleCreateBlog = (blogData) => {
     axiosInstance
@@ -307,7 +307,10 @@ const ManageAdmin = () => {
           />
         );
       case "productDetails":
-        return modalContent ? <ProductDetails product={modalContent} /> : null;
+        return modalContent ? (
+          <ProductDetails product={modalContent} onClose={closeModal} />
+        ) : null;
+
       case "createBlog":
         return <BlogForm onSubmit={handleCreateBlog} closeModal={closeModal} />;
       case "editBlog":
@@ -319,7 +322,9 @@ const ManageAdmin = () => {
           />
         );
       case "blogDetails":
-        return modalContent ? <BlogDetails blog={modalContent} /> : null;
+        return modalContent ? (
+          <BlogDetails blog={modalContent} onClose={closeModal} />
+        ) : null;
       default:
         return null;
     }

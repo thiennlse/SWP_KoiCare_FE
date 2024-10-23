@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProductDetails = ({ product }) => {
+const ProductDetails = ({ product, onClose }) => {
   return (
     <div className="product-details-admin">
       <h2>Product Details</h2>
@@ -29,6 +29,9 @@ const ProductDetails = ({ product }) => {
       <p>
         <strong>In Stock:</strong> {product.inStock}
       </p>
+      <button className="btn-close-admin" onClick={onClose}>
+        Close
+      </button>
     </div>
   );
 };

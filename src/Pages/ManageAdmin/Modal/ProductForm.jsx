@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "../Modal/Modal.css";
 
 const ProductForm = ({ product, onSubmit, closeModal }) => {
   const [formData, setFormData] = useState({
@@ -64,7 +65,7 @@ const ProductForm = ({ product, onSubmit, closeModal }) => {
           />
         </div>
 
-        <div className="form-group">
+        <div className="form-row">
           <label>Cost:</label>
           <input
             type="number"
@@ -114,7 +115,7 @@ const ProductForm = ({ product, onSubmit, closeModal }) => {
           />
         </div>
 
-        <div className="form-group">
+        <div className="form-row">
           <label>Stock:</label>
           <input
             type="text"

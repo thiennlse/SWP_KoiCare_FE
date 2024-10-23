@@ -1,0 +1,137 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* BlogDetails Styles */
+.blog-details-admin {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.blog-details-admin h2 {
+  color: #4caf50;
+}
+
+.blog-image-admin {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+/* BlogForm Styles */
+.blog-form-container {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.blog-form-container h3 {
+  color: #4caf50;
+}
+
+.form-group {
+  flex: 1;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* ProductDetails Styles */
+.product-details-admin {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.product-details-admin h2 {
+  color: #4caf50;
+}
+
+.product-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+/* ProductForm Styles */
+.product-form-container {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.product-form-container h3 {
+  color: #2196f3;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.button-group button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button-group button:hover {
+  background-color: #45a049;
+}
+
+.button-group button[type="button"] {
+  background-color: #f44336;
+}
+
+.button-group button[type="button"]:hover {
+  background-color: #e53935;
+}
+
+.btn-close-admin {
+  background-color: #0171d3;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-close-admin:hover {
+  background-color: #004fc6;
+}
+
+.form-row {
+  justify-content: space-between;
+}
+
+.form-row input {
+  width: 90%;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-left: 25px;
+}

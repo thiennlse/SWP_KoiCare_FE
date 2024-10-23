@@ -1,6 +1,6 @@
 import React from "react";
 
-const BlogDetails = ({ blog }) => {
+const BlogDetails = ({ blog, onClose }) => {
   return (
     <div className="blog-details-admin">
       <h2>Blog Details</h2>
@@ -20,6 +20,9 @@ const BlogDetails = ({ blog }) => {
       <p>
         <strong>Status:</strong> {blog.status}
       </p>
+      <button className="btn-close-admin" onClick={onClose}>
+        Close
+      </button>
     </div>
   );
 };
