@@ -30,6 +30,24 @@ const ProductForm = ({ product, onSubmit, closeModal }) => {
     }));
   };
 
+  const handleFocus = (e) => {
+    if (e.target.value === "0") {
+      setFormData((prev) => ({
+        ...prev,
+        [e.target.name]: "",
+      }));
+    }
+  };
+
+  const handleBlur = (e) => {
+    if (e.target.value === "") {
+      setFormData((prev) => ({
+        ...prev,
+        [e.target.name]: 0,
+      }));
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const submitData = {
@@ -72,6 +90,8 @@ const ProductForm = ({ product, onSubmit, closeModal }) => {
             name="cost"
             value={formData.cost}
             onChange={handleChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
           />
         </div>
 
@@ -102,6 +122,8 @@ const ProductForm = ({ product, onSubmit, closeModal }) => {
             name="productivity"
             value={formData.productivity}
             onChange={handleChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
           />
         </div>
 
@@ -118,10 +140,12 @@ const ProductForm = ({ product, onSubmit, closeModal }) => {
         <div className="form-row">
           <label>Stock:</label>
           <input
-            type="text"
+            type="number"
             name="inStock"
             value={formData.inStock}
             onChange={handleChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
           />
         </div>
 

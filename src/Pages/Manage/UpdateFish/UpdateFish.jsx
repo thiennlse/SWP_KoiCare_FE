@@ -8,52 +8,54 @@ const UpdateFish = () => {
   const navigate = useNavigate();
   const [fishData, setFishData] = useState({
     name: "",
-    foodId: 0, // Default food ID
     size: 0,
     weight: 0,
-    gender: "Male", // Default gender
+    gender: "Male",
     origin: "",
-    dob: "", // Date of birth
-    image: "", // Image URL
-    poolId: 0, // Add poolId to match CreateFish
+    dob: "",
+    image: "",
+    poolId: 0,
+    foodId: 0,
   });
   const [pools, setPools] = useState([]);
-  const [foods, setFoods] = useState([]);
-  const [filteredFoods, setFilteredFoods] = useState([]); // To hold filtered food options
+  const [foodData, setFoodData] = useState({
+    name: "",
+    weight: 0,
+  });
 
   useEffect(() => {
-    // Fetch fish details
     axios
       .get(`https://koicareapi.azurewebsites.net/api/Fish/${id}`)
       .then((response) => {
         const fishDetails = response.data;
         setFishData(fishDetails);
-        // Filter foods based on the initial weight
-        filterFoods(fishDetails.weight);
+
+        if (fishDetails.foodId) {
+          fetchFoodDetails(fishDetails.foodId);
+        }
       })
       .catch((error) => {
         console.error("Error fetching fish details:", error);
         alert("Failed to load fish details.");
       });
 
-    // Fetch food data
-    fetchFoodData();
-
     // Fetch pools data for the dropdown
     fetchPoolsForMember();
   }, [id]);
 
-  const fetchFoodData = () => {
+  const fetchFoodDetails = (foodId) => {
     axios
-      .get("https://koicareapi.azurewebsites.net/api/Food")
+      .get(`https://koicareapi.azurewebsites.net/api/Food/${foodId}`)
       .then((response) => {
-        setFoods(response.data);
-        // After fetching food data, filter it based on the current weight
-        filterFoods(fishData.weight);
+        const foodDetails = response.data;
+        setFoodData({
+          name: foodDetails.name,
+          weight: foodDetails.weight,
+        });
       })
       .catch((error) => {
-        console.error("Error fetching food data:", error);
-        alert("Failed to load food data.");
+        console.error("Error fetching food details:", error);
+        alert("Failed to load food details.");
       });
   };
 
@@ -80,7 +82,6 @@ const UpdateFish = () => {
   const handleUpdate = (e) => {
     e.preventDefault();
 
-    // Default image URL if not provided
     const updatedFishData = {
       ...fishData,
       image:
@@ -88,16 +89,24 @@ const UpdateFish = () => {
         "https://png.pngtree.com/thumb_back/fw800/background/20231221/pngtree-red-koi-carp-in-water-photo-image_15554800.png",
     };
 
-    axios
-      .patch(
-        `https://koicareapi.azurewebsites.net/api/Fish/update/${id}`,
-        updatedFishData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
+    addFood(foodData)
+      .then((foodResponse) => {
+        const foodId = foodResponse.data.id;
+        const updatedFishWithFood = {
+          ...updatedFishData,
+          foodId: foodId,
+        };
+
+        return axios.patch(
+          `https://koicareapi.azurewebsites.net/api/Fish/update/${id}`,
+          updatedFishWithFood,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+      })
       .then((response) => {
         alert("Fish updated successfully!");
         navigate("/fishmanagement");
@@ -113,25 +122,32 @@ const UpdateFish = () => {
       });
   };
 
+  const addFood = (food) => {
+    return axios.post(
+      "https://koicareapi.azurewebsites.net/api/Food/addfood",
+      food,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setFishData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-
-    // Check if the field is weight and filter foods accordingly
-    if (name === "weight") {
-      filterFoods(value);
+    if (name === "foodName" || name === "foodWeight") {
+      setFoodData((prevData) => ({
+        ...prevData,
+        [name === "foodName" ? "name" : "weight"]: value,
+      }));
+    } else {
+      setFishData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
     }
-  };
-
-  // Function to filter food based on weight
-  const filterFoods = (weight) => {
-    const weightValue = Number(weight);
-    const availableFoods = foods.filter((food) => food.weight <= weightValue);
-    setFilteredFoods(availableFoods);
   };
 
   return (
@@ -141,11 +157,8 @@ const UpdateFish = () => {
         handleChange={handleChange}
         handleUpdate={handleUpdate}
         pools={pools}
-        foods={
-          filteredFoods.length > 0
-            ? filteredFoods
-            : [{ id: 0, name: "Select food", weight: 0 }]
-        } // Show "Select food" if no available foods
+        foodData={foodData}
+        navigate={navigate}
       />
     </div>
   );
@@ -156,7 +169,8 @@ function UpdateFishForm({
   handleChange,
   handleUpdate,
   pools,
-  foods,
+  foodData,
+  navigate,
 }) {
   return (
     <form className="form_fish" onSubmit={handleUpdate}>
@@ -253,23 +267,27 @@ function UpdateFishForm({
           </div>
 
           <div className="input_infor">
-            <label>
-              Food:
-              <span className="dropdown-arrow"> ▼</span>
-            </label>
-            <select
-              name="foodId"
-              value={fishData.foodId}
+            <label>Food Name:</label>
+            <input
+              type="text"
+              name="foodName"
+              placeholder="Enter food name"
+              value={foodData.name}
               onChange={handleChange}
               required
-              className="custom-select"
-            >
-              {foods.map((food) => (
-                <option key={food.id} value={food.id}>
-                  {food.name} (Weight: {food.weight} kg)
-                </option>
-              ))}
-            </select>
+            />
+          </div>
+
+          <div className="input_infor">
+            <label>Food Weight:</label>
+            <input
+              type="number"
+              name="foodWeight"
+              placeholder="Enter food weight"
+              value={foodData.weight}
+              onChange={handleChange}
+              required
+            />
           </div>
 
           <div className="input_infor">
@@ -277,14 +295,14 @@ function UpdateFishForm({
             <input
               type="date"
               name="dob"
-              value={fishData.dob.substring(0, 10)} // Format date for input
+              value={fishData.dob.substring(0, 10)}
               onChange={handleChange}
               required
             />
           </div>
 
           <div className="input_infor">
-            <label>Image URL (optional):</label>
+            <label>Image URL:</label>
             <input
               type="text"
               name="image"
@@ -293,14 +311,20 @@ function UpdateFishForm({
               onChange={handleChange}
             />
           </div>
-
-          <div className="buttons">
-            <button type="submit">Save</button>
-            <button type="button" onClick={() => window.history.back()}>
-              Cancel
-            </button>
-          </div>
         </div>
+      </div>
+
+      <div className="form_buttons">
+        <button type="submit" className="submit_button">
+          Update
+        </button>
+        <button
+          type="button"
+          className="cancel_button"
+          onClick={() => navigate("/fishmanagement")}
+        >
+          Cancel
+        </button>
       </div>
     </form>
   );

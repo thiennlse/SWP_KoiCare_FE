@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-// import "./BlogForm.css";
+import "../Modal/Modal.css";
 
 const BlogForm = ({ blog, onSubmit, closeModal }) => {
   const [formData, setFormData] = useState({
@@ -26,6 +26,24 @@ const BlogForm = ({ blog, onSubmit, closeModal }) => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleFocus = (e) => {
+    if (e.target.value === "0") {
+      setFormData((prev) => ({
+        ...prev,
+        [e.target.name]: "",
+      }));
+    }
+  };
+
+  const handleBlur = (e) => {
+    if (e.target.value === "") {
+      setFormData((prev) => ({
+        ...prev,
+        [e.target.name]: 0,
+      }));
+    }
   };
 
   const handleSubmit = (e) => {
@@ -91,6 +109,8 @@ const BlogForm = ({ blog, onSubmit, closeModal }) => {
             name="status"
             value={formData.status}
             onChange={handleChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             required
           />
         </div>

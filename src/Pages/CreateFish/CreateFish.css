@@ -78,29 +78,28 @@
 }
 
 .custom-select {
-  width: 80%; /* Match input width */
-  font-size: 18px; /* Match input font size */
-  margin-left: 10px; /* Align with input */
-  padding: 10px; /* Add padding */
-  border-radius: 5px; /* Round corners */
-  border: 1px solid #ccc; /* Border style */
-  margin-top: 5px; /* Space above */
-  background-color: #fff; /* Background color */
-  appearance: none; /* Remove default styles */
+  width: 80%;
+  font-size: 18px;
+  margin-left: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-top: 5px;
+  background-color: #fff;
+  appearance: none;
 }
 
-/* Add styles for the dropdown arrow */
 .custom-select:focus {
-  border-color: #28a745; /* Change border color on focus */
-  outline: none; /* Remove outline */
+  border-color: #28a745;
+  outline: none;
 }
 
 .custom-select option {
-  padding: 10px; /* Add padding to options */
+  padding: 10px;
 }
 
 .dropdown-arrow {
-  font-size: 18px; /* Match label font size */
-  margin-left: 5px; /* Space between label text and arrow */
-  color: #555; /* Optional: change color to fit your theme */
+  font-size: 18px;
+  margin-left: 5px;
+  color: #555;
 }

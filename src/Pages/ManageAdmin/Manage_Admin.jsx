@@ -16,10 +16,6 @@ const ManageAdmin = () => {
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [blogs, setBlogs] = useState([]);
-  // const [selectedBlogId, setSelectedBlogId] = useState(null);
-  // const [selectedProductId, setSelectedProductId] = useState(null);
-  // const [editProduct, setEditProduct] = useState(null);
-  // const [editBlog, setEditBlog] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [modalType, setModalType] = useState("");
@@ -35,27 +31,6 @@ const ManageAdmin = () => {
     setModalContent(null);
     setModalContent(null);
   };
-
-  // const [newProduct, setNewProduct] = useState({
-  //   image: "",
-  //   userId: 0,
-  //   name: "",
-  //   cost: 0,
-  //   description: "",
-  //   origin: "",
-  //   productivity: 0,
-  //   code: "",
-  //   inStock: 0,
-  // });
-
-  // const [newBlog, setNewBlog] = useState({
-  //   memberId: 0,
-  //   title: "",
-  //   image: "",
-  //   content: "",
-  //   dateOfPublish: new Date().toISOString(),
-  //   status: "",
-  // });
 
   const token = JSON.parse(localStorage.getItem("token"));
 
@@ -118,17 +93,6 @@ const ManageAdmin = () => {
     window.location.href = "/home";
   };
 
-  // const handleProductChange = (e) => {
-  //   setNewProduct({
-  //     ...newProduct,
-  //     [e.target.name]: e.target.value,
-  //   });
-  // };
-
-  // const handleEditProduct = (product) => {
-  //   setEditProduct(product);
-  // };
-
   const handleUpdateProduct = (blogData) => {
     axiosInstance
       .patch(
@@ -150,30 +114,27 @@ const ManageAdmin = () => {
   };
 
   const handleDeleteProduct = (productId) => {
-    axiosInstance
-      .delete(
-        `https://koicareapi.azurewebsites.net/api/Product/Delete?id=${productId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
-      .then((res) => {
-        toast.success("Product deleted successfully!");
-        fetchData();
-      })
-      .catch((err) => {
-        console.error("Error deleting product:", err);
-        toast.error("Failed to delete product.");
-      });
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this product?"
+    );
+    if (confirmDelete) {
+      axiosInstance
+        .delete(
+          `https://koicareapi.azurewebsites.net/api/Product/Delete?id=${productId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
+        .then((res) => {
+          toast.success("Product deleted successfully!");
+          fetchData();
+        })
+        .catch((err) => {
+          console.error("Error deleting product:", err);
+          toast.error("Failed to delete product.");
+        });
+    }
   };
-
-  // const handleViewProductDetails = (product) => {
-  //   setSelectedProductId(product.id);
-  // };
-
-  // const handleCloseProductDetails = () => {
-  //   setSelectedProductId(null);
-  // };
 
   const handleCreateProduct = (blogData) => {
     axiosInstance
@@ -191,13 +152,6 @@ const ManageAdmin = () => {
       });
   };
 
-  // const handleBlogChange = (e) => {
-  //   setNewBlog({
-  //     ...newBlog,
-  //     [e.target.name]: e.target.value,
-  //   });
-  // };
-
   const handleCreateBlog = (blogData) => {
     axiosInstance
       .post("https://koicareapi.azurewebsites.net/api/Blog/add", blogData, {
@@ -213,10 +167,6 @@ const ManageAdmin = () => {
         toast.error("Failed to create blog.");
       });
   };
-
-  // const handleEditBlog = (blog) => {
-  //   setEditBlog(blog);
-  // };
 
   const handleUpdateBlog = (blogData) => {
     axiosInstance
@@ -239,30 +189,27 @@ const ManageAdmin = () => {
   };
 
   const handleDeleteBlog = (blogId) => {
-    axiosInstance
-      .delete(
-        `https://koicareapi.azurewebsites.net/api/Blog/delete?id=${blogId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
-      .then((res) => {
-        toast.success("Blog deleted successfully!");
-        fetchData();
-      })
-      .catch((err) => {
-        console.error("Error deleting blog:", err);
-        toast.error("Failed to delete blog.");
-      });
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this blog?"
+    );
+    if (confirmDelete) {
+      axiosInstance
+        .delete(
+          `https://koicareapi.azurewebsites.net/api/Blog/delete?id=${blogId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
+        .then((res) => {
+          toast.success("Blog deleted successfully!");
+          fetchData();
+        })
+        .catch((err) => {
+          console.error("Error deleting blog:", err);
+          toast.error("Failed to delete blog.");
+        });
+    }
   };
-
-  // const handleViewBlogDetails = (blog) => {
-  //   setSelectedBlogId(blog.id);
-  // };
-
-  // const handleCloseBlogDetails = () => {
-  //   setSelectedBlogId(null);
-  // };
 
   const handleStatusChange = (order) => {
     const updatedOrder = {

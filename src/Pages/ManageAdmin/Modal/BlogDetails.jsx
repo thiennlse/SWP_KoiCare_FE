@@ -1,4 +1,5 @@
 import React from "react";
+import "../Modal/Modal.css";
 
 const BlogDetails = ({ blog, onClose }) => {
   return (
