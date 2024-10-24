@@ -20,13 +20,16 @@ const DeleteBlogModal = ({ isOpen, onRequestClose, blog, onDelete }) => {
           <div>
             <strong>Content:</strong> {blog.content || "N/A"}
           </div>
-          <div className="form_buttons">
-            <button onClick={onDelete} className="btn-admin btn-outline-danger">
+          <div className="form-btn-del-admin">
+            <button
+              onClick={onDelete}
+              className="btn-del-admin btn-outline-danger"
+            >
               Delete
             </button>
             <button
               onClick={onRequestClose}
-              className="btn-admin btn-outline-secondary"
+              className="btn-cancel-admin btn-outline-secondary"
             >
               Cancel
             </button>

@@ -8,6 +8,8 @@ import ProductForm from "./Modal/ProductForm";
 import ProductDetails from "./Modal/ProductDetails";
 import BlogForm from "./Modal/BlogForm";
 import BlogDetails from "./Modal/BlogDetails";
+import DeleteProductModal from "./Modal/DeleteProductModal";
+import DeleteBlogModal from "./Modal/DeletBlogModal";
 Modal.setAppElement("#root");
 
 const ManageAdmin = () => {
@@ -19,6 +21,11 @@ const ManageAdmin = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [modalType, setModalType] = useState("");
+  const [deleteProductModalIsOpen, setDeleteProductModalIsOpen] =
+    useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [deleteBlogModalIsOpen, setDeleteBlogModalIsOpen] = useState(false);
+  const [selectedBlog, setSelectedBlog] = useState(null);
 
   const openModal = (type, content = null) => {
     setModalType(type);
@@ -29,6 +36,26 @@ const ManageAdmin = () => {
   const closeModal = () => {
     setModalIsOpen(false);
     setModalContent(null);
+  };
+
+  const openDeleteProductModal = (product) => {
+    setSelectedProduct(product);
+    setDeleteProductModalIsOpen(true);
+  };
+
+  const closeDeleteProductModal = () => {
+    setDeleteProductModalIsOpen(false);
+    setSelectedProduct(null);
+  };
+
+  const openDeleteBlogModal = (blog) => {
+    setSelectedBlog(blog);
+    setDeleteBlogModalIsOpen(true);
+  };
+
+  const closeDeleteBlogModal = () => {
+    setDeleteBlogModalIsOpen(false);
+    setSelectedBlog(null);
   };
 
   const token = JSON.parse(localStorage.getItem("token"));
@@ -92,7 +119,6 @@ const ManageAdmin = () => {
   };
 
   const handleBackToHome = () => {
-    // Xóa các mục trong local storage
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     localStorage.removeItem("role");
@@ -100,21 +126,40 @@ const ManageAdmin = () => {
     localStorage.removeItem("cart");
     localStorage.removeItem("user");
 
-    // Chuyển hướng về trang home
     window.location.href = "/home";
   };
 
-  const handleUpdateProduct = (blogData) => {
+  const handleCreateProduct = (productData) => {
     axiosInstance
-      .patch(
-        `https://koicareapi.azurewebsites.net/api/Product/update/${blogData.id}`,
-        blogData,
+      .post(
+        "https://koicareapi.azurewebsites.net/api/Product/add",
+        productData,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       )
       .then((res) => {
-        toast.success("Product updated successfully!");
+        toast.success("Product created successfully!");
+        fetchData();
+        closeModal();
+      })
+      .catch((err) => {
+        console.error("Error creating product:", err);
+        toast.error("Failed to create product.");
+      });
+  };
+
+  const handleUpdateProduct = (productData) => {
+    axiosInstance
+      .patch(
+        `https://koicareapi.azurewebsites.net/api/Product/update/${productData.id}`,
+        productData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((res) => {
+        toast.success("Product updated successfully!", { autoClose: 1500 });
         fetchData();
         closeModal();
       })
@@ -125,42 +170,34 @@ const ManageAdmin = () => {
   };
 
   const handleDeleteProduct = (productId) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this product?"
-    );
-    if (confirmDelete) {
-      axiosInstance
-        .delete(
-          `https://koicareapi.azurewebsites.net/api/Product/Delete?id=${productId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        )
-        .then((res) => {
-          toast.success("Product deleted successfully!");
-          fetchData();
-        })
-        .catch((err) => {
-          console.error("Error deleting product:", err);
-          toast.error("Failed to delete product.");
-        });
-    }
+    axiosInstance
+      .delete(
+        `https://koicareapi.azurewebsites.net/api/Product/Delete?id=${productId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((res) => {
+        toast.success("Product deleted successfully!", { autoClose: 1500 });
+        fetchData();
+      })
+      .catch((err) => console.error("Error deleting product:", err));
   };
 
-  const handleCreateProduct = (blogData) => {
+  const handleDeleteProductConfirmation = () => {
     axiosInstance
-      .post("https://koicareapi.azurewebsites.net/api/Product/add", blogData, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .delete(
+        `https://koicareapi.azurewebsites.net/api/Product/Delete?id=${selectedProduct.id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((res) => {
-        toast.success("Product created successfully!");
+        toast.success("Product deleted successfully!", { autoClose: 1500 });
         fetchData();
-        closeModal();
+        closeDeleteProductModal();
       })
-      .catch((err) => {
-        console.error("Error creating product:", err);
-        toast.error("Failed to create product.");
-      });
+      .catch((err) => console.error("Error deleting product:", err));
   };
 
   const handleCreateBlog = (blogData) => {
@@ -200,26 +237,34 @@ const ManageAdmin = () => {
   };
 
   const handleDeleteBlog = (blogId) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this blog?"
-    );
-    if (confirmDelete) {
-      axiosInstance
-        .delete(
-          `https://koicareapi.azurewebsites.net/api/Blog/delete?id=${blogId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        )
-        .then((res) => {
-          toast.success("Blog deleted successfully!");
-          fetchData();
-        })
-        .catch((err) => {
-          console.error("Error deleting blog:", err);
-          toast.error("Failed to delete blog.");
-        });
-    }
+    axiosInstance
+      .delete(
+        `https://koicareapi.azurewebsites.net/api/Blog/Delete?id=${blogId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((res) => {
+        toast.success("Blog deleted successfully!", { autoClose: 1500 });
+        fetchData();
+      })
+      .catch((err) => console.error("Error deleting blog:", err));
+  };
+
+  const handleDeleteBlogConfirmation = () => {
+    axiosInstance
+      .delete(
+        `https://koicareapi.azurewebsites.net/api/Blog/Delete?id=${selectedBlog.id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((res) => {
+        toast.success("Blog deleted successfully!", { autoClose: 1500 });
+        fetchData();
+        closeDeleteBlogModal();
+      })
+      .catch((err) => console.error("Error deleting blog:", err));
   };
 
   const handleStatusChange = (order, newStatus) => {
@@ -383,7 +428,7 @@ const ManageAdmin = () => {
                       </button>
                       <button
                         className="btn-admin btn-sm btn-outline-danger"
-                        onClick={() => handleDeleteProduct(product.id)}
+                        onClick={() => openDeleteProductModal(product)}
                       >
                         Delete
                       </button>
@@ -424,7 +469,7 @@ const ManageAdmin = () => {
                       </button>
                       <button
                         className="btn-admin btn-sm btn-outline-danger"
-                        onClick={() => handleDeleteBlog(blog.id)}
+                        onClick={() => openDeleteBlogModal(blog)}
                       >
                         Delete
                       </button>
@@ -470,6 +515,18 @@ const ManageAdmin = () => {
       >
         {renderModalContent()}
       </Modal>
+      <DeleteProductModal
+        isOpen={deleteProductModalIsOpen}
+        onRequestClose={closeDeleteProductModal}
+        product={selectedProduct}
+        onDelete={handleDeleteProductConfirmation}
+      />
+      <DeleteBlogModal
+        isOpen={deleteBlogModalIsOpen}
+        onRequestClose={closeDeleteBlogModal}
+        blog={selectedBlog}
+        onDelete={handleDeleteBlogConfirmation}
+      />
       <ToastContainer />
     </div>
   );

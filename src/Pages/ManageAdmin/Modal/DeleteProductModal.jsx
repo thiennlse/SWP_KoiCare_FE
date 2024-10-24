@@ -1,5 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
+import "../Modal/Modal.css";
 
 const DeleteProductModal = ({ isOpen, onRequestClose, product, onDelete }) => {
   return (
@@ -23,13 +24,16 @@ const DeleteProductModal = ({ isOpen, onRequestClose, product, onDelete }) => {
           <div>
             <strong>Cost:</strong> ${product.cost || "N/A"}
           </div>
-          <div className="form_buttons">
-            <button onClick={onDelete} className="btn-admin btn-outline-danger">
+          <div className="form-btn-del-admin">
+            <button
+              onClick={onDelete}
+              className="btn-del-admin btn-outline-danger"
+            >
               Delete
             </button>
             <button
               onClick={onRequestClose}
-              className="btn-admin btn-outline-secondary"
+              className="btn-cancel-admin btn-outline-secondary"
             >
               Cancel
             </button>

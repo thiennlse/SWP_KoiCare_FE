@@ -87,13 +87,13 @@
   color: #2196f3;
 }
 
-.button-group {
+.button-admin-group {
   display: flex;
   justify-content: space-between;
   margin-top: 12px;
 }
 
-.button-group button {
+.button-admin-group button {
   background-color: #4caf50;
   color: white;
   border: none;
@@ -102,15 +102,15 @@
   cursor: pointer;
 }
 
-.button-group button:hover {
+.button-admin-group button:hover {
   background-color: #45a049;
 }
 
-.button-group button[type="button"] {
+.button-admin-group button[type="button"] {
   background-color: #f44336;
 }
 
-.button-group button[type="button"]:hover {
+.button-admin-group button[type="button"]:hover {
   background-color: #e53935;
 }
 
@@ -137,4 +137,40 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   margin-left: 25px;
+}
+
+/*Delete Product & Blog */
+.form-btn-del-admin {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.btn-del-admin {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-del-admin:hover {
+  background-color: #c82333;
+}
+
+.btn-cancel-admin {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-cancel-admin:hover {
+  background-color: #5a6268;
 }

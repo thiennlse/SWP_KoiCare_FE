@@ -115,7 +115,7 @@ const BlogForm = ({ blog, onSubmit, closeModal }) => {
           />
         </div>
 
-        <div className="button-group">
+        <div className="button-admin-group">
           <button type="submit">{blog ? "Update Blog" : "Create Blog"}</button>
           <button type="button" onClick={closeModal}>
             Cancel

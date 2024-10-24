@@ -149,7 +149,7 @@ const ProductForm = ({ product, onSubmit, closeModal }) => {
           />
         </div>
 
-        <div className="button-group">
+        <div className="button-admin-group">
           <button type="submit">
             {product ? "Update Product" : "Create Product"}
           </button>{" "}
