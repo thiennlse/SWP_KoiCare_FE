@@ -12,22 +12,31 @@ const Cart = () => {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [totalPayment, setTotalPayment] = useState(0);
   const [isSelectAll, setIsSelectAll] = useState(false);
+
+  // const productId = selectedProducts.map((product) => product.id);
+  // const quantity = selectedProducts.map((product) => product.quantity);
+  // const productDetails = selectedProducts
+  //   .map((product) => `${product.name} x ${product.quantity}`)
+  //   .join(", ");
+
+  // const orderRequest = {
+  //   productId: productId,
+  //   quantity: quantity,
+  //   totalCost: totalPayment,
+  //   closeDate: new Date().toISOString(),
+  //   description: productDetails,
+  //   status: "PAID",
+  // };
+  // console.log(orderRequest);
+
   const productId = selectedProducts.map((product) => product.id);
   const quantity = selectedProducts.map((product) => product.quantity);
   const productDetails = selectedProducts
     .map((product) => `${product.name} x ${product.quantity}`)
     .join(", ");
 
-  const orderRequest = {
-    productId: productId,
-    quantity: quantity,
-    totalCost: totalPayment,
-    closeDate: new Date().toISOString(),
-    description: productDetails,
-  };
-  console.log(orderRequest);
-
-  const email = JSON.parse(localStorage.getItem("emailUser"));
+  const emailUser = JSON.parse(localStorage.getItem("emailUser"));
+  console.log(emailUser);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -35,23 +44,38 @@ const Cart = () => {
     const status = searchParams.get("status");
     const orderCode = searchParams.get("orderCode");
 
+    const orderRequest = {
+      productId: productId,
+      quantity: quantity,
+      totalCost: totalPayment,
+      closeDate: new Date().toISOString(),
+      description: productDetails,
+      status: "PAID",
+      code: orderCode,
+    };
+    console.log(orderRequest);
+
     if (status === "PAID") {
-      axiosInstance.post(
-        "https://koicareapi.azurewebsites.net/api/Order/add",
-        orderRequest
-      );
-      axiosInstance.post(`/api/Checkout/send/${orderCode}`, {
-        recipientEmail: `"${email}"`,
-        subject: "Thông tin đơn hàng",
-      });
-      localStorage.removeItem("selectedProducts");
-      localStorage.removeItem("cart");
+      axiosInstance
+        .post("/api/Order/add", orderRequest)
+        .then(() => {
+          console.log(orderRequest);
+          axiosInstance.post(`/api/Checkout/send-email/${orderCode}`, {
+            recipientEmail: `"${emailUser}"`,
+          });
+          localStorage.removeItem("selectedProducts");
+          localStorage.removeItem("cart");
+        })
+        .catch((error) => {
+          console.error("Order submission failed:", error);
+          toast.error("Failed to save order!", { autoClose: 1500 });
+        });
     }
 
     if (cancel === "true" && status === "CANCELLED") {
       toast.warn("Thanh toán đã bị hủy!", { autoClose: 1500 });
     }
-  }, [location.search]);
+  }, [location.search, selectedProducts, totalPayment]);
 
   useEffect(() => {
     const message = localStorage.getItem("toastMessage");
@@ -199,7 +223,6 @@ function Products({
         cost: product.cost,
         quantity: product.quantity,
       }));
-      console.log(JSON.parse(localStorage.getItem("token")));
 
       const response = await axiosInstance.post(
         "/api/Checkout/create-payment-link",

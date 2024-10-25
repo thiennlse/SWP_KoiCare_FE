@@ -63,11 +63,11 @@ const OrderItem = ({ order }) => {
 
   const getStatusStyle = (status) => {
     switch (status) {
-      case "Đã thanh toán":
+      case "PAID":
         return { backgroundColor: "#d4edda", color: "#155724" };
-      case "Chưa thanh toán":
+      case "UNPAID":
         return { backgroundColor: "#f8d7da", color: "#721c24" };
-      case "Đang xử lý":
+      case "PENDING":
         return { backgroundColor: "#fff3cd", color: "#856404" };
       default:
         return { backgroundColor: "#e2e3e5", color: "#333" };
