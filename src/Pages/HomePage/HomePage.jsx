@@ -113,6 +113,7 @@ function Products() {
       )
       .then((response) => {
         setProducts(response.data);
+
         setLoading(false);
       })
       .catch((error) => {

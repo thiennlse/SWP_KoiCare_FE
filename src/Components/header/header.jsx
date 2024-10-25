@@ -7,6 +7,7 @@ import { TiShoppingCart } from "react-icons/ti";
 import { ToastContainer, toast } from "react-toastify";
 import Avatar, { genConfig } from "react-nice-avatar";
 import axios from "axios";
+import { HiOutlineMoon } from "react-icons/hi";
 
 function Header() {
   const [user, setUser] = useState("");
@@ -153,6 +154,7 @@ function Header() {
                 <span className="logout_button" onClick={handleLogout}>
                   Logout
                 </span>
+                <HiOutlineMoon></HiOutlineMoon>
               </div>
             ) : (
               <a href="/login">

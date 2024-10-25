@@ -12,9 +12,22 @@ const Cart = () => {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [totalPayment, setTotalPayment] = useState(0);
   const [isSelectAll, setIsSelectAll] = useState(false);
+  const productId = selectedProducts.map((product) => product.id);
+  const quantity = selectedProducts.map((product) => product.quantity);
+  const productDetails = selectedProducts
+    .map((product) => `${product.name} x ${product.quantity}`)
+    .join(", ");
+
+  const orderRequest = {
+    productId: productId,
+    quantity: quantity,
+    totalCost: totalPayment,
+    closeDate: new Date().toISOString(),
+    description: productDetails,
+  };
+  console.log(orderRequest);
 
   const email = JSON.parse(localStorage.getItem("emailUser"));
-  console.log(`"${email}"`);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -23,6 +36,10 @@ const Cart = () => {
     const orderCode = searchParams.get("orderCode");
 
     if (status === "PAID") {
+      axiosInstance.post(
+        "https://koicareapi.azurewebsites.net/api/Order/add",
+        orderRequest
+      );
       axiosInstance.post(`/api/Checkout/send/${orderCode}`, {
         recipientEmail: `"${email}"`,
         subject: "Thông tin đơn hàng",
@@ -32,14 +49,14 @@ const Cart = () => {
     }
 
     if (cancel === "true" && status === "CANCELLED") {
-      toast.warn("Thanh toán đã bị hủy!", { autoClose: 2000 });
+      toast.warn("Thanh toán đã bị hủy!", { autoClose: 1500 });
     }
   }, [location.search]);
 
   useEffect(() => {
     const message = localStorage.getItem("toastMessage");
     if (message) {
-      toast.success(message, { autoClose: 2000 });
+      toast.success(message, { autoClose: 1500 });
     }
 
     setTimeout(() => {
@@ -118,18 +135,18 @@ const Cart = () => {
     calculateTotalPayment(updatedSelectedProducts);
   };
 
-  const handleDeleteProduct = (item) => {
-    let updatedProducts = products.filter((product) => product.id !== item.id);
-    setProducts(updatedProducts);
+  // const handleDeleteProduct = (item) => {
+  //   let updatedProducts = products.filter((product) => product.id !== item.id);
+  //   setProducts(updatedProducts);
 
-    localStorage.setItem("cart", JSON.stringify(updatedProducts));
+  //   localStorage.setItem("cart", JSON.stringify(updatedProducts));
 
-    const updatedSelectedProducts = selectedProducts.filter(
-      (product) => product.id !== item.id
-    );
-    setSelectedProducts(updatedSelectedProducts);
-    calculateTotalPayment(updatedSelectedProducts);
-  };
+  //   const updatedSelectedProducts = selectedProducts.filter(
+  //     (product) => product.id !== item.id
+  //   );
+  //   setSelectedProducts(updatedSelectedProducts);
+  //   calculateTotalPayment(updatedSelectedProducts);
+  // };
 
   return (
     <>
@@ -141,7 +158,7 @@ const Cart = () => {
             handleUpdateQuantityAndRecalculate={
               handleUpdateQuantityAndRecalculate
             }
-            handleDeleteProduct={handleDeleteProduct}
+            // handleDeleteProduct={handleDeleteProduct}
             totalPayment={totalPayment}
             handleSelectAll={handleSelectAll}
             selectedProducts={selectedProducts}
@@ -164,7 +181,7 @@ function Products({
   products,
   handleSelectProduct,
   handleUpdateQuantityAndRecalculate,
-  handleDeleteProduct,
+  // handleDeleteProduct,
   totalPayment,
   handleSelectAll,
   selectedProducts,
@@ -172,7 +189,7 @@ function Products({
 }) {
   const handlePurchase = async () => {
     if (selectedProducts.length === 0) {
-      toast.warn("Vui lòng chọn ít nhất một sản phẩm!", { autoClose: 2000 });
+      toast.warn("Vui lòng chọn ít nhất một sản phẩm!", { autoClose: 1500 });
       return;
     }
 
@@ -199,7 +216,7 @@ function Products({
         window.location.href = paymentUrl;
       }
     } catch (error) {
-      toast.error("Thanh toán thất bại!", { autoClose: 2000 });
+      toast.error("Thanh toán thất bại!", { autoClose: 1500 });
     }
   };
 
@@ -222,7 +239,7 @@ function Products({
               handleUpdateQuantityAndRecalculate={
                 handleUpdateQuantityAndRecalculate
               }
-              handleDeleteProduct={handleDeleteProduct}
+              // handleDeleteProduct={handleDeleteProduct}
               isSelected={selectedProducts.some((p) => p.id === product.id)}
             />
           ))
@@ -255,7 +272,7 @@ function Product({
   item,
   handleSelectProduct,
   handleUpdateQuantityAndRecalculate,
-  handleDeleteProduct,
+  // handleDeleteProduct,
   isSelected,
 }) {
   const [count, setCount] = useState(item.quantity);
