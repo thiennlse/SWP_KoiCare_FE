@@ -64,6 +64,40 @@ const ManageAdmin = () => {
     fetchData();
   }, [token]);
 
+  const rolesList = [
+    { id: 1, name: "Admin" },
+    { id: 2, name: "ShopOwner" },
+    { id: 3, name: "Staff" },
+    { id: 4, name: "Member" },
+  ];
+
+  const handleRoleChange = (userId, newRoleId) => {
+    const userToUpdate = users.find((user) => user.id === userId);
+    if (!userToUpdate) return;
+
+    const updatedUser = {
+      ...userToUpdate,
+      roleId: newRoleId,
+    };
+
+    axiosInstance
+      .patch(
+        `https://koicareapi.azurewebsites.net/api/Member/update/${userId}`,
+        updatedUser,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((res) => {
+        toast.success("User  role updated successfully!");
+        fetchData();
+      })
+      .catch((err) => {
+        console.error("Error updating user role:", err);
+        toast.error("Failed to update user role.");
+      });
+  };
+
   const fetchData = () => {
     axiosInstance
       .get("https://koicareapi.azurewebsites.net/api/Member", {
@@ -169,20 +203,20 @@ const ManageAdmin = () => {
       });
   };
 
-  const handleDeleteProduct = (productId) => {
-    axiosInstance
-      .delete(
-        `https://koicareapi.azurewebsites.net/api/Product/Delete?id=${productId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
-      .then((res) => {
-        toast.success("Product deleted successfully!", { autoClose: 1500 });
-        fetchData();
-      })
-      .catch((err) => console.error("Error deleting product:", err));
-  };
+  // const handleDeleteProduct = (productId) => {
+  //   axiosInstance
+  //     .delete(
+  //       `https://koicareapi.azurewebsites.net/api/Product/Delete?id=${productId}`,
+  //       {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       }
+  //     )
+  //     .then((res) => {
+  //       toast.success("Product deleted successfully!", { autoClose: 1500 });
+  //       fetchData();
+  //     })
+  //     .catch((err) => console.error("Error deleting product:", err));
+  // };
 
   const handleDeleteProductConfirmation = () => {
     axiosInstance
@@ -236,20 +270,20 @@ const ManageAdmin = () => {
       });
   };
 
-  const handleDeleteBlog = (blogId) => {
-    axiosInstance
-      .delete(
-        `https://koicareapi.azurewebsites.net/api/Blog/Delete?id=${blogId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
-      .then((res) => {
-        toast.success("Blog deleted successfully!", { autoClose: 1500 });
-        fetchData();
-      })
-      .catch((err) => console.error("Error deleting blog:", err));
-  };
+  // const handleDeleteBlog = (blogId) => {
+  //   axiosInstance
+  //     .delete(
+  //       `https://koicareapi.azurewebsites.net/api/Blog/Delete?id=${blogId}`,
+  //       {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       }
+  //     )
+  //     .then((res) => {
+  //       toast.success("Blog deleted successfully!", { autoClose: 1500 });
+  //       fetchData();
+  //     })
+  //     .catch((err) => console.error("Error deleting blog:", err));
+  // };
 
   const handleDeleteBlogConfirmation = () => {
     axiosInstance
@@ -269,8 +303,9 @@ const ManageAdmin = () => {
 
   const handleStatusChange = (order, newStatus) => {
     const updatedOrder = {
-      memberId: order.memberId,
-      totalCost: order.totalCost,
+      productId: order.productId || [],
+      quantity: order.quantity || [],
+      totalCost: order.totalCost > 0 ? order.totalCost : 1,
       closeDate: order.closeDate,
       code: order.code,
       description: order.description,
@@ -391,6 +426,18 @@ const ManageAdmin = () => {
                 {users.map((user) => (
                   <li key={user.id}>
                     {user.fullName} - {user.role.name}
+                    <select
+                      value={user.roleId}
+                      onChange={(e) =>
+                        handleRoleChange(user.id, e.target.value)
+                      }
+                    >
+                      {rolesList.map((role) => (
+                        <option key={role.id} value={role.id}>
+                          {role.name}
+                        </option>
+                      ))}
+                    </select>
                   </li>
                 ))}
               </ul>
@@ -486,7 +533,8 @@ const ManageAdmin = () => {
               <ul>
                 {orders.map((order) => (
                   <li key={order.id}>
-                    Order #{order.id} - Status: {order.status}
+                    Order #{order.id} - Status: {order.status} - Description:{" "}
+                    {order.description} - TotalCost: {order.totalCost}
                     <select
                       className="select-order-admin"
                       value={order.status}
@@ -494,10 +542,10 @@ const ManageAdmin = () => {
                         handleStatusChange(order, e.target.value)
                       }
                     >
-                      <option value="Chưa thanh toán">Chưa thanh toán</option>
-                      <option value="Đã thanh toán">Đã thanh toán</option>
-                      <option value="Đang giao">Đang giao</option>
-                      <option value="Đã giao">Đã giao</option>
+                      <option value="Unpaid">UNPAID</option>
+                      <option value="Paid">PAID</option>
+                      <option value="In transit">IN TRANSIT</option>
+                      <option value="Delivered">DELIVERED</option>
                     </select>
                   </li>
                 ))}
