@@ -7,7 +7,6 @@ import { TiShoppingCart } from "react-icons/ti";
 import { ToastContainer, toast } from "react-toastify";
 import Avatar, { genConfig } from "react-nice-avatar";
 import axios from "axios";
-import { HiOutlineMoon } from "react-icons/hi";
 
 function Header() {
   const [user, setUser] = useState("");
@@ -45,6 +44,7 @@ function Header() {
     localStorage.removeItem("userDetail");
     localStorage.removeItem("cart");
     localStorage.removeItem("emailUser");
+    localStorage.removeItem("orderCode");
 
     setTimeout(() => {
       navigate("/login");
@@ -154,7 +154,6 @@ function Header() {
                 <span className="logout_button" onClick={handleLogout}>
                   Logout
                 </span>
-                <HiOutlineMoon></HiOutlineMoon>
               </div>
             ) : (
               <a href="/login">

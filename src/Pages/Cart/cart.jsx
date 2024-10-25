@@ -3,79 +3,24 @@ import "./cart.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { toast } from "react-toastify";
 import axiosInstance from "../axiosInstance";
-import { useLocation } from "react-router-dom";
 import koiFood from "../../Components/Assets/KoiFood.jpeg";
 
 const Cart = () => {
-  const location = useLocation();
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("status") === "CANCELLED") {
+    // Xử lý message hoặc logic của bạn tại đây
+    toast.warn("Thanh toán đã bị hủy!", { autoClose: 1500 });
+    console.log("Order has been cancelled.");
+
+    // Xóa query string khỏi URL
+    const newUrl = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, document.title, newUrl);
+  }
+
   const [products, setProducts] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [totalPayment, setTotalPayment] = useState(0);
   const [isSelectAll, setIsSelectAll] = useState(false);
-
-  // const productId = selectedProducts.map((product) => product.id);
-  // const quantity = selectedProducts.map((product) => product.quantity);
-  // const productDetails = selectedProducts
-  //   .map((product) => `${product.name} x ${product.quantity}`)
-  //   .join(", ");
-
-  // const orderRequest = {
-  //   productId: productId,
-  //   quantity: quantity,
-  //   totalCost: totalPayment,
-  //   closeDate: new Date().toISOString(),
-  //   description: productDetails,
-  //   status: "PAID",
-  // };
-  // console.log(orderRequest);
-
-  const productId = selectedProducts.map((product) => product.id);
-  const quantity = selectedProducts.map((product) => product.quantity);
-  const productDetails = selectedProducts
-    .map((product) => `${product.name} x ${product.quantity}`)
-    .join(", ");
-
-  const emailUser = JSON.parse(localStorage.getItem("emailUser"));
-  console.log(emailUser);
-
-  useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const cancel = searchParams.get("cancel");
-    const status = searchParams.get("status");
-    const orderCode = searchParams.get("orderCode");
-
-    const orderRequest = {
-      productId: productId,
-      quantity: quantity,
-      totalCost: totalPayment,
-      closeDate: new Date().toISOString(),
-      description: productDetails,
-      status: "PAID",
-      code: orderCode,
-    };
-    console.log(orderRequest);
-
-    if (status === "PAID") {
-      axiosInstance
-        .post("/api/Order/add", orderRequest)
-        .then(() => {
-          console.log(orderRequest);
-          axiosInstance.post(`/api/Checkout/send-email/${orderCode}`, {
-            recipientEmail: `"${emailUser}"`,
-          });
-          localStorage.removeItem("selectedProducts");
-          localStorage.removeItem("cart");
-        })
-        .catch((error) => {
-          console.error("Order submission failed:", error);
-          toast.error("Failed to save order!", { autoClose: 1500 });
-        });
-    }
-
-    if (cancel === "true" && status === "CANCELLED") {
-      toast.warn("Thanh toán đã bị hủy!", { autoClose: 1500 });
-    }
-  }, [location.search, selectedProducts, totalPayment]);
 
   useEffect(() => {
     const message = localStorage.getItem("toastMessage");
@@ -223,7 +168,6 @@ function Products({
         cost: product.cost,
         quantity: product.quantity,
       }));
-
       const response = await axiosInstance.post(
         "/api/Checkout/create-payment-link",
         payload,
@@ -236,6 +180,11 @@ function Products({
       );
       if (response.status === 200 && response.data) {
         const paymentUrl = response.data.url;
+        localStorage.setItem("orderCode", response.data.orderCode);
+        localStorage.setItem(
+          "selectedProducts",
+          JSON.stringify(selectedProducts)
+        );
         window.location.href = paymentUrl;
       }
     } catch (error) {

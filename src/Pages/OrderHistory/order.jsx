@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axiosInstance from "../axiosInstance";
 import { toast } from "react-toastify";
 import koiFood from "../../Components/Assets/KoiFood.jpeg";
+import { useLocation } from "react-router-dom";
 
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
@@ -27,6 +28,60 @@ const OrderHistory = () => {
 
     fetchOrders();
   }, [memberId]);
+  const location = useLocation();
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const status = searchParams.get("status");
+    const orderCode = searchParams.get("orderCode");
+    const selectedProducts = JSON.parse(
+      localStorage.getItem("selectedProducts")
+    );
+
+    const email = JSON.parse(localStorage.getItem("emailUser"));
+
+    if (status === "PAID") {
+      // Prepare order request
+      const productIds = selectedProducts?.map((product) => product.id);
+      const quantities = selectedProducts?.map((product) => product.quantity);
+      const totalCost = selectedProducts?.reduce(
+        (sum, product) => sum + product.cost * product.quantity,
+        0
+      );
+      const description = selectedProducts
+        ?.map((product) => `${product.name} x ${product.quantity}`)
+        .join(", ");
+
+      const orderRequest = {
+        productId: productIds,
+        quantity: quantities,
+        totalCost: totalCost,
+        closeDate: new Date().toISOString(),
+        description: description,
+        code: orderCode,
+        status: status,
+      };
+      // Call the order/add API
+      axiosInstance
+        .post("/api/Order/add", orderRequest)
+        .then(() => {
+          toast.success("Đơn hàng đã được thêm thành công!", {
+            autoClose: 1500,
+          });
+          localStorage.removeItem("cart");
+        })
+        .catch((error) => {
+          toast.error("Lỗi khi thêm đơn hàng!", { autoClose: 1500 });
+        });
+      setTimeout(() => {
+        axiosInstance.post(`/api/Checkout/send-email/${orderCode}`, {
+          recipientEmail: email,
+        });
+      }, 5000);
+
+      localStorage.removeItem("selectedProducts");
+    }
+  }, [location.search]);
 
   return (
     <div
@@ -63,11 +118,11 @@ const OrderItem = ({ order }) => {
 
   const getStatusStyle = (status) => {
     switch (status) {
-      case "PAID":
+      case "Đã thanh toán":
         return { backgroundColor: "#d4edda", color: "#155724" };
-      case "UNPAID":
+      case "Chưa thanh toán":
         return { backgroundColor: "#f8d7da", color: "#721c24" };
-      case "PENDING":
+      case "Đang xử lý":
         return { backgroundColor: "#fff3cd", color: "#856404" };
       default:
         return { backgroundColor: "#e2e3e5", color: "#333" };

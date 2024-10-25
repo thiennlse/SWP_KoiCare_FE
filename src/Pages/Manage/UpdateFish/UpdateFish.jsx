@@ -2,6 +2,7 @@ import "./UpdateFish.css";
 import axiosInstance from "../../axiosInstance";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const UpdateFish = () => {
   const { id } = useParams();
@@ -38,7 +39,7 @@ const UpdateFish = () => {
       })
       .catch((error) => {
         console.error("Error fetching fish details:", error);
-        alert("Failed to load fish details.");
+        toast.error("Failed to load fish details.", { autoClose: 1500 });
       });
 
     fetchPoolsForMember();
@@ -56,7 +57,7 @@ const UpdateFish = () => {
       })
       .catch((error) => {
         console.error("Error fetching food details:", error);
-        alert("Failed to load food details.");
+        toast.error("Failed to load food details.", { autoClose: 1500 });
       });
   };
 
@@ -73,12 +74,11 @@ const UpdateFish = () => {
           const memberPools = res.data.filter(
             (pool) => pool.memberId === memberId
           );
-          console.log("Filtered Pools:", memberPools);
           setPools(memberPools);
         })
         .catch((err) => {
           console.error("Error fetching pools data:", err);
-          alert("Failed to fetch pools data.");
+          toast.error("Failed to fetch pools data.", { autoClose: 1500 });
         });
     } else {
       console.error("Member ID is invalid or not found in local storage.");
@@ -114,16 +114,20 @@ const UpdateFish = () => {
         );
       })
       .then((response) => {
-        alert("Fish updated successfully!");
+        toast.success("Fish updated successfully!", { autoClose: 1500 });
         navigate("/fishmanagement");
       })
       .catch((error) => {
         if (error.response) {
           console.error("Error updating fish:", error.response.data);
-          alert(`Failed to update fish. Error: ${error.response.data}`);
+          toast.error(`Failed to update fish. Error: ${error.response.data}`, {
+            autoClose: 1500,
+          });
         } else {
           console.error("Error setting up request:", error.message);
-          alert(`Failed to update fish. Error: ${error.message}`);
+          toast.error(`Failed to update fish. Error: ${error.message}`, {
+            autoClose: 1500,
+          });
         }
       });
   };

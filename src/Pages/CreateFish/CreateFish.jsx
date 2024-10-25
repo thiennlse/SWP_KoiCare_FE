@@ -4,6 +4,7 @@ import axiosInstance from "../axiosInstance";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const CreateFish = () => {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ const CreateFish = () => {
       })
       .catch((err) => {
         console.error("Error fetching pools data:", err);
-        alert("Failed to fetch pools data.");
+        toast.error("Failed to fetch pools data.", { autoClose: 1500 });
       });
   };
 
@@ -99,22 +100,27 @@ const CreateFish = () => {
         }
       );
 
-      alert("Fish created successfully!");
+      toast.success("Fish created successfully!", { autoClose: 1500 });
       navigate("/fishmanagement");
     } catch (error) {
       if (error.response) {
         console.error("Error response from API:", error.response.data);
-        alert(
+        toast.error(
           `Failed to create fish. Status: ${
             error.response.status
-          }. Errors: ${JSON.stringify(error.response.data.errors)}`
+          }. Errors: ${JSON.stringify(error.response.data.errors)}`,
+          { autoClose: 1500 }
         );
       } else if (error.request) {
         console.error("Error request:", error.request);
-        alert("Failed to create fish. No response from server.");
+        toast.error("Failed to create fish. No response from server.", {
+          autoClose: 1500,
+        });
       } else {
         console.error("Error message:", error.message);
-        alert(`Failed to create fish. Error: ${error.message}`);
+        toast.error(`Failed to create fish. Error: ${error.message}`, {
+          autoClose: 1500,
+        });
       }
     }
   };
