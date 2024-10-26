@@ -432,11 +432,14 @@ const ManageAdmin = () => {
                         handleRoleChange(user.id, e.target.value)
                       }
                     >
-                      {rolesList.map((role) => (
-                        <option key={role.id} value={role.id}>
-                          {role.name}
-                        </option>
-                      ))}
+                      <option value={user.roleId}>{user.role.name}</option>{" "}
+                      {rolesList
+                        .filter((role) => role.id !== user.roleId)
+                        .map((role) => (
+                          <option key={role.id} value={role.id}>
+                            {role.name}
+                          </option>
+                        ))}
                     </select>
                   </li>
                 ))}
@@ -542,7 +545,6 @@ const ManageAdmin = () => {
                         handleStatusChange(order, e.target.value)
                       }
                     >
-                      <option value="Unpaid">UNPAID</option>
                       <option value="Paid">PAID</option>
                       <option value="In transit">IN TRANSIT</option>
                       <option value="Delivered">DELIVERED</option>
