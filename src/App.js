@@ -19,10 +19,14 @@ import Order from "./Pages/OrderHistory/order";
 import CalcFood from "./Pages/Services/CalcFood/calcFood";
 import CalcSalt from "./Pages/Services/CalcSalt/calcSalt";
 import Water from "./Pages/Manage/WaterManagement/water";
+import AuthGuard from "./Pages/authGuagd";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
     <div>
+      <AuthGuard />
+      <ToastContainer />
       <Routes>
         <Route path="/login" element={<LoginForm />} />
 
