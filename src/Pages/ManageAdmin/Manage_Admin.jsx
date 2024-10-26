@@ -71,6 +71,12 @@ const ManageAdmin = () => {
     { id: 4, name: "Member" },
   ];
 
+  const orderStatuses = [
+    { id: 1, name: "PAID" },
+    { id: 2, name: "IN TRANSIT" },
+    { id: 3, name: "DELIVERED" },
+  ];
+
   const handleRoleChange = (userId, newRoleId) => {
     const userToUpdate = users.find((user) => user.id === userId);
     if (!userToUpdate) return;
@@ -203,21 +209,6 @@ const ManageAdmin = () => {
       });
   };
 
-  // const handleDeleteProduct = (productId) => {
-  //   axiosInstance
-  //     .delete(
-  //       `https://koicareapi.azurewebsites.net/api/Product/Delete?id=${productId}`,
-  //       {
-  //         headers: { Authorization: `Bearer ${token}` },
-  //       }
-  //     )
-  //     .then((res) => {
-  //       toast.success("Product deleted successfully!", { autoClose: 1500 });
-  //       fetchData();
-  //     })
-  //     .catch((err) => console.error("Error deleting product:", err));
-  // };
-
   const handleDeleteProductConfirmation = () => {
     axiosInstance
       .delete(
@@ -270,21 +261,6 @@ const ManageAdmin = () => {
       });
   };
 
-  // const handleDeleteBlog = (blogId) => {
-  //   axiosInstance
-  //     .delete(
-  //       `https://koicareapi.azurewebsites.net/api/Blog/Delete?id=${blogId}`,
-  //       {
-  //         headers: { Authorization: `Bearer ${token}` },
-  //       }
-  //     )
-  //     .then((res) => {
-  //       toast.success("Blog deleted successfully!", { autoClose: 1500 });
-  //       fetchData();
-  //     })
-  //     .catch((err) => console.error("Error deleting blog:", err));
-  // };
-
   const handleDeleteBlogConfirmation = () => {
     axiosInstance
       .delete(
@@ -301,20 +277,23 @@ const ManageAdmin = () => {
       .catch((err) => console.error("Error deleting blog:", err));
   };
 
-  const handleStatusChange = (order, newStatus) => {
+  const handleStatusChange = (orderId, newStatusId) => {
+    const orderToUpdate = orders.find((order) => order.id === orderId);
+    if (!orderToUpdate) return;
+
     const updatedOrder = {
-      productId: order.productId || [],
-      quantity: order.quantity || [],
-      totalCost: order.totalCost > 0 ? order.totalCost : 1,
-      closeDate: order.closeDate,
-      code: order.code,
-      description: order.description,
-      status: newStatus,
+      productId: orderToUpdate.productId || [],
+      quantity: orderToUpdate.quantity || [],
+      totalCost: orderToUpdate.totalCost > 0 ? orderToUpdate.totalCost : 1,
+      closeDate: orderToUpdate.closeDate,
+      code: orderToUpdate.code,
+      description: orderToUpdate.description,
+      status: newStatusId,
     };
 
     axiosInstance
       .patch(
-        `https://koicareapi.azurewebsites.net/api/Order/update/${order.id}`,
+        `https://koicareapi.azurewebsites.net/api/Order/update/${orderId}`,
         updatedOrder,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -539,15 +518,19 @@ const ManageAdmin = () => {
                     Order #{order.id} - Status: {order.status} - Description:{" "}
                     {order.description} - TotalCost: {order.totalCost}
                     <select
-                      className="select-order-admin"
                       value={order.status}
                       onChange={(e) =>
-                        handleStatusChange(order, e.target.value)
+                        handleStatusChange(order.id, e.target.value)
                       }
                     >
-                      <option value="Paid">PAID</option>
-                      <option value="In transit">IN TRANSIT</option>
-                      <option value="Delivered">DELIVERED</option>
+                      <option value={order.status}>{order.status}</option>
+                      {orderStatuses
+                        .filter((status) => status.name !== order.status)
+                        .map((status) => (
+                          <option key={status.id} value={status.name}>
+                            {status.name}
+                          </option>
+                        ))}
                     </select>
                   </li>
                 ))}
