@@ -12,6 +12,26 @@ const OrderHistory = () => {
   const location = useLocation();
 
   useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axiosInstance.get(
+          "/api/Order?page=1&pageSize=100"
+        );
+        if (response.status === 200) {
+          const filteredOrders = response.data.filter(
+            (order) => order.memberId === parseInt(memberId)
+          );
+          setOrders(filteredOrders);
+        }
+      } catch (error) {
+        toast.error("Error fetching orders:", error);
+      }
+    };
+
+    fetchOrders();
+  }, [memberId]);
+
+  useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const status = searchParams.get("status");
     const orderCode = searchParams.get("orderCode");
@@ -63,26 +83,6 @@ const OrderHistory = () => {
       localStorage.removeItem("selectedProducts");
     }
   }, [location.search]);
-
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await axiosInstance.get(
-          "/api/Order?page=1&pageSize=100"
-        );
-        if (response.status === 200) {
-          const filteredOrders = response.data.filter(
-            (order) => order.memberId === parseInt(memberId)
-          );
-          setOrders(filteredOrders);
-        }
-      } catch (error) {
-        toast.error("Error fetching orders:", error);
-      }
-    };
-
-    fetchOrders();
-  }, [memberId]);
 
   return (
     <div
