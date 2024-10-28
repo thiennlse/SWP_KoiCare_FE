@@ -22,7 +22,6 @@ const OrderHistory = () => {
     const email = JSON.parse(localStorage.getItem("emailUser"));
 
     if (status === "PAID") {
-      // Prepare order request
       const productIds = selectedProducts?.map((product) => product.id);
       const quantities = selectedProducts?.map((product) => product.quantity);
       const totalCost = selectedProducts?.reduce(
@@ -42,7 +41,6 @@ const OrderHistory = () => {
         code: orderCode,
         status: status,
       };
-      // Call the order/add API
       axiosInstance
         .post("/api/Order/add", orderRequest)
         .then(() => {
@@ -52,6 +50,7 @@ const OrderHistory = () => {
           localStorage.removeItem("cart");
         })
         .catch((error) => {
+          console.log(error);
           toast.error("Lỗi khi thêm đơn hàng!", { autoClose: 1500 });
         });
       setTimeout(() => {
