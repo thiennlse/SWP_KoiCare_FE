@@ -161,8 +161,8 @@ function Products({
         payload,
         {
           params: {
-            cancelUrl: "http://localhost:3000/cart",
-            returnUrl: "http://localhost:3000/orderHistory",
+            cancelUrl: "/cart",
+            returnUrl: "/orderHistory",
           },
         }
       );
