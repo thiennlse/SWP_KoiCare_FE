@@ -161,8 +161,8 @@ function Products({
         payload,
         {
           params: {
-            cancelUrl: "/cart",
-            returnUrl: "/orderHistory",
+            cancelUrl: "https://koicare.vercel.app/cart",
+            returnUrl: "https://koicare.vercel.app/orderHistory",
           },
         }
       );
