@@ -21,6 +21,13 @@ const bannerImages = [
   { img: banner_image_3, title: "Your Fish" },
 ];
 
+const scrollToBestSelling = () => {
+  const bestSellingSection = document.getElementById("products_scroll");
+  if (bestSellingSection) {
+    bestSellingSection.scrollIntoView({ behavior: "smooth" });
+  }
+};
+
 const HomePage = () => {
   const [blogData, setBlogData] = useState([]);
 
@@ -80,7 +87,9 @@ function Banner() {
             For <span>{bannerImages[currentIndex].title}</span>
           </h1>
           <div className="banner_actions">
-            <button className="shop_now_btn">SHOP NOW ➔</button>
+            <button className="shop_now_btn" onClick={scrollToBestSelling}>
+              SHOP NOW ➔
+            </button>
             <p className="save_text">Save 10-20% OFF</p>
           </div>
         </div>

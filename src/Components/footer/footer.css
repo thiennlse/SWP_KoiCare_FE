@@ -84,6 +84,7 @@
   font-family: "Chilanka", system-ui;
   font-weight: 400;
   font-style: normal;
+  white-space: nowrap;
 }
 
 .nav_links_lists strong {
