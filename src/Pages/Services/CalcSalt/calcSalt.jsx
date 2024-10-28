@@ -20,12 +20,9 @@ const AquariumManagement = () => {
 
   const fetchPoolsForMember = (memberId) => {
     axiosInstance
-      .get(
-        "https://koicareapi.azurewebsites.net/api/Pool?page=1&pageSize=100",
-        {
-          params: { _timestamp: new Date().getTime() },
-        }
-      )
+      .get("/api/Pool?page=1&pageSize=100", {
+        params: { _timestamp: new Date().getTime() },
+      })
       .then((res) => {
         const memberPools = res.data.filter(
           (pool) => pool.memberId === memberId
@@ -40,7 +37,7 @@ const AquariumManagement = () => {
   const handleSearch = () => {
     if (searchQuery.trim() !== "") {
       axiosInstance
-        .get("https://koicareapi.azurewebsites.net/api/Pool", {
+        .get("/api/Pool", {
           params: {
             page: 1,
             pageSize: 10,

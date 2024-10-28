@@ -9,25 +9,6 @@ const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
   const memberId = localStorage.getItem("userId");
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await axiosInstance.get(
-          "/api/Order?page=1&pageSize=100"
-        );
-        if (response.status === 200) {
-          const filteredOrders = response.data.filter(
-            (order) => order.memberId === parseInt(memberId)
-          );
-          setOrders(filteredOrders);
-        }
-      } catch (error) {
-        toast.error("Error fetching orders:", error);
-      }
-    };
-
-    fetchOrders();
-  }, [memberId]);
   const location = useLocation();
 
   useEffect(() => {
@@ -83,6 +64,26 @@ const OrderHistory = () => {
     }
   }, [location.search]);
 
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axiosInstance.get(
+          "/api/Order?page=1&pageSize=100"
+        );
+        if (response.status === 200) {
+          const filteredOrders = response.data.filter(
+            (order) => order.memberId === parseInt(memberId)
+          );
+          setOrders(filteredOrders);
+        }
+      } catch (error) {
+        toast.error("Error fetching orders:", error);
+      }
+    };
+
+    fetchOrders();
+  }, [memberId]);
+
   return (
     <div
       className=" container mt-4"
@@ -118,12 +119,8 @@ const OrderItem = ({ order }) => {
 
   const getStatusStyle = (status) => {
     switch (status) {
-      case "Đã thanh toán":
+      case "PAID":
         return { backgroundColor: "#d4edda", color: "#155724" };
-      case "Chưa thanh toán":
-        return { backgroundColor: "#f8d7da", color: "#721c24" };
-      case "Đang xử lý":
-        return { backgroundColor: "#fff3cd", color: "#856404" };
       default:
         return { backgroundColor: "#e2e3e5", color: "#333" };
     }

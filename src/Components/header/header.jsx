@@ -6,7 +6,7 @@ import { CgProfile } from "react-icons/cg";
 import { TiShoppingCart } from "react-icons/ti";
 import { ToastContainer, toast } from "react-toastify";
 import Avatar, { genConfig } from "react-nice-avatar";
-import axios from "axios";
+import axiosInstance from "../../Pages/axiosInstance";
 
 function Header() {
   const [user, setUser] = useState("");
@@ -21,9 +21,7 @@ function Header() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(
-          `https://koicareapi.azurewebsites.net/api/Member/${userId}`
-        );
+        const res = await axiosInstance.get(`/api/Member/${userId}`);
         setUser(res.data);
       } catch (error) {
         console.error("Error fetching user data:", error);

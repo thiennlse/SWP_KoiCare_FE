@@ -87,13 +87,9 @@ const ManageAdmin = () => {
     };
 
     axiosInstance
-      .patch(
-        `https://koicareapi.azurewebsites.net/api/Member/update/${userId}`,
-        updatedUser,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
+      .patch(`/api/Member/update/${userId}`, updatedUser, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         toast.success("User  role updated successfully!");
         fetchData();
@@ -106,39 +102,30 @@ const ManageAdmin = () => {
 
   const fetchData = () => {
     axiosInstance
-      .get("https://koicareapi.azurewebsites.net/api/Member", {
+      .get("/api/Member", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setUsers(res.data))
       .catch((err) => console.error("Error fetching users:", err));
 
     axiosInstance
-      .get(
-        "https://koicareapi.azurewebsites.net/api/Product?page=1&pagesize=100",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
+      .get("/api/Product?page=1&pagesize=100", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => setProducts(res.data))
       .catch((err) => console.error("Error fetching products:", err));
 
     axiosInstance
-      .get(
-        "https://koicareapi.azurewebsites.net/api/Order?page=1&pageSize=100",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
+      .get("/api/Order?page=1&pageSize=100", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => setOrders(res.data))
       .catch((err) => console.error("Error fetching orders:", err));
 
     axiosInstance
-      .get(
-        "https://koicareapi.azurewebsites.net/api/Blog?page=1&pageSize=100",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
+      .get("/api/Blog?page=1&pageSize=100", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => setBlogs(res.data))
       .catch((err) => console.error("Error fetching blogs:", err));
   };
@@ -171,13 +158,9 @@ const ManageAdmin = () => {
 
   const handleCreateProduct = (productData) => {
     axiosInstance
-      .post(
-        "https://koicareapi.azurewebsites.net/api/Product/add",
-        productData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
+      .post("/api/Product/add", productData, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         toast.success("Product created successfully!");
         fetchData();
@@ -191,13 +174,9 @@ const ManageAdmin = () => {
 
   const handleUpdateProduct = (productData) => {
     axiosInstance
-      .patch(
-        `https://koicareapi.azurewebsites.net/api/Product/update/${productData.id}`,
-        productData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
+      .patch(`/api/Product/update/${productData.id}`, productData, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         toast.success("Product updated successfully!", { autoClose: 1500 });
         fetchData();
@@ -211,12 +190,9 @@ const ManageAdmin = () => {
 
   const handleDeleteProductConfirmation = () => {
     axiosInstance
-      .delete(
-        `https://koicareapi.azurewebsites.net/api/Product/Delete?id=${selectedProduct.id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
+      .delete(`/api/Product/Delete?id=${selectedProduct.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         toast.success("Product deleted successfully!", { autoClose: 1500 });
         fetchData();
@@ -227,7 +203,7 @@ const ManageAdmin = () => {
 
   const handleCreateBlog = (blogData) => {
     axiosInstance
-      .post("https://koicareapi.azurewebsites.net/api/Blog/add", blogData, {
+      .post("/api/Blog/add", blogData, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -243,13 +219,9 @@ const ManageAdmin = () => {
 
   const handleUpdateBlog = (blogData) => {
     axiosInstance
-      .patch(
-        `https://koicareapi.azurewebsites.net/api/Blog/update/${blogData.id}`,
-        blogData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
+      .patch(`/api/Blog/update/${blogData.id}`, blogData, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         toast.success("Blog updated successfully!");
         fetchData();
@@ -263,12 +235,9 @@ const ManageAdmin = () => {
 
   const handleDeleteBlogConfirmation = () => {
     axiosInstance
-      .delete(
-        `https://koicareapi.azurewebsites.net/api/Blog/Delete?id=${selectedBlog.id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
+      .delete(`/api/Blog/Delete?id=${selectedBlog.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         toast.success("Blog deleted successfully!", { autoClose: 1500 });
         fetchData();
@@ -292,13 +261,9 @@ const ManageAdmin = () => {
     };
 
     axiosInstance
-      .patch(
-        `https://koicareapi.azurewebsites.net/api/Order/update/${orderId}`,
-        updatedOrder,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
+      .patch(`/api/Order/update/${orderId}`, updatedOrder, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         toast.success("Order status updated successfully!");
         fetchData();

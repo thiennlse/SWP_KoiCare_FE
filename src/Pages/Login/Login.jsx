@@ -3,7 +3,7 @@ import "./Login.css";
 import { FaUser } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
-import axios from "axios";
+import axiosInstance from "../axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import CryptoJS from "crypto-js";
@@ -60,19 +60,14 @@ const LoginForm = () => {
     );
   };
 
-
-
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      let res = await axios.post(
-        "https://koicareapi.azurewebsites.net/api/Member/login",
-        {
-          email: loginEmail,
-          password: loginPassword,
-        }
-      );
+      let res = await axiosInstance.post("/api/Member/login", {
+        email: loginEmail,
+        password: loginPassword,
+      });
       const token = res.data.token;
       if (rememberMe) {
         localStorage.setItem("email", loginEmail);
@@ -132,8 +127,8 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await axios.post(
-        "https://koicareapi.azurewebsites.net/api/Member/register",
+      const response = await axiosInstance.post(
+        "/api/Member/register",
         {
           email: registerEmail,
           password: registerPassword,

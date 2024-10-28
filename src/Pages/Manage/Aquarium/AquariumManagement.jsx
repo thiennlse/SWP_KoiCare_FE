@@ -42,7 +42,7 @@ const AquariumManagement = () => {
   const handleSearch = () => {
     if (searchQuery.trim() !== "") {
       axiosInstance
-        .get("https://koicareapi.azurewebsites.net/api/Pool", {
+        .get("/api/Pool", {
           params: {
             page: 1,
             pageSize: 100,
@@ -67,7 +67,7 @@ const AquariumManagement = () => {
   const deletePool = (id) => {
     if (window.confirm("Are you sure you want to delete this aquarium?")) {
       axiosInstance
-        .delete(`https://koicareapi.azurewebsites.net/api/Pool/Delete?id=${id}`)
+        .delete(`/api/Pool/Delete?id=${id}`)
         .then((response) => {
           if (response.status === 204) {
             const updatedAquaList = aquaList.filter((pool) => pool.id !== id);

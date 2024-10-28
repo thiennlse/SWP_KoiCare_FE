@@ -1,37 +1,24 @@
 import { useEffect, useState } from "react";
 import "./cart.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { toast } from "react-toastify";
 import axiosInstance from "../axiosInstance";
 import koiFood from "../../Components/Assets/KoiFood.jpeg";
+import { toast, ToastContainer } from "react-toastify";
 
 const Cart = () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get("status") === "CANCELLED") {
-    // Xử lý message hoặc logic của bạn tại đây
-    toast.warn("Thanh toán đã bị hủy!", { autoClose: 1500 });
-    console.log("Order has been cancelled.");
-
-    // Xóa query string khỏi URL
-    const newUrl = window.location.origin + window.location.pathname;
-    window.history.replaceState({}, document.title, newUrl);
-  }
-
   const [products, setProducts] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [totalPayment, setTotalPayment] = useState(0);
   const [isSelectAll, setIsSelectAll] = useState(false);
 
-  useEffect(() => {
-    const message = localStorage.getItem("toastMessage");
-    if (message) {
-      toast.success(message, { autoClose: 1500 });
-    }
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("status") === "CANCELLED") {
+    toast.warn("Thanh toán đã bị hủy!", { autoClose: 1500 });
+    console.log("Order has been cancelled.");
 
-    setTimeout(() => {
-      localStorage.removeItem("toastMessage");
-    }, 3000);
-  }, []);
+    const newUrl = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, document.title, newUrl);
+  }
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -119,6 +106,7 @@ const Cart = () => {
 
   return (
     <>
+      <ToastContainer autoClose={1500} />
       {products.length > 0 ? (
         <div className="body-cart">
           <Products

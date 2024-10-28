@@ -29,7 +29,7 @@ const CalcFood = () => {
 
   const fetchFish = () => {
     axiosInstance
-      .get("https://koicareapi.azurewebsites.net/api/Fish?page=1&pageSize=100")
+      .get("/api/Fish?page=1&pageSize=100")
       .then((res) => {
         const filteredFish = res.data.filter((fish) =>
           poolList.some((pool) => pool.id === fish.poolId)
@@ -44,7 +44,7 @@ const CalcFood = () => {
 
   const fetchPoolsForMember = (memberId) => {
     axiosInstance
-      .get("https://koicareapi.azurewebsites.net/api/Pool?page=1&pageSize=100")
+      .get("/api/Pool?page=1&pageSize=100")
       .then((res) => {
         const memberPools = res.data.filter(
           (pool) => pool.memberId === memberId
@@ -93,21 +93,15 @@ const CalcFood = () => {
 
   function handleCalcFood(foodId, fishName, fishId) {
     toast.success(`Food of ${fishName}`, { autoClose: 1500 });
-    axiosInstance
-      .get(`https://koicareapi.azurewebsites.net/api/Food/${foodId}`)
-      .then((res) => {
-        console.log(res.data);
-        const fishWeight = res.data.weight;
-        console.log(fishWeight);
-      });
+    axiosInstance.get(`/api/Food/${foodId}`).then((res) => {
+      console.log(res.data);
+      const fishWeight = res.data.weight;
+      console.log(fishWeight);
+    });
 
-    axiosInstance
-      .get(
-        `https://koicareapi.azurewebsites.net/api/Fish/calculateFoodFish/${fishId}`
-      )
-      .then((res) => {
-        console.log(res.data);
-      });
+    axiosInstance.get(`/api/Fish/calculateFoodFish/${fishId}`).then((res) => {
+      console.log(res.data);
+    });
   }
 
   return (

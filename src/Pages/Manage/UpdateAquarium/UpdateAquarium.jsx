@@ -18,7 +18,7 @@ const UpdateAquarium = () => {
 
   useEffect(() => {
     axiosInstance
-      .get(`https://koicareapi.azurewebsites.net/api/Pool/${id}`)
+      .get(`/api/Pool/${id}`)
       .then((response) => {
         setAquariumData(response.data);
       })
@@ -40,15 +40,11 @@ const UpdateAquarium = () => {
     };
 
     axiosInstance
-      .patch(
-        `https://koicareapi.azurewebsites.net/api/Pool/update/${id}`,
-        updatedAquariumData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      .patch(`/api/Pool/update/${id}`, updatedAquariumData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       .then((response) => {
         toast.success("Aquarium updated successfully!", { autoClose: 1500 });
         navigate("/aquariummanagement");

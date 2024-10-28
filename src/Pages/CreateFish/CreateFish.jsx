@@ -33,7 +33,7 @@ const CreateFish = () => {
 
   const fetchPoolsForMember = (memberId) => {
     axiosInstance
-      .get("https://koicareapi.azurewebsites.net/api/Pool?page=1&pageSize=100")
+      .get("/api/Pool?page=1&pageSize=100")
       .then((res) => {
         const memberPools = res.data.filter(
           (pool) => pool.memberId === memberId

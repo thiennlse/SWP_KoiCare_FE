@@ -28,7 +28,7 @@ const UpdateFish = () => {
 
   useEffect(() => {
     axiosInstance
-      .get(`https://koicareapi.azurewebsites.net/api/Fish/${id}`)
+      .get(`/api/Fish/${id}`)
       .then((response) => {
         const fishDetails = response.data;
         setFishData(fishDetails);
@@ -47,7 +47,7 @@ const UpdateFish = () => {
 
   const fetchFoodDetails = (foodId) => {
     axiosInstance
-      .get(`https://koicareapi.azurewebsites.net/api/Food/${foodId}`)
+      .get(`/api/Food/${foodId}`)
       .then((response) => {
         const foodDetails = response.data;
         setFoodData({
@@ -67,9 +67,7 @@ const UpdateFish = () => {
 
     if (memberId) {
       axiosInstance
-        .get(
-          "https://koicareapi.azurewebsites.net/api/Pool?page=1&pageSize=100"
-        )
+        .get("/api/Pool?page=1&pageSize=100")
         .then((res) => {
           const memberPools = res.data.filter(
             (pool) => pool.memberId === memberId
@@ -104,7 +102,7 @@ const UpdateFish = () => {
         };
 
         return axiosInstance.patch(
-          `https://koicareapi.azurewebsites.net/api/Fish/update/${id}`,
+          `/api/Fish/update/${id}`,
           updatedFishWithFood,
           {
             headers: {
@@ -134,15 +132,11 @@ const UpdateFish = () => {
 
   const addFood = (food) => {
     console.log("Data being sent:", food);
-    return axiosInstance.post(
-      "https://koicareapi.azurewebsites.net/api/Food/add",
-      food,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    return axiosInstance.post("/api/Food/add", food, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   };
 
   const handleChange = (e) => {

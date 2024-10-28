@@ -32,7 +32,7 @@ const FishManagement = () => {
 
   const fetchFish = () => {
     axiosInstance
-      .get("https://koicareapi.azurewebsites.net/api/Fish?page=1&pageSize=100")
+      .get("/api/Fish?page=1&pageSize=100")
       .then((res) => {
         const filteredFish = res.data.filter((fish) =>
           poolList.some((pool) => pool.id === fish.poolId)
@@ -48,7 +48,7 @@ const FishManagement = () => {
 
   const fetchPoolsForMember = (memberId) => {
     axiosInstance
-      .get("https://koicareapi.azurewebsites.net/api/Pool?page=1&pageSize=100")
+      .get("/api/Pool?page=1&pageSize=100")
       .then((res) => {
         const memberPools = res.data.filter(
           (pool) => pool.memberId === memberId
@@ -83,7 +83,7 @@ const FishManagement = () => {
   const deleteFish = (id) => {
     if (window.confirm("Are you sure you want to delete this fish?")) {
       axiosInstance
-        .delete(`https://koicareapi.azurewebsites.net/api/Fish/Delete?id=${id}`)
+        .delete(`/api/Fish/Delete?id=${id}`)
         .then((response) => {
           if (response.status === 204) {
             toast.success("Fish deleted successfully", { autoClose: 1500 });

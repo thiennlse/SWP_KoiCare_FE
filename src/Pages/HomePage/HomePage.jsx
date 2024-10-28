@@ -27,9 +27,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchBlogData = async () => {
       try {
-        const res = await axiosInstance.get(
-          "https://koicareapi.azurewebsites.net/api/Blog"
-        );
+        const res = await axiosInstance.get("/api/Blog");
         setBlogData(res.data);
       } catch (error) {
         console.error("Error fetching blog data:", error);
@@ -108,9 +106,7 @@ function Products() {
 
   useEffect(() => {
     axiosInstance
-      .get(
-        "https://koicareapi.azurewebsites.net/api/Product?page=1&pagesize=100"
-      )
+      .get("/api/Product?page=1&pagesize=100")
       .then((response) => {
         setProducts(response.data);
 
@@ -236,6 +232,7 @@ function Product({ productObj, onAddToCart }) {
   function handleClick() {
     console.log(productObj);
     navigate(`/product/${productObj.id}`, { state: { product: productObj } });
+    window.scrollTo(0, 0);
   }
 
   return (

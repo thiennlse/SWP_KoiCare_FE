@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./profile.css";
-import axios from "axios";
+import axiosInstance from "../axiosInstance";
 import { toast } from "react-toastify";
 
 const ProfileForm = () => {
@@ -8,14 +8,11 @@ const ProfileForm = () => {
 
   const [userData, setUserData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
-  const role = JSON.parse(localStorage.getItem("role"));
 
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get(
-          "https://koicareapi.azurewebsites.net/api/Member"
-        );
+        const response = await axiosInstance.get("/api/Member");
         const member = response.data.find(
           (member) => member.id === Number(userId)
         );
@@ -57,10 +54,7 @@ const ProfileForm = () => {
           roleId: userData.role.id,
         };
 
-        await axios.patch(
-          `https://koicareapi.azurewebsites.net/api/Member/update/${userId}`,
-          updateData
-        );
+        await axiosInstance.patch(`/api/Member/update/${userId}`, updateData);
 
         localStorage.setItem("updSuccess", "Profile updated successfully.");
 
@@ -82,11 +76,6 @@ const ProfileForm = () => {
           <div className="form-group">
             <label>Email</label>
             <input name="email" value={userData.email || ""} readOnly />
-          </div>
-
-          <div className="form-group">
-            <label>Password</label>
-            <input name="password" value={"*****************"} readOnly />
           </div>
 
           <div className="form-group">
@@ -119,11 +108,6 @@ const ProfileForm = () => {
             />
           </div>
 
-          <div className="form-group">
-            <label>Role</label>
-            <input name="role" value={role} readOnly />
-          </div>
-
           <button
             type="button"
             className="submit-btn"
@@ -146,9 +130,7 @@ const ProfileForm = () => {
           <p>
             <strong>Address:</strong> {userData.address}
           </p>
-          <p>
-            <strong>Role:</strong> {role}
-          </p>
+
           <button className="edit-btn" onClick={handleEditClick}>
             Edit Profile
           </button>
