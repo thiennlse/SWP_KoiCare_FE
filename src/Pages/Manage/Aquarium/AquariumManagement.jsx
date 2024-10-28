@@ -120,8 +120,8 @@ const AquariumManagement = () => {
           <thead>
             <tr>
               <th>Name</th>
-              <th>Size</th>
-              <th>Depth (m)</th>
+              <th>Size (cm)</th>
+              <th>Depth (cm)</th>
               <th>Description</th>
               <th>Actions</th>
             </tr>

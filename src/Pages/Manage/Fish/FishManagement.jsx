@@ -178,8 +178,8 @@ const FishManagement = () => {
             <tr>
               <th>Fish Name</th>
               <th>Age</th>
-              <th>Size</th>
-              <th>Weight</th>
+              <th>Size (cm)</th>
+              <th>Weight (kg)</th>
               <th>Food</th>
               <th>Origin</th>
               <th>Image</th>

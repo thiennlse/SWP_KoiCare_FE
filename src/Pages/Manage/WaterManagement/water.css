@@ -7,6 +7,18 @@
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+.water-container select {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  appearance: none;
+  background-color: white;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" stroke="gray" stroke-width="1" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6H6z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
 
 .water-form {
   margin-top: 20px;
