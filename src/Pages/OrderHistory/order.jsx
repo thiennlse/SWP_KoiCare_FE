@@ -7,6 +7,8 @@ import { useLocation } from "react-router-dom";
 
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
   const memberId = localStorage.getItem("userId");
   const location = useLocation();
 
@@ -54,7 +56,7 @@ const OrderHistory = () => {
             });
           }, 5000);
 
-          await fetchOrders();
+          await fetchOrders(searchTerm);
 
           const newUrl = window.location.origin + window.location.pathname;
           window.history.replaceState({}, document.title, newUrl);
@@ -68,10 +70,20 @@ const OrderHistory = () => {
     handleOrderPostAndFetch();
   }, [location.search]);
 
-  const fetchOrders = async () => {
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchTerm]);
+
+  const fetchOrders = async (searchTerm = "") => {
     try {
       const response = await axiosInstance.get(
-        "/api/Order?page=1&pageSize=100"
+        `/api/Order?page=1&pageSize=100&searchTerm=${searchTerm}`
       );
       if (response.status === 200) {
         const filteredOrders = response.data.filter(
@@ -85,8 +97,8 @@ const OrderHistory = () => {
   };
 
   useEffect(() => {
-    fetchOrders();
-  }, [memberId]);
+    fetchOrders(debouncedSearchTerm);
+  }, [memberId, debouncedSearchTerm]);
 
   return (
     <div
@@ -99,6 +111,15 @@ const OrderHistory = () => {
       }}
     >
       <h2>Lịch sử đơn hàng</h2>
+      <div className="mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Tìm kiếm theo mã đơn hàng..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
       {orders.length > 0 ? (
         <div className="order-list">
           {orders.map((order) => (
