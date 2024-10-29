@@ -104,7 +104,7 @@ function UpdateAquariumForm({ aquariumData, handleChange, handleUpdate }) {
           </div>
 
           <div className="input_infor">
-            <label>Size:</label>
+            <label>Size (cm):</label>
             <input
               type="number"
               name="size"
@@ -116,7 +116,7 @@ function UpdateAquariumForm({ aquariumData, handleChange, handleUpdate }) {
           </div>
 
           <div className="input_infor">
-            <label>Depth:</label>
+            <label>Depth (cm):</label>
             <input
               type="number"
               name="depth"

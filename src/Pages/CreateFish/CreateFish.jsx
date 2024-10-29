@@ -132,7 +132,7 @@ const CreateFish = () => {
 function CreateFishForm({ fishData, handleChange, handleSubmit, pools }) {
   const handleFocus = (e) => {
     if (e.target.value === "0") {
-      e.target.value = ""; // Clear the input value if it's '0'
+      e.target.value = "";
     }
   };
 
@@ -155,10 +155,7 @@ function CreateFishForm({ fishData, handleChange, handleSubmit, pools }) {
           </div>
 
           <div className="input_infor">
-            <label>
-              Pool:
-              <span className="dropdown-arrow"> ▼</span>
-            </label>
+            <label>Pool:</label>
             <select
               name="poolId"
               value={fishData.poolId}
@@ -190,14 +187,17 @@ function CreateFishForm({ fishData, handleChange, handleSubmit, pools }) {
 
           <div className="input_infor">
             <label>Origin:</label>
-            <input
-              type="text"
+            <select
               name="origin"
               placeholder="Enter origin"
               value={fishData.origin}
               onChange={handleChange}
-              required
-            />
+              className="custom-select"
+            >
+              <option value="Japan">Japan</option>
+              <option value="China">China</option>
+              <option value="Korea">Korea</option>
+            </select>
           </div>
 
           <div className="input_infor">
@@ -214,27 +214,27 @@ function CreateFishForm({ fishData, handleChange, handleSubmit, pools }) {
 
         <div className="column">
           <div className="input_infor">
-            <label>Size:</label>
+            <label>Size (cm):</label>
             <input
               type="number"
               name="size"
               placeholder="Enter size"
               value={fishData.size}
               onChange={handleChange}
-              onFocus={handleFocus} // Add onFocus handler
+              onFocus={handleFocus}
               required
             />
           </div>
 
           <div className="input_infor">
-            <label>Weight:</label>
+            <label>Weight (kg):</label>
             <input
               type="number"
               name="weight"
               placeholder="Enter weight"
               value={fishData.weight}
               onChange={handleChange}
-              onFocus={handleFocus} // Add onFocus handler
+              onFocus={handleFocus}
               required
             />
           </div>
@@ -252,20 +252,20 @@ function CreateFishForm({ fishData, handleChange, handleSubmit, pools }) {
           </div>
 
           <div className="input_infor">
-            <label>Food Weight:</label>
+            <label>Food Weight (kg):</label>
             <input
               type="number"
               name="foodWeight"
               placeholder="Enter food weight"
               value={fishData.foodWeight}
               onChange={handleChange}
-              onFocus={handleFocus} // Add onFocus handler
+              onFocus={handleFocus}
               required
             />
           </div>
 
           <div className="input_infor">
-            <label>Date of Birth (DOB):</label>
+            <label>Date of Birth:</label>
             <input
               type="date"
               name="dob"

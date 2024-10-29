@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { GrUserAdmin } from "react-icons/gr";
 import axiosInstance from "../axiosInstance";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -322,9 +323,9 @@ const ManageAdmin = () => {
 
       <div style={{ display: "flex", flexGrow: 1 }}>
         <aside className="sidebar-admin">
-          <div className="profile">
+          <div className="profile-admin">
             <img
-              src="/path/to/profile_pic.png"
+              src="/path/to/profile_admin.png"
               alt="Admin"
               className="avatar"
             />

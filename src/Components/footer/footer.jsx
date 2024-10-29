@@ -47,10 +47,10 @@ function Footer() {
               Services
               <ul className="sub_services_list">
                 <li>
-                  <a href="#">Calculate Food</a>
+                  <a href="calcFood">Calculate Food</a>
                 </li>
                 <li>
-                  <a href="#">Calculate Salt</a>
+                  <a href="calcSalt">Calculate Salt</a>
                 </li>
               </ul>
             </li>

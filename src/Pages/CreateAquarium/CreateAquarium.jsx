@@ -83,7 +83,7 @@ const CreateAquarium = () => {
             </div>
 
             <div className="input_infor">
-              <label>Size:</label>
+              <label>Size (cm):</label>
               <input
                 type="number"
                 placeholder="Enter size"
@@ -98,7 +98,7 @@ const CreateAquarium = () => {
             </div>
 
             <div className="input_infor">
-              <label>Depth:</label>
+              <label>Depth (cm):</label>
               <input
                 type="number"
                 placeholder="Enter depth"

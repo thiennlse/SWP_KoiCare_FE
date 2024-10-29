@@ -200,10 +200,7 @@ const UpdateFishForm = ({
           </div>
 
           <div className="input_infor">
-            <label>
-              Pool:
-              <span className="dropdown-arrow"> ▼</span>
-            </label>
+            <label>Pool:</label>
             <select
               name="poolId"
               value={fishData.poolId}
@@ -221,10 +218,7 @@ const UpdateFishForm = ({
           </div>
 
           <div className="input_infor">
-            <label>
-              Gender:
-              <span className="dropdown-arrow"> ▼</span>
-            </label>
+            <label>Gender:</label>
             <select
               name="gender"
               value={fishData.gender}
@@ -239,14 +233,16 @@ const UpdateFishForm = ({
 
           <div className="input_infor">
             <label>Origin:</label>
-            <input
-              type="text"
+            <select
               name="origin"
-              placeholder="Enter origin"
               value={fishData.origin}
               onChange={handleChange}
-              required
-            />
+              className="custom-select"
+            >
+              <option value="Japan">Japan</option>
+              <option value="China">China</option>
+              <option value="Korea">Korea</option>
+            </select>
           </div>
 
           <div className="input_infor">
@@ -263,7 +259,7 @@ const UpdateFishForm = ({
 
         <div className="column">
           <div className="input_infor">
-            <label>Size:</label>
+            <label>Size (cm):</label>
             <input
               type="number"
               name="size"
@@ -275,7 +271,7 @@ const UpdateFishForm = ({
           </div>
 
           <div className="input_infor">
-            <label>Weight:</label>
+            <label>Weight (kg):</label>
             <input
               type="number"
               name="weight"
@@ -299,7 +295,7 @@ const UpdateFishForm = ({
           </div>
 
           <div className="input_infor">
-            <label>Food Weight:</label>
+            <label>Food Weight (kg):</label>
             <input
               type="number"
               name="foodWeight"
@@ -311,7 +307,7 @@ const UpdateFishForm = ({
           </div>
 
           <div className="input_infor">
-            <label>Date of Birth (DOB):</label>
+            <label>Date of Birth:</label>
             <input
               type="date"
               name="dob"
