@@ -1,6 +1,5 @@
 import "./FishManagement.css";
 import axiosInstance from "../../axiosInstance";
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -8,6 +7,7 @@ import { toast } from "react-toastify";
 const FishManagement = () => {
   const [fishList, setFishList] = useState([]);
   const [poolList, setPoolList] = useState([]);
+  const [foodList, setFoodList] = useState([]);
   const [selectedPoolId, setSelectedPoolId] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredFishList, setFilteredFishList] = useState([]);
@@ -19,6 +19,7 @@ const FishManagement = () => {
   useEffect(() => {
     if (memberId !== 0) {
       fetchPoolsForMember(memberId);
+      fetchFood();
     } else {
       console.error("No memberId found. Please log in.");
     }
@@ -29,6 +30,18 @@ const FishManagement = () => {
       fetchFish();
     }
   }, [poolList]);
+
+  const fetchFood = () => {
+    axiosInstance
+      .get("/api/Food?page=1&pageSize=100")
+      .then((res) => {
+        setFoodList(res.data);
+      })
+      .catch((err) => {
+        console.error("Error fetching food data:", err);
+        toast.error("Failed to fetch food data.", { autoClose: 1500 });
+      });
+  };
 
   const fetchFish = () => {
     axiosInstance
@@ -180,6 +193,7 @@ const FishManagement = () => {
               <th>Age</th>
               <th>Size (cm)</th>
               <th>Weight (kg)</th>
+              <th>Food Name</th>
               <th>Origin</th>
               <th>Image</th>
               <th>Actions</th>
@@ -192,6 +206,9 @@ const FishManagement = () => {
                 <td>{calculateAge(fish.dob)}</td>
                 <td>{fish.size}</td>
                 <td>{fish.weight}</td>
+                <td>
+                  {foodList.find((food) => food.id === fish.foodId)?.name}{" "}
+                </td>
                 <td>{fish.origin}</td>
                 <td>
                   {fish.image ? (
