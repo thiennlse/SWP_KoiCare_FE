@@ -92,15 +92,13 @@ const CalcFood = () => {
   };
 
   function handleCalcFood(foodId, fishName, fishId) {
-    toast.success(`Food of ${fishName}`, { autoClose: 1500 });
     axiosInstance.get(`/api/Food/${foodId}`).then((res) => {
-      console.log(res.data);
       const fishWeight = res.data.weight;
       console.log(fishWeight);
     });
 
     axiosInstance.get(`/api/Fish/calculateFoodFish/${fishId}`).then((res) => {
-      console.log(res.data);
+      toast.warn(res.data, { autoClose: 2000 });
     });
   }
 

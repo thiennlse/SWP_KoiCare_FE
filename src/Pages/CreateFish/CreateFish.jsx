@@ -64,15 +64,11 @@ const CreateFish = () => {
     };
 
     try {
-      const foodResponse = await axiosInstance.post(
-        "https://koicareapi.azurewebsites.net/api/Food/add",
-        newFood,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const foodResponse = await axiosInstance.post("/api/Food/add", newFood, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       const foodId = foodResponse.data.id;
 
@@ -90,15 +86,11 @@ const CreateFish = () => {
         dob: fishData.dob ? new Date(fishData.dob).toISOString() : null,
       };
 
-      await axiosInstance.post(
-        "https://koicareapi.azurewebsites.net/api/Fish/add",
-        newFish,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      await axiosInstance.post("/api/Fish/add", newFish, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       toast.success("Fish created successfully!", { autoClose: 1500 });
       navigate("/fishmanagement");

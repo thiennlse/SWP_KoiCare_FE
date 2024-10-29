@@ -80,7 +80,6 @@ function ProductDetail() {
           <button onClick={handleBuyNow}>{product.cost}$ - Buy</button>
         </div>
       </div>
-
       {token ? (
         <div className="suggested-products">
           <h3>Suggested Products</h3>
@@ -105,7 +104,6 @@ function ProductDetail() {
       ) : (
         ""
       )}
-
       <ToastContainer />
     </div>
   );

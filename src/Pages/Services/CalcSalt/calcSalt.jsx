@@ -56,8 +56,12 @@ const AquariumManagement = () => {
     }
   };
 
-  const handleCalcSalt = (id) => {
-    toast.success(id);
+  const handleCalcSalt = (aqua) => {
+    axiosInstance
+      .get(`/api/Pool/CalculateSaltInPool/${aqua.id}`)
+      .then((res) => {
+        toast.warn(`${aqua.name}  ${res.data}`, { autoClose: 2000 });
+      });
   };
 
   return (
@@ -98,7 +102,7 @@ const AquariumManagement = () => {
                 <td>{aquarium.description}</td>
                 <td>
                   <div className="action-buttons">
-                    <button onClick={() => handleCalcSalt(aquarium.id)}>
+                    <button onClick={() => handleCalcSalt(aquarium)}>
                       Calc
                     </button>
                   </div>

@@ -14,7 +14,6 @@ const Cart = () => {
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get("status") === "CANCELLED") {
     toast.warn("Thanh toán đã bị hủy!", { autoClose: 1500 });
-    console.log("Order has been cancelled.");
 
     const newUrl = window.location.origin + window.location.pathname;
     window.history.replaceState({}, document.title, newUrl);
@@ -71,7 +70,7 @@ const Cart = () => {
   };
 
   const handleUpdateQuantityAndRecalculate = (productId, newQuantity) => {
-    let updatedProducts = products.map((product) => {
+    const updatedProducts = products.map((product) => {
       if (product.id === productId) {
         return { ...product, quantity: newQuantity };
       }
@@ -79,6 +78,7 @@ const Cart = () => {
     });
 
     setProducts(updatedProducts);
+    localStorage.setItem("cart", JSON.stringify(updatedProducts));
 
     const updatedSelectedProducts = selectedProducts.map((product) => {
       if (product.id === productId) {
@@ -86,7 +86,6 @@ const Cart = () => {
       }
       return product;
     });
-
     setSelectedProducts(updatedSelectedProducts);
     calculateTotalPayment(updatedSelectedProducts);
   };
@@ -106,7 +105,6 @@ const Cart = () => {
 
   return (
     <>
-      <ToastContainer autoClose={1500} />
       {products.length > 0 ? (
         <div className="body-cart">
           <Products
@@ -130,6 +128,7 @@ const Cart = () => {
           </a>
         </div>
       )}
+      <ToastContainer containerId="containerCancel" />
     </>
   );
 };
@@ -161,8 +160,8 @@ function Products({
         payload,
         {
           params: {
-            cancelUrl: "https://koicare.vercel.app/cart",
-            returnUrl: "https://koicare.vercel.app/orderHistory",
+            cancelUrl: `${window.location.origin}/cart`,
+            returnUrl: `${window.location.origin}/orderHistory`,
           },
         }
       );
@@ -237,21 +236,21 @@ function Product({
 }) {
   const [count, setCount] = useState(item.quantity);
 
-  const handleIncrease = () => {
+  function handleIncrease() {
     if (count < item.inStock) {
       const newCount = count + 1;
       setCount(newCount);
       handleUpdateQuantityAndRecalculate(item.id, newCount);
     }
-  };
+  }
 
-  const handleDecrease = () => {
+  function handleDecrease() {
     if (count > 1) {
       const newCount = count - 1;
       setCount(newCount);
       handleUpdateQuantityAndRecalculate(item.id, newCount);
     }
-  };
+  }
 
   // const confirmDeleteProduct = () => {
   //   const confirmed = window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?");

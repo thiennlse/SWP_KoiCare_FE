@@ -8,78 +8,83 @@ import { useLocation } from "react-router-dom";
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
   const memberId = localStorage.getItem("userId");
-
   const location = useLocation();
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const status = searchParams.get("status");
-    const orderCode = searchParams.get("orderCode");
-    const selectedProducts = JSON.parse(
-      localStorage.getItem("selectedProducts")
-    );
-
-    const email = JSON.parse(localStorage.getItem("emailUser"));
-
-    if (status === "PAID") {
-      const productIds = selectedProducts?.map((product) => product.id);
-      const quantities = selectedProducts?.map((product) => product.quantity);
-      const totalCost = selectedProducts?.reduce(
-        (sum, product) => sum + product.cost * product.quantity,
-        0
+    const handleOrderPostAndFetch = async () => {
+      const searchParams = new URLSearchParams(location.search);
+      const status = searchParams.get("status");
+      const orderCode = searchParams.get("orderCode");
+      const selectedProducts = JSON.parse(
+        localStorage.getItem("selectedProducts")
       );
-      const description = selectedProducts
-        ?.map((product) => `${product.name} x ${product.quantity}`)
-        .join(", ");
+      const email = JSON.parse(localStorage.getItem("emailUser"));
 
-      const orderRequest = {
-        productId: productIds,
-        quantity: quantities,
-        totalCost: totalCost,
-        closeDate: new Date().toISOString(),
-        description: description,
-        code: orderCode,
-        status: status,
-      };
-      axiosInstance
-        .post("/api/Order/add", orderRequest)
-        .then(() => {
+      if (status === "PAID") {
+        const productIds = selectedProducts?.map((product) => product.id);
+        const quantities = selectedProducts?.map((product) => product.quantity);
+        const totalCost = selectedProducts?.reduce(
+          (sum, product) => sum + product.cost * product.quantity,
+          0
+        );
+        const description = selectedProducts
+          ?.map((product) => `${product.name} x ${product.quantity}`)
+          .join(", ");
+
+        const orderRequest = {
+          productId: productIds,
+          quantity: quantities,
+          totalCost: totalCost,
+          closeDate: new Date().toISOString(),
+          description: description,
+          code: orderCode,
+          status: status,
+        };
+
+        try {
+          await axiosInstance.post("/api/Order/add", orderRequest);
           toast.success("Đơn hàng đã được thêm thành công!", {
             autoClose: 1500,
           });
           localStorage.removeItem("cart");
-        })
-        .catch((error) => {
+
+          setTimeout(async () => {
+            await axiosInstance.post(`/api/Checkout/send-email/${orderCode}`, {
+              recipientEmail: email,
+            });
+          }, 5000);
+
+          await fetchOrders();
+
+          const newUrl = window.location.origin + window.location.pathname;
+          window.history.replaceState({}, document.title, newUrl);
+        } catch (error) {
           console.log(error);
           toast.error("Lỗi khi thêm đơn hàng!", { autoClose: 1500 });
-        });
-      setTimeout(() => {
-        axiosInstance.post(`/api/Checkout/send-email/${orderCode}`, {
-          recipientEmail: email,
-        });
-      }, 5000);
-
-      localStorage.removeItem("selectedProducts");
-    }
-  }, [location.search]);
-
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await axiosInstance.get(
-          "/api/Order?page=1&pageSize=100"
-        );
-        if (response.status === 200) {
-          const filteredOrders = response.data.filter(
-            (order) => order.memberId === parseInt(memberId)
-          );
-          setOrders(filteredOrders);
         }
-      } catch (error) {
-        toast.error("Error fetching orders:", error);
       }
     };
 
+    handleOrderPostAndFetch();
+  }, [location.search]);
+
+  const fetchOrders = async () => {
+    try {
+      const response = await axiosInstance.get(
+        "/api/Order?page=1&pageSize=100"
+      );
+      if (response.status === 200) {
+        const filteredOrders = response.data.filter(
+          (order) => order.memberId === parseInt(memberId)
+        );
+        setOrders(filteredOrders);
+      }
+    } catch (error) {
+      toast.error("Error fetching orders:", error);
+    }
+  };
+
+  useEffect(() => {
     fetchOrders();
   }, [memberId]);
 
@@ -176,13 +181,20 @@ const OrderItem = ({ order }) => {
                     }}
                   />
                   <div>
-                    <strong>
+                    <strong className="product-name">
                       {orderProduct.product.name.length > 20
                         ? orderProduct.product.name.slice(0, 20) + "..."
-                        : orderProduct.product.name}
+                        : `${orderProduct.product.name} x${orderProduct.quantity}`}
                     </strong>
-                    <p style={{ margin: "0" }}>
+                    <p style={{ margin: "0", color: "#000" }}>
                       {orderProduct.product.cost.toLocaleString()} vnd
+                    </p>
+                    <p>
+                      Tổng số tiền ({orderProduct.quantity} sản phẩm):{" "}
+                      {(
+                        orderProduct.product.cost * orderProduct.quantity
+                      ).toLocaleString()}{" "}
+                      vnd{" "}
                     </p>
                   </div>
                 </div>

@@ -3,6 +3,7 @@ import axiosInstance from "../axiosInstance";
 
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -30,7 +31,6 @@ const scrollToBestSelling = () => {
 
 const HomePage = () => {
   const [blogData, setBlogData] = useState([]);
-
   useEffect(() => {
     const fetchBlogData = async () => {
       try {
@@ -103,6 +103,7 @@ function Banner() {
           ></span>
         ))}
       </div>
+      <ToastContainer containerId="containerHome" />
     </div>
   );
 }

@@ -20,13 +20,13 @@ const Water = () => {
   const userId = Number(localStorage.getItem("userId"));
 
   const optimalRanges = {
-    temperature: "5°C - 26°C",
-    salt: "0 - 0.1 %",
-    ph: "6.9 - 8",
-    o2: "> 6.5 mg/L",
+    temperature: "18°C -  25°C",
+    salt: "0.1 -0.2%",
+    ph: "7.0 - 8.5",
+    o2: ">6mg/L",
     no2: "0 - 0.1 mg/L",
-    no3: "0 - 20 mg/L",
-    po4: "0 - 0.035 mg/L",
+    no3: "<40 mg/L",
+    po4: " <0.5 mg/L.",
   };
 
   useEffect(() => {
@@ -70,19 +70,19 @@ const Water = () => {
     const numValue = parseFloat(value);
     switch (name) {
       case "temperature":
-        return numValue >= 5 && numValue <= 26;
+        return numValue >= 18 && numValue <= 25;
       case "salt":
-        return numValue >= 0 && numValue <= 0.1;
+        return numValue >= 0.1 && numValue <= 0.2;
       case "ph":
-        return numValue >= 6.9 && numValue <= 8;
+        return numValue >= 7.0 && numValue <= 8.5;
       case "o2":
-        return numValue > 6.5;
+        return numValue >= 6;
       case "no2":
         return numValue >= 0 && numValue <= 0.1;
       case "no3":
-        return numValue >= 0 && numValue <= 20;
+        return numValue >= 0 && numValue < 40;
       case "po4":
-        return numValue >= 0 && numValue <= 0.035;
+        return numValue >= 0 && numValue < 0.5;
       default:
         return true;
     }
@@ -153,7 +153,7 @@ const Water = () => {
               <label>Salt (%)</label>
               <input
                 name="salt"
-                value={waterData.salt || ""}
+                value={waterData.salt || "0"}
                 onChange={handleChange}
                 onClick={() => handleInputClick("salt")}
                 style={{ borderColor: isValid.salt ? "green" : "red" }}
@@ -201,7 +201,7 @@ const Water = () => {
               <label>Nitrite (NO2) (mg/L)</label>
               <input
                 name="no2"
-                value={waterData.no2 || ""}
+                value={waterData.no2 || "0"}
                 onChange={handleChange}
                 onClick={() => handleInputClick("no2")}
                 style={{ borderColor: isValid.no2 ? "green" : "red" }}
@@ -217,7 +217,7 @@ const Water = () => {
               <label>Nitrate (NO3) (mg/L)</label>
               <input
                 name="no3"
-                value={waterData.no3 || ""}
+                value={waterData.no3 || "0"}
                 onChange={handleChange}
                 onClick={() => handleInputClick("no3")}
                 style={{ borderColor: isValid.no3 ? "green" : "red" }}
@@ -233,7 +233,7 @@ const Water = () => {
               <label>Phosphate (PO4) (mg/L)</label>
               <input
                 name="po4"
-                value={waterData.po4 || ""}
+                value={waterData.po4 || "0"}
                 onChange={handleChange}
                 onClick={() => handleInputClick("po4")}
                 style={{ borderColor: isValid.po4 ? "green" : "red" }}
