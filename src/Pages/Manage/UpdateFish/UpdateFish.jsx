@@ -259,7 +259,7 @@ const UpdateFishForm = ({
 
         <div className="column">
           <div className="input_infor">
-            <label>Size:</label>
+            <label>Size (cm):</label>
             <input
               type="number"
               name="size"
@@ -271,7 +271,7 @@ const UpdateFishForm = ({
           </div>
 
           <div className="input_infor">
-            <label>Weight:</label>
+            <label>Weight (kg):</label>
             <input
               type="number"
               name="weight"
@@ -295,7 +295,7 @@ const UpdateFishForm = ({
           </div>
 
           <div className="input_infor">
-            <label>Food Weight:</label>
+            <label>Food Weight (kg):</label>
             <input
               type="number"
               name="foodWeight"
