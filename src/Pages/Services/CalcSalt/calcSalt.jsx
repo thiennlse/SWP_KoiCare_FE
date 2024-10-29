@@ -34,28 +34,6 @@ const AquariumManagement = () => {
       });
   };
 
-  const handleSearch = () => {
-    if (searchQuery.trim() !== "") {
-      axiosInstance
-        .get("/api/Pool", {
-          params: {
-            page: 1,
-            pageSize: 10,
-            searchTerm: searchQuery,
-          },
-        })
-        .then((res) => {
-          setAquaList(res.data);
-        })
-        .catch((err) => {
-          console.error("Error searching aquariums:", err);
-          toast.error("Failed to search aquariums.");
-        });
-    } else {
-      fetchPoolsForMember(memberId);
-    }
-  };
-
   const handleCalcSalt = (id) => {
     toast.success(id);
   };
@@ -66,25 +44,12 @@ const AquariumManagement = () => {
         <div className="header-with-button">
           <h2 className="aquarium_list_title">Calculate Salt</h2>
         </div>
-
-        <div className="search_aqua_form">
-          <input
-            type="text"
-            placeholder="Search by Aquarium Name"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <button className="search-button" onClick={handleSearch}>
-            🔍
-          </button>
-        </div>
-
         <table className="aquarium_table">
           <thead>
             <tr>
               <th>Name</th>
-              <th>Size</th>
-              <th>Depth (m)</th>
+              <th>Size (cm)</th>
+              <th>Depth (cm)</th>
               <th>Description</th>
               <th>Actions</th>
             </tr>
