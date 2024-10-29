@@ -180,7 +180,6 @@ const FishManagement = () => {
               <th>Age</th>
               <th>Size (cm)</th>
               <th>Weight (kg)</th>
-              <th>Food</th>
               <th>Origin</th>
               <th>Image</th>
               <th>Actions</th>
@@ -193,7 +192,6 @@ const FishManagement = () => {
                 <td>{calculateAge(fish.dob)}</td>
                 <td>{fish.size}</td>
                 <td>{fish.weight}</td>
-                <td>{fish.foodId}</td>
                 <td>{fish.origin}</td>
                 <td>
                   {fish.image ? (
