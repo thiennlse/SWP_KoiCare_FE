@@ -137,7 +137,7 @@ const CalcFood = () => {
             </button>
           </div>
 
-          <table className="fish-table">
+          <table className="calc-salt-table">
             <thead>
               <tr>
                 <th>Fish Name</th>

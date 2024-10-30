@@ -65,35 +65,35 @@
   background-color: #0056b3;
 }
 
-.fish-table {
+.calc-salt-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
 }
 
-.fish-table th,
-.fish-table td {
+.calc-salt-table th,
+.calc-salt-table td {
   border: 1px solid #ddd;
   padding: 12px;
   text-align: left;
   font-size: 16px;
 }
 
-.fish-table th {
+.calc-salt-table th {
   background-color: #f4f4f4;
   font-size: 18px;
   font-weight: bold;
 }
 
-.fish-table tr:nth-child(even) {
+.calc-salt-table tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
-.fish-table tr:hover {
+.calc-salt-table tr:hover {
   background-color: #f1f1f1;
 }
 
-.fish-table button {
+.calc-salt-table button {
   padding: 8px 12px;
   background-color: #007bff;
   color: white;
@@ -103,16 +103,16 @@
   font-size: 14px;
 }
 
-.fish-table button:hover {
+.calc-salt-table button:hover {
   background-color: #0056b3;
 }
 
-.fish-table button + button {
+.calc-salt-table button + button {
   margin-left: 10px;
   background-color: #dc3545;
 }
 
-.fish-table button + button:hover {
+.calc-salt-table button + button:hover {
   background-color: #c82333;
 }
 
