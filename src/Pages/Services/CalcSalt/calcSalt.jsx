@@ -60,45 +60,54 @@ const AquariumManagement = () => {
     axiosInstance
       .get(`/api/Pool/CalculateSaltInPool/${aqua.id}`)
       .then((res) => {
-        toast.warn(`${aqua.name}  ${res.data}`, { autoClose: 2000 });
+        toast.warn(`${aqua.name} need to ${res.data}`, { autoClose: 2000 });
       });
   };
 
   return (
     <div>
-      <div className="aquarium_list_container">
-        <div className="header-with-button">
-          <h2 className="aquarium_list_title">Calculate Salt</h2>
-        </div>
-        <table className="aquarium_table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Size (cm)</th>
-              <th>Depth (cm)</th>
-              <th>Description</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {aquaList.map((aquarium, index) => (
-              <tr key={index}>
-                <td>{aquarium.name}</td>
-                <td>{aquarium.size}</td>
-                <td>{aquarium.depth}</td>
-                <td>{aquarium.description}</td>
-                <td>
-                  <div className="action-buttons">
-                    <button onClick={() => handleCalcSalt(aquarium)}>
-                      Calc
-                    </button>
-                  </div>
-                </td>
+      {memberId ? (
+        <div className="aquarium_list_container">
+          <div className="header-with-button">
+            <h2 className="aquarium_list_title">Calculate Salt</h2>
+          </div>
+          <table className="aquarium_table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Size (cm)</th>
+                <th>Depth (cm)</th>
+                <th>Description</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {aquaList.map((aquarium, index) => (
+                <tr key={index}>
+                  <td>{aquarium.name}</td>
+                  <td>{aquarium.size}</td>
+                  <td>{aquarium.depth}</td>
+                  <td>{aquarium.description}</td>
+                  <td>
+                    <div className="action-buttons">
+                      <button onClick={() => handleCalcSalt(aquarium)}>
+                        Calc
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="centered-container">
+          <p>Login to Calculate Salt</p>
+          <a href="/login">
+            <button className="btn btn-warning">Login</button>
+          </a>
+        </div>
+      )}
     </div>
   );
 };

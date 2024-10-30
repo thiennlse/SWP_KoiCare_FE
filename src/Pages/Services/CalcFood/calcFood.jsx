@@ -1,4 +1,5 @@
 import "./calcFood.css";
+import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../axiosInstance";
 
 import { useEffect, useState } from "react";
@@ -9,9 +10,11 @@ const CalcFood = () => {
   const [selectedPoolId, setSelectedPoolId] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredFishList, setFilteredFishList] = useState([]);
+  const navigate = useNavigate();
 
   const userId = JSON.parse(localStorage.getItem("userId"));
-  const memberId = userId ? userId : 1;
+  const memberId = userId;
+  console.log(memberId);
 
   useEffect(() => {
     if (memberId !== 0) {
@@ -104,82 +107,91 @@ const CalcFood = () => {
 
   return (
     <div>
-      <div className="fish-management-container">
-        <div className="header-with-button">
-          <h2 className="fish-list-title">Calculate Food</h2>
-        </div>
+      {memberId ? (
+        <div className="fish-management-container">
+          <div className="header-with-button">
+            <h2 className="fish-list-title">Calculate Food</h2>
+          </div>
 
-        <div className="pool-selection">
-          <label>Select Pool:</label>
-          <select onChange={handlePoolChange} value={selectedPoolId}>
-            <option value="0">All Pools</option>
-            {poolList.map((pool) => (
-              <option key={pool.id} value={pool.id}>
-                {pool.name}
-              </option>
-            ))}
-          </select>
-        </div>
+          <div className="pool-selection">
+            <label>Select Pool:</label>
+            <select onChange={handlePoolChange} value={selectedPoolId}>
+              <option value="0">All Pools</option>
+              {poolList.map((pool) => (
+                <option key={pool.id} value={pool.id}>
+                  {pool.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <div className="search-fish-form">
-          <input
-            type="text"
-            placeholder="Search by Fish Name"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <button className="search-button" onClick={handleSearch}>
-            🔍
-          </button>
-        </div>
+          <div className="search-fish-form">
+            <input
+              type="text"
+              placeholder="Search by Fish Name"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button className="search-button" onClick={handleSearch}>
+              🔍
+            </button>
+          </div>
 
-        <table className="fish-table">
-          <thead>
-            <tr>
-              <th>Fish Name</th>
-              <th>Age</th>
-              <th>Size</th>
-              <th>Weight</th>
-              <th>Food</th>
-              <th>Origin</th>
-              <th>Image</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredFishList.map((fish, index) => (
-              <tr key={index}>
-                <td>{fish.name}</td>
-                <td>{calculateAge(fish.dob)}</td>
-                <td>{fish.size}</td>
-                <td>{fish.weight}</td>
-                <td>{fish.foodId}</td>
-                <td>{fish.origin}</td>
-                <td>
-                  {fish.image ? (
-                    <img
-                      src={fish.image}
-                      alt={fish.name}
-                      style={{ width: "50px", height: "50px" }}
-                    />
-                  ) : (
-                    "No Image"
-                  )}
-                </td>
-                <td>
-                  <button
-                    onClick={() =>
-                      handleCalcFood(fish.foodId, fish.name, fish.id)
-                    }
-                  >
-                    Calc
-                  </button>
-                </td>
+          <table className="fish-table">
+            <thead>
+              <tr>
+                <th>Fish Name</th>
+                <th>Age</th>
+                <th>Size (cm)</th>
+                <th>Weight (kg)</th>
+                <th>Food</th>
+                <th>Origin</th>
+                <th>Image</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {filteredFishList.map((fish, index) => (
+                <tr key={index}>
+                  <td>{fish.name}</td>
+                  <td>{calculateAge(fish.dob)}</td>
+                  <td>{fish.size}</td>
+                  <td>{fish.weight}</td>
+                  <td>{fish.foodId}</td>
+                  <td>{fish.origin}</td>
+                  <td>
+                    {fish.image ? (
+                      <img
+                        src={fish.image}
+                        alt={fish.name}
+                        style={{ width: "50px", height: "50px" }}
+                      />
+                    ) : (
+                      "No Image"
+                    )}
+                  </td>
+                  <td>
+                    <button
+                      onClick={() =>
+                        handleCalcFood(fish.foodId, fish.name, fish.id)
+                      }
+                    >
+                      Calc
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="centered-container">
+          <p>Login to Calculate Food</p>
+          <a href="/login">
+            <button className="btn btn-warning">Login</button>
+          </a>
+        </div>
+      )}
     </div>
   );
 };

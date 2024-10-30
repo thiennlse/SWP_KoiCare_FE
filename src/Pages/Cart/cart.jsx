@@ -122,9 +122,9 @@ const Cart = () => {
         </div>
       ) : (
         <div className="empty-cart">
-          <p>Giỏ hàng của bạn còn trống</p>
+          <p>Your cart is empty</p>
           <a href="/product">
-            <button className="btn btn-warning">Mua ngay</button>
+            <button className="btn btn-warning">Shop now</button>
           </a>
         </div>
       )}

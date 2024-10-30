@@ -110,12 +110,12 @@ const OrderHistory = () => {
         backgroundColor: "#f9f9f9",
       }}
     >
-      <h2>Lịch sử đơn hàng</h2>
+      <h2>Order history</h2>
       <div className="mb-3">
         <input
           type="text"
           className="form-control"
-          placeholder="Tìm kiếm theo mã đơn hàng..."
+          placeholder="Search by order code..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -127,10 +127,10 @@ const OrderHistory = () => {
           ))}
         </div>
       ) : (
-        <div className="empty-order-history text-center mt-4">
-          <p>Bạn chưa có đơn hàng nào.</p>
+        <div className=" text-center mt-4">
+          <p>You have no orders yet.</p>
           <a href="/product">
-            <button className="btn btn-warning">Mua sắm ngay</button>
+            <button className="btn btn-warning">Shop Now</button>
           </a>
         </div>
       )}
@@ -155,9 +155,9 @@ const OrderItem = ({ order }) => {
     <div className="order-item border-bottom py-4">
       <div className="d-flex justify-content-between align-items-center">
         <div>
-          <h5>Đơn hàng #{order.code}</h5>
-          <p>Ngày đặt: {new Date(order.orderDate).toLocaleDateString()}</p>
-          <p>Tổng tiền: {order.totalCost.toLocaleString()} vnd</p>
+          <h5>Order #{order.code}</h5>
+          <p>Order date: {new Date(order.orderDate).toLocaleDateString()}</p>
+          <p>Total amount: {order.totalCost.toLocaleString()} vnd</p>
           <div
             className="status-badge"
             style={{
@@ -166,14 +166,14 @@ const OrderItem = ({ order }) => {
               ...getStatusStyle(order.status),
             }}
           >
-            <strong>Trạng thái:</strong> {order.status}
+            <strong>Status:</strong> {order.status}
           </div>
         </div>
         <button
           className="btn btn-outline-primary"
           onClick={() => setShowDetails(!showDetails)}
         >
-          {showDetails ? "Ẩn chi tiết" : "Xem chi tiết"}
+          {showDetails ? "Hide details" : "See details"}
         </button>
       </div>
 
@@ -211,7 +211,7 @@ const OrderItem = ({ order }) => {
                       {orderProduct.product.cost.toLocaleString()} vnd
                     </p>
                     <p>
-                      Tổng số tiền ({orderProduct.quantity} sản phẩm):{" "}
+                      Total amount ({orderProduct.quantity} product):{" "}
                       {(
                         orderProduct.product.cost * orderProduct.quantity
                       ).toLocaleString()}{" "}
@@ -222,7 +222,7 @@ const OrderItem = ({ order }) => {
               ))}
             </div>
           ) : (
-            <span>Không có sản phẩm trong đơn hàng.</span>
+            <span>There are no products in the order.</span>
           )}
         </div>
       )}
