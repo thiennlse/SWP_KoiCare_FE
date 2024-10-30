@@ -130,8 +130,8 @@ const AquariumManagement = () => {
               {aquaList.map((aquarium, index) => (
                 <tr key={index}>
                   <td>{aquarium.name}</td>
-                  <td>{aquarium.size}</td>
-                  <td>{aquarium.depth}</td>
+                  <td>{aquarium.size} cm</td>
+                  <td>{aquarium.depth} cm</td>
                   <td>{aquarium.description}</td>
                   <td>
                     <div className="action-buttons">
