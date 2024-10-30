@@ -185,50 +185,56 @@ const FishManagement = () => {
             🔍
           </button>
         </div>
-
-        <table className="fish-table">
-          <thead>
-            <tr>
-              <th>Fish Name</th>
-              <th>Age</th>
-              <th>Size (cm)</th>
-              <th>Weight (kg)</th>
-              <th>Food Name</th>
-              <th>Origin</th>
-              <th>Image</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredFishList.map((fish, index) => (
-              <tr key={index}>
-                <td>{fish.name}</td>
-                <td>{calculateAge(fish.dob)}</td>
-                <td>{fish.size}</td>
-                <td>{fish.weight}</td>
-                <td>
-                  {foodList.find((food) => food.id === fish.foodId)?.name}{" "}
-                </td>
-                <td>{fish.origin}</td>
-                <td>
-                  {fish.image ? (
-                    <img
-                      src={fish.image}
-                      alt={fish.name}
-                      style={{ width: "50px", height: "50px" }}
-                    />
-                  ) : (
-                    "No Image"
-                  )}
-                </td>
-                <td>
-                  <button onClick={() => handleEdit(fish.id)}>Edit</button>
-                  <button onClick={() => deleteFish(fish.id)}>Delete</button>
-                </td>
+        <div className="table-container">
+          <table className="fish-table">
+            <thead>
+              <tr>
+                <th>Fish Name</th>
+                <th>Age</th>
+                <th>Size (cm)</th>
+                <th>Weight (kg)</th>
+                <th>Food Name</th>
+                <th>Origin</th>
+                <th>Image</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredFishList.map((fish, index) => (
+                <tr key={index}>
+                  <td>{fish.name}</td>
+                  <td>{calculateAge(fish.dob)}</td>
+                  <td>{fish.size}</td>
+                  <td>{fish.weight}</td>
+                  <td>
+                    {foodList.find((food) => food.id === fish.foodId)?.name}{" "}
+                  </td>
+                  <td>{fish.origin}</td>
+                  <td>
+                    {fish.image ? (
+                      <img
+                        src={fish.image}
+                        alt={fish.name}
+                        style={{ width: "50px", height: "50px" }}
+                      />
+                    ) : (
+                      "No Image"
+                    )}
+                  </td>
+                  <td className="action-buttons">
+                    <button onClick={() => handleEdit(fish.id)}>Edit</button>
+                    <button
+                      className="delete-button"
+                      onClick={() => deleteFish(fish.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

@@ -65,18 +65,59 @@
   background-color: #0056b3;
 }
 
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
 .fish-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  table-layout: fixed;
 }
 
-.fish-table th,
+.fish-table th:nth-child(1) {
+  width: 17%;
+  text-align: center;
+}
+.fish-table th:nth-child(2) {
+  width: 8%;
+  text-align: center;
+}
+.fish-table th:nth-child(3) {
+  width: 14%;
+  text-align: center;
+}
+.fish-table th:nth-child(4) {
+  width: 17%;
+  text-align: center;
+}
+.fish-table th:nth-child(5) {
+  width: 17%;
+  text-align: center;
+}
+.fish-table th:nth-child(6) {
+  width: 10%;
+  text-align: center;
+}
+.fish-table th:nth-child(7) {
+  width: 10%;
+  text-align: center;
+}
+.fish-table th:nth-child(8) {
+  width: 24%;
+  text-align: center;
+}
+
 .fish-table td {
   border: 1px solid #ddd;
-  padding: 12px;
-  text-align: left;
+  padding: 12px 8px;
+  text-align: center;
   font-size: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .fish-table th {
@@ -113,5 +154,30 @@
 }
 
 .fish-table button + button:hover {
+  background-color: #c82333;
+}
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.fish-table button {
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  min-width: 70px;
+}
+
+.fish-table .delete-button {
+  background-color: #dc3545;
+}
+
+.fish-table .delete-button:hover {
   background-color: #c82333;
 }
