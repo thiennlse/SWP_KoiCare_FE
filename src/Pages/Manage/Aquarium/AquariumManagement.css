@@ -65,6 +65,11 @@
   margin-bottom: 20px;
 }
 
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
 .aquarium_table {
   width: 100%;
   border-collapse: collapse;
@@ -74,9 +79,12 @@
 .aquarium_table th,
 .aquarium_table td {
   border: 1px solid #ddd;
-  padding: 12px;
-  text-align: left;
+  padding: 12px 8px;
+  text-align: center;
   font-size: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .aquarium_table th {
@@ -94,8 +102,9 @@
 }
 
 .aquarium_table td .action-buttons {
-  display: flex;
-  gap: 10px;
+  gap: 8px;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .aquarium_table button {
@@ -115,6 +124,7 @@
 
 .aquarium_table .delete-button {
   background-color: #dc3545;
+  margin-left: 10px;
 }
 
 .aquarium_table .delete-button:hover {

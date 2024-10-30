@@ -115,41 +115,42 @@ const AquariumManagement = () => {
             🔍
           </button>
         </div>
-
-        <table className="aquarium_table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Size (cm)</th>
-              <th>Depth (cm)</th>
-              <th>Description</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {aquaList.map((aquarium, index) => (
-              <tr key={index}>
-                <td>{aquarium.name}</td>
-                <td>{aquarium.size}</td>
-                <td>{aquarium.depth}</td>
-                <td>{aquarium.description}</td>
-                <td>
-                  <div className="action-buttons">
-                    <button onClick={() => handleEdit(aquarium.id)}>
-                      Edit
-                    </button>
-                    <button
-                      className="delete-button"
-                      onClick={() => deletePool(aquarium.id)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
+        <div className="table-container">
+          <table className="aquarium_table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Size (cm)</th>
+                <th>Depth (cm)</th>
+                <th>Description</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {aquaList.map((aquarium, index) => (
+                <tr key={index}>
+                  <td>{aquarium.name}</td>
+                  <td>{aquarium.size}</td>
+                  <td>{aquarium.depth}</td>
+                  <td>{aquarium.description}</td>
+                  <td>
+                    <div className="action-buttons">
+                      <button onClick={() => handleEdit(aquarium.id)}>
+                        Edit
+                      </button>
+                      <button
+                        className="delete-button"
+                        onClick={() => deletePool(aquarium.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

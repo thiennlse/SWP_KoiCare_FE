@@ -110,7 +110,8 @@
   text-align: center;
 }
 
-.fish-table td {
+.fish-table td,
+.fish-table th {
   border: 1px solid #ddd;
   padding: 12px 8px;
   text-align: center;
@@ -156,8 +157,8 @@
 .fish-table button + button:hover {
   background-color: #c82333;
 }
+
 .action-buttons {
-  display: flex;
   gap: 8px;
   justify-content: flex-start;
   align-items: center;
@@ -172,12 +173,4 @@
   cursor: pointer;
   font-size: 14px;
   min-width: 70px;
-}
-
-.fish-table .delete-button {
-  background-color: #dc3545;
-}
-
-.fish-table .delete-button:hover {
-  background-color: #c82333;
 }
