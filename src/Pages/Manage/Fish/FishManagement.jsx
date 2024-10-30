@@ -204,8 +204,8 @@ const FishManagement = () => {
                 <tr key={index}>
                   <td>{fish.name}</td>
                   <td>{calculateAge(fish.dob)}</td>
-                  <td>{fish.size}</td>
-                  <td>{fish.weight}</td>
+                  <td>{fish.size} cm</td>
+                  <td>{fish.weight} kg</td>
                   <td>
                     {foodList.find((food) => food.id === fish.foodId)?.name}{" "}
                   </td>
