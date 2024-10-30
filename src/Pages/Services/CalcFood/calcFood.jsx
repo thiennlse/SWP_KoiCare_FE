@@ -150,7 +150,7 @@ const CalcFood = () => {
               <tr>
                 <th>Fish Name</th>
                 <th>Food Name</th>
-                <th>Food Weight</th>
+                <th>Food Weight (kg)</th>
                 <th>Image</th>
                 <th>Actions</th>
               </tr>
