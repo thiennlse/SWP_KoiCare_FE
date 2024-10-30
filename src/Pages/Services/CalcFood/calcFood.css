@@ -65,35 +65,64 @@
   background-color: #0056b3;
 }
 
-.calc-salt-table {
+.calc-food-table th:nth-child(1) {
+  width: 25%;
+  text-align: center;
+}
+
+.calc-food-table th:nth-child(2) {
+  width: 25%;
+  text-align: center;
+}
+
+.calc-food-table th:nth-child(3) {
+  width: 20%;
+  text-align: center;
+}
+
+.calc-food-table th:nth-child(4) {
+  width: 15%;
+  text-align: center;
+}
+
+.calc-food-table th:nth-child(5) {
+  width: 15%;
+  text-align: center;
+}
+
+.calc-food-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
 }
 
-.calc-salt-table th,
-.calc-salt-table td {
+.calc-food-table th,
+.calc-food-table td {
   border: 1px solid #ddd;
   padding: 12px;
   text-align: left;
   font-size: 16px;
 }
 
-.calc-salt-table th {
+.calc-food-table th {
   background-color: #f4f4f4;
   font-size: 18px;
   font-weight: bold;
 }
 
-.calc-salt-table tr:nth-child(even) {
+.calc-food-table tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
-.calc-salt-table tr:hover {
+.calc-food-table tr:hover {
   background-color: #f1f1f1;
 }
 
-.calc-salt-table button {
+.calc-food-table td {
+  text-align: center;
+}
+
+.calc-food-table button {
   padding: 8px 12px;
   background-color: #007bff;
   color: white;
@@ -103,17 +132,13 @@
   font-size: 14px;
 }
 
-.calc-salt-table button:hover {
+.calc-food-table button:hover {
   background-color: #0056b3;
 }
 
-.calc-salt-table button + button {
-  margin-left: 10px;
-  background-color: #dc3545;
-}
-
-.calc-salt-table button + button:hover {
-  background-color: #c82333;
+.calc-food-button {
+  display: block;
+  margin: 0 auto;
 }
 
 .centered-container {

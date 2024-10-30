@@ -10,6 +10,7 @@ const CalcFood = () => {
   const [selectedPoolId, setSelectedPoolId] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredFishList, setFilteredFishList] = useState([]);
+  const [foodList, setFoodList] = useState([]);
   const navigate = useNavigate();
 
   const userId = JSON.parse(localStorage.getItem("userId"));
@@ -19,6 +20,7 @@ const CalcFood = () => {
   useEffect(() => {
     if (memberId !== 0) {
       fetchPoolsForMember(memberId);
+      fetchFoodList();
     } else {
       console.error("No memberId found. Please log in.");
     }
@@ -29,6 +31,27 @@ const CalcFood = () => {
       fetchFish();
     }
   }, [poolList]);
+
+  const fetchFoodList = () => {
+    axiosInstance
+      .get("/api/Food?page=1&pageSize=100")
+      .then((res) => {
+        setFoodList(res.data);
+      })
+      .catch((err) => {
+        toast.error("Failed to fetch food data.", { autoClose: 1500 });
+      });
+  };
+
+  const getFoodName = (foodId) => {
+    const food = foodList.find((f) => f.id === foodId);
+    return food ? food.name : "Unknown";
+  };
+
+  const getFoodWeight = (foodId) => {
+    const food = foodList.find((f) => f.id === foodId);
+    return food ? food.weight : "Unknown";
+  };
 
   const fetchFish = () => {
     axiosInstance
@@ -79,21 +102,6 @@ const CalcFood = () => {
     setFilteredFishList(filtered);
   };
 
-  const calculateAge = (dob) => {
-    if (!dob) return "N/A";
-    const birthDate = new Date(dob);
-    const today = new Date();
-    const age = today.getFullYear() - birthDate.getFullYear();
-    const monthDifference = today.getMonth() - birthDate.getMonth();
-    if (
-      monthDifference < 0 ||
-      (monthDifference === 0 && today.getDate() < birthDate.getDate())
-    ) {
-      return age - 1;
-    }
-    return age;
-  };
-
   function handleCalcFood(foodId, fishName, fishId) {
     axiosInstance.get(`/api/Food/${foodId}`).then((res) => {
       const fishWeight = res.data.weight;
@@ -137,15 +145,12 @@ const CalcFood = () => {
             </button>
           </div>
 
-          <table className="calc-salt-table">
+          <table className="calc-food-table">
             <thead>
               <tr>
                 <th>Fish Name</th>
-                <th>Age</th>
-                <th>Size (cm)</th>
-                <th>Weight (kg)</th>
-                <th>Food</th>
-                <th>Origin</th>
+                <th>Food Name</th>
+                <th>Food Weight</th>
                 <th>Image</th>
                 <th>Actions</th>
               </tr>
@@ -154,11 +159,8 @@ const CalcFood = () => {
               {filteredFishList.map((fish, index) => (
                 <tr key={index}>
                   <td>{fish.name}</td>
-                  <td>{calculateAge(fish.dob)}</td>
-                  <td>{fish.size}</td>
-                  <td>{fish.weight}</td>
-                  <td>{fish.foodId}</td>
-                  <td>{fish.origin}</td>
+                  <td>{getFoodName(fish.foodId)}</td>
+                  <td>{getFoodWeight(fish.foodId)} kg</td>
                   <td>
                     {fish.image ? (
                       <img
@@ -172,11 +174,12 @@ const CalcFood = () => {
                   </td>
                   <td>
                     <button
+                      className="calc-food-button"
                       onClick={() =>
                         handleCalcFood(fish.foodId, fish.name, fish.id)
                       }
                     >
-                      Calc
+                      Calculate
                     </button>
                   </td>
                 </tr>
