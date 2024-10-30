@@ -1,7 +1,5 @@
 import "./CreateFish.css";
-
 import axiosInstance from "../axiosInstance";
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -9,6 +7,8 @@ import { toast } from "react-toastify";
 const CreateFish = () => {
   const navigate = useNavigate();
   const [pools, setPools] = useState([]);
+  const [previewImage, setPreviewImage] = useState("");
+  const [imageFile, setImageFile] = useState(null);
   const [fishData, setFishData] = useState({
     poolId: 0,
     name: "",
@@ -17,7 +17,7 @@ const CreateFish = () => {
     weight: 0,
     dob: "",
     gender: "Male",
-    origin: "",
+    origin: "", // Changed to empty string instead of default value
     foodName: "",
     foodWeight: 0,
   });
@@ -48,15 +48,32 @@ const CreateFish = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFishData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate origin is selected
+    if (!fishData.origin) {
+      toast.error("Please select an origin", { autoClose: 1500 });
+      return;
+    }
 
     const newFood = {
       name: fishData.foodName.trim(),
@@ -64,6 +81,24 @@ const CreateFish = () => {
     };
 
     try {
+      let imageUrl = "";
+
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append("file", imageFile);
+
+        const imageResponse = await axiosInstance.post(
+          "/api/Fish/upload",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        imageUrl = imageResponse.data.url; // Get URL from response
+      }
+
       const foodResponse = await axiosInstance.post("/api/Food/add", newFood, {
         headers: {
           "Content-Type": "application/json",
@@ -76,9 +111,7 @@ const CreateFish = () => {
         poolId: Number(fishData.poolId),
         foodId: foodId,
         name: fishData.name.trim(),
-        image:
-          fishData.image.trim() ||
-          "https://png.pngtree.com/thumb_back/fw800/background/20231221/pngtree-red-koi-carp-in-water-photo-image_15554800.png",
+        image: imageUrl,
         size: Number(fishData.size),
         weight: Number(fishData.weight),
         gender: fishData.gender,
@@ -97,12 +130,10 @@ const CreateFish = () => {
     } catch (error) {
       if (error.response) {
         console.error("Error response from API:", error.response.data);
-        toast.error(
-          `Failed to create fish. Status: ${
-            error.response.status
-          }. Errors: ${JSON.stringify(error.response.data.errors)}`,
-          { autoClose: 1500 }
-        );
+        const errorMessage = error.response.data.errors
+          ? Object.values(error.response.data.errors).flat().join(", ")
+          : "Failed to create fish";
+        toast.error(errorMessage, { autoClose: 1500 });
       } else if (error.request) {
         console.error("Error request:", error.request);
         toast.error("Failed to create fish. No response from server.", {
@@ -123,13 +154,22 @@ const CreateFish = () => {
         fishData={fishData}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
+        handleImageChange={handleImageChange}
+        previewImage={previewImage}
         pools={pools}
       />
     </div>
   );
 };
 
-function CreateFishForm({ fishData, handleChange, handleSubmit, pools }) {
+const CreateFishForm = ({
+  fishData,
+  handleChange,
+  handleSubmit,
+  handleImageChange,
+  previewImage,
+  pools,
+}) => {
   const handleFocus = (e) => {
     if (e.target.value === "0") {
       e.target.value = "";
@@ -189,11 +229,12 @@ function CreateFishForm({ fishData, handleChange, handleSubmit, pools }) {
             <label>Origin:</label>
             <select
               name="origin"
-              placeholder="Enter origin"
               value={fishData.origin}
               onChange={handleChange}
               className="custom-select"
+              required
             >
+              <option value="">Select an origin</option>
               <option value="Japan">Japan</option>
               <option value="China">China</option>
               <option value="Korea">Korea</option>
@@ -201,14 +242,25 @@ function CreateFishForm({ fishData, handleChange, handleSubmit, pools }) {
           </div>
 
           <div className="input_infor">
-            <label>Image (optional):</label>
+            <label>Image:</label>
             <input
-              type="text"
+              type="file"
               name="image"
-              placeholder="Image URL (optional)"
-              value={fishData.image}
-              onChange={handleChange}
+              accept="image/*"
+              onChange={handleImageChange}
             />
+            {previewImage && (
+              <img
+                src={previewImage}
+                alt="Fish preview"
+                style={{
+                  marginTop: "10px",
+                  maxWidth: "200px",
+                  maxHeight: "200px",
+                  objectFit: "contain",
+                }}
+              />
+            )}
           </div>
         </div>
 
@@ -285,6 +337,6 @@ function CreateFishForm({ fishData, handleChange, handleSubmit, pools }) {
       </div>
     </form>
   );
-}
+};
 
 export default CreateFish;
