@@ -74,10 +74,9 @@ const AquariumManagement = () => {
           <table className="aquarium_table">
             <thead>
               <tr>
-                <th>Name</th>
+                <th>Pool Name</th>
                 <th>Size (cm)</th>
                 <th>Depth (cm)</th>
-                <th>Description</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -85,13 +84,12 @@ const AquariumManagement = () => {
               {aquaList.map((aquarium, index) => (
                 <tr key={index}>
                   <td>{aquarium.name}</td>
-                  <td>{aquarium.size}</td>
-                  <td>{aquarium.depth}</td>
-                  <td>{aquarium.description}</td>
+                  <td>{aquarium.size} cm</td>
+                  <td>{aquarium.depth} cm</td>
                   <td>
                     <div className="action-buttons">
                       <button onClick={() => handleCalcSalt(aquarium)}>
-                        Calc
+                        Calculate
                       </button>
                     </div>
                   </td>
