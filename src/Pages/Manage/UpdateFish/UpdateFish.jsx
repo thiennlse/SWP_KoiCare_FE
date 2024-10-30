@@ -25,6 +25,8 @@ const UpdateFish = () => {
     name: "",
     weight: 0,
   });
+  const [previewImage, setPreviewImage] = useState("");
+  const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
     axiosInstance
@@ -32,6 +34,7 @@ const UpdateFish = () => {
       .then((response) => {
         const fishDetails = response.data;
         setFishData(fishDetails);
+        setPreviewImage(fishDetails.image);
 
         if (fishDetails.foodId) {
           fetchFoodDetails(fishDetails.foodId);
@@ -83,51 +86,60 @@ const UpdateFish = () => {
     }
   };
 
-  const handleUpdate = (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
 
-    const updatedFishData = {
-      ...fishData,
-      image:
-        fishData.image.trim() ||
-        "https://png.pngtree.com/thumb_back/fw800/background/20231221/pngtree-red-koi-carp-in-water-photo-image_15554800.png",
-    };
+    try {
+      let imageUrl = fishData.image;
 
-    addFood(foodData)
-      .then((foodResponse) => {
-        const foodId = foodResponse.data.id;
-        const updatedFishWithFood = {
-          ...updatedFishData,
-          foodId: foodId,
-        };
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append("file", imageFile);
 
-        return axiosInstance.patch(
-          `/api/Fish/update/${id}`,
-          updatedFishWithFood,
+        const imageResponse = await axiosInstance.post(
+          "/api/Fish/upload",
+          formData,
           {
             headers: {
-              "Content-Type": "application/json",
+              "Content-Type": "multipart/form-data",
             },
           }
         );
-      })
-      .then((response) => {
-        toast.success("Fish updated successfully!", { autoClose: 1500 });
-        navigate("/fishmanagement");
-      })
-      .catch((error) => {
-        if (error.response) {
-          console.error("Error updating fish:", error.response.data);
-          toast.error(`Failed to update fish. Error: ${error.response.data}`, {
-            autoClose: 1500,
-          });
-        } else {
-          console.error("Error setting up request:", error.message);
-          toast.error(`Failed to update fish. Error: ${error.message}`, {
-            autoClose: 1500,
-          });
-        }
+        imageUrl = imageResponse.data.url;
+      }
+
+      const foodResponse = await addFood(foodData);
+      const foodId = foodResponse.data.id;
+
+      const updatedFishData = {
+        ...fishData,
+        image:
+          imageUrl ||
+          "https://png.pngtree.com/thumb_back/fw800/background/20231221/pngtree-red-koi-carp-in-water-photo-image_15554800.png",
+        foodId: foodId,
+      };
+
+      await axiosInstance.patch(`/api/Fish/update/${id}`, updatedFishData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
+
+      toast.success("Fish updated successfully!", { autoClose: 1500 });
+      navigate("/fishmanagement");
+    } catch (error) {
+      if (error.response) {
+        console.error("Error updating fish:", error.response.data);
+        toast.error(`Failed to update fish. Error: ${error.response.data}`, {
+          autoClose: 1500,
+        });
+      } else {
+        console.error("Error setting up request:", error.message);
+        toast.error(`Failed to update fish. Error: ${error.message}`, {
+          autoClose: 1500,
+        });
+      }
+    }
   };
 
   const addFood = (food) => {
@@ -155,6 +167,18 @@ const UpdateFish = () => {
     }
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   useEffect(() => {
     console.log("Pools State:", pools);
   }, [pools]);
@@ -168,6 +192,8 @@ const UpdateFish = () => {
         pools={pools}
         foodData={foodData}
         navigate={navigate}
+        previewImage={previewImage}
+        handleImageChange={handleImageChange}
       />
     </div>
   );
@@ -180,6 +206,8 @@ const UpdateFishForm = ({
   pools,
   foodData,
   navigate,
+  previewImage,
+  handleImageChange,
 }) => {
   return (
     <form className="form_fish" onSubmit={handleUpdate}>
@@ -246,14 +274,15 @@ const UpdateFishForm = ({
           </div>
 
           <div className="input_infor">
-            <label>Image URL:</label>
-            <input
-              type="text"
-              name="image"
-              placeholder="Enter image URL"
-              value={fishData.image}
-              onChange={handleChange}
-            />
+            <label>Image:</label>
+            <input type="file" accept="image/*" onChange={handleImageChange} />
+            {previewImage && (
+              <img
+                src={previewImage}
+                alt="Preview"
+                style={{ maxWidth: "200px", marginTop: "10px" }}
+              />
+            )}
           </div>
         </div>
 
