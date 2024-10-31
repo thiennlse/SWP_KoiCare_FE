@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 const AquariumManagement = () => {
   const [aquaList, setAquaList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [calculationResults, setCalculationResults] = useState({});
 
   const memberId = JSON.parse(localStorage.getItem("userId"));
 
@@ -60,7 +61,11 @@ const AquariumManagement = () => {
     axiosInstance
       .get(`/api/Pool/CalculateSaltInPool/${aqua.id}`)
       .then((res) => {
-        toast.warn(`${aqua.name} need to ${res.data}`, { autoClose: 2000 });
+        setCalculationResults({
+          ...calculationResults,
+          [aqua.id]: res.data,
+        });
+        toast.success("Calculation completed!", { autoClose: 2000 });
       });
   };
 
@@ -77,6 +82,7 @@ const AquariumManagement = () => {
                 <th>Pool Name</th>
                 <th>Size (cm)</th>
                 <th>Depth (cm)</th>
+                <th>Amount Of Salt</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -86,6 +92,11 @@ const AquariumManagement = () => {
                   <td>{aquarium.name}</td>
                   <td>{aquarium.size} cm</td>
                   <td>{aquarium.depth} cm</td>
+                  <td className="calculation-result">
+                    {calculationResults[aquarium.id]
+                      ? calculationResults[aquarium.id]
+                      : "-"}
+                  </td>
                   <td>
                     <div className="action-buttons">
                       <button onClick={() => handleCalcSalt(aquarium)}>

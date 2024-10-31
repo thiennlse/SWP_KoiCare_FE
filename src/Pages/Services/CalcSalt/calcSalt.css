@@ -4,3 +4,28 @@
   align-items: center;
   margin-bottom: 20px;
 }
+
+.calculation-result {
+  padding: 8px;
+  color: #333;
+  font-size: 14px;
+  text-align: center;
+}
+
+.aquarium_table td.calculation-result {
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.aquarium_table td.calculation-result:not(:empty) {
+  background-color: #e8f5e9;
+}
+
+.aquarium_table th {
+  text-align: center;
+}
+
+.aquarium_table td {
+  text-align: center;
+}
