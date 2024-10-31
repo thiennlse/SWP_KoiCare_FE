@@ -11,6 +11,7 @@ import UpdateAquarium from "./Pages/Manage/UpdateAquarium/UpdateAquarium";
 import UpdateFish from "./Pages/Manage/UpdateFish/UpdateFish";
 import { Routes, Route } from "react-router-dom";
 import ProductDetail from "./Pages/ProductDetail/productDetail";
+import BlogDetail from "./Pages/BlogDetail/BlogDetail";
 import Cart from "./Pages/Cart/cart";
 import MainLayout from "./MainLayout";
 import Profile from "./Pages/profileDetail/profile";
@@ -33,6 +34,7 @@ function App() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/product" element={<HomePage />} />
           <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/blog/:id" element={<BlogDetail />} />
           <Route path="/createfish" element={<CreateFish />} />
           <Route path="/createaquarium" element={<CreateAquarium />} />
           <Route path="/aquariummanagement" element={<AquariumManagement />} />

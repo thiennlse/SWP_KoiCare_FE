@@ -116,6 +116,7 @@ body {
   margin-top: 30px;
   gap: 20px;
   padding: 0;
+  cursor: pointer;
 }
 
 .product_price {
@@ -204,4 +205,18 @@ body {
 
 .product_btn.out_of_stock:hover {
   background-color: #333;
+}
+
+.card {
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card img {
+  object-fit: cover;
 }

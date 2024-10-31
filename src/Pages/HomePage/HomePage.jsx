@@ -239,14 +239,17 @@ function Product({ productObj, onAddToCart }) {
   const formattedCost = productObj.cost.toLocaleString("en-US");
   const navigate = useNavigate();
 
-  function handleClick() {
-    console.log(productObj);
+  function handleClick(e) {
+    if (e.target.classList.contains("product_btn")) {
+      return;
+    }
+
     navigate(`/product/${productObj.id}`, { state: { product: productObj } });
     window.scrollTo(0, 0);
   }
 
   return (
-    <li>
+    <li onClick={handleClick}>
       <div className="image_product">
         <img
           src={productObj.image === "" ? koiFood : productObj.image}
@@ -267,7 +270,10 @@ function Product({ productObj, onAddToCart }) {
         ) : (
           <button
             className="product_btn"
-            onClick={() => onAddToCart(productObj)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onAddToCart(productObj);
+            }}
           >
             Add To Cart
           </button>
@@ -282,6 +288,7 @@ function BlogSection({ blogs }) {
   const [showAll, setShowAll] = useState(false);
   const blogsPerPage = 3;
   const totalPages = Math.ceil(blogs.length / blogsPerPage);
+  const navigate = useNavigate();
 
   const indexOfLastBlog = currentPage * blogsPerPage;
   const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
@@ -303,6 +310,21 @@ function BlogSection({ blogs }) {
     setShowAll(!showAll);
   };
 
+  const handleBlogClick = (blog, e) => {
+    navigate(`/blog/${blog.id}`, {
+      state: {
+        blog: {
+          id: blog.id,
+          title: blog.title,
+          content: blog.content,
+          image: blog.image || blog_image_1,
+          createdAt: blog.createdAt,
+        },
+      },
+    });
+    window.scrollTo(0, 0);
+  };
+
   return (
     <div id="blog_scroll" className="container my-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -315,7 +337,10 @@ function BlogSection({ blogs }) {
       <div className="row">
         {(showAll ? blogs : currentBlogs).map((blog, index) => (
           <div key={index} className="col-md-4 mb-4">
-            <div className="card h-100">
+            <div
+              className="card h-100"
+              onClick={(e) => handleBlogClick(blog, e)}
+            >
               <img
                 src={blog.image ? blog.image : blog_image_1}
                 className="card-img-top"
@@ -324,9 +349,15 @@ function BlogSection({ blogs }) {
               <div className="card-body">
                 <h5 className="card-title">{blog.title}</h5>
                 <p className="card-text">{blog.content}</p>
-                <a href="#" className="btn btn-outline-primary">
+                <button
+                  className="btn btn-outline-primary read-more-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleBlogClick(blog, e);
+                  }}
+                >
                   READ MORE
-                </a>
+                </button>
               </div>
             </div>
           </div>
