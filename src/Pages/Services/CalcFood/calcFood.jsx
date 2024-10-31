@@ -11,6 +11,7 @@ const CalcFood = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredFishList, setFilteredFishList] = useState([]);
   const [foodList, setFoodList] = useState([]);
+  const [calculationResults, setCalculationResults] = useState({});
   const navigate = useNavigate();
 
   const userId = JSON.parse(localStorage.getItem("userId"));
@@ -109,7 +110,11 @@ const CalcFood = () => {
     });
 
     axiosInstance.get(`/api/Fish/calculateFoodFish/${fishId}`).then((res) => {
-      toast.warn(res.data, { autoClose: 2000 });
+      setCalculationResults({
+        ...calculationResults,
+        [fishId]: res.data,
+      });
+      toast.success("Calculation completed!", { autoClose: 2000 });
     });
   }
 
@@ -152,6 +157,7 @@ const CalcFood = () => {
                 <th>Food Name</th>
                 <th>Food Weight (kg)</th>
                 <th>Image</th>
+                <th>Amount Of Food</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -171,6 +177,11 @@ const CalcFood = () => {
                     ) : (
                       "No Image"
                     )}
+                  </td>
+                  <td className="calculation-result">
+                    {calculationResults[fish.id]
+                      ? calculationResults[fish.id]
+                      : "-"}
                   </td>
                   <td>
                     <button

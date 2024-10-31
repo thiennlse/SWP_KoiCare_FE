@@ -71,7 +71,7 @@
 }
 
 .calc-food-table th:nth-child(2) {
-  width: 25%;
+  width: 18%;
   text-align: center;
 }
 
@@ -86,6 +86,11 @@
 }
 
 .calc-food-table th:nth-child(5) {
+  width: 15%;
+  text-align: center;
+}
+
+.calc-food-table th:nth-child(6) {
   width: 15%;
   text-align: center;
 }
@@ -144,4 +149,21 @@
 .centered-container {
   text-align: center;
   margin-top: 30px;
+}
+
+.calculation-result {
+  padding: 8px;
+  color: #333;
+  font-size: 14px;
+  text-align: center;
+}
+
+.calc-food-table td.calculation-result {
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.calc-food-table td.calculation-result:not(:empty) {
+  background-color: #e8f5e9;
 }
