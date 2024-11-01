@@ -379,34 +379,6 @@ const ManageAdmin = () => {
         </aside>
 
         <main className="content_admin">
-          {activeTab === "users" && (
-            <div className="card_admin">
-              <h3>User Management</h3>
-              <ul>
-                {users.map((user) => (
-                  <li key={user.id}>
-                    {user.fullName} - {user.role.name}
-                    <select
-                      value={user.roleId}
-                      onChange={(e) =>
-                        handleRoleChange(user.id, e.target.value)
-                      }
-                    >
-                      <option value={user.roleId}>{user.role.name}</option>{" "}
-                      {rolesList
-                        .filter((role) => role.name !== user.role.name)
-                        .map((role) => (
-                          <option key={role.id} value={role.name}>
-                            {role.name}
-                          </option>
-                        ))}
-                    </select>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
           {activeTab === "dashboard" && (
             <div className="card_admin">
               <h3>Total Management</h3>
@@ -438,115 +410,211 @@ const ManageAdmin = () => {
             </div>
           )}
 
+          {activeTab === "users" && (
+            <div className="management-section">
+              <div className="management-header">
+                <h3>User Management</h3>
+              </div>
+              <div className="management-content">
+                <table className="management-table">
+                  <thead>
+                    <tr>
+                      <th>Full Name</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.map((user) => (
+                      <tr key={user.id}>
+                        <td>{user.fullName}</td>
+                        <td>{user.email}</td>
+                        <td>
+                          <select
+                            className="role-select"
+                            value={user.roleId}
+                            onChange={(e) =>
+                              handleRoleChange(user.id, e.target.value)
+                            }
+                          >
+                            <option value={user.roleId}>
+                              {user.role.name}
+                            </option>
+                            {rolesList
+                              .filter((role) => role.name !== user.role.name)
+                              .map((role) => (
+                                <option key={role.id} value={role.name}>
+                                  {role.name}
+                                </option>
+                              ))}
+                          </select>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
           {activeTab === "products" && (
-            <div className="card_admin">
-              <h3>Product Management</h3>
-              <button onClick={() => openModal("createProduct")}>
-                Create Product
-              </button>
-              <ul className="list-group">
-                {products.map((product) => (
-                  <li
-                    key={product.id}
-                    className="list-group-item d-flex justify-content-between align-items-center"
-                  >
-                    {product.title}
-                    <span>
-                      {product.name} - ${product.cost} - {product.description}
-                    </span>
-                    <div className="btn-group-admin" role="group">
-                      <button
-                        className="btn-admin btn-sm btn-outline-primary"
-                        onClick={() => openModal("editProduct", product)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="btn-admin btn-sm btn-outline-info"
-                        onClick={() => openModal("productDetails", product)}
-                      >
-                        Details
-                      </button>
-                      <button
-                        className="btn-admin btn-sm btn-outline-danger"
-                        onClick={() => openDeleteProductModal(product)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+            <div className="management-section">
+              <div className="management-header">
+                <h3>Product Management</h3>
+                <button
+                  className="create-button"
+                  onClick={() => openModal("createProduct")}
+                >
+                  Create Product
+                </button>
+              </div>
+              <div className="management-content">
+                <table className="management-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Cost</th>
+                      <th>Description</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {products.map((product) => (
+                      <tr key={product.id}>
+                        <td>{product.name}</td>
+                        <td>${product.cost}</td>
+                        <td>{product.description}</td>
+                        <td>
+                          <div className="action-buttons">
+                            <button
+                              className="action-button edit-button"
+                              onClick={() => openModal("editProduct", product)}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              className="action-button details-button"
+                              onClick={() =>
+                                openModal("productDetails", product)
+                              }
+                            >
+                              Details
+                            </button>
+                            <button
+                              className="action-button delete-button"
+                              onClick={() => openDeleteProductModal(product)}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
 
           {activeTab === "blogs" && (
-            <div className="card_admin">
-              <h3>Blog Management</h3>
-              <button onClick={() => openModal("createBlog")}>
-                Create Blog
-              </button>
-              <ul className="list-group">
-                {blogs.map((blog) => (
-                  <li
-                    key={blog.id}
-                    className="list-group-item d-flex justify-content-between align-items-center"
-                  >
-                    <span>
-                      {blog.title} - {blog.content}
-                    </span>
-                    <div className="btn-group-admin" role="group">
-                      <button
-                        className="btn-admin btn-sm btn-outline-primary"
-                        onClick={() => openModal("editBlog", blog)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="btn-admin btn-sm btn-outline-info"
-                        onClick={() => openModal("blogDetails", blog)}
-                      >
-                        Details
-                      </button>
-                      <button
-                        className="btn-admin btn-sm btn-outline-danger"
-                        onClick={() => openDeleteBlogModal(blog)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+            <div className="management-section">
+              <div className="management-header">
+                <h3>Blog Management</h3>
+                <button
+                  className="create-button"
+                  onClick={() => openModal("createBlog")}
+                >
+                  Create Blog
+                </button>
+              </div>
+              <div className="management-content">
+                <table className="management-table">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Content</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {blogs.map((blog) => (
+                      <tr key={blog.id}>
+                        <td>{blog.title}</td>
+                        <td>{blog.content}</td>
+                        <td>
+                          <div className="action-buttons">
+                            <button
+                              className="action-button edit-button"
+                              onClick={() => openModal("editBlog", blog)}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              className="action-button details-button"
+                              onClick={() => openModal("blogDetails", blog)}
+                            >
+                              Details
+                            </button>
+                            <button
+                              className="action-button delete-button"
+                              onClick={() => openDeleteBlogModal(blog)}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
 
           {activeTab === "orders" && (
-            <div className="card_admin">
-              <h3>Order Management</h3>
-              <ul>
-                {orders.map((order) => (
-                  <li key={order.id}>
-                    Order #{order.id} - Status: {order.status} - Description:{" "}
-                    {order.description} - TotalCost: {order.totalCost}
-                    <select
-                      value={order.status}
-                      onChange={(e) =>
-                        handleStatusChange(order.id, e.target.value)
-                      }
-                    >
-                      <option value={order.status}>{order.status}</option>
-                      {orderStatuses
-                        .filter((status) => status.name !== order.status)
-                        .map((status) => (
-                          <option key={status.id} value={status.name}>
-                            {status.name}
-                          </option>
-                        ))}
-                    </select>
-                  </li>
-                ))}
-              </ul>
+            <div className="management-section">
+              <div className="management-header">
+                <h3>Order Management</h3>
+              </div>
+              <div className="management-content">
+                <table className="management-table">
+                  <thead>
+                    <tr>
+                      <th>Order #</th>
+                      <th>Description</th>
+                      <th>Total Cost</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {orders.map((order) => (
+                      <tr key={order.id}>
+                        <td>#{order.id}</td>
+                        <td>{order.description}</td>
+                        <td>${order.totalCost}</td>
+                        <td>
+                          <select
+                            className="status-select"
+                            value={order.status}
+                            onChange={(e) =>
+                              handleStatusChange(order.id, e.target.value)
+                            }
+                          >
+                            <option value={order.status}>{order.status}</option>
+                            {orderStatuses
+                              .filter((status) => status.name !== order.status)
+                              .map((status) => (
+                                <option key={status.id} value={status.name}>
+                                  {status.name}
+                                </option>
+                              ))}
+                          </select>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </main>
