@@ -2,6 +2,7 @@ import "./App.css";
 import "./index.css";
 import LoginForm from "./Pages/Login/Login";
 import HomePage from "./Pages/HomePage/HomePage";
+import Introducing from "./Pages/Introducing/Introducing";
 import CreateFish from "./Pages/CreateFish/CreateFish";
 import CreateAquarium from "./Pages/CreateAquarium/CreateAquarium";
 import ManageAdmin from "./Pages/ManageAdmin/Manage_Admin";
@@ -32,6 +33,7 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/home" element={<HomePage />} />
+          <Route path="/introducing" element={<Introducing />} />
           <Route path="/product" element={<HomePage />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/blog/:id" element={<BlogDetail />} />
