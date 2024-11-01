@@ -32,6 +32,7 @@
 .login-wrapper form h1 {
   font-size: 36px;
   text-align: center;
+  color: #fff;
 }
 
 .login-wrapper form .input-box {
