@@ -1,13 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./BlogDetail.css";
 import blog_image_1 from "../../Components/Assets/blog_imgae_1.png";
 import axiosInstance from "../axiosInstance";
 
 const BlogDetail = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const blog = location.state?.blog;
   const [suggestedBlogs, setSuggestedBlogs] = useState([]);
+
+  const handleBlogClick = (suggestedBlog) => {
+    navigate(`/blog/${suggestedBlog.id}`, {
+      state: {
+        blog: {
+          id: suggestedBlog.id,
+          title: suggestedBlog.title,
+          content: suggestedBlog.content,
+          image: suggestedBlog.image || blog_image_1,
+          createdAt: suggestedBlog.createdAt,
+        },
+      },
+    });
+    window.scrollTo(0, 0);
+  };
 
   useEffect(() => {
     const fetchSuggestedBlogs = async () => {
@@ -19,7 +35,7 @@ const BlogDetail = () => {
 
         const shuffledBlogs = blogs.sort(() => 0.5 - Math.random());
         const randomBlogs = shuffledBlogs
-          .filter((b) => b.id !== blog.id) // Loại bỏ blog hiện tại
+          .filter((b) => b.id !== blog.id)
           .slice(0, 3);
 
         setSuggestedBlogs(randomBlogs);
@@ -58,7 +74,11 @@ const BlogDetail = () => {
         <h3>Related Posts</h3>
         <div className="blog-grid">
           {suggestedBlogs.map((suggestedBlog) => (
-            <div key={suggestedBlog.id} className="blog-item">
+            <div
+              key={suggestedBlog.id}
+              className="blog-item"
+              onClick={() => handleBlogClick(suggestedBlog)}
+            >
               <img
                 src={suggestedBlog.image || blog_image_1}
                 alt={suggestedBlog.title}
@@ -68,8 +88,9 @@ const BlogDetail = () => {
                 {suggestedBlog.content.substring(0, 100)}...
               </p>
               <button
-                onClick={() => {
-                  window.location.href = `/blog/${suggestedBlog.id}`;
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleBlogClick(suggestedBlog);
                 }}
               >
                 Read More
