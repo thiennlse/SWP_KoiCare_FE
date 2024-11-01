@@ -333,6 +333,12 @@ const ManageAdmin = () => {
           <nav className="nav_admin">
             <ul>
               <li
+                className={activeTab === "dashboard" ? "active" : ""}
+                onClick={() => setActiveTab("dashboard")}
+              >
+                Dashboard
+              </li>
+              <li
                 className={activeTab === "users" ? "active" : ""}
                 onClick={() => setActiveTab("users")}
               >
