@@ -332,10 +332,8 @@ const ManageAdmin = () => {
         <aside className="sidebar-admin">
           <div className="profile-admin">
             <img
-              src="/path/to/profile_admin.png"
-              alt="Admin"
-              className="avatar"
-            />
+            <img src="/path/to/admin-avatar.png" alt="Admin" />
+            <div className="admin-name">Admin</div>
           </div>
           <nav className="nav_admin">
             <ul>

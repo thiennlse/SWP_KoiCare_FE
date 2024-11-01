@@ -21,7 +21,32 @@
 }
 
 .profile-admin {
-  margin-bottom: 50px;
+  margin-bottom: 30px;
+  text-align: center;
+  padding: 20px;
+}
+
+.profile-admin img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid #ff6600;
+  padding: 3px;
+  background: white;
+  margin-bottom: 10px;
+}
+
+.profile-admin .admin-name {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.profile-admin .admin-role {
+  color: #ff6600;
+  font-size: 0.9rem;
+  margin-top: 5px;
 }
 
 .sidebar-admin {
@@ -229,13 +254,12 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  padding: 20px;
+  padding: 5px;
 }
 
 .stat-card {
   background: white;
   border-radius: 10px;
-  /* padding: 20px; */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
   transition: transform 0.3s ease;
@@ -249,17 +273,17 @@
   font-size: 2.5rem;
   font-weight: bold;
   color: #1e407c;
-  margin: 10px 0;
+  margin: 5px 0;
 }
 
 .stat-title {
   color: #666;
   font-size: 1.1rem;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .stat-icon {
   font-size: 2rem;
   color: #ff6600;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
