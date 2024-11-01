@@ -95,7 +95,7 @@ const CreateFish = () => {
             },
           }
         );
-        imageUrl = imageResponse.data.url; // Get URL from response
+        imageUrl = imageResponse.data.url;
       }
 
       const foodResponse = await axiosInstance.post("/api/Food/add", newFood, {
