@@ -21,7 +21,32 @@
 }
 
 .profile-admin {
-  margin-bottom: 50px;
+  margin-bottom: 30px;
+  text-align: center;
+  padding: 20px;
+}
+
+.profile-admin img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid #ff6600;
+  padding: 3px;
+  background: white;
+  margin-bottom: 10px;
+}
+
+.profile-admin .admin-name {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.profile-admin .admin-role {
+  color: #ff6600;
+  font-size: 0.9rem;
+  margin-top: 5px;
 }
 
 .sidebar-admin {
@@ -50,11 +75,15 @@
 .nav_admin li {
   padding: 12px;
   margin: 5px 0;
-  text-align: center;
+  text-align: left;
   cursor: pointer;
   background-color: #264e86;
   border-radius: 8px;
   transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  gap: 10px;
 }
 
 .nav_admin li.active {
@@ -66,8 +95,12 @@
   background-color: #3b6ea5;
 }
 
+.nav-icon-admin {
+  font-size: 1.5rem;
+}
+
 .back_button_admin {
-  margin-top: 360px;
+  margin-top: 230px;
   background-color: #ff6600;
   color: white;
   border: none;
@@ -145,9 +178,117 @@
   padding-bottom: 10px;
 }
 
-/* ul {
-  padding-left: 20px;
-} */
+.management-section {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin: 20px 0;
+}
+
+.management-header {
+  background: #1e407c;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.management-header h3 {
+  color: white;
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.management-content {
+  padding: 20px;
+}
+
+.management-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.management-table th,
+.management-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.management-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+}
+
+.management-table tr:hover {
+  background: #f5f5f5;
+}
+
+.create-button {
+  background: #28a745;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.create-button:hover {
+  background: #218838;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.action-button {
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.edit-button {
+  background: #1e407c;
+  color: white;
+}
+
+.edit-button:hover {
+  background: #15305d;
+}
+
+.details-button {
+  background: #17a2b8;
+  color: white;
+}
+
+.details-button:hover {
+  background: #138496;
+}
+
+.delete-button {
+  background: #dc3545;
+  color: white;
+}
+
+.delete-button:hover {
+  background: #c82333;
+}
+
+.status-select,
+.role-select {
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  min-width: 120px;
+}
 
 .logout_button_admin {
   cursor: pointer;
@@ -219,4 +360,42 @@
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 999;
   backdrop-filter: blur(5px);
+}
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 5px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #1e407c;
+  margin: 5px 0;
+}
+
+.stat-title {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+}
+
+.stat-icon {
+  font-size: 2rem;
+  color: #ff6600;
+  margin-bottom: 5px;
 }

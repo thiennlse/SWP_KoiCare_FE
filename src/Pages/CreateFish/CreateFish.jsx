@@ -17,7 +17,7 @@ const CreateFish = () => {
     weight: 0,
     dob: "",
     gender: "Male",
-    origin: "", // Changed to empty string instead of default value
+    origin: "",
     foodName: "",
     foodWeight: 0,
   });
@@ -69,7 +69,6 @@ const CreateFish = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate origin is selected
     if (!fishData.origin) {
       toast.error("Please select an origin", { autoClose: 1500 });
       return;
@@ -96,7 +95,7 @@ const CreateFish = () => {
             },
           }
         );
-        imageUrl = imageResponse.data.url; // Get URL from response
+        imageUrl = imageResponse.data.url;
       }
 
       const foodResponse = await axiosInstance.post("/api/Food/add", newFood, {
