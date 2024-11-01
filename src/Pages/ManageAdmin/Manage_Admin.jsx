@@ -22,7 +22,7 @@ import { FaClipboardList } from "react-icons/fa";
 Modal.setAppElement("#root");
 
 const ManageAdmin = () => {
-  const [activeTab, setActiveTab] = useState("users");
+  const [activeTab, setActiveTab] = useState("dashboard");
   const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
