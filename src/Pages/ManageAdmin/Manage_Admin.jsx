@@ -11,6 +11,7 @@ import BlogForm from "./Modal/BlogForm";
 import BlogDetails from "./Modal/BlogDetails";
 import DeleteProductModal from "./Modal/DeleteProductModal";
 import DeleteBlogModal from "./Modal/DeletBlogModal";
+import OrderChart from "./OrderChart";
 import {
   MdDashboard,
   MdPeople,
@@ -407,6 +408,9 @@ const ManageAdmin = () => {
                   <div className="stat-title">Total Orders</div>
                 </div>
               </div>
+              <div className="chart-container">
+                <OrderChart orders={orders} />
+              </div>
             </div>
           )}
 
@@ -591,7 +595,7 @@ const ManageAdmin = () => {
                       <tr key={order.id}>
                         <td>#{order.id}</td>
                         <td>{order.description}</td>
-                        <td>${order.totalCost}</td>
+                        <td>{order.totalCost} VND</td>
                         <td>
                           <select
                             className="status-select"
