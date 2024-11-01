@@ -11,6 +11,13 @@ import BlogForm from "./Modal/BlogForm";
 import BlogDetails from "./Modal/BlogDetails";
 import DeleteProductModal from "./Modal/DeleteProductModal";
 import DeleteBlogModal from "./Modal/DeletBlogModal";
+import {
+  MdDashboard,
+  MdPeople,
+  MdShoppingCart,
+  MdArticle,
+} from "react-icons/md";
+import { FaClipboardList } from "react-icons/fa";
 Modal.setAppElement("#root");
 
 const ManageAdmin = () => {
@@ -336,30 +343,35 @@ const ManageAdmin = () => {
                 className={activeTab === "dashboard" ? "active" : ""}
                 onClick={() => setActiveTab("dashboard")}
               >
+                <MdDashboard className="nav-icon-admin" />
                 Dashboard
               </li>
               <li
                 className={activeTab === "users" ? "active" : ""}
                 onClick={() => setActiveTab("users")}
               >
+                <MdPeople className="nav-icon-admin" />
                 User Management
               </li>
               <li
                 className={activeTab === "products" ? "active" : ""}
                 onClick={() => setActiveTab("products")}
               >
+                <MdShoppingCart className="nav-icon-admin" />
                 Product Management
               </li>
               <li
                 className={activeTab === "blogs" ? "active" : ""}
                 onClick={() => setActiveTab("blogs")}
               >
+                <MdArticle className="nav-icon-admin" />
                 Blog Management
               </li>
               <li
                 className={activeTab === "orders" ? "active" : ""}
                 onClick={() => setActiveTab("orders")}
               >
+                <FaClipboardList className="nav-icon-admin" />
                 Order Management
               </li>
             </ul>
@@ -398,8 +410,39 @@ const ManageAdmin = () => {
             </div>
           )}
 
+          {activeTab === "dashboard" && (
+            <div className="card_admin">
+              <h3>Total Management</h3>
+              <div className="dashboard-cards">
+                <div className="stat-card">
+                  <div className="stat-icon">👥</div>
+                  <div className="stat-number">{users.length}</div>
+                  <div className="stat-title">Total Users</div>
+                </div>
+
+                <div className="stat-card">
+                  <div className="stat-icon">📦</div>
+                  <div className="stat-number">{products.length}</div>
+                  <div className="stat-title">Total Products</div>
+                </div>
+
+                <div className="stat-card">
+                  <div className="stat-icon">📝</div>
+                  <div className="stat-number">{blogs.length}</div>
+                  <div className="stat-title">Total Blogs</div>
+                </div>
+
+                <div className="stat-card">
+                  <div className="stat-icon">🛍️</div>
+                  <div className="stat-number">{orders.length}</div>
+                  <div className="stat-title">Total Orders</div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {activeTab === "products" && (
-            <div className="card">
+            <div className="card_admin">
               <h3>Product Management</h3>
               <button onClick={() => openModal("createProduct")}>
                 Create Product
@@ -441,7 +484,7 @@ const ManageAdmin = () => {
           )}
 
           {activeTab === "blogs" && (
-            <div className="card">
+            <div className="card_admin">
               <h3>Blog Management</h3>
               <button onClick={() => openModal("createBlog")}>
                 Create Blog
@@ -482,7 +525,7 @@ const ManageAdmin = () => {
           )}
 
           {activeTab === "orders" && (
-            <div className="card">
+            <div className="card_admin">
               <h3>Order Management</h3>
               <ul>
                 {orders.map((order) => (

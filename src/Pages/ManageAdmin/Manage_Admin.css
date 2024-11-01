@@ -50,11 +50,15 @@
 .nav_admin li {
   padding: 12px;
   margin: 5px 0;
-  text-align: center;
+  text-align: left;
   cursor: pointer;
   background-color: #264e86;
   border-radius: 8px;
   transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  gap: 10px;
 }
 
 .nav_admin li.active {
@@ -64,6 +68,10 @@
 
 .nav_admin li:hover {
   background-color: #3b6ea5;
+}
+
+.nav-icon-admin {
+  font-size: 1.5rem;
 }
 
 .back_button_admin {
@@ -145,10 +153,6 @@
   padding-bottom: 10px;
 }
 
-/* ul {
-  padding-left: 20px;
-} */
-
 .logout_button_admin {
   cursor: pointer;
   font-size: 18px;
@@ -219,4 +223,43 @@
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 999;
   backdrop-filter: blur(5px);
+}
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 10px;
+  /* padding: 20px; */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #1e407c;
+  margin: 10px 0;
+}
+
+.stat-title {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.stat-icon {
+  font-size: 2rem;
+  color: #ff6600;
+  margin-bottom: 10px;
 }
