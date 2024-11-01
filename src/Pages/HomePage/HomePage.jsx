@@ -140,16 +140,16 @@ function Products() {
     const role = JSON.parse(localStorage.getItem("role"));
     if (role !== "Member") {
       toast.warn("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!", {
-        autoClose: 2000,
+        autoClose: 1000,
       });
 
       setTimeout(() => {
         window.location.href = "/login";
-      }, 2000);
+      }, 1000);
       return;
     }
     toast.success(`${productObj.name} đã được thêm vào giỏ hàng!`, {
-      autoClose: 2000,
+      autoClose: 1500,
     });
 
     let cart = JSON.parse(localStorage.getItem("cart")) || [];

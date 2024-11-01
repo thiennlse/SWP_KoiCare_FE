@@ -37,11 +37,11 @@ function ProductDetail() {
 
     if (!isLogin) {
       toast.warn("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!", {
-        autoClose: 2000,
+        autoClose: 1000,
       });
       setTimeout(() => {
         window.location.href = "/login";
-      }, 2000);
+      }, 1000);
       return;
     }
 
