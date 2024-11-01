@@ -331,7 +331,6 @@ const ManageAdmin = () => {
       <div style={{ display: "flex", flexGrow: 1 }}>
         <aside className="sidebar-admin">
           <div className="profile-admin">
-            <img
             <img src="/path/to/admin-avatar.png" alt="Admin" />
             <div className="admin-name">Admin</div>
           </div>
