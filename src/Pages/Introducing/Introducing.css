@@ -65,27 +65,27 @@
   margin-bottom: 15px;
 }
 
-h2 {
+.introducing-container h2 {
   color: #dead6f;
   margin-bottom: 20px;
 }
 
-h3 {
+.introducing-container h3 {
   color: #666;
   margin-bottom: 10px;
 }
 
-p {
+.introducing-container p {
   color: #666;
   line-height: 1.6;
 }
 
-.benefits-list {
+.introducing-container .benefits-list {
   margin-top: 20px;
   padding-left: 20px;
 }
 
-.benefits-list li {
+.introducing-container .benefits-list li {
   color: #666;
   margin-bottom: 10px;
   line-height: 1.6;
