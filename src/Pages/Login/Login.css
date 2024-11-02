@@ -233,3 +233,7 @@
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
+
+.register-link p {
+  color: black;
+}
