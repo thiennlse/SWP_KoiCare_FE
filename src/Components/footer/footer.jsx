@@ -20,7 +20,11 @@ function Footer() {
             Subscribe to our newsletter to get updates about our grand offers.
           </p>
           <div className="social_icons">
-            <a href="https://www.facebook.com/groups/571573155376084">
+            <a
+              href="https://www.facebook.com/groups/571573155376084"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <FaFacebookF className="fab fa-facebook" />
             </a>
             <a href="#">
@@ -64,7 +68,7 @@ function Footer() {
             </li>
             <li>
               Contact us
-              <ul className="sub_services_list">
+              <ul className="sub_services_list" id="contact_scroll">
                 <li className="contact-item">
                   <FaMapMarkerAlt className="contact-icon" />
                   <div className="address-container">
