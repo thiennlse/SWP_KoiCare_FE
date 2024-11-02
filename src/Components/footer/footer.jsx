@@ -21,7 +21,7 @@ function Footer() {
           </p>
           <div className="social_icons">
             <a
-              href="https://www.facebook.com/groups/571573155376084"
+              href="https://www.facebook.com/profile.php?id=61568315153378"
               target="_blank"
               rel="noopener noreferrer"
             >
