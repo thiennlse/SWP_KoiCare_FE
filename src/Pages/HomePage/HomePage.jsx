@@ -7,6 +7,10 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { FaArrowUp } from "react-icons/fa";
+import { SiZalo } from "react-icons/si";
+import { FaFacebookMessenger } from "react-icons/fa";
+import { BiSupport } from "react-icons/bi";
 
 import koiFood from "../../Components/Assets/KoiFood.jpeg";
 
@@ -55,6 +59,8 @@ const HomePage = () => {
       <div id="blog_scroll">
         <BlogSection blogs={blogData} />
       </div>
+      <ScrollToTop />
+      <ContactButtons />
     </>
   );
 };
@@ -403,5 +409,64 @@ function BlogSection({ blogs }) {
     </div>
   );
 }
+
+const ScrollToTop = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.pageYOffset > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener("scroll", toggleVisibility);
+    return () => window.removeEventListener("scroll", toggleVisibility);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  return (
+    <button
+      className={`scroll-to-top ${isVisible ? "visible" : ""}`}
+      onClick={scrollToTop}
+    >
+      <FaArrowUp />
+    </button>
+  );
+};
+
+const ContactButtons = () => {
+  return (
+    <div className="contact-buttons">
+      <a
+        href="https://zalo.me/0778138889"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="contact-button zalo-button"
+      >
+        <SiZalo size={30} />
+      </a>
+      <a
+        href="https://www.facebook.com/messages/t/479832175208645"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="contact-button messenger-button"
+      >
+        <FaFacebookMessenger size={30} />
+      </a>
+      <a href="tel:0965015422" className="contact-button support-button">
+        <BiSupport size={30} />
+      </a>
+    </div>
+  );
+};
 
 export default HomePage;
