@@ -20,7 +20,7 @@ function Footer() {
             Subscribe to our newsletter to get updates about our grand offers.
           </p>
           <div className="social_icons">
-            <a href="#">
+            <a href="https://www.facebook.com/groups/571573155376084">
               <FaFacebookF className="fab fa-facebook" />
             </a>
             <a href="#">
