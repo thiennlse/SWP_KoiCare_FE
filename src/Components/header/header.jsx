@@ -16,8 +16,7 @@ function Header() {
 
   const userId = localStorage.getItem("userId");
   const role = JSON.parse(localStorage.getItem("role"));
-  const emailUser = JSON.parse(localStorage.getItem("emailUser"));
-  const config = genConfig(emailUser);
+  const config = genConfig("hi@dapi.to");
 
   useEffect(() => {
     const fetchData = async () => {
