@@ -16,7 +16,8 @@ function Header() {
 
   const userId = localStorage.getItem("userId");
   const role = JSON.parse(localStorage.getItem("role"));
-  const config = genConfig({ sex: "man", hairStyle: "mohawk" });
+  const emailUser = JSON.parse(localStorage.getItem("emailUser"));
+  const config = genConfig(emailUser);
 
   useEffect(() => {
     const fetchData = async () => {
