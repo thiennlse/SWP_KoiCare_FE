@@ -189,6 +189,21 @@ body {
   text-decoration: none;
 }
 
+.ellipsis {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product_description {
+  color: #666;
+  font-size: 14px;
+  margin: 8px 0;
+  padding: 0 10px;
+}
+
 .sold-out {
   color: #888;
 }
@@ -297,4 +312,21 @@ body {
 .support-button {
   background-color: #41403e;
   color: white;
+}
+
+.blog-title-ellipsis {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.blog-content-ellipsis {
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 15px;
 }
