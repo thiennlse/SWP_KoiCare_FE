@@ -107,7 +107,7 @@ const AquariumManagement = () => {
         <div className="search_aqua_form">
           <input
             type="text"
-            placeholder="Search by Aquarium Name"
+            placeholder="Search by Aquarium Name, Description"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />

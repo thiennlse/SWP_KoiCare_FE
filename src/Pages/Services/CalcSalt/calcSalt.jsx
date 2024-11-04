@@ -1,6 +1,5 @@
 import "./calcSalt.css";
 import axiosInstance from "../../axiosInstance";
-
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -49,7 +48,7 @@ const AquariumManagement = () => {
         toast.success("Calculation completed!", { autoClose: 2000 });
       })
       .catch((err) => {
-        toast.error("Failed to calculate food.", { autoClose: 1500 });
+        toast.error("Failed to calculate salt.", { autoClose: 1500 });
       })
       .finally(() => {
         setLoading(false);
@@ -74,15 +73,19 @@ const AquariumManagement = () => {
               {isShow ? selectedAqua.name : "List Of Pool"}
             </button>
             <div className="dropdown-content-aqua">
-              {aquaList.map((aqua, index) => (
-                <div
-                  key={index}
-                  className="dropdown-pool"
-                  onClick={() => handleShowAqua(aqua)}
-                >
-                  {aqua.name}
-                </div>
-              ))}
+              {aquaList.length > 0 ? (
+                aquaList.map((aqua, index) => (
+                  <div
+                    key={index}
+                    className="dropdown-pool"
+                    onClick={() => handleShowAqua(aqua)}
+                  >
+                    {aqua.name}
+                  </div>
+                ))
+              ) : (
+                <div>No pool available</div>
+              )}
             </div>
           </div>
           {selectedAqua && (
@@ -92,7 +95,7 @@ const AquariumManagement = () => {
                 <strong>Name:</strong> {selectedAqua.name}
               </p>
               <p>
-                <strong>Size:</strong> {selectedAqua.size} cm2
+                <strong>Size:</strong> {selectedAqua.size} cm²
               </p>
               <p>
                 <strong>Depth:</strong> {selectedAqua.depth} cm

@@ -105,7 +105,7 @@ const CalcFood = () => {
   }
 
   return (
-    <div>
+    <div className="background-color-page">
       {memberId ? (
         <div className="food-container">
           <div className="header-with-button">
@@ -114,18 +114,22 @@ const CalcFood = () => {
           <div className="dropdown-fish">
             <button className="dropdown-fish-button">
               {isShow ? selectedFish.name : "List Of Fish"}
-              <span class="fish-eye"></span>
+              <span className="fish-eye"></span>
             </button>
             <div className="dropdown-content-fish">
-              {filteredFishList.map((fish, index) => (
-                <div
-                  key={index}
-                  className="dropdown-fish-name"
-                  onClick={() => handleShowFish(fish)}
-                >
-                  {fish.name}
-                </div>
-              ))}
+              {filteredFishList.length > 0 ? (
+                filteredFishList.map((fish, index) => (
+                  <div
+                    key={index}
+                    className="dropdown-fish-name"
+                    onClick={() => handleShowFish(fish)}
+                  >
+                    {fish.name}
+                  </div>
+                ))
+              ) : (
+                <div>No fish available</div>
+              )}
             </div>
           </div>
           {selectedFish ? (

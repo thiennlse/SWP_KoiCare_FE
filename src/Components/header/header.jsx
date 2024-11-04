@@ -67,6 +67,10 @@ function Header() {
     }, 100);
   };
 
+  const handleScrollToTop = () => {
+    window.scrollTo(0, 0);
+  };
+
   return (
     <header className="header">
       <div className="content">
@@ -82,6 +86,10 @@ function Header() {
             <li>
               <a onClick={() => handleNavigation("products_scroll")}>Product</a>
             </li>
+
+            <li>
+              <a onClick={() => handleNavigation("blog_scroll")}>Blog</a>
+            </li>
             <li
               onMouseEnter={() => toggleServicesDropdown(true)}
               onMouseLeave={() => toggleServicesDropdown(false)}
@@ -90,8 +98,12 @@ function Header() {
               {servicesDropdownVisible && (
                 <div className="nav_list ">
                   <div className="services_menu">
-                    <Link to="/calcFood">Calculate Food</Link>
-                    <Link to="/calcSalt">Calculate Salt</Link>
+                    <Link to="/calcFood" onClick={handleScrollToTop}>
+                      Calculate Food{" "}
+                    </Link>
+                    <Link to="/calcSalt" onClick={handleScrollToTop}>
+                      Calculate Salt
+                    </Link>
                   </div>
                 </div>
               )}
@@ -100,9 +112,6 @@ function Header() {
               <a onClick={() => handleNavigation("contact_scroll")}>
                 Contact Us
               </a>
-            </li>
-            <li>
-              <a onClick={() => handleNavigation("blog_scroll")}>Blog</a>
             </li>
           </ul>
 
@@ -148,7 +157,9 @@ function Header() {
                       <Link to="/aquariummanagement">Aquarium Management</Link>
                       <Link to="/water">Water Management</Link>
                       <Link to="/fishmanagement">Koi Fish Management</Link>
-                      <Link to="/orderHistory">Order History</Link>
+                      <Link to="/orderHistory" onClick={handleScrollToTop}>
+                        Order History
+                      </Link>
                     </div>
                   )}
                 </div>

@@ -217,7 +217,7 @@ const Water = () => {
               <label>Nitrate (NO3) (mg/L)</label>
               <input
                 name="no3"
-                value={waterData.no3 || "0"}
+                value={waterData.no3}
                 onChange={handleChange}
                 onClick={() => handleInputClick("no3")}
                 style={{ borderColor: isValid.no3 ? "green" : "red" }}

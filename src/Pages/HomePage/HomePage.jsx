@@ -8,9 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaArrowUp } from "react-icons/fa";
-import { SiZalo } from "react-icons/si";
-import { FaFacebookMessenger } from "react-icons/fa";
-import { BiSupport } from "react-icons/bi";
+import CalcAds from "./calcAds";
 
 import koiFood from "../../Components/Assets/KoiFood.jpeg";
 
@@ -53,9 +51,11 @@ const HomePage = () => {
       <div id="banner_scroll">
         <Banner />
       </div>
+      <CalcAds />
       <div id="products_scroll">
         <Products />
       </div>
+
       <div id="blog_scroll">
         <BlogSection blogs={blogData} />
       </div>

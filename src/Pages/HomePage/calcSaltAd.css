@@ -1,0 +1,42 @@
+.calc-salt-ad {
+  position: relative;
+  overflow: hidden;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.calc-salt-background {
+  background-image: url("https://i.pinimg.com/474x/40/aa/8f/40aa8f850b536d027ec4cc157e546afc.jpg");
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  filter: blur(8px);
+  z-index: 1;
+}
+
+.calc-salt-content {
+  position: relative;
+  z-index: 2;
+  padding: 200px;
+  font-weight: 600;
+  text-shadow: 2px 2px #ff0000;
+  color: white;
+}
+
+.calc-now-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  text-shadow: none;
+}
+
+.calc-now-btn:hover {
+  background-color: #0056b3;
+}
