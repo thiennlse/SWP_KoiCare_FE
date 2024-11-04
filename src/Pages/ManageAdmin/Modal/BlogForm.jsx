@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import "../Modal/Modal.css";
+import axiosInstance from "../../axiosInstance";
+import { toast } from "react-toastify";
+// import "../Modal/Modal.css";
+import "./BlogForm.css";
 
 const BlogForm = ({ blog, onSubmit, closeModal }) => {
   const [formData, setFormData] = useState({
@@ -10,6 +13,8 @@ const BlogForm = ({ blog, onSubmit, closeModal }) => {
     dateOfPublish: new Date().toISOString().split("T")[0],
     status: "",
   });
+  const [previewImage, setPreviewImage] = useState("");
+  const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
     if (blog) {
@@ -17,6 +22,7 @@ const BlogForm = ({ blog, onSubmit, closeModal }) => {
         ...blog,
         dateOfPublish: blog.dateOfPublish.split("T")[0],
       });
+      setPreviewImage(blog.image);
     }
   }, [blog]);
 
@@ -46,14 +52,50 @@ const BlogForm = ({ blog, onSubmit, closeModal }) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const submitData = {
-      ...formData,
-      memberId: JSON.parse(localStorage.getItem("userId")) || 0,
-    };
-    onSubmit(submitData);
-    if (closeModal) closeModal();
+    try {
+      let imageUrl = formData.image;
+
+      if (imageFile) {
+        const formDataImage = new FormData();
+        formDataImage.append("file", imageFile);
+
+        const imageResponse = await axiosInstance.post(
+          "/api/Fish/upload",
+          formDataImage,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        imageUrl = imageResponse.data.url;
+      }
+
+      const submitData = {
+        ...formData,
+        image: imageUrl,
+        memberId: JSON.parse(localStorage.getItem("userId")) || 0,
+      };
+
+      onSubmit(submitData);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast.error("Failed to upload image");
+    }
   };
 
   return (
@@ -72,13 +114,25 @@ const BlogForm = ({ blog, onSubmit, closeModal }) => {
         </div>
 
         <div className="form-group">
-          <label>Image URL:</label>
+          <label>Image:</label>
           <input
-            type="text"
+            type="file"
             name="image"
-            value={formData.image}
-            onChange={handleChange}
+            accept="image/*"
+            onChange={handleImageChange}
           />
+          {previewImage && (
+            <img
+              src={previewImage}
+              alt="Blog preview"
+              style={{
+                marginTop: "10px",
+                maxWidth: "200px",
+                maxHeight: "200px",
+                objectFit: "contain",
+              }}
+            />
+          )}
         </div>
 
         <div className="form-group">
