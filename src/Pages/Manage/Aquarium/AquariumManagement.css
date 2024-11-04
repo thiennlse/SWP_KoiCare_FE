@@ -1,132 +1,172 @@
-.header-with-button {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.create-aquarium-button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.create-aquarium-button:hover {
-  background-color: #0056b3;
-}
-
-.search_aqua_form {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.search_aqua_form input {
-  width: 100%;
-  max-width: 400px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-.search_aqua_form .search-button {
-  margin-left: 10px;
-  padding: 10px 15px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 18px;
-}
-
-.search_aqua_form .search-button:hover {
-  background-color: #0056b3;
-}
-
-.aquarium_list_container {
-  width: 60%;
-  margin: 30px auto;
-  padding: 20px;
+.aquarium-management-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 50px auto;
   background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  margin-top: 100px;
 }
 
-.aquarium_list_title {
-  text-align: center;
-  font-size: 28px;
-  margin-bottom: 20px;
-}
-
-.table-container {
-  width: 100%;
-  overflow-x: auto;
-}
-
-.aquarium_table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-.aquarium_table th,
-.aquarium_table td {
-  border: 1px solid #ddd;
-  padding: 12px 8px;
-  text-align: center;
-  font-size: 16px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.aquarium_table th {
-  background-color: #f4f4f4;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.aquarium_table tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.aquarium_table tr:hover {
-  background-color: #f1f1f1;
-}
-
-.aquarium_table td .action-buttons-aqua {
-  gap: 8px;
-  justify-content: center;
+.management-header {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: #1e407c;
+  border-radius: 8px;
+  color: white;
 }
 
-.aquarium_table button {
-  padding: 8px 12px;
-  background-color: #007bff;
+.management-header h2 {
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.create-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #28a745;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
-  min-width: 80px;
+  transition: all 0.3s ease;
 }
 
-.aquarium_table button:hover {
-  background-color: #0056b3;
+.create-button:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
 }
 
-.aquarium_table .delete-button {
+.search-section {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.search-input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.search-button {
+  padding: 0.75rem 1.5rem;
+  background-color: #1e407c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-button:hover {
+  background-color: #15305d;
+}
+
+.table-responsive {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.aquarium-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #dee2e6;
+}
+
+.aquarium-table th,
+.aquarium-table td {
+  padding: 1rem;
+  text-align: center;
+  border: 1px solid #dee2e6;
+  vertical-align: middle;
+}
+
+.aquarium-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.aquarium-table tbody tr {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.aquarium-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.aquarium-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.edit-button,
+.delete-button {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+}
+
+.edit-button {
+  background-color: #ffc107;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #e0a800;
+  transform: translateY(-2px);
+}
+
+.delete-button {
   background-color: #dc3545;
-  margin-left: 10px;
+  color: white;
 }
 
-.aquarium_table .delete-button:hover {
+.delete-button:hover {
   background-color: #c82333;
+  transform: translateY(-2px);
+}
+
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-style: italic;
+  background-color: #f8f9fa;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 1.2rem;
+  color: #666;
 }

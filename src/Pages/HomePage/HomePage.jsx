@@ -51,9 +51,7 @@ const HomePage = () => {
       <div id="banner_scroll">
         <Banner />
       </div>
-
       <CalcAds />
-
       <div id="products_scroll">
         <Products />
       </div>
@@ -265,11 +263,12 @@ function Product({ productObj, onAddToCart }) {
         />
       </div>
       <div className="product_price">
-        <p>{productObj.name}</p>
+        <p className="name-ellipsis">{productObj.name}</p>
+        <p className="product_description ellipsis">{productObj.description}</p>
         <p>{formattedCost} Vnd</p>
       </div>
 
-      <div>
+      <div className="button-container">
         {productObj.inStock === 0 ? (
           <button className="product_btn out_of_stock" disabled>
             Out of Stock
@@ -354,8 +353,10 @@ function BlogSection({ blogs }) {
                 alt={blog.title}
               />
               <div className="card-body">
-                <h5 className="card-title">{blog.title}</h5>
-                <p className="card-text">{blog.content}</p>
+                <h5 className="card-title blog-title-ellipsis">{blog.title}</h5>
+                <p className="card-text blog-content-ellipsis">
+                  {blog.content}
+                </p>
                 <button
                   className="btn btn-outline-primary read-more-btn"
                   onClick={(e) => {

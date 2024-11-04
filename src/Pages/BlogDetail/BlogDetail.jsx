@@ -108,25 +108,24 @@ const BlogDetail = () => {
         <div className="blog-grid">
           {suggestedBlogs.map((suggestedBlog) => (
             <div
-              key={suggestedBlog.id}
               className="blog-item"
               onClick={() => handleBlogClick(suggestedBlog)}
             >
               <img
-                src={suggestedBlog.image || blog_image_1}
+                src={suggestedBlog.image ? suggestedBlog.image : blog_image_1}
                 alt={suggestedBlog.title}
               />
-              <h4>{suggestedBlog.title}</h4>
-              <p className="blog-excerpt">
-                {suggestedBlog.content.substring(0, 100)}...
-              </p>
+              <div className="blog-content">
+                <h4>{suggestedBlog.title}</h4>
+                <p className="blog-excerpt">{suggestedBlog.content}</p>
+              </div>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   handleBlogClick(suggestedBlog);
                 }}
               >
-                Read More
+                READ MORE
               </button>
             </div>
           ))}

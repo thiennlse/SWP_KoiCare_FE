@@ -3,6 +3,7 @@ import axiosInstance from "../../axiosInstance";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { FaEdit, FaTrash, FaSearch, FaPlus } from "react-icons/fa";
 
 const FishManagement = () => {
   const [fishList, setFishList] = useState([]);
@@ -11,19 +12,33 @@ const FishManagement = () => {
   const [selectedPoolId, setSelectedPoolId] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredFishList, setFilteredFishList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   const userId = JSON.parse(localStorage.getItem("userId"));
-  const memberId = userId ? userId : 1;
+  const memberId = userId || 1;
 
   useEffect(() => {
     if (memberId !== 0) {
-      fetchPoolsForMember(memberId);
-      fetchFood();
+      fetchInitialData();
     } else {
       console.error("No memberId found. Please log in.");
+      toast.error("Please log in to access Fish Management");
+      navigate("/login");
     }
   }, [memberId]);
+
+  const fetchInitialData = async () => {
+    setIsLoading(true);
+    try {
+      await Promise.all([fetchPoolsForMember(memberId), fetchFood()]);
+    } catch (error) {
+      console.error("Error fetching initial data:", error);
+      toast.error("Failed to load initial data");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (poolList.length > 0) {
@@ -31,140 +46,123 @@ const FishManagement = () => {
     }
   }, [poolList]);
 
-  const fetchFood = () => {
-    axiosInstance
-      .get("/api/Food?page=1&pageSize=100")
-      .then((res) => {
-        setFoodList(res.data);
-      })
-      .catch((err) => {
-        console.error("Error fetching food data:", err);
-        toast.error("Failed to fetch food data.", { autoClose: 1500 });
-      });
+  const fetchFood = async () => {
+    try {
+      const res = await axiosInstance.get("/api/Food?page=1&pageSize=100");
+      setFoodList(res.data);
+    } catch (err) {
+      console.error("Error fetching food data:", err);
+      toast.error("Failed to fetch food data");
+    }
   };
 
-  const fetchFish = () => {
-    axiosInstance
-      .get("/api/Fish?page=1&pageSize=100")
-      .then((res) => {
-        const filteredFish = res.data.filter((fish) =>
-          poolList.some((pool) => pool.id === fish.poolId)
-        );
-        setFishList(filteredFish);
-        setFilteredFishList(filteredFish);
-      })
-      .catch((err) => {
-        console.error("Error fetching fish data:", err);
-        toast.error("Failed to fetch fish data.", { autoClose: 1500 });
-      });
+  const fetchFish = async () => {
+    try {
+      const res = await axiosInstance.get("/api/Fish?page=1&pageSize=100");
+      const filteredFish = res.data.filter((fish) =>
+        poolList.some((pool) => pool.id === fish.poolId)
+      );
+      setFishList(filteredFish);
+      setFilteredFishList(filteredFish);
+    } catch (err) {
+      console.error("Error fetching fish data:", err);
+      toast.error("Failed to fetch fish data");
+    }
   };
 
-  const fetchPoolsForMember = (memberId) => {
-    axiosInstance
-      .get("/api/Pool?page=1&pageSize=100")
-      .then((res) => {
-        const memberPools = res.data.filter(
-          (pool) => pool.memberId === memberId
-        );
-        setPoolList(memberPools);
-      })
-      .catch((err) => {
-        console.error("Error fetching pools data:", err);
-        toast.error("Failed to fetch pools data.", { autoClose: 1500 });
-      });
+  const fetchPoolsForMember = async (memberId) => {
+    try {
+      const res = await axiosInstance.get("/api/Pool?page=1&pageSize=100");
+      const memberPools = res.data.filter((pool) => pool.memberId === memberId);
+      setPoolList(memberPools);
+    } catch (err) {
+      console.error("Error fetching pools data:", err);
+      toast.error("Failed to fetch pools data");
+    }
   };
 
   const handlePoolChange = (e) => {
     const poolId = Number(e.target.value);
     setSelectedPoolId(poolId);
-
-    if (poolId === 0) {
-      setFilteredFishList(fishList);
-    } else {
-      const filtered = fishList.filter((fish) => fish.poolId === poolId);
-      setFilteredFishList(filtered);
-    }
+    filterFishList(poolId, searchQuery);
   };
 
   const handleSearch = () => {
-    const filtered = fishList.filter((fish) =>
-      fish.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    filterFishList(selectedPoolId, searchQuery);
+  };
+
+  const filterFishList = (poolId, query) => {
+    let filtered = [...fishList];
+
+    if (poolId !== 0) {
+      filtered = filtered.filter((fish) => fish.poolId === poolId);
+    }
+
+    if (query.trim()) {
+      filtered = filtered.filter((fish) =>
+        fish.name.toLowerCase().includes(query.toLowerCase())
+      );
+    }
+
     setFilteredFishList(filtered);
   };
 
-  const deleteFish = (id) => {
-    if (window.confirm("Are you sure you want to delete this fish?")) {
-      axiosInstance
-        .delete(`/api/Fish/Delete?id=${id}`)
-        .then((response) => {
-          if (response.status === 204) {
-            toast.success("Fish deleted successfully", { autoClose: 1500 });
-            const updatedFishList = fishList.filter((fish) => fish.id !== id);
-            setFishList(updatedFishList);
+  const deleteFish = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this fish?")) return;
 
-            if (selectedPoolId === 0) {
-              setFilteredFishList(updatedFishList);
-            } else {
-              const filtered = updatedFishList.filter(
-                (fish) => fish.poolId === selectedPoolId
-              );
-              setFilteredFishList(filtered);
-            }
-          } else {
-            toast.error(`Failed to delete fish. Status: ${response.status}`, {
-              autoClose: 1500,
-            });
-          }
-        })
-        .catch((error) => {
-          console.error(
-            "Error deleting fish:",
-            error.response ? error.response.data : error
-          );
-          toast.error("Failed to delete fish. Please try again.", {
-            autoClose: 1500,
-          });
-        });
+    try {
+      const response = await axiosInstance.delete(`/api/Fish/Delete?id=${id}`);
+      if (response.status === 204) {
+        toast.success("Fish deleted successfully");
+        const updatedFishList = fishList.filter((fish) => fish.id !== id);
+        setFishList(updatedFishList);
+        filterFishList(selectedPoolId, searchQuery);
+      }
+    } catch (error) {
+      console.error("Error deleting fish:", error);
+      toast.error("Failed to delete fish. Please try again.");
     }
-  };
-
-  const handleEdit = (id) => {
-    navigate(`/updatefish/${id}`);
-  };
-
-  const handleCreate = () => {
-    navigate("/createfish");
   };
 
   const calculateAge = (dob) => {
     if (!dob) return "N/A";
     const birthDate = new Date(dob);
     const today = new Date();
-    const age = today.getFullYear() - birthDate.getFullYear();
-    const monthDifference = today.getMonth() - birthDate.getMonth();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
     if (
-      monthDifference < 0 ||
-      (monthDifference === 0 && today.getDate() < birthDate.getDate())
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
     ) {
-      return age - 1;
+      age--;
     }
     return age;
   };
 
-  return (
-    <div>
-      <div className="fish-management-container">
-        <div className="header-with-button">
-          <h2 className="fish-list-title">Fish Management</h2>
-          <button className="create-fish-button" onClick={handleCreate}>
-            Create Fish
-          </button>
-        </div>
+  if (isLoading) {
+    return <div className="loading-spinner">Loading...</div>;
+  }
 
-        <div className="pool-selection">
-          <label>Select Pool:</label>
-          <select onChange={handlePoolChange} value={selectedPoolId}>
+  return (
+    <div className="fish-management-container">
+      <div className="management-header">
+        <h2>Fish Management</h2>
+        <button
+          className="create-button"
+          onClick={() => navigate("/createfish")}
+        >
+          <FaPlus /> Create Fish
+        </button>
+      </div>
+
+      <div className="filters-section">
+        <div className="pool-filter">
+          <select
+            onChange={handlePoolChange}
+            value={selectedPoolId}
+            className="pool-select"
+          >
             <option value="0">All Pools</option>
             {poolList.map((pool) => (
               <option key={pool.id} value={pool.id}>
@@ -174,40 +172,51 @@ const FishManagement = () => {
           </select>
         </div>
 
-        <div className="search-fish-form">
+        <div className="search-section">
           <input
             type="text"
-            placeholder="Search by Fish Name"
+            placeholder="Search by fish name..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
           />
-          <button className="search-button" onClick={handleSearch}>
-            🔍
+          <button onClick={handleSearch} className="search-button">
+            <FaSearch />
           </button>
         </div>
-        <div className="table-container">
-          <table className="fish-table">
-            <thead>
+      </div>
+
+      <div className="table-responsive">
+        <table className="fish-table">
+          <thead>
+            <tr>
+              <th>Fish Name</th>
+              <th>Age</th>
+              <th>Size (cm)</th>
+              <th>Weight (kg)</th>
+              <th>Food Name</th>
+              <th>Origin</th>
+              <th>Image</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredFishList.length === 0 ? (
               <tr>
-                <th>Fish Name</th>
-                <th>Age</th>
-                <th>Size (cm)</th>
-                <th>Weight (kg)</th>
-                <th>Food Name</th>
-                <th>Origin</th>
-                <th>Image</th>
-                <th>Actions</th>
+                <td colSpan="8" className="no-data">
+                  No fish found
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {filteredFishList.map((fish, index) => (
-                <tr key={index}>
+            ) : (
+              filteredFishList.map((fish) => (
+                <tr key={fish.id}>
                   <td>{fish.name}</td>
-                  <td>{calculateAge(fish.dob)}</td>
-                  <td>{fish.size} cm</td>
-                  <td>{fish.weight} kg</td>
+                  <td>{calculateAge(fish.dob)} years</td>
+                  <td>{fish.size}</td>
+                  <td>{fish.weight}</td>
                   <td>
-                    {foodList.find((food) => food.id === fish.foodId)?.name}{" "}
+                    {foodList.find((food) => food.id === fish.foodId)?.name ||
+                      "N/A"}
                   </td>
                   <td>{fish.origin}</td>
                   <td>
@@ -215,26 +224,33 @@ const FishManagement = () => {
                       <img
                         src={fish.image}
                         alt={fish.name}
-                        style={{ width: "50px", height: "50px" }}
+                        className="fish-image"
                       />
                     ) : (
-                      "No Image"
+                      <span className="no-image">No Image</span>
                     )}
                   </td>
-                  <td className="action-buttons">
-                    <button onClick={() => handleEdit(fish.id)}>Edit</button>
-                    <button
-                      className="delete-button"
-                      onClick={() => deleteFish(fish.id)}
-                    >
-                      Delete
-                    </button>
+                  <td>
+                    <div className="action-buttons">
+                      <button
+                        className="edit-button"
+                        onClick={() => navigate(`/updatefish/${fish.id}`)}
+                      >
+                        <FaEdit />
+                      </button>
+                      <button
+                        className="delete-button"
+                        onClick={() => deleteFish(fish.id)}
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );
