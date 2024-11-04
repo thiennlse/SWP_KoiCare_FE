@@ -78,6 +78,7 @@
 }
 
 .product-item {
+  cursor: pointer;
   mix-blend-mode: darken;
   border: 1px solid #ddd;
   border-radius: 10px;

@@ -1,7 +1,7 @@
 import "./productDetail.css";
 import img1 from "../../Components/Assets/KoiFood.jpeg";
 import { FaArrowUp } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { useEffect, useState } from "react";
 import axiosInstance from "../axiosInstance";
@@ -9,6 +9,7 @@ import axiosInstance from "../axiosInstance";
 function ProductDetail() {
   const token = localStorage.getItem("token");
   const location = useLocation();
+  const navigate = useNavigate();
   const { product } = location.state;
   const [suggestedProducts, setSuggestedProducts] = useState([]);
 
@@ -21,8 +22,9 @@ function ProductDetail() {
         const products = response.data;
 
         const shuffledProducts = products.sort(() => 0.5 - Math.random());
-
-        const randomProducts = shuffledProducts.slice(0, 6);
+        const randomProducts = shuffledProducts
+          .filter((p) => p.id !== product.id)
+          .slice(0, 6);
 
         setSuggestedProducts(randomProducts);
       } catch (error) {
@@ -31,7 +33,7 @@ function ProductDetail() {
     };
 
     fetchSuggestedProducts();
-  }, []);
+  }, [product.id]);
 
   const handleBuyNow = () => {
     const isLogin = localStorage.getItem("userId");
@@ -59,7 +61,15 @@ function ProductDetail() {
     window.location.href = "/cart";
   };
 
-  function handleBuySuggestedProducct(suggestedProduct) {
+  const handleProductClick = (suggestedProduct) => {
+    navigate(`/product/${suggestedProduct.id}`, {
+      state: { product: suggestedProduct },
+    });
+    window.scrollTo(0, 0);
+  };
+
+  function handleBuySuggestedProduct(e, suggestedProduct) {
+    e.stopPropagation();
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     const productInCart = cart.find((item) => item.id === suggestedProduct.id);
     if (productInCart) {
@@ -88,7 +98,11 @@ function ProductDetail() {
           <h3>Suggested Products</h3>
           <div className="product-grid">
             {suggestedProducts.map((suggestedProduct) => (
-              <div key={suggestedProduct.id} className="product-item">
+              <div
+                key={suggestedProduct.id}
+                className="product-item"
+                onClick={() => handleProductClick(suggestedProduct)}
+              >
                 <img
                   src={suggestedProduct.image ? suggestedProduct.image : img1}
                   alt={suggestedProduct.name}
@@ -96,7 +110,9 @@ function ProductDetail() {
                 <h4>{suggestedProduct.name}</h4>
                 <p>{suggestedProduct.cost.toLocaleString("en-US")} Vnd</p>
                 <button
-                  onClick={() => handleBuySuggestedProducct(suggestedProduct)}
+                  onClick={(e) =>
+                    handleBuySuggestedProduct(e, suggestedProduct)
+                  }
                 >
                   Buy Now
                 </button>
