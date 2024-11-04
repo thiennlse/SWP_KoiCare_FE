@@ -155,13 +155,6 @@ const ManageAdmin = () => {
   };
 
   const handleBackToHome = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("role");
-    localStorage.removeItem("userDetail");
-    localStorage.removeItem("cart");
-    localStorage.removeItem("user");
-
     window.location.href = "/home";
   };
 

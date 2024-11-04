@@ -17,6 +17,9 @@ function Header() {
   const userId = localStorage.getItem("userId");
   const role = JSON.parse(localStorage.getItem("role"));
   const config = genConfig("hi@dapi.to");
+  const handleBackToAdmin = () => {
+    window.location.href = "/admin";
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -149,6 +152,15 @@ function Header() {
                   )}
                 </div>
 
+                <span className="logout_button" onClick={handleLogout}>
+                  Logout
+                </span>
+              </div>
+            ) : role === "Admin" ? (
+              <div className="admin-nav">
+                <button className="back-to-admin" onClick={handleBackToAdmin}>
+                  Back to Admin
+                </button>
                 <span className="logout_button" onClick={handleLogout}>
                   Logout
                 </span>

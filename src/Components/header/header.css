@@ -162,3 +162,25 @@
   background-color: #f1f1f1;
   color: #333;
 }
+
+.admin-nav {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.back-to-admin {
+  background-color: #1e407c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.back-to-admin:hover {
+  background-color: #ff6600;
+}
