@@ -12,6 +12,7 @@ import BlogDetails from "./Modal/BlogDetails";
 import DeleteProductModal from "./Modal/DeleteProductModal";
 import DeleteBlogModal from "./Modal/DeletBlogModal";
 import OrderChart from "./OrderChart";
+import adminAvatar from "./../../Components/Assets/admin.png";
 import {
   MdDashboard,
   MdPeople,
@@ -325,7 +326,7 @@ const ManageAdmin = () => {
       <div style={{ display: "flex", flexGrow: 1 }}>
         <aside className="sidebar-admin">
           <div className="profile-admin">
-            <img src="/path/to/admin-avatar.png" alt="Admin" />
+            <img src={adminAvatar} alt="Admin" />
             <div className="admin-name">Admin</div>
           </div>
           <nav className="nav_admin">

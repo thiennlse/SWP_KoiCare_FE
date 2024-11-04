@@ -8,9 +8,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaArrowUp } from "react-icons/fa";
-import { SiZalo } from "react-icons/si";
-import { FaFacebookMessenger } from "react-icons/fa";
-import { BiSupport } from "react-icons/bi";
 
 import koiFood from "../../Components/Assets/KoiFood.jpeg";
 
