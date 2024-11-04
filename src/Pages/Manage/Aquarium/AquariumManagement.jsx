@@ -134,7 +134,7 @@ const AquariumManagement = () => {
                   <td>{aquarium.depth} cm</td>
                   <td>{aquarium.description}</td>
                   <td>
-                    <div className="action-buttons">
+                    <div className="action-buttons-aqua">
                       <button onClick={() => handleEdit(aquarium.id)}>
                         Edit
                       </button>

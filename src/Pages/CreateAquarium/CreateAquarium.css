@@ -20,14 +20,14 @@
   gap: 20px;
 }
 
-.input_infor label {
+.form_grid_pool .input_infor label {
   font-size: 20px;
   display: block;
   margin-left: 10px;
 }
 
-.input_infor input {
-  width: 80%;
+.form_grid_pool .input_infor input {
+  width: 100px;
   font-size: 18px;
   margin-left: 10px;
   padding: 10px;

@@ -21,13 +21,13 @@
   gap: 20px;
 }
 
-.input_infor label {
+.form_grid_fish .input_infor label {
   font-size: 20px;
   display: block;
   margin-left: 10px;
 }
 
-.input_infor input {
+.form_grid_fish .input_infor input {
   width: 80%;
   font-size: 18px;
   margin-left: 10px;

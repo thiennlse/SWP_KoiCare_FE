@@ -86,3 +86,9 @@
     background-position: right -50px top 0;
   }
 }
+
+.buttons-salt {
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}

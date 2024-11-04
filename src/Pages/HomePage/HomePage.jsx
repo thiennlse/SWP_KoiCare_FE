@@ -60,7 +60,6 @@ const HomePage = () => {
         <BlogSection blogs={blogData} />
       </div>
       <ScrollToTop />
-      <ContactButtons />
     </>
   );
 };
@@ -334,7 +333,7 @@ function BlogSection({ blogs }) {
   return (
     <div id="blog_scroll" className="container my-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1 className="display-4">Latest Blog Posts</h1>
+        <h1 className="blog_title">Latest Blog Posts</h1>
         <button className="btn btn-primary" onClick={handleReadAll}>
           {showAll ? "SHOW LESS" : "READ ALL"} ➔
         </button>
@@ -440,32 +439,6 @@ const ScrollToTop = () => {
     >
       <FaArrowUp />
     </button>
-  );
-};
-
-const ContactButtons = () => {
-  return (
-    <div className="contact-buttons">
-      <a
-        href="https://zalo.me/0778138889"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="contact-button zalo-button"
-      >
-        <SiZalo size={30} />
-      </a>
-      <a
-        href="https://www.facebook.com/messages/t/479832175208645"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="contact-button messenger-button"
-      >
-        <FaFacebookMessenger size={30} />
-      </a>
-      <a href="tel:0965015422" className="contact-button support-button">
-        <BiSupport size={30} />
-      </a>
-    </div>
   );
 };
 

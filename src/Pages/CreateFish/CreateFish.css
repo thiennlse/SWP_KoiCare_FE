@@ -21,14 +21,13 @@
   gap: 20px;
 }
 
-.input_infor label {
+.form_grid_fish.input_infor label {
   font-size: 20px;
   display: block;
   margin-left: 10px;
 }
 
-.input_infor input,
-.pool_opt {
+.form_grid_fish .input_infor input {
   width: 80%;
   font-size: 18px;
   margin-left: 10px;
@@ -38,7 +37,7 @@
   margin-top: 5px;
 }
 
-.input_infor select {
+.form_grid_fish .input_infor select {
   background-color: white;
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" stroke="gray" stroke-width="1" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6H6z"/></svg>'); /* Custom dropdown arrow */
   background-repeat: no-repeat;

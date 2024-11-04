@@ -1,4 +1,6 @@
 import React from "react";
+import { FaArrowUp } from "react-icons/fa";
+import { useState, useEffect } from "react";
 import "./Introducing.css";
 import koiImage from "../../Components/Assets/logo.png";
 import {
@@ -9,83 +11,132 @@ import {
   FaUsers,
 } from "react-icons/fa";
 
+const ScrollToTop = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.pageYOffset > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener("scroll", toggleVisibility);
+    return () => window.removeEventListener("scroll", toggleVisibility);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  return (
+    <button
+      className={`scroll-to-top ${isVisible ? "visible" : ""}`}
+      onClick={scrollToTop}
+    >
+      <FaArrowUp />
+    </button>
+  );
+};
+
 const Introducing = () => {
   return (
     <div className="introducing-container">
-      <div className="introducing-header">
-        <h1>Welcome to KoiCareSystem</h1>
-        <img src={koiImage} alt="KoiCareSystem Logo" className="logo-image" />
-      </div>
-
-      <div className="introducing-content">
-        <section className="intro-section">
-          <h2>What is KoiCareSystem?</h2>
-          <p>
-            KoiCareSystem is an innovative, all-in-one solution designed to make
-            koi care simple, enjoyable, and efficient. From tracking water
-            quality to managing fish health, this system is built to support
-            every aspect of koi maintenance.
+      <section className="hero-section">
+        <div className="hero-content">
+          <img src={koiImage} alt="KoiCareSystem Logo" className="hero-logo" />
+          <h1>Welcome to KoiCareSystem</h1>
+          <p className="hero-description">
+            Your all-in-one solution for professional koi care management
           </p>
-        </section>
+        </div>
+      </section>
 
-        <section className="features-section">
-          <h2>Key Features</h2>
+      <section className="main-content">
+        <div className="content-wrapper">
+          <div className="about-section">
+            <h2>About KoiCareSystem</h2>
+            <p>
+              KoiCareSystem is an innovative platform designed to make koi care
+              simple, enjoyable, and efficient. Our comprehensive system
+              supports every aspect of koi maintenance, from water quality
+              tracking to health management.
+            </p>
+          </div>
+
           <div className="features-grid">
-            <div className="feature-item">
+            <div className="feature-card">
               <FaFish className="feature-icon" />
-              <h3>Aquarium Management</h3>
-              <p>
-                Monitor water parameters and control environmental conditions
-                for optimal koi habitat.
-              </p>
+              <div className="feature-text">
+                <h3>Aquarium Management</h3>
+                <p>
+                  Monitor water parameters and control environmental conditions
+                </p>
+              </div>
             </div>
-            <div className="feature-item">
+
+            <div className="feature-card">
               <FaChartLine className="feature-icon" />
-              <h3>Fish Health Tracking</h3>
-              <p>
-                Keep detailed records of each fish's health metrics and growth
-                over time.
-              </p>
+              <div className="feature-text">
+                <h3>Health Tracking</h3>
+                <p>Keep detailed records of fish health metrics and growth</p>
+              </div>
             </div>
-            <div className="feature-item">
+
+            <div className="feature-card">
               <FaUtensils className="feature-icon" />
-              <h3>Food Management</h3>
-              <p>
-                Calculate and optimize feeding schedules based on fish weight
-                and conditions.
-              </p>
+              <div className="feature-text">
+                <h3>Feeding Management</h3>
+                <p>Optimize feeding schedules based on fish conditions</p>
+              </div>
             </div>
-            <div className="feature-item">
+
+            <div className="feature-card">
               <FaNewspaper className="feature-icon" />
-              <h3>News Updates</h3>
-              <p>
-                Stay informed with latest koi care tips and community updates.
-              </p>
+              <div className="feature-text">
+                <h3>News & Updates</h3>
+                <p>Stay informed with latest koi care tips and updates</p>
+              </div>
             </div>
-            <div className="feature-item">
+
+            <div className="feature-card">
               <FaUsers className="feature-icon" />
-              <h3>Community Support</h3>
-              <p>Connect with other koi enthusiasts and share experiences.</p>
+              <div className="feature-text">
+                <h3>Community</h3>
+                <p>Connect with other koi enthusiasts and share experiences</p>
+              </div>
             </div>
           </div>
-        </section>
 
-        <section className="why-choose-section">
-          <h2>Why Choose KoiCareSystem?</h2>
-          <p>
-            Our platform combines functionality with simplicity, ensuring you
-            have everything needed to provide the best care possible. With
-            KoiCareSystem, you're not just managing your koi habitat—you're
-            enhancing the lives of your koi, helping them thrive.
-          </p>
-          <ul className="benefits-list">
-            <li>User-friendly interface designed for all experience levels</li>
-            <li>Comprehensive tools for complete koi care management</li>
-            <li>Regular updates and improvements based on user feedback</li>
-            <li>Dedicated support team to assist with any questions</li>
-          </ul>
-        </section>
-      </div>
+          <div className="benefits-section">
+            <h2>Why Choose Us?</h2>
+            <div className="benefits-list">
+              <div className="benefit-item">
+                <span className="benefit-number">01</span>
+                <p>User-friendly interface for all experience levels</p>
+              </div>
+              <div className="benefit-item">
+                <span className="benefit-number">02</span>
+                <p>Comprehensive tools for complete koi care</p>
+              </div>
+              <div className="benefit-item">
+                <span className="benefit-number">03</span>
+                <p>Regular updates based on user feedback</p>
+              </div>
+              <div className="benefit-item">
+                <span className="benefit-number">04</span>
+                <p>Dedicated support team available 24/7</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <ScrollToTop />
     </div>
   );
 };
