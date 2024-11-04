@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import "../Modal/Modal.css";
+import axiosInstance from "../../axiosInstance";
+import { toast } from "react-toastify";
+// import "../Modal/Modal.css";
+import "./ProductForm.css";
 
 const ProductForm = ({ product, onSubmit, closeModal }) => {
   const [formData, setFormData] = useState({
@@ -13,12 +16,15 @@ const ProductForm = ({ product, onSubmit, closeModal }) => {
     code: "",
     inStock: 0,
   });
+  const [previewImage, setPreviewImage] = useState("");
+  const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
     if (product) {
       setFormData({
         ...product,
       });
+      setPreviewImage(product.image);
     }
   }, [product]);
 
@@ -48,14 +54,50 @@ const ProductForm = ({ product, onSubmit, closeModal }) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const submitData = {
-      ...formData,
-      memberId: JSON.parse(localStorage.getItem("userId")) || 0,
-    };
-    onSubmit(submitData);
-    if (closeModal) closeModal();
+    try {
+      let imageUrl = formData.image;
+
+      if (imageFile) {
+        const formDataImage = new FormData();
+        formDataImage.append("file", imageFile);
+
+        const imageResponse = await axiosInstance.post(
+          "/api/Fish/upload",
+          formDataImage,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        imageUrl = imageResponse.data.url;
+      }
+
+      const submitData = {
+        ...formData,
+        image: imageUrl,
+        userId: JSON.parse(localStorage.getItem("userId")) || 0,
+      };
+
+      onSubmit(submitData);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast.error("Failed to upload image");
+    }
   };
 
   return (
@@ -74,16 +116,28 @@ const ProductForm = ({ product, onSubmit, closeModal }) => {
         </div>
 
         <div className="form-group">
-          <label>Image URL:</label>
+          <label>Image:</label>
           <input
-            type="text"
+            type="file"
             name="image"
-            value={formData.image}
-            onChange={handleChange}
+            accept="image/*"
+            onChange={handleImageChange}
           />
+          {previewImage && (
+            <img
+              src={previewImage}
+              alt="Product preview"
+              style={{
+                marginTop: "10px",
+                maxWidth: "200px",
+                maxHeight: "200px",
+                objectFit: "contain",
+              }}
+            />
+          )}
         </div>
 
-        <div className="form-row">
+        <div className="form-group">
           <label>Cost:</label>
           <input
             type="number"
@@ -137,7 +191,7 @@ const ProductForm = ({ product, onSubmit, closeModal }) => {
           />
         </div>
 
-        <div className="form-row">
+        <div className="form-group">
           <label>Stock:</label>
           <input
             type="number"

@@ -1,0 +1,112 @@
+.blog-form-container {
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  max-width: 900px;
+  margin: 0 auto;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.blog-form-container form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  position: relative;
+  padding-bottom: 70px;
+}
+
+.form-group {
+  flex: 1 1 calc(50% - 10px);
+  min-width: 250px;
+}
+
+.form-group.full-width {
+  flex: 1 1 100%;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.form-group textarea {
+  min-height: 200px;
+  resize: vertical;
+}
+
+.form-group input[type="file"] {
+  border: none;
+  padding: 5px 0;
+}
+
+.form-group input[type="date"] {
+  width: auto;
+}
+
+.image-preview-container {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.image-preview-container img {
+  max-width: 300px;
+  max-height: 300px;
+  object-fit: contain;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.button-admin-group {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  padding: 15px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  border-top: 1px solid #ddd;
+  z-index: 1000;
+}
+
+.button-admin-group button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.button-admin-group button[type="submit"] {
+  background-color: #1e407c;
+  color: white;
+}
+
+.button-admin-group button[type="submit"]:hover {
+  background-color: #15325f;
+}
+
+.button-admin-group button[type="button"] {
+  background-color: #dc3545;
+  color: white;
+}
+
+.button-admin-group button[type="button"]:hover {
+  background-color: #bb2d3b;
+}
