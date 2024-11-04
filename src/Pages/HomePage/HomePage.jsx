@@ -263,12 +263,12 @@ function Product({ productObj, onAddToCart }) {
         />
       </div>
       <div className="product_price">
-        <p className="ellipsis">{productObj.name}</p>
+        <p className="name-ellipsis">{productObj.name}</p>
         <p className="product_description ellipsis">{productObj.description}</p>
         <p>{formattedCost} Vnd</p>
       </div>
 
-      <div>
+      <div className="button-container">
         {productObj.inStock === 0 ? (
           <button className="product_btn out_of_stock" disabled>
             Out of Stock
