@@ -482,7 +482,7 @@ const ManageAdmin = () => {
                     {products.map((product) => (
                       <tr key={product.id}>
                         <td>{product.name}</td>
-                        <td>${product.cost}</td>
+                        <td>{product.cost} VND</td>
                         <td>{product.description}</td>
                         <td>
                           <div className="action-buttons">
