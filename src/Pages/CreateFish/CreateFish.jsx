@@ -48,6 +48,24 @@ const CreateFish = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    if ((name === "size" || name === "weight") && Number(value) > 100) {
+      toast.error(
+        `${name.charAt(0).toUpperCase() + name.slice(1)} must be less than 100`,
+        {
+          autoClose: 1500,
+        }
+      );
+      return;
+    }
+
+    if (name === "foodWeight" && Number(value) > 10) {
+      toast.error("Food Weight must be less than 10 kg", {
+        autoClose: 1500,
+      });
+      return;
+    }
+
     setFishData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -286,6 +304,7 @@ const CreateFishForm = ({
               value={fishData.weight}
               onChange={handleChange}
               onFocus={handleFocus}
+              max="100"
               required
             />
           </div>
@@ -303,7 +322,7 @@ const CreateFishForm = ({
           </div>
 
           <div className="input_infor">
-            <label>Food Weight (kg):</label>
+            <label>Food Weight (kg/month):</label>
             <input
               type="number"
               name="foodWeight"
@@ -311,6 +330,7 @@ const CreateFishForm = ({
               value={fishData.foodWeight}
               onChange={handleChange}
               onFocus={handleFocus}
+              max="10"
               required
             />
           </div>

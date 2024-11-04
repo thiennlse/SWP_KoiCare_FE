@@ -113,9 +113,9 @@ function Header() {
               )}
             </li>
             <li>
-              <a onClick={() => handleNavigation("contact_scroll")}>
+              <Link to="/introducing" onClick={handleScrollToTop}>
                 Contact Us
-              </a>
+              </Link>
             </li>
           </ul>
 
