@@ -142,7 +142,7 @@
 }
 
 .food-container {
-  width: 40%;
+  width: 60%;
   margin: 40px auto;
   padding: 20px;
   background-color: #68bfed;
@@ -174,3 +174,7 @@
   font-size: 18px;
 }
 
+.dropdown-content-fish div:hover {
+  background-color: #f1f1f1;
+  color: #333;
+}
