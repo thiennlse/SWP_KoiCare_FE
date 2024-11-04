@@ -148,6 +148,10 @@ const OrderItem = ({ order }) => {
     switch (status) {
       case "PAID":
         return { backgroundColor: "#d4edda", color: "#155724" };
+      case "IN TRANSIT":
+        return { backgroundColor: "#fff3cd", color: "#856404" };
+      case "DELIVERED":
+        return { backgroundColor: "#cce5ff", color: "#004085" };
       default:
         return { backgroundColor: "#e2e3e5", color: "#333" };
     }
