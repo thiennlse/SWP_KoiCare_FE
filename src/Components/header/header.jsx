@@ -152,11 +152,22 @@ function Header() {
 
                   {dropdownVisible && (
                     <div className="dropdown_menu">
-                      <Link to="/profile">Profile Information</Link>
+                      <Link to="/profile" onClick={handleScrollToTop}>
+                        Profile Information
+                      </Link>
 
-                      <Link to="/aquariummanagement">Aquarium Management</Link>
-                      <Link to="/water">Water Management</Link>
-                      <Link to="/fishmanagement">Koi Fish Management</Link>
+                      <Link
+                        to="/aquariummanagement"
+                        onClick={handleScrollToTop}
+                      >
+                        Aquarium Management
+                      </Link>
+                      <Link to="/water" onClick={handleScrollToTop}>
+                        Water Management
+                      </Link>
+                      <Link to="/fishmanagement" onClick={handleScrollToTop}>
+                        Koi Fish Management
+                      </Link>
                       <Link to="/orderHistory" onClick={handleScrollToTop}>
                         Order History
                       </Link>

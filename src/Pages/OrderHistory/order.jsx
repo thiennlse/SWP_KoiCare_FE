@@ -37,7 +37,9 @@ const OrderHistory = () => {
           productId: productIds,
           quantity: quantities,
           totalCost: totalCost,
-          closeDate: new Date().toISOString(),
+          closeDate: new Date(
+            new Date().getTime() - 3 * 60 * 1000
+          ).toISOString(),
           description: description,
           code: orderCode,
           status: status,
