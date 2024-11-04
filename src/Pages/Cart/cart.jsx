@@ -175,7 +175,9 @@ function Products({
         window.location.href = paymentUrl;
       }
     } catch (error) {
-      toast.error("Thanh toán thất bại!", { autoClose: 1500 });
+      toast.error("Thanh toán thất bại! Không đủ số lượng sản phẩm", {
+        autoClose: 1500,
+      });
     }
   };
 

@@ -117,7 +117,7 @@ const OrderHistory = () => {
         <input
           type="text"
           className="form-control"
-          placeholder="Search by order code..."
+          placeholder="Search by product name..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
