@@ -221,6 +221,13 @@ body {
   object-fit: cover;
 }
 
+.product_title,
+.blog_title {
+  font-family: "Chilanka", sans-serif;
+  font-size: 36px;
+  color: #41403e;
+}
+
 .scroll-to-top {
   position: fixed;
   bottom: 40px;

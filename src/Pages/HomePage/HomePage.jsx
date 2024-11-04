@@ -333,7 +333,7 @@ function BlogSection({ blogs }) {
   return (
     <div id="blog_scroll" className="container my-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1 className="display-4">Latest Blog Posts</h1>
+        <h1 className="blog_title">Latest Blog Posts</h1>
         <button className="btn btn-primary" onClick={handleReadAll}>
           {showAll ? "SHOW LESS" : "READ ALL"} ➔
         </button>
