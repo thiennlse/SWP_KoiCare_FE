@@ -1,13 +1,14 @@
-import "./AquariumManagement.css";
-import axiosInstance from "../../axiosInstance";
-
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
+import axiosInstance from "../../axiosInstance";
+import "./AquariumManagement.css";
 
 const AquariumManagement = () => {
   const [aquaList, setAquaList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const memberId = JSON.parse(localStorage.getItem("userId"));
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const AquariumManagement = () => {
   }, [memberId]);
 
   const fetchPoolsForMember = (memberId) => {
+    setLoading(true);
     axiosInstance
       .get("/api/Pool?page=1&pageSize=100", {
         params: { _timestamp: new Date().getTime() },
@@ -33,11 +35,16 @@ const AquariumManagement = () => {
       })
       .catch((err) => {
         console.error("Error fetching pools:", err);
+        toast.error("Failed to fetch aquariums");
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
   const handleSearch = () => {
     if (searchQuery.trim() !== "") {
+      setLoading(true);
       axiosInstance
         .get("/api/Pool", {
           params: {
@@ -54,7 +61,10 @@ const AquariumManagement = () => {
         })
         .catch((err) => {
           console.error("Error searching aquariums:", err);
-          toast.error("Failed to search aquariums.");
+          toast.error("Failed to search aquariums");
+        })
+        .finally(() => {
+          setLoading(false);
         });
     } else {
       fetchPoolsForMember(memberId);
@@ -69,20 +79,16 @@ const AquariumManagement = () => {
           if (response.status === 204) {
             const updatedAquaList = aquaList.filter((pool) => pool.id !== id);
             setAquaList(updatedAquaList);
-            toast.success("Aquarium deleted successfully", { autoClose: 1500 });
+            toast.success("Aquarium deleted successfully");
           } else {
             toast.error(
-              `Failed to delete aquarium. Status: ${response.status}`,
-              { autoClose: 1500 }
+              `Failed to delete aquarium. Status: ${response.status}`
             );
           }
         })
         .catch((error) => {
-          console.error(
-            "Error deleting aquarium:",
-            error.response ? error.response.data : error
-          );
-          alert("Failed to delete aquarium. Please try again.");
+          console.error("Error deleting aquarium:", error);
+          toast.error("Failed to delete aquarium. Please try again.");
         });
     }
   };
@@ -92,31 +98,35 @@ const AquariumManagement = () => {
   };
 
   return (
-    <div>
-      <div className="aquarium_list_container">
-        <div className="header-with-button">
-          <h2 className="aquarium_list_title">Aquarium Management</h2>
-          <button
-            className="create-aquarium-button"
-            onClick={() => navigate("/createaquarium")}
-          >
-            Create Aquarium
-          </button>
-        </div>
+    <div className="aquarium-management-container">
+      <div className="management-header">
+        <h2>Aquarium Management</h2>
+        <button
+          className="create-button"
+          onClick={() => navigate("/createaquarium")}
+        >
+          Create Aquarium
+        </button>
+      </div>
 
-        <div className="search_aqua_form">
-          <input
-            type="text"
-            placeholder="Search by Aquarium Name, Description"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <button className="search-button" onClick={handleSearch}>
-            🔍
-          </button>
-        </div>
-        <div className="table-container">
-          <table className="aquarium_table">
+      <div className="search-section">
+        <input
+          type="text"
+          className="search-input"
+          placeholder="Search by aquarium name or description"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <button className="search-button" onClick={handleSearch}>
+          Search
+        </button>
+      </div>
+
+      <div className="table-responsive">
+        {loading ? (
+          <div className="loading-spinner">Loading...</div>
+        ) : aquaList.length > 0 ? (
+          <table className="aquarium-table">
             <thead>
               <tr>
                 <th>Name</th>
@@ -127,22 +137,25 @@ const AquariumManagement = () => {
               </tr>
             </thead>
             <tbody>
-              {aquaList.map((aquarium, index) => (
-                <tr key={index}>
+              {aquaList.map((aquarium) => (
+                <tr key={aquarium.id}>
                   <td>{aquarium.name}</td>
                   <td>{aquarium.size} cm</td>
                   <td>{aquarium.depth} cm</td>
                   <td>{aquarium.description}</td>
                   <td>
-                    <div className="action-buttons-aqua">
-                      <button onClick={() => handleEdit(aquarium.id)}>
-                        Edit
+                    <div className="action-buttons">
+                      <button
+                        className="edit-button"
+                        onClick={() => handleEdit(aquarium.id)}
+                      >
+                        <FaEdit />
                       </button>
                       <button
                         className="delete-button"
                         onClick={() => deletePool(aquarium.id)}
                       >
-                        Delete
+                        <FaTrash />
                       </button>
                     </div>
                   </td>
@@ -150,7 +163,9 @@ const AquariumManagement = () => {
               ))}
             </tbody>
           </table>
-        </div>
+        ) : (
+          <div className="no-data">No aquariums found</div>
+        )}
       </div>
     </div>
   );
