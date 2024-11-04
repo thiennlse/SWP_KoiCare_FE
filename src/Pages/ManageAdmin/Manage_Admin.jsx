@@ -431,7 +431,9 @@ const ManageAdmin = () => {
                   <tbody>
                     {users.map((user) => (
                       <tr key={user.id}>
-                        <td>{user.fullName}</td>
+                        <td>
+                          {user.fullName ? user.fullName : "New Customer"}
+                        </td>
                         <td>{user.email}</td>
                         <td>
                           <select
