@@ -154,6 +154,23 @@ const UpdateFish = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    if ((name === "size" || name === "weight") && Number(value) > 100) {
+      toast.error(
+        `${name.charAt(0).toUpperCase() + name.slice(1)} must be less than 100`,
+        {
+          autoClose: 1500,
+        }
+      );
+      return;
+    }
+
+    if (name === "foodWeight" && Number(value) > 10) {
+      toast.error("Food Weight must be less than 10 kg", {
+        autoClose: 1500,
+      });
+      return;
+    }
+
     if (name === "foodName" || name === "foodWeight") {
       setFoodData((prevData) => ({
         ...prevData,
@@ -307,6 +324,7 @@ const UpdateFishForm = ({
               placeholder="Enter weight"
               value={fishData.weight}
               onChange={handleChange}
+              max="100"
               required
             />
           </div>
@@ -324,7 +342,7 @@ const UpdateFishForm = ({
           </div>
 
           <div className="input_infor">
-            <label>Food Weight (kg):</label>
+            <label>Food Weight (kg/month):</label>
             <input
               type="number"
               name="foodWeight"
