@@ -20,9 +20,9 @@ const Water = () => {
   const userId = Number(localStorage.getItem("userId"));
 
   const optimalRanges = {
-    temperature: "18°C -  25°C",
-    salt: "0.1 -0.2%",
-    ph: "7.0 - 8.5",
+    temperature: "6°C -  32°C",
+    salt: ">0 gram",
+    ph: "6.5 - 8.5",
     o2: ">6mg/L",
     no2: "0 - 0.1 mg/L",
     no3: "<40 mg/L",
@@ -70,11 +70,11 @@ const Water = () => {
     const numValue = parseFloat(value);
     switch (name) {
       case "temperature":
-        return numValue >= 18 && numValue <= 25;
+        return numValue >= 6 && numValue <= 32;
       case "salt":
-        return numValue >= 0.1 && numValue <= 0.2;
+        return numValue > 0;
       case "ph":
-        return numValue >= 7.0 && numValue <= 8.5;
+        return numValue >= 6.5 && numValue <= 8.5;
       case "o2":
         return numValue >= 6;
       case "no2":
@@ -150,10 +150,10 @@ const Water = () => {
               )}
             </div>
             <div className="form-group">
-              <label>Salt (%)</label>
+              <label>Salt (gram)</label>
               <input
                 name="salt"
-                value={waterData.salt || "0"}
+                value={waterData.salt}
                 onChange={handleChange}
                 onClick={() => handleInputClick("salt")}
                 style={{ borderColor: isValid.salt ? "green" : "red" }}

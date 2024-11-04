@@ -120,7 +120,11 @@ function Header() {
                     <img src={user.image} alt="User Profile" />
                   ) : (
                     <Avatar
-                      style={{ width: "4rem", height: "4rem" }}
+                      style={{
+                        width: "4rem",
+                        height: "4rem",
+                        marginRight: "15px",
+                      }}
                       {...config}
                     />
                   )}

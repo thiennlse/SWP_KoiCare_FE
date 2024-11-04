@@ -21,7 +21,7 @@ function ProductDetail() {
 
         const shuffledProducts = products.sort(() => 0.5 - Math.random());
 
-        const randomProducts = shuffledProducts.slice(0, 4);
+        const randomProducts = shuffledProducts.slice(0, 6);
 
         setSuggestedProducts(randomProducts);
       } catch (error) {
@@ -74,10 +74,12 @@ function ProductDetail() {
     <div className="page-container">
       <div className="product-wrapper">
         <img src={product.image ? product.image : img1} alt="Koi Food" />
-        <div className="product-details">
+        <div className="product-details-backgr">
           <h2>{product.name}</h2>
           <p>{product.description}</p>
-          <button onClick={handleBuyNow}>{product.cost}$ - Buy</button>
+          <button onClick={handleBuyNow}>
+            {product.cost.toLocaleString("en-US")} Vnd - Buy
+          </button>
         </div>
       </div>
       {token ? (
@@ -91,7 +93,7 @@ function ProductDetail() {
                   alt={suggestedProduct.name}
                 />
                 <h4>{suggestedProduct.name}</h4>
-                <p>{suggestedProduct.cost} Vnd</p>
+                <p>{suggestedProduct.cost.toLocaleString("en-US")} Vnd</p>
                 <button
                   onClick={() => handleBuySuggestedProducct(suggestedProduct)}
                 >

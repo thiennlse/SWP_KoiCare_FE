@@ -110,8 +110,8 @@ body {
 
 .products {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
   list-style: none;
   margin-top: 30px;
   gap: 20px;
@@ -151,6 +151,7 @@ body {
   width: auto;
   height: 200px;
   border-bottom: 1px solid #eee;
+  mix-blend-mode: darken;
 }
 
 .products p {
@@ -162,7 +163,7 @@ body {
 
 .products div {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   padding: 10px 0;
 }
 

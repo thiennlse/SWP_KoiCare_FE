@@ -6,8 +6,10 @@ import { toast } from "react-toastify";
 
 const AquariumManagement = () => {
   const [aquaList, setAquaList] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [calculationResults, setCalculationResults] = useState({});
+  const [selectedAqua, setSelectedAqua] = useState(null);
+  const [calculationResultHTML, setCalculationResultHTML] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isShow, setIsShow] = useState(false);
 
   const memberId = JSON.parse(localStorage.getItem("userId"));
 
@@ -35,79 +37,81 @@ const AquariumManagement = () => {
       });
   };
 
-  const handleSearch = () => {
-    if (searchQuery.trim() !== "") {
-      axiosInstance
-        .get("/api/Pool", {
-          params: {
-            page: 1,
-            pageSize: 10,
-            searchTerm: searchQuery,
-          },
-        })
-        .then((res) => {
-          setAquaList(res.data);
-        })
-        .catch((err) => {
-          console.error("Error searching aquariums:", err);
-          toast.error("Failed to search aquariums.");
-        });
-    } else {
-      fetchPoolsForMember(memberId);
-    }
+  const handleCalcSalt = (aquaId) => {
+    setLoading(true);
+    axiosInstance
+      .post(`/api/SupportAI/supportcalculatesalt/${aquaId}`)
+      .then((res) => {
+        const cleanHtml = res.data
+          .replace(/^```html\s*/, "")
+          .replace(/```$/, "");
+        setCalculationResultHTML(cleanHtml);
+        toast.success("Calculation completed!", { autoClose: 2000 });
+      })
+      .catch((err) => {
+        toast.error("Failed to calculate food.", { autoClose: 1500 });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
-  const handleCalcSalt = (aqua) => {
-    axiosInstance
-      .get(`/api/Pool/CalculateSaltInPool/${aqua.id}`)
-      .then((res) => {
-        setCalculationResults({
-          ...calculationResults,
-          [aqua.id]: res.data,
-        });
-        toast.success("Calculation completed!", { autoClose: 2000 });
-      });
+  const handleShowAqua = (aqua) => {
+    setSelectedAqua(aqua);
+    setIsShow(true);
+    setCalculationResultHTML("");
   };
 
   return (
     <div>
       {memberId ? (
-        <div className="aquarium_list_container">
+        <div className="aquarium-container">
           <div className="header-with-button">
-            <h2 className="aquarium_list_title">Calculate Salt</h2>
+            <h2 className="aquarium-title">Calculate Salt</h2>
           </div>
-          <table className="aquarium_table">
-            <thead>
-              <tr>
-                <th>Pool Name</th>
-                <th>Size (cm)</th>
-                <th>Depth (cm)</th>
-                <th>Amount Of Salt</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {aquaList.map((aquarium, index) => (
-                <tr key={index}>
-                  <td>{aquarium.name}</td>
-                  <td>{aquarium.size} cm</td>
-                  <td>{aquarium.depth} cm</td>
-                  <td className="calculation-result">
-                    {calculationResults[aquarium.id]
-                      ? calculationResults[aquarium.id]
-                      : "-"}
-                  </td>
-                  <td>
-                    <div className="action-buttons">
-                      <button onClick={() => handleCalcSalt(aquarium)}>
-                        Calculate
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+          <div className="dropdown-aqua">
+            <button className="dropdown-aqua-button">
+              {isShow ? selectedAqua.name : "List Of Pool"}
+            </button>
+            <div className="dropdown-content-aqua">
+              {aquaList.map((aqua, index) => (
+                <div
+                  key={index}
+                  className="dropdown-pool"
+                  onClick={() => handleShowAqua(aqua)}
+                >
+                  {aqua.name}
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </div>
+          {selectedAqua && (
+            <div className="aqua-details">
+              <h3>Pool Details</h3>
+              <p>
+                <strong>Name:</strong> {selectedAqua.name}
+              </p>
+              <p>
+                <strong>Size:</strong> {selectedAqua.size} cm2
+              </p>
+              <p>
+                <strong>Depth:</strong> {selectedAqua.depth} cm
+              </p>
+              <button
+                className="calc-salt"
+                onClick={() => handleCalcSalt(selectedAqua.id)}
+              >
+                Calculate
+              </button>
+              {loading && <div className="loader"></div>}
+            </div>
+          )}
+          {calculationResultHTML && (
+            <div
+              className="calculation-result"
+              dangerouslySetInnerHTML={{ __html: calculationResultHTML }}
+            />
+          )}
         </div>
       ) : (
         <div className="centered-container">

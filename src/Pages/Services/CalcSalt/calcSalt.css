@@ -1,31 +1,88 @@
-.header-with-button {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.dropdown-aqua {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-aqua-button {
+  padding: 4px 8px;
+  border-radius: 10px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  background-color: #0ab066;
+  color: #fff;
+}
+
+.dropdown-content-aqua {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 150px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 10px;
+}
+
+.dropdown-aqua:hover .dropdown-content-aqua {
+  display: block;
+}
+
+.dropdown-pool {
+  padding: 5px 0;
+  cursor: pointer;
+}
+
+.calc-salt {
+  margin-top: 20px;
+  padding: 12px 24px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  display: block;
+  width: fit-content;
+  align-self: center;
+  transition: background-color 0.3s ease;
+  margin: 0 auto;
   margin-bottom: 20px;
 }
 
-.calculation-result {
-  padding: 8px;
-  color: #333;
-  font-size: 14px;
+.calc-salt:hover {
+  background-color: #0056b3;
+}
+
+.aquarium-container {
+  width: 40%;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 100px;
+}
+
+.aquarium-title {
+  margin-bottom: -12px;
+  margin: 0 auto;
+}
+
+.aqua-details {
   text-align: center;
+  font-size: 18px;
 }
 
-.aquarium_table td.calculation-result {
-  background-color: #f8f9fa;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
+.loader {
+  width: 40%;
+  height: 20px;
+  margin: 0 auto;
+  background: linear-gradient(90deg, #0000, orange) left -50px top 0/50px 20px no-repeat
+    lightblue;
+  animation: l2 1s infinite linear;
 }
-
-.aquarium_table td.calculation-result:not(:empty) {
-  background-color: #e8f5e9;
-}
-
-.aquarium_table th {
-  text-align: center;
-}
-
-.aquarium_table td {
-  text-align: center;
+@keyframes l2 {
+  100% {
+    background-position: right -50px top 0;
+  }
 }

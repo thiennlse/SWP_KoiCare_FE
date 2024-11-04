@@ -1,22 +1,18 @@
 import "./calcFood.css";
-import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../axiosInstance";
-
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+
 const CalcFood = () => {
-  const [fishList, setFishList] = useState([]);
   const [poolList, setPoolList] = useState([]);
-  const [selectedPoolId, setSelectedPoolId] = useState(0);
-  const [searchQuery, setSearchQuery] = useState("");
   const [filteredFishList, setFilteredFishList] = useState([]);
   const [foodList, setFoodList] = useState([]);
-  const [calculationResults, setCalculationResults] = useState({});
-  const navigate = useNavigate();
+  const [selectedFish, setSelectedFish] = useState(null);
+  const [calculationResultHTML, setCalculationResultHTML] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isShow, setIsShow] = useState(false);
 
-  const userId = JSON.parse(localStorage.getItem("userId"));
-  const memberId = userId;
-  console.log(memberId);
+  const memberId = JSON.parse(localStorage.getItem("userId"));
 
   useEffect(() => {
     if (memberId !== 0) {
@@ -61,7 +57,6 @@ const CalcFood = () => {
         const filteredFish = res.data.filter((fish) =>
           poolList.some((pool) => pool.id === fish.poolId)
         );
-        setFishList(filteredFish);
         setFilteredFishList(filteredFish);
       })
       .catch((err) => {
@@ -84,119 +79,90 @@ const CalcFood = () => {
       });
   };
 
-  const handlePoolChange = (e) => {
-    const poolId = Number(e.target.value);
-    setSelectedPoolId(poolId);
-
-    if (poolId === 0) {
-      setFilteredFishList(fishList);
-    } else {
-      const filtered = fishList.filter((fish) => fish.poolId === poolId);
-      setFilteredFishList(filtered);
-    }
-  };
-
-  const handleSearch = () => {
-    const filtered = fishList.filter((fish) =>
-      fish.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredFishList(filtered);
-  };
-
-  function handleCalcFood(foodId, fishName, fishId) {
-    axiosInstance.get(`/api/Food/${foodId}`).then((res) => {
-      const fishWeight = res.data.weight;
-      console.log(fishWeight);
-    });
-
-    axiosInstance.get(`/api/Fish/calculateFoodFish/${fishId}`).then((res) => {
-      setCalculationResults({
-        ...calculationResults,
-        [fishId]: res.data,
+  function handleCalcFood(fishId) {
+    setLoading(true);
+    axiosInstance
+      .post(`/api/SupportAI/supportcalculatefood/${fishId}`)
+      .then((res) => {
+        const cleanHtml = res.data
+          .replace(/^```html\s*/, "")
+          .replace(/```$/, "");
+        setCalculationResultHTML(cleanHtml);
+        toast.success("Calculation completed!", { autoClose: 2000 });
+      })
+      .catch((err) => {
+        toast.error("Failed to calculate food.", { autoClose: 1500 });
+      })
+      .finally(() => {
+        setLoading(false);
       });
-      toast.success("Calculation completed!", { autoClose: 2000 });
-    });
+  }
+
+  function handleShowFish(fish) {
+    setSelectedFish(fish);
+    setIsShow(true);
+    setCalculationResultHTML("");
   }
 
   return (
     <div>
       {memberId ? (
-        <div className="fish-management-container">
+        <div className="food-container">
           <div className="header-with-button">
-            <h2 className="fish-list-title">Calculate Food</h2>
+            <h2 className="food-title">Calculate Food</h2>
           </div>
-
-          <div className="pool-selection">
-            <label>Select Pool:</label>
-            <select onChange={handlePoolChange} value={selectedPoolId}>
-              <option value="0">All Pools</option>
-              {poolList.map((pool) => (
-                <option key={pool.id} value={pool.id}>
-                  {pool.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="search-fish-form">
-            <input
-              type="text"
-              placeholder="Search by Fish Name"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button className="search-button" onClick={handleSearch}>
-              🔍
+          <div className="dropdown-fish">
+            <button className="dropdown-fish-button">
+              {isShow ? selectedFish.name : "List Of Fish"}
+              <span class="fish-eye"></span>
             </button>
-          </div>
-
-          <table className="calc-food-table">
-            <thead>
-              <tr>
-                <th>Fish Name</th>
-                <th>Food Name</th>
-                <th>Food Weight (kg)</th>
-                <th>Image</th>
-                <th>Amount Of Food</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
+            <div className="dropdown-content-fish">
               {filteredFishList.map((fish, index) => (
-                <tr key={index}>
-                  <td>{fish.name}</td>
-                  <td>{getFoodName(fish.foodId)}</td>
-                  <td>{getFoodWeight(fish.foodId)} kg</td>
-                  <td>
-                    {fish.image ? (
-                      <img
-                        src={fish.image}
-                        alt={fish.name}
-                        style={{ width: "50px", height: "50px" }}
-                      />
-                    ) : (
-                      "No Image"
-                    )}
-                  </td>
-                  <td className="calculation-result">
-                    {calculationResults[fish.id]
-                      ? calculationResults[fish.id]
-                      : "-"}
-                  </td>
-                  <td>
-                    <button
-                      className="calc-food-button"
-                      onClick={() =>
-                        handleCalcFood(fish.foodId, fish.name, fish.id)
-                      }
-                    >
-                      Calculate
-                    </button>
-                  </td>
-                </tr>
+                <div
+                  key={index}
+                  className="dropdown-fish-name"
+                  onClick={() => handleShowFish(fish)}
+                >
+                  {fish.name}
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </div>
+          {selectedFish ? (
+            <div className="fish-details">
+              <h3>Fish Details</h3>
+              {selectedFish.image ? (
+                <img src={selectedFish.image} alt={selectedFish.name} />
+              ) : (
+                <p>No Image Available</p>
+              )}
+              <p>
+                <strong>Name:</strong> {selectedFish.name}
+              </p>
+              <p>
+                <strong>Food:</strong> {getFoodName(selectedFish.foodId)}
+              </p>
+              <p>
+                <strong>Food Weight: </strong>
+                {getFoodWeight(selectedFish.foodId)}kg
+              </p>
+              <button
+                className="calc-food"
+                onClick={() => handleCalcFood(selectedFish.id)}
+              >
+                Calculate
+              </button>
+              {loading && <div className="loader"></div>}
+            </div>
+          ) : (
+            ""
+          )}
+          {calculationResultHTML && (
+            <div
+              className="calculation-result"
+              dangerouslySetInnerHTML={{ __html: calculationResultHTML }}
+            />
+          )}
         </div>
       ) : (
         <div className="centered-container">
