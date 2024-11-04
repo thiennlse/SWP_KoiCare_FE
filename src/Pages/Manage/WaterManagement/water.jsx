@@ -201,7 +201,7 @@ const Water = () => {
               <label>Nitrite (NO2) (mg/L)</label>
               <input
                 name="no2"
-                value={waterData.no2 || "0"}
+                value={waterData.no2 || "0."}
                 onChange={handleChange}
                 onClick={() => handleInputClick("no2")}
                 style={{ borderColor: isValid.no2 ? "green" : "red" }}
@@ -233,7 +233,7 @@ const Water = () => {
               <label>Phosphate (PO4) (mg/L)</label>
               <input
                 name="po4"
-                value={waterData.po4 || "0"}
+                value={waterData.po4 || "0."}
                 onChange={handleChange}
                 onClick={() => handleInputClick("po4")}
                 style={{ borderColor: isValid.po4 ? "green" : "red" }}
