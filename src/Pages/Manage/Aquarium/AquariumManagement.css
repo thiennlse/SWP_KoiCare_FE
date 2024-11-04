@@ -101,9 +101,9 @@
   background-color: #f1f1f1;
 }
 
-.aquarium_table td .action-buttons {
+.aquarium_table td .action-buttons-aqua {
   gap: 8px;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
 }
 

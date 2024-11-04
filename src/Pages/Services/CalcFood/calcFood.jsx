@@ -121,7 +121,7 @@ const CalcFood = () => {
   return (
     <div>
       {memberId ? (
-        <div className="fish-management-container">
+        <div className="calcFood-management-container">
           <div className="header-with-button">
             <h2 className="fish-list-title">Calculate Food</h2>
           </div>

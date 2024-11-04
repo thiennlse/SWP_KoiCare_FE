@@ -98,7 +98,7 @@ const AquariumManagement = () => {
                       : "-"}
                   </td>
                   <td>
-                    <div className="action-buttons">
+                    <div className="buttons-salt">
                       <button onClick={() => handleCalcSalt(aquarium)}>
                         Calculate
                       </button>

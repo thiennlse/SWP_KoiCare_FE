@@ -29,3 +29,9 @@
 .aquarium_table td {
   text-align: center;
 }
+
+.buttons-salt {
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
