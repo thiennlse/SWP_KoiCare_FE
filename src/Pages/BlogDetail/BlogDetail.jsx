@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./BlogDetail.css";
 import blog_image_1 from "../../Components/Assets/blog_imgae_1.png";
 import axiosInstance from "../axiosInstance";
-
+import { FaArrowUp } from "react-icons/fa";
 const BlogDetail = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -23,6 +23,39 @@ const BlogDetail = () => {
       },
     });
     window.scrollTo(0, 0);
+  };
+
+  const ScrollToTop = () => {
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+      const toggleVisibility = () => {
+        if (window.pageYOffset > 300) {
+          setIsVisible(true);
+        } else {
+          setIsVisible(false);
+        }
+      };
+
+      window.addEventListener("scroll", toggleVisibility);
+      return () => window.removeEventListener("scroll", toggleVisibility);
+    }, []);
+
+    const scrollToTop = () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    };
+
+    return (
+      <button
+        className={`scroll-to-top ${isVisible ? "visible" : ""}`}
+        onClick={scrollToTop}
+      >
+        <FaArrowUp />
+      </button>
+    );
   };
 
   useEffect(() => {
@@ -99,6 +132,7 @@ const BlogDetail = () => {
           ))}
         </div>
       </div>
+      <ScrollToTop />
     </div>
   );
 };
