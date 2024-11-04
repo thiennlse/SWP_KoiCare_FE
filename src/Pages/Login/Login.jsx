@@ -127,13 +127,10 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await axiosInstance.post(
-        "/api/Member/register",
-        {
-          email: registerEmail,
-          password: registerPassword,
-        }
-      );
+      const response = await axiosInstance.post("/api/Member/register", {
+        email: registerEmail,
+        password: registerPassword,
+      });
 
       toast.success("Registration successful! Please log in.");
       setAction("");
@@ -218,7 +215,6 @@ const LoginForm = () => {
             <a href="#" className="btn google">
               Login with Google
             </a>
-            <a href="/">Home</a>
           </form>
         </div>
 

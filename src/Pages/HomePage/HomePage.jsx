@@ -51,7 +51,9 @@ const HomePage = () => {
       <div id="banner_scroll">
         <Banner />
       </div>
+
       <CalcAds />
+
       <div id="products_scroll">
         <Products />
       </div>

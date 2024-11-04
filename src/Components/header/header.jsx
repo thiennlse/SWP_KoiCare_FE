@@ -66,6 +66,7 @@ function Header() {
       const element = document.getElementById(target);
       if (element) {
         element.scrollIntoView({ behavior: "smooth" });
+        window.scrollBy(0, -120);
       }
     }, 100);
   };
