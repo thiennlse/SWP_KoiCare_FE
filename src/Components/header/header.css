@@ -164,10 +164,24 @@
 }
 
 .admin-nav {
-  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.admin-nav .logout_button {
+  background-color: transparent;
+  color: #ff6600;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: color 0.3s ease;
+  font-weight: bold;
+}
+
+.admin-nav .logout_button:hover {
+  color: red;
 }
 
 .back-to-admin {
