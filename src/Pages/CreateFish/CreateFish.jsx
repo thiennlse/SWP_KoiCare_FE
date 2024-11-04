@@ -59,8 +59,8 @@ const CreateFish = () => {
       return;
     }
 
-    if (name === "foodWeight" && Number(value) > 10) {
-      toast.error("Food Weight must be less than 10 kg", {
+    if (name === "foodWeight" && Number(value) > 15) {
+      toast.error("Food Weight must be less than 15 kg", {
         autoClose: 1500,
       });
       return;
@@ -330,7 +330,7 @@ const CreateFishForm = ({
               value={fishData.foodWeight}
               onChange={handleChange}
               onFocus={handleFocus}
-              max="10"
+              max="15"
               required
             />
           </div>
