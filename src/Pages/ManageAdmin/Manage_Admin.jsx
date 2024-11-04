@@ -447,7 +447,7 @@ const ManageAdmin = () => {
                             {rolesList
                               .filter((role) => role.name !== user.role.name)
                               .map((role) => (
-                                <option key={role.id} value={role.name}>
+                                <option key={role.id} value={role.id}>
                                   {role.name}
                                 </option>
                               ))}

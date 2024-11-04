@@ -220,6 +220,16 @@
   background: #f8f9fa;
   font-weight: 600;
   color: #333;
+  text-align: center;
+}
+
+.management-table th:last-child {
+  text-align: center;
+}
+
+.management-table td {
+  text-align: center;
+  vertical-align: middle;
 }
 
 .management-table tr:hover {
@@ -243,6 +253,8 @@
 .action-buttons {
   display: flex;
   gap: 8px;
+  justify-content: center;
+  align-items: center;
 }
 
 .action-button {
@@ -288,6 +300,8 @@
   border-radius: 4px;
   background: white;
   min-width: 120px;
+  margin: 0 auto;
+  display: block;
 }
 
 .logout_button_admin {
