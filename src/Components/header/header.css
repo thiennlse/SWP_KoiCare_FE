@@ -34,6 +34,7 @@
 .header_logo img {
   width: 148px;
   height: auto;
+  mix-blend-mode: darken;
 }
 
 .nav_links {
@@ -64,6 +65,10 @@
 }
 
 .nav_list li:hover {
+  color: #dead6f;
+}
+
+.nav_list li a:hover {
   color: #dead6f;
 }
 
