@@ -2,6 +2,18 @@ import React from "react";
 import "./Modal.css";
 
 const BlogDetails = ({ blog, onClose }) => {
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return "N/A";
+    }
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
   return (
     <div className="modal-content-wrapper">
       <div className="modal-scroll-content">
@@ -18,7 +30,7 @@ const BlogDetails = ({ blog, onClose }) => {
               <strong>Content:</strong> {blog.content}
             </p>
             <p>
-              <strong>Date:</strong> {new Date(blog.date).toLocaleDateString()}
+              <strong>Date:</strong> {formatDate(blog.dateOfPublish)}
             </p>
           </div>
           <div className="details-image">
