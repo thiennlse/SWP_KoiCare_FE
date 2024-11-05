@@ -240,12 +240,32 @@
 }
 
 .management-table td {
-  text-align: center;
+  padding: 15px;
   vertical-align: middle;
+  text-align: center;
+  line-height: 1.6;
 }
 
 .management-table tr:hover {
   background: #f5f5f5;
+}
+
+.management-table img {
+  display: block;
+  margin: 0 auto;
+}
+
+.truncate-text {
+  max-width: 300px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.5;
+  max-height: 4.5em;
+  padding: 0;
+  margin: 0;
 }
 
 .create-button {
@@ -265,17 +285,19 @@
 .action-buttons {
   display: flex;
   gap: 8px;
+  flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
 }
 
 .action-button {
   padding: 6px 12px;
-  border-radius: 4px;
   border: none;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
+  white-space: nowrap;
+  min-width: 80px;
+  text-align: center;
 }
 
 .edit-button {
@@ -299,6 +321,8 @@
 .delete-button {
   background: #dc3545;
   color: white;
+  padding: 6px 12px;
+  min-width: 80px;
 }
 
 .delete-button:hover {

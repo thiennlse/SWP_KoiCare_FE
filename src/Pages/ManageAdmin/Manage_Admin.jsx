@@ -472,6 +472,7 @@ const ManageAdmin = () => {
                 <table className="management-table">
                   <thead>
                     <tr>
+                      <th>Image</th>
                       <th>Name</th>
                       <th>Cost</th>
                       <th>Description</th>
@@ -481,9 +482,29 @@ const ManageAdmin = () => {
                   <tbody>
                     {products.map((product) => (
                       <tr key={product.id}>
+                        <td>
+                          {product.image ? (
+                            <img
+                              src={product.image}
+                              alt={product.name}
+                              style={{
+                                width: "60px",
+                                height: "60px",
+                                objectFit: "cover",
+                                borderRadius: "4px",
+                              }}
+                            />
+                          ) : (
+                            <span
+                              style={{ color: "#999", fontStyle: "italic" }}
+                            >
+                              No Image
+                            </span>
+                          )}
+                        </td>
                         <td>{product.name}</td>
                         <td>{product.cost} VND</td>
-                        <td>{product.description}</td>
+                        <td className="truncate-text">{product.description}</td>
                         <td>
                           <div className="action-buttons">
                             <button
@@ -531,6 +552,7 @@ const ManageAdmin = () => {
                 <table className="management-table">
                   <thead>
                     <tr>
+                      <th>Image</th>
                       <th>Title</th>
                       <th>Content</th>
                       <th>Actions</th>
@@ -539,8 +561,28 @@ const ManageAdmin = () => {
                   <tbody>
                     {blogs.map((blog) => (
                       <tr key={blog.id}>
+                        <td>
+                          {blog.image ? (
+                            <img
+                              src={blog.image}
+                              alt={blog.title}
+                              style={{
+                                width: "60px",
+                                height: "60px",
+                                objectFit: "cover",
+                                borderRadius: "4px",
+                              }}
+                            />
+                          ) : (
+                            <span
+                              style={{ color: "#999", fontStyle: "italic" }}
+                            >
+                              No Image
+                            </span>
+                          )}
+                        </td>
                         <td>{blog.title}</td>
-                        <td>{blog.content}</td>
+                        <td className="truncate-text">{blog.content}</td>
                         <td>
                           <div className="action-buttons">
                             <button
