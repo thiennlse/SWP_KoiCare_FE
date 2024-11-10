@@ -159,6 +159,14 @@ const ManageAdmin = () => {
     }, 1500);
   };
 
+  const handleDateSearch = () => {
+    if (!dateRange.startDate || !dateRange.endDate) {
+      toast.warning("Please select both start and end dates");
+      return;
+    }
+    fetchData();
+  };
+
   const handleBackToHome = () => {
     window.location.href = "/home";
   };
@@ -623,7 +631,7 @@ const ManageAdmin = () => {
                 <h3>Order Management</h3>
                 <div
                   className="date-filter"
-                  style={{ display: "flex", gap: "20px", marginBottom: "20px" }}
+                  style={{ display: "flex", gap: "20px", alignItems: "center" }}
                 >
                   <div>
                     <label style={{ marginRight: "10px" }}>Start Date:</label>
@@ -661,6 +669,20 @@ const ManageAdmin = () => {
                       }}
                     />
                   </div>
+                  <button
+                    onClick={handleDateSearch}
+                    style={{
+                      padding: "8px 16px",
+                      backgroundColor: "#1e407c",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                      marginLeft: "10px",
+                    }}
+                  >
+                    Search
+                  </button>
                 </div>
               </div>
               <div className="management-content">
