@@ -120,10 +120,50 @@ body {
 }
 
 .product_price {
+  padding: 15px;
   display: flex;
   flex-direction: column;
-  padding: 0 20px;
+  gap: 8px;
   flex-grow: 1;
+  background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+  border-top: 1px solid #eee;
+}
+
+.product_price p {
+  margin: 0;
+}
+
+.product_price .name-ellipsis {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c3e50;
+  line-height: 1.4;
+}
+
+.product_price .product_description {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+  margin: 4px 0;
+}
+
+.product_price p:last-child {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ff6600;
+  margin-top: auto;
+  padding: 8px 0;
+  border-top: 1px dashed #eee;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.product_price p:last-child::before {
+  content: "Price:";
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
 }
 
 .button-container {
