@@ -169,10 +169,10 @@ function Products({
   return (
     <div className="container product-container">
       <div className="row bg-secondary py-2 text-center head-cart">
-        <div className="col-5 product-name text-center ">Sản phẩm</div>
-        <div className="col-3">Đơn Giá</div>
-        <div className="col-2">Số Lượng</div>
-        <div className="col-2">Số tiền</div>
+        <div className="col-5 product-name text-center ">Product</div>
+        <div className="col-3">Unit Price</div>
+        <div className="col-2">Quantity</div>
+        <div className="col-2">Total Price</div>
       </div>
 
       <div className="cart-container">
@@ -200,12 +200,12 @@ function Products({
             checked={isSelectAll}
             onChange={handleSelectAll}
           />
-          <span className="ms-2">Chọn tất cả</span>
+          <span className="ms-2">Select All</span>
         </div>
-        <div className="col ">Tổng thanh toán: {totalPayment} vnd</div>
+        <div className="col ">Total Payment: {totalPayment} vnd</div>
         <div className="col">
           <button className="btn btn-primary" onClick={handlePurchase}>
-            Mua hàng
+            Checkout
           </button>
         </div>
       </div>

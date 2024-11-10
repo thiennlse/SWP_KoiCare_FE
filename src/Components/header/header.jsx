@@ -199,7 +199,7 @@ function Header() {
                       className="view-cart-button"
                       onClick={handleCartClick}
                     >
-                      Xem giỏ hàng
+                      View My Shopping Cart
                     </Link>
                   </div>
                 </div>
