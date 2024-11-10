@@ -37,7 +37,10 @@ const HomePage = () => {
     const fetchBlogData = async () => {
       try {
         const res = await axiosInstance.get("/api/Blog");
-        setBlogData(res.data);
+        const publicBlogs = res.data.filter(
+          (blog) => blog.status === "Publish"
+        );
+        setBlogData(publicBlogs);
       } catch (error) {
         console.error("Error fetching blog data:", error);
       }

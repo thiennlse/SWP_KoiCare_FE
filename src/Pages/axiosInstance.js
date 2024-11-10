@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://koicareapi20241028212437.azurewebsites.net",
+  baseURL: "https://koicareapis.azurewebsites.net",
   headers: {
     "Content-Type": "application/json",
     "Content-Encoding": "gzip",

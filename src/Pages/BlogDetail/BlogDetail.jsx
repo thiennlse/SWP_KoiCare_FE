@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import "./BlogDetail.css";
 import blog_image_1 from "../../Components/Assets/blog_imgae_1.png";
 import axiosInstance from "../axiosInstance";
@@ -66,7 +67,9 @@ const BlogDetail = () => {
         );
         const blogs = response.data;
 
-        const shuffledBlogs = blogs.sort(() => 0.5 - Math.random());
+        const publicBlogs = blogs.filter((blog) => blog.status === "Publish");
+
+        const shuffledBlogs = publicBlogs.sort(() => 0.5 - Math.random());
         const randomBlogs = shuffledBlogs
           .filter((b) => b.id !== blog.id)
           .slice(0, 3);
@@ -76,9 +79,28 @@ const BlogDetail = () => {
         console.error("Error fetching suggested blogs", error);
       }
     };
+    const checkBlogAccess = async () => {
+      try {
+        const response = await axiosInstance.get(`/api/Blog/${blog.id}`);
+        const blogDetails = response.data;
 
-    fetchSuggestedBlogs();
-  }, [blog.id]);
+        if (blogDetails.status === "Private") {
+          toast.error("This blog is private");
+          navigate("/home");
+          return;
+        }
+
+        fetchSuggestedBlogs();
+      } catch (error) {
+        console.error("Error checking blog access:", error);
+        navigate("/home");
+      }
+    };
+
+    if (blog) {
+      checkBlogAccess();
+    }
+  }, [blog, navigate]);
 
   if (!blog) {
     return <div>Blog not found</div>;

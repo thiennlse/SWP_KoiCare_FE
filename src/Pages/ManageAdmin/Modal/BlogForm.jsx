@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../../axiosInstance";
 import { toast } from "react-toastify";
-// import "../Modal/Modal.css";
 import "./BlogForm.css";
 
 const BlogForm = ({ blog, onSubmit, closeModal }) => {
@@ -158,15 +157,16 @@ const BlogForm = ({ blog, onSubmit, closeModal }) => {
 
         <div className="form-group">
           <label>Status:</label>
-          <input
-            type="text"
+          <select
             name="status"
             value={formData.status}
             onChange={handleChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
             required
-          />
+            className="status-select"
+          >
+            <option value="Private">Private</option>
+            <option value="Publish">Publish</option>
+          </select>
         </div>
 
         <div className="button-admin-group">

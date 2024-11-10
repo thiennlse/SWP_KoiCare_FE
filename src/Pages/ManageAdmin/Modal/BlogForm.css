@@ -93,6 +93,22 @@
   transition: all 0.3s ease;
 }
 
+.status-select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 14px;
+  color: #333;
+}
+
+.status-select:focus {
+  outline: none;
+  border-color: #1e407c;
+  box-shadow: 0 0 0 2px rgba(30, 64, 124, 0.2);
+}
+
 .button-admin-group button[type="submit"] {
   background-color: #1e407c;
   color: white;
