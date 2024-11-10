@@ -31,6 +31,11 @@
   height: 110px;
 }
 
+.head-cart {
+  background-color: #e5771f !important;
+  color: white;
+}
+
 .header_logo img {
   width: 148px;
   height: auto;
@@ -81,7 +86,7 @@
 .icon_header {
   font-size: 34px;
   color: black;
-  margin-right: 50px;
+  margin-right: 0;
 }
 
 .icon_header:hover {
@@ -202,4 +207,108 @@
 
 .back-to-admin:hover {
   background-color: #ff6600;
+}
+
+.cart-icon-container {
+  position: relative;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -10px;
+  right: -15px;
+  background: #ff6600;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 14px;
+  min-width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.cart-preview-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 300px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  z-index: 1000;
+}
+
+.cart-preview-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.cart-preview-item img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.cart-preview-item .item-details {
+  flex: 1;
+}
+
+.cart-preview-item .item-name {
+  font-size: 14px;
+  margin: 0;
+}
+
+.cart-preview-item .item-price {
+  font-size: 13px;
+  color: #ff6600;
+  margin: 4px 0 0;
+}
+
+.item-details {
+  flex: 1;
+}
+
+.item-name {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+  color: #333;
+}
+
+.item-price {
+  font-size: 13px;
+  color: #ff6600;
+  margin: 4px 0 0;
+}
+
+.cart-preview-footer {
+  margin-top: 12px;
+  text-align: center;
+}
+
+.view-cart-button {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #ff6600;
+  color: white;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+.view-cart-button:hover {
+  background: #ff8533;
+  color: white;
+  text-decoration: none;
 }

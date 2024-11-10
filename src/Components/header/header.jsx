@@ -7,11 +7,14 @@ import { TiShoppingCart } from "react-icons/ti";
 import { ToastContainer, toast } from "react-toastify";
 import Avatar, { genConfig } from "react-nice-avatar";
 import axiosInstance from "../../Pages/axiosInstance";
+import koiFood from "../Assets/KoiFood.jpeg";
 
 function Header() {
   const [user, setUser] = useState("");
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [servicesDropdownVisible, setServicesDropdownVisible] = useState(false);
+  const [cartDropdownVisible, setCartDropdownVisible] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
 
   const userId = localStorage.getItem("userId");
@@ -35,6 +38,44 @@ function Header() {
       fetchData();
     }
   }, [userId]);
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+      setCartItems(storedCart);
+    };
+
+    handleStorageChange();
+
+    window.addEventListener("storage", handleStorageChange);
+
+    const interval = setInterval(handleStorageChange, 1000);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      clearInterval(interval);
+    };
+  }, []);
+
+  useEffect(() => {
+    const updateCartItems = () => {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      setCartItems(cart);
+    };
+
+    updateCartItems();
+    window.addEventListener("storage", updateCartItems);
+    const interval = setInterval(updateCartItems, 1000);
+
+    return () => {
+      window.removeEventListener("storage", updateCartItems);
+      clearInterval(interval);
+    };
+  }, []);
+
+  const toggleCartDropdown = (visible) => {
+    setCartDropdownVisible(visible);
+  };
 
   const handleLogout = () => {
     toast.success("Logout successful!", { autoClose: 1500 });
@@ -69,6 +110,13 @@ function Header() {
         window.scrollBy(0, -120);
       }
     }, 100);
+  };
+
+  const handleCartClick = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   const handleScrollToTop = () => {
@@ -120,10 +168,42 @@ function Header() {
           </ul>
 
           <div className="nav_icons_header">
-            <div>
-              <a href="/cart">
+            <div
+              className="cart-icon-container"
+              onMouseEnter={() => toggleCartDropdown(true)}
+              onMouseLeave={() => toggleCartDropdown(false)}
+            >
+              <Link to="/cart" onClick={handleCartClick}>
                 <TiShoppingCart className="icon_header" />
-              </a>
+                {cartItems.length > 0 && (
+                  <span className="cart-badge">{cartItems.length}</span>
+                )}
+              </Link>
+
+              {cartDropdownVisible && cartItems.length > 0 && (
+                <div className="cart-preview-dropdown">
+                  {cartItems.map((item) => (
+                    <div key={item.id} className="cart-preview-item">
+                      <img src={item.image || koiFood} alt={item.name} />
+                      <div className="item-details">
+                        <p className="item-name">{item.name}</p>
+                        <p className="item-price">
+                          {item.cost.toLocaleString()} VND
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                  <div className="cart-preview-footer">
+                    <Link
+                      to="/cart"
+                      className="view-cart-button"
+                      onClick={handleCartClick}
+                    >
+                      Xem giỏ hàng
+                    </Link>
+                  </div>
+                </div>
+              )}
             </div>
 
             {role === "Member" ? (

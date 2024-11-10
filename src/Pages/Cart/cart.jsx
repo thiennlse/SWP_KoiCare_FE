@@ -90,19 +90,6 @@ const Cart = () => {
     calculateTotalPayment(updatedSelectedProducts);
   };
 
-  // const handleDeleteProduct = (item) => {
-  //   let updatedProducts = products.filter((product) => product.id !== item.id);
-  //   setProducts(updatedProducts);
-
-  //   localStorage.setItem("cart", JSON.stringify(updatedProducts));
-
-  //   const updatedSelectedProducts = selectedProducts.filter(
-  //     (product) => product.id !== item.id
-  //   );
-  //   setSelectedProducts(updatedSelectedProducts);
-  //   calculateTotalPayment(updatedSelectedProducts);
-  // };
-
   return (
     <>
       {products.length > 0 ? (
@@ -113,7 +100,6 @@ const Cart = () => {
             handleUpdateQuantityAndRecalculate={
               handleUpdateQuantityAndRecalculate
             }
-            // handleDeleteProduct={handleDeleteProduct}
             totalPayment={totalPayment}
             handleSelectAll={handleSelectAll}
             selectedProducts={selectedProducts}
@@ -137,7 +123,6 @@ function Products({
   products,
   handleSelectProduct,
   handleUpdateQuantityAndRecalculate,
-  // handleDeleteProduct,
   totalPayment,
   handleSelectAll,
   selectedProducts,
@@ -200,7 +185,6 @@ function Products({
               handleUpdateQuantityAndRecalculate={
                 handleUpdateQuantityAndRecalculate
               }
-              // handleDeleteProduct={handleDeleteProduct}
               isSelected={selectedProducts.some((p) => p.id === product.id)}
             />
           ))
@@ -233,7 +217,6 @@ function Product({
   item,
   handleSelectProduct,
   handleUpdateQuantityAndRecalculate,
-  // handleDeleteProduct,
   isSelected,
 }) {
   const [count, setCount] = useState(item.quantity);
@@ -253,14 +236,6 @@ function Product({
       handleUpdateQuantityAndRecalculate(item.id, newCount);
     }
   }
-
-  // const confirmDeleteProduct = () => {
-  //   const confirmed = window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?");
-  //   if (confirmed) {
-  //     handleDeleteProduct(item);
-  //     toast.success("Xóa sản phẩm thành công !");
-  //   }
-  // };
 
   return (
     <div className="row align-items-center text-center border-bottom py-2">
@@ -312,14 +287,6 @@ function Product({
         </div>
       </div>
       <div className="col-2 text-danger">{item.cost * count} vnd</div>
-      {/* <div className="col-12 text-end mt-2">
-        <button
-          className="btn btn-danger btn-sm "
-          onClick={confirmDeleteProduct}
-        >
-          Xóa
-        </button>
-      </div> */}
     </div>
   );
 }
