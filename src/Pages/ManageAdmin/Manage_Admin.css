@@ -220,33 +220,62 @@
 }
 
 .card_admin h3 {
-  color: #333;
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
+  color: #1e407c;
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 30px;
+  border-bottom: 2px solid #f0f0f0;
+  background: linear-gradient(135deg, #ffffff, #f8f9fa);
+}
+
+.card_admin h3::before {
+  content: "";
+  width: 4px;
+  height: 24px;
+  background: linear-gradient(to bottom, #1e407c, #2c5299);
+  border-radius: 2px;
+  display: inline-block;
 }
 
 .management-section {
   background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  box-shadow: 0 3px 20px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   margin: 20px 0;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .management-header {
-  background: #1e407c;
-  padding: 20px;
+  background: linear-gradient(135deg, #ffffff, #f8f9fa);
+  padding: 20px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 2px solid #f0f0f0;
 }
 
 .management-header h3 {
-  color: white;
+  color: #1e407c;
   margin: 0;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.management-header h3::before {
+  content: "";
+  width: 4px;
+  height: 24px;
+  background: linear-gradient(to bottom, #1e407c, #2c5299);
+  border-radius: 2px;
+  display: inline-block;
 }
 
 .management-content {
@@ -306,17 +335,41 @@
 }
 
 .create-button {
-  background: #28a745;
+  background: linear-gradient(135deg, #28a745, #20c997);
   color: white;
-  padding: 8px 16px;
-  border-radius: 4px;
+  padding: 10px 20px;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  box-shadow: 0 2px 10px rgba(40, 167, 69, 0.2);
 }
 
 .create-button:hover {
-  background: #218838;
+  background: linear-gradient(135deg, #218838, #1e9b7a);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.date-filter {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  background: linear-gradient(135deg, #1e407c, #2c5299);
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 15px rgba(30, 64, 124, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.date-filter > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .action-buttons {
@@ -327,6 +380,60 @@
   align-items: center;
 }
 
+.date-filter label {
+  color: white;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.date-filter input {
+  padding: 10px 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background: white;
+  color: #2c3e50;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.date-filter input:focus {
+  border-color: #1e407c;
+  box-shadow: 0 0 0 2px rgba(30, 64, 124, 0.1);
+  outline: none;
+}
+
+.date-filter input:hover {
+  border-color: #1e407c;
+}
+
+.search-button-order {
+  background: linear-gradient(135deg, #ff6600, #ff8533);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 3px 12px rgba(255, 102, 0, 0.2);
+}
+
+.search-button-order:hover {
+  background: linear-gradient(135deg, #ff8533, #ff6600);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 102, 0, 0.3);
+}
+
+.search-button-order:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(255, 102, 0, 0.2);
+}
+
 .action-button {
   padding: 6px 12px;
   border: none;
@@ -335,35 +442,44 @@
   white-space: nowrap;
   min-width: 80px;
   text-align: center;
+  font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 .edit-button {
-  background: #1e407c;
+  background: linear-gradient(135deg, #4caf50, #45a049);
   color: white;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
 }
 
 .edit-button:hover {
-  background: #15305d;
+  background: linear-gradient(135deg, #45a049, #3d8b40);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
 }
 
 .details-button {
-  background: #17a2b8;
+  background: linear-gradient(135deg, #2196f3, #1976d2);
   color: white;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
 }
 
 .details-button:hover {
-  background: #138496;
+  background: linear-gradient(135deg, #1976d2, #1565c0);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
 }
 
 .delete-button {
-  background: #dc3545;
+  background: linear-gradient(135deg, #f44336, #e53935);
   color: white;
-  padding: 6px 12px;
-  min-width: 80px;
+  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.2);
 }
 
 .delete-button:hover {
-  background: #c82333;
+  background: linear-gradient(135deg, #e53935, #d32f2f);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
 }
 
 .status-select,

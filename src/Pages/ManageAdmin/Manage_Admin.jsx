@@ -629,12 +629,9 @@ const ManageAdmin = () => {
             <div className="management-section">
               <div className="management-header">
                 <h3>Order Management</h3>
-                <div
-                  className="date-filter"
-                  style={{ display: "flex", gap: "20px", alignItems: "center" }}
-                >
+                <div className="date-filter">
                   <div>
-                    <label style={{ marginRight: "10px" }}>Start Date:</label>
+                    <label>Start Date:</label>
                     <input
                       type="date"
                       value={dateRange.startDate}
@@ -644,15 +641,10 @@ const ManageAdmin = () => {
                           startDate: e.target.value,
                         }))
                       }
-                      style={{
-                        padding: "8px",
-                        borderRadius: "4px",
-                        border: "1px solid #ddd",
-                      }}
                     />
                   </div>
                   <div>
-                    <label style={{ marginRight: "10px" }}>End Date:</label>
+                    <label>End Date:</label>
                     <input
                       type="date"
                       value={dateRange.endDate}
@@ -662,24 +654,11 @@ const ManageAdmin = () => {
                           endDate: e.target.value,
                         }))
                       }
-                      style={{
-                        padding: "8px",
-                        borderRadius: "4px",
-                        border: "1px solid #ddd",
-                      }}
                     />
                   </div>
                   <button
+                    className="search-button-order"
                     onClick={handleDateSearch}
-                    style={{
-                      padding: "8px 16px",
-                      backgroundColor: "#1e407c",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "4px",
-                      cursor: "pointer",
-                      marginLeft: "10px",
-                    }}
                   >
                     Search
                   </button>
