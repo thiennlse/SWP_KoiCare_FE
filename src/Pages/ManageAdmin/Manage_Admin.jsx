@@ -36,6 +36,10 @@ const ManageAdmin = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [deleteBlogModalIsOpen, setDeleteBlogModalIsOpen] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState(null);
+  const [dateRange, setDateRange] = useState({
+    startDate: "",
+    endDate: "",
+  });
 
   const openModal = (type, content = null) => {
     setModalType(type);
@@ -617,43 +621,102 @@ const ManageAdmin = () => {
             <div className="management-section">
               <div className="management-header">
                 <h3>Order Management</h3>
+                <div
+                  className="date-filter"
+                  style={{ display: "flex", gap: "20px", marginBottom: "20px" }}
+                >
+                  <div>
+                    <label style={{ marginRight: "10px" }}>Start Date:</label>
+                    <input
+                      type="date"
+                      value={dateRange.startDate}
+                      onChange={(e) =>
+                        setDateRange((prev) => ({
+                          ...prev,
+                          startDate: e.target.value,
+                        }))
+                      }
+                      style={{
+                        padding: "8px",
+                        borderRadius: "4px",
+                        border: "1px solid #ddd",
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ marginRight: "10px" }}>End Date:</label>
+                    <input
+                      type="date"
+                      value={dateRange.endDate}
+                      onChange={(e) =>
+                        setDateRange((prev) => ({
+                          ...prev,
+                          endDate: e.target.value,
+                        }))
+                      }
+                      style={{
+                        padding: "8px",
+                        borderRadius: "4px",
+                        border: "1px solid #ddd",
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
               <div className="management-content">
                 <table className="management-table">
                   <thead>
                     <tr>
                       <th>Order #</th>
+                      <th>Order Date</th>
                       <th>Description</th>
                       <th>Total Cost</th>
                       <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {orders.map((order) => (
-                      <tr key={order.id}>
-                        <td>#{order.id}</td>
-                        <td>{order.description}</td>
-                        <td>{order.totalCost} VND</td>
-                        <td>
-                          <select
-                            className="status-select"
-                            value={order.status}
-                            onChange={(e) =>
-                              handleStatusChange(order.id, e.target.value)
-                            }
-                          >
-                            <option value={order.status}>{order.status}</option>
-                            {orderStatuses
-                              .filter((status) => status.name !== order.status)
-                              .map((status) => (
-                                <option key={status.id} value={status.name}>
-                                  {status.name}
-                                </option>
-                              ))}
-                          </select>
-                        </td>
-                      </tr>
-                    ))}
+                    {orders
+                      .filter((order) => {
+                        if (!dateRange.startDate || !dateRange.endDate)
+                          return true;
+                        const orderDate = new Date(order.orderDate);
+                        return (
+                          orderDate >= new Date(dateRange.startDate) &&
+                          orderDate <= new Date(dateRange.endDate)
+                        );
+                      })
+                      .map((order) => (
+                        <tr key={order.id}>
+                          <td>#{order.id}</td>
+                          <td>
+                            {new Date(order.orderDate).toLocaleDateString()}
+                          </td>
+                          <td>{order.description}</td>
+                          <td>{order.totalCost} VND</td>
+                          <td>
+                            <select
+                              className="status-select"
+                              value={order.status}
+                              onChange={(e) =>
+                                handleStatusChange(order.id, e.target.value)
+                              }
+                            >
+                              <option value={order.status}>
+                                {order.status}
+                              </option>
+                              {orderStatuses
+                                .filter(
+                                  (status) => status.name !== order.status
+                                )
+                                .map((status) => (
+                                  <option key={status.id} value={status.name}>
+                                    {status.name}
+                                  </option>
+                                ))}
+                            </select>
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
