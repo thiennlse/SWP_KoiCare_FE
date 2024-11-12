@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { FaSearch } from "react-icons/fa";
 import axiosInstance from "../../axiosInstance";
 import "./AquariumManagement.css";
 
@@ -99,10 +100,10 @@ const AquariumManagement = () => {
 
   return (
     <div className="aquarium-management-container">
-      <div className="management-header">
+      <div className="aquarium-management-header">
         <h2>Aquarium Management</h2>
         <button
-          className="create-button"
+          className="aquarium-create-button"
           onClick={() => navigate("/createaquarium")}
         >
           Create Aquarium
@@ -118,7 +119,7 @@ const AquariumManagement = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
         <button className="search-button" onClick={handleSearch}>
-          Search
+          <FaSearch />
         </button>
       </div>
 
@@ -144,15 +145,15 @@ const AquariumManagement = () => {
                   <td>{aquarium.depth} cm</td>
                   <td>{aquarium.description}</td>
                   <td>
-                    <div className="action-buttons">
+                    <div className="aquarium-action-buttons">
                       <button
-                        className="edit-button"
+                        className="aquarium-edit-button"
                         onClick={() => handleEdit(aquarium.id)}
                       >
                         <FaEdit />
                       </button>
                       <button
-                        className="delete-button"
+                        className="aquarium-delete-button"
                         onClick={() => deletePool(aquarium.id)}
                       >
                         <FaTrash />
