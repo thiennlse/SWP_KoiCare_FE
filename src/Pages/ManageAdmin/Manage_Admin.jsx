@@ -693,10 +693,10 @@ const ManageAdmin = () => {
                         )
                           return true;
                         const orderDate = new Date(order.orderDate);
-                        return (
-                          orderDate >= new Date(filteredDateRange.startDate) &&
-                          orderDate <= new Date(filteredDateRange.endDate)
-                        );
+                        const startDate = new Date(filteredDateRange.startDate);
+                        const endDate = new Date(filteredDateRange.endDate);
+                        endDate.setDate(endDate.getDate() + 1); // Include the end date in the filter
+                        return orderDate >= startDate && orderDate < endDate;
                       })
                       .map((order) => (
                         <tr key={order.id}>

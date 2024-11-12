@@ -182,16 +182,6 @@ const ProductForm = ({ product, onSubmit, closeModal }) => {
         </div>
 
         <div className="form-group">
-          <label>Code:</label>
-          <input
-            type="text"
-            name="code"
-            value={formData.code}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="form-group">
           <label>Stock:</label>
           <input
             type="number"
