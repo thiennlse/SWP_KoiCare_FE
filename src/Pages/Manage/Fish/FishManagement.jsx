@@ -146,10 +146,10 @@ const FishManagement = () => {
 
   return (
     <div className="fish-management-container">
-      <div className="management-header">
+      <div className="fish-management-header">
         <h2>Fish Management</h2>
         <button
-          className="create-button"
+          className="fish-create-button"
           onClick={() => navigate("/createfish")}
         >
           <FaPlus /> Create Fish
@@ -180,7 +180,7 @@ const FishManagement = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
           />
-          <button onClick={handleSearch} className="search-button">
+          <button onClick={handleSearch} className="fish-search-button">
             <FaSearch />
           </button>
         </div>
@@ -231,15 +231,15 @@ const FishManagement = () => {
                     )}
                   </td>
                   <td>
-                    <div className="action-buttons">
+                    <div className="fish-action-buttons">
                       <button
-                        className="edit-button"
+                        className="fish-edit-button"
                         onClick={() => navigate(`/updatefish/${fish.id}`)}
                       >
                         <FaEdit />
                       </button>
                       <button
-                        className="delete-button"
+                        className="fish-delete-button"
                         onClick={() => deleteFish(fish.id)}
                       >
                         <FaTrash />

@@ -283,7 +283,7 @@ function Product({
           </button>
         </div>
         <div className="product-remain text-danger">
-          Còn {item.inStock} sản phẩm
+          {item.inStock} products remaining
         </div>
       </div>
       <div className="col-2 text-danger">{item.cost * count} vnd</div>

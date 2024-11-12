@@ -1,19 +1,19 @@
 .aquarium-management-container {
   padding: 2rem;
   max-width: 1200px;
-  margin: 50px auto;
-  background-color: #f9f9f9;
+  margin: 70px auto;
+  background-color: #f9f3ec;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.management-header {
+.aquarium-management-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
   padding: 1rem;
-  background-color: #1e407c;
+  background-color: #e5771f;
   border-radius: 8px;
   color: white;
 }
@@ -23,7 +23,7 @@
   margin: 0;
 }
 
-.create-button {
+.aquarium-create-button {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -36,7 +36,7 @@
   transition: all 0.3s ease;
 }
 
-.create-button:hover {
+.aquarium-create-button:hover {
   background-color: #218838;
   transform: translateY(-2px);
 }
@@ -61,7 +61,7 @@
 
 .search-button {
   padding: 0.75rem 1.5rem;
-  background-color: #1e407c;
+  background-color: #ff6600;
   color: white;
   border: none;
   border-radius: 4px;
@@ -70,7 +70,7 @@
 }
 
 .search-button:hover {
-  background-color: #15305d;
+  background-color: #e5771f;
 }
 
 .table-responsive {
@@ -114,14 +114,14 @@
   background-color: #f8f9fa;
 }
 
-.action-buttons {
+.aquarium-action-buttons {
   display: flex;
   gap: 0.5rem;
   justify-content: center;
 }
 
-.edit-button,
-.delete-button {
+.aquarium-edit-button,
+.aquarium-delete-button {
   padding: 0.5rem;
   border: none;
   border-radius: 4px;
@@ -134,22 +134,22 @@
   height: 36px;
 }
 
-.edit-button {
-  background-color: #ffc107;
+.aquarium-edit-button {
+  background-color: #ff6600;
   color: white;
 }
 
-.edit-button:hover {
-  background-color: #e0a800;
+.aquarium-edit-button:hover {
+  background-color: #e5771f;
   transform: translateY(-2px);
 }
 
-.delete-button {
+.aquarium-delete-button {
   background-color: #dc3545;
   color: white;
 }
 
-.delete-button:hover {
+.aquarium-delete-button:hover {
   background-color: #c82333;
   transform: translateY(-2px);
 }
