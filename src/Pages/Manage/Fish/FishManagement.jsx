@@ -146,10 +146,10 @@ const FishManagement = () => {
 
   return (
     <div className="fish-management-container">
-      <div className="fish-management-header">
+      <div className="management-header">
         <h2>Fish Management</h2>
         <button
-          className="fish-create-button"
+          className="create-button"
           onClick={() => navigate("/createfish")}
         >
           <FaPlus /> Create Fish
@@ -231,15 +231,15 @@ const FishManagement = () => {
                     )}
                   </td>
                   <td>
-                    <div className="fish-action-buttons">
+                    <div className="action-buttons">
                       <button
-                        className="fish-edit-button"
+                        className="edit-button"
                         onClick={() => navigate(`/updatefish/${fish.id}`)}
                       >
                         <FaEdit />
                       </button>
                       <button
-                        className="fish-delete-button"
+                        className="delete-button"
                         onClick={() => deleteFish(fish.id)}
                       >
                         <FaTrash />

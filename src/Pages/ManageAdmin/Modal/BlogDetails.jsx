@@ -24,6 +24,9 @@ const BlogDetails = ({ blog, onClose }) => {
               <strong>Title:</strong> {blog.title}
             </p>
             <p>
+              <strong>Author:</strong> {blog.author}
+            </p>
+            <p>
               <strong>Content:</strong> {blog.content}
             </p>
             <p>

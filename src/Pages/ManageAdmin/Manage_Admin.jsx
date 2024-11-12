@@ -40,10 +40,6 @@ const ManageAdmin = () => {
     startDate: "",
     endDate: "",
   });
-  const [filteredDateRange, setFilteredDateRange] = useState({
-    startDate: "",
-    endDate: "",
-  });
 
   const openModal = (type, content = null) => {
     setModalType(type);
@@ -168,10 +164,6 @@ const ManageAdmin = () => {
       toast.warning("Please select both start and end dates");
       return;
     }
-    setFilteredDateRange({
-      startDate: dateRange.startDate,
-      endDate: dateRange.endDate,
-    });
     fetchData();
   };
 
@@ -686,15 +678,12 @@ const ManageAdmin = () => {
                   <tbody>
                     {orders
                       .filter((order) => {
-                        if (
-                          !filteredDateRange.startDate ||
-                          !filteredDateRange.endDate
-                        )
+                        if (!dateRange.startDate || !dateRange.endDate)
                           return true;
                         const orderDate = new Date(order.orderDate);
                         return (
-                          orderDate >= new Date(filteredDateRange.startDate) &&
-                          orderDate <= new Date(filteredDateRange.endDate)
+                          orderDate >= new Date(dateRange.startDate) &&
+                          orderDate <= new Date(dateRange.endDate)
                         );
                       })
                       .map((order) => (

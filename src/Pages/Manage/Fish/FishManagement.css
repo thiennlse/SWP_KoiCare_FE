@@ -1,19 +1,19 @@
 .fish-management-container {
   padding: 2rem;
   max-width: 1200px;
-  margin: 70px auto;
-  background-color: #f9f3ec;
+  margin: 50px auto;
+  background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.fish-management-header {
+.management-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
   padding: 1rem;
-  background-color: #e5771f;
+  background-color: #1e407c;
   border-radius: 8px;
   color: white;
 }
@@ -23,7 +23,7 @@
   margin: 0;
 }
 
-.fish-create-button {
+.create-button {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -36,7 +36,7 @@
   transition: all 0.3s ease;
 }
 
-.fish-create-button:hover {
+.create-button:hover {
   background-color: #218838;
   transform: translateY(-2px);
 }
@@ -82,7 +82,7 @@
 
 .search-button {
   padding: 0.75rem 1.5rem;
-  background-color: #ff6600;
+  background-color: #1e407c;
   color: white;
   border: none;
   border-radius: 4px;
@@ -91,7 +91,7 @@
 }
 
 .search-button:hover {
-  background-color: #e5771f;
+  background-color: #15305d;
 }
 
 .table-responsive {
@@ -210,14 +210,14 @@
   display: block;
 }
 
-.fish-action-buttons {
+.action-buttons {
   display: flex;
   gap: 0.5rem;
   justify-content: center;
 }
 
-.fish-edit-button,
-.fish-delete-button {
+.edit-button,
+.delete-button {
   padding: 0.5rem;
   border: none;
   border-radius: 4px;
@@ -230,22 +230,22 @@
   height: 36px;
 }
 
-.fish-edit-button {
+.edit-button {
   background-color: #ffc107;
   color: white;
 }
 
-.fish-edit-button:hover {
+.edit-button:hover {
   background-color: #e0a800;
   transform: translateY(-2px);
 }
 
-.fish-delete-button {
+.delete-button {
   background-color: #dc3545;
   color: white;
 }
 
-.fish-delete-button:hover {
+.delete-button:hover {
   background-color: #c82333;
   transform: translateY(-2px);
 }
@@ -265,4 +265,20 @@
   height: 200px;
   font-size: 1.2rem;
   color: #666;
+}
+
+@media (max-width: 1024px) {
+  .fish-management-container {
+    margin: 20px;
+    padding: 1rem;
+  }
+
+  .filters-section {
+    flex-direction: column;
+  }
+
+  .pool-filter,
+  .search-section {
+    width: 100%;
+  }
 }
