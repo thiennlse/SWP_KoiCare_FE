@@ -12,7 +12,7 @@ const ProductDetails = ({ product, onClose }) => {
               <strong>Name:</strong> {product.name}
             </p>
             <p>
-              <strong>Cost:</strong> ${product.cost}
+              <strong>Cost:</strong> {product.cost} VND
             </p>
             <p>
               <strong>Description:</strong> {product.description}
@@ -22,9 +22,6 @@ const ProductDetails = ({ product, onClose }) => {
             </p>
             <p>
               <strong>Productivity:</strong> {product.productivity}
-            </p>
-            <p>
-              <strong>Code:</strong> {product.code}
             </p>
             <p>
               <strong>In Stock:</strong> {product.inStock}

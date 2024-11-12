@@ -226,9 +226,20 @@ const ManageAdmin = () => {
   };
 
   const handleCreateBlog = (blogData) => {
+    const formattedBlogData = {
+      memberId: JSON.parse(localStorage.getItem("userId")) || 0,
+      title: blogData.title,
+      content: blogData.content,
+      dateOfPublish: new Date(blogData.dateOfPublish).toISOString(),
+      status: blogData.status,
+      image: blogData.image,
+    };
     axiosInstance
-      .post("/api/Blog/add", blogData, {
-        headers: { Authorization: `Bearer ${token}` },
+      .post("/api/Blog/add", formattedBlogData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       })
       .then((res) => {
         toast.success("Blog created successfully!");
@@ -430,12 +441,12 @@ const ManageAdmin = () => {
           )}
 
           {activeTab === "users" && (
-            <div className="management-section">
-              <div className="management-header">
+            <div className="user-management-section">
+              <div className="user-management-header">
                 <h3>User Management</h3>
               </div>
-              <div className="management-content">
-                <table className="management-table">
+              <div className="user-management-content">
+                <table className="user-management-table">
                   <thead>
                     <tr>
                       <th>Full Name</th>
@@ -479,18 +490,18 @@ const ManageAdmin = () => {
           )}
 
           {activeTab === "products" && (
-            <div className="management-section">
-              <div className="management-header">
+            <div className="product-management-section">
+              <div className="product-management-header">
                 <h3>Product Management</h3>
                 <button
-                  className="create-button"
+                  className="product-create-button"
                   onClick={() => openModal("createProduct")}
                 >
                   Create Product
                 </button>
               </div>
-              <div className="management-content">
-                <table className="management-table">
+              <div className="product-management-content">
+                <table className="product-management-table">
                   <thead>
                     <tr>
                       <th>Image</th>
@@ -525,7 +536,11 @@ const ManageAdmin = () => {
                         </td>
                         <td>{product.name}</td>
                         <td>{product.cost} VND</td>
-                        <td className="truncate-text">{product.description}</td>
+                        <td className="product-description-cell">
+                          <div className="product-content">
+                            {product.description}
+                          </div>
+                        </td>
                         <td>
                           <div className="action-buttons">
                             <button
@@ -559,18 +574,18 @@ const ManageAdmin = () => {
           )}
 
           {activeTab === "blogs" && (
-            <div className="management-section">
-              <div className="management-header">
+            <div className="blog-management-section">
+              <div className="blog-management-header">
                 <h3>Blog Management</h3>
                 <button
-                  className="create-button"
+                  className="blog-create-button"
                   onClick={() => openModal("createBlog")}
                 >
                   Create Blog
                 </button>
               </div>
-              <div className="management-content">
-                <table className="management-table">
+              <div className="blog-management-content">
+                <table className="blog-management-table">
                   <thead>
                     <tr>
                       <th>Image</th>
@@ -603,7 +618,7 @@ const ManageAdmin = () => {
                           )}
                         </td>
                         <td>{blog.title}</td>
-                        <td className="truncate-text">{blog.content}</td>
+                        <td className="blog-content-cell">{blog.content}</td>
                         <td>
                           <div className="action-buttons">
                             <button
@@ -635,8 +650,8 @@ const ManageAdmin = () => {
           )}
 
           {activeTab === "orders" && (
-            <div className="management-section">
-              <div className="management-header">
+            <div className="order-management-section">
+              <div className="order-management-header">
                 <h3>Order Management</h3>
                 <div className="date-filter">
                   <div>
@@ -673,8 +688,8 @@ const ManageAdmin = () => {
                   </button>
                 </div>
               </div>
-              <div className="management-content">
-                <table className="management-table">
+              <div className="order-management-content">
+                <table className="order-management-table">
                   <thead>
                     <tr>
                       <th>Order #</th>
@@ -695,7 +710,7 @@ const ManageAdmin = () => {
                         const orderDate = new Date(order.orderDate);
                         const startDate = new Date(filteredDateRange.startDate);
                         const endDate = new Date(filteredDateRange.endDate);
-                        endDate.setDate(endDate.getDate() + 1); // Include the end date in the filter
+                        endDate.setDate(endDate.getDate() + 1);
                         return orderDate >= startDate && orderDate < endDate;
                       })
                       .map((order) => (

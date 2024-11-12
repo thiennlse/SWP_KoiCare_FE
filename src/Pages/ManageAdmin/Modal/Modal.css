@@ -85,3 +85,119 @@
 .btn-close-admin:hover {
   background: #c82333;
 }
+
+/* Delete Modal Styles */
+.delete-modal-content {
+  max-width: 500px;
+  width: 100%;
+  padding: 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.delete-modal-header {
+  background: #dc3545;
+  padding: 20px 24px;
+  margin: 0;
+}
+
+.delete-modal-header h2 {
+  color: white;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.delete-modal-body {
+  padding: 24px;
+}
+
+.delete-modal-body p {
+  color: #666;
+  margin: 0 0 20px 0;
+  font-size: 1rem;
+}
+
+.delete-modal-details {
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.delete-modal-details div {
+  margin-bottom: 12px;
+}
+
+.delete-modal-details div:last-child {
+  margin-bottom: 0;
+}
+
+.delete-modal-details strong {
+  color: #1e407c;
+  margin-right: 8px;
+}
+
+.content-preview {
+  max-height: 100px;
+  overflow-y: auto;
+}
+
+.content-preview p {
+  margin: 8px 0 0 0;
+  color: #333;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.delete-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.delete-confirm-btn,
+.delete-cancel-btn {
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.delete-confirm-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+}
+
+.delete-confirm-btn:hover {
+  background: #c82333;
+  transform: translateY(-1px);
+}
+
+.delete-cancel-btn {
+  background: white;
+  color: #666;
+  border: 1px solid #ddd;
+}
+
+.delete-cancel-btn:hover {
+  background: #f8f9fa;
+  transform: translateY(-1px);
+}
+
+/* Additional styles for product image in delete modal */
+.product-image-preview {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.product-image-preview img {
+  max-width: 200px;
+  max-height: 200px;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}

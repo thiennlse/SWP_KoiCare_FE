@@ -7,34 +7,33 @@ const DeleteBlogModal = ({ isOpen, onRequestClose, blog, onDelete }) => {
       isOpen={isOpen}
       onRequestClose={onRequestClose}
       contentLabel="Delete Blog Confirmation"
-      className="modal_admin"
+      className="modal_admin delete-modal-content"
       overlayClassName="overlay_admin"
     >
-      <h2>Confirm Deletion</h2>
+      <div className="delete-modal-header">
+        <h2>Confirm Deletion</h2>
+      </div>
       {blog ? (
-        <>
-          <p>Are you sure you want to delete the following blog?</p>
-          <div>
-            <strong>Blog Title:</strong> {blog.title || "N/A"}
+        <div className="delete-modal-body">
+          <strong>Are you sure you want to delete the following blog?</strong>
+          <div className="delete-modal-details">
+            <div>
+              <strong>Blog Title:</strong> {blog.title || "N/A"}
+            </div>
+            <div className="content-preview">
+              <strong>Content:</strong>
+              <p>{blog.content || "N/A"}</p>
+            </div>
           </div>
-          <div>
-            <strong>Content:</strong> {blog.content || "N/A"}
-          </div>
-          <div className="form-btn-del-admin">
-            <button
-              onClick={onDelete}
-              className="btn-del-admin btn-outline-danger"
-            >
-              Delete
-            </button>
-            <button
-              onClick={onRequestClose}
-              className="btn-cancel-admin btn-outline-secondary"
-            >
+          <div className="delete-modal-actions">
+            <button className="delete-cancel-btn" onClick={onRequestClose}>
               Cancel
             </button>
+            <button className="delete-confirm-btn" onClick={onDelete}>
+              Delete
+            </button>
           </div>
-        </>
+        </div>
       ) : (
         <p>No blog selected.</p>
       )}

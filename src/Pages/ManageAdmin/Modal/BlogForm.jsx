@@ -5,12 +5,12 @@ import "./BlogForm.css";
 
 const BlogForm = ({ blog, onSubmit, closeModal }) => {
   const [formData, setFormData] = useState({
-    memberId: 0,
+    memberId: JSON.parse(localStorage.getItem("userId")) || 0,
     title: "",
-    image: "",
     content: "",
     dateOfPublish: new Date().toISOString().split("T")[0],
-    status: "",
+    status: "Private",
+    image: "",
   });
   const [previewImage, setPreviewImage] = useState("");
   const [imageFile, setImageFile] = useState(null);
@@ -87,7 +87,7 @@ const BlogForm = ({ blog, onSubmit, closeModal }) => {
       const submitData = {
         ...formData,
         image: imageUrl,
-        memberId: JSON.parse(localStorage.getItem("userId")) || 0,
+        dateOfPublish: new Date(formData.dateOfPublish).toISOString(),
       };
 
       onSubmit(submitData);
