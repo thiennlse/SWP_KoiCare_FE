@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://koicare-api.onrender.com/",
+  baseURL: "https://koicare-api.onrender.com",
   headers: {
     "Content-Type": "application/json",
     "Content-Encoding": "gzip",

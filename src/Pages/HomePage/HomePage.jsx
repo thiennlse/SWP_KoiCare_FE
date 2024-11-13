@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaArrowUp } from "react-icons/fa";
 import CalcAds from "./calcAds";
-
+import SubScription from "./subscription";
 import koiFood from "../../Components/Assets/KoiFood.jpeg";
 
 import banner_image_1 from "../../Components/Assets/banner_image_1.png";
@@ -54,6 +54,7 @@ const HomePage = () => {
       <div id="banner_scroll">
         <Banner />
       </div>
+      <SubScription />
       <CalcAds />
       <div id="products_scroll">
         <Products />

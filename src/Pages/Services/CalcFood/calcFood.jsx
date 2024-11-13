@@ -79,7 +79,7 @@ const CalcFood = () => {
       });
   };
 
-  function handleCalcFood(fishId) {
+  function handleCalcFoodByAI(fishId) {
     setLoading(true);
     axiosInstance
       .post(`/api/SupportAI/supportcalculatefood/${fishId}`)
@@ -97,6 +97,8 @@ const CalcFood = () => {
         setLoading(false);
       });
   }
+
+  function handleCalcFood(fishId) {}
 
   function handleShowFish(fish) {
     setSelectedFish(fish);
@@ -152,9 +154,15 @@ const CalcFood = () => {
               </p>
               <button
                 className="calc-food"
+                onClick={() => handleCalcFoodByAI(selectedFish.id)}
+              >
+                Calculate By Gemini
+              </button>
+              <button
+                className="calc-food"
                 onClick={() => handleCalcFood(selectedFish.id)}
               >
-                Calculate
+                Calculate By System
               </button>
               {loading && <div className="loader"></div>}
             </div>

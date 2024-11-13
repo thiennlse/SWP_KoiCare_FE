@@ -239,7 +239,6 @@ function Header() {
                       <Link to="/profile" onClick={handleScrollToTop}>
                         Profile Information
                       </Link>
-
                       <Link
                         to="/aquariummanagement"
                         onClick={handleScrollToTop}
@@ -254,6 +253,12 @@ function Header() {
                       </Link>
                       <Link to="/orderHistory" onClick={handleScrollToTop}>
                         Order History
+                      </Link>
+                      <Link to="/koiStatistic" onClick={handleScrollToTop}>
+                        Koi Statistics
+                      </Link>
+                      <Link to="/pondStatistic" onClick={handleScrollToTop}>
+                        Pond Statistics
                       </Link>
                     </div>
                   )}
