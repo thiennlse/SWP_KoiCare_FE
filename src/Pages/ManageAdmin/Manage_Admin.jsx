@@ -9,7 +9,7 @@ import ProductDetails from "./Modal/ProductDetails";
 import BlogForm from "./Modal/BlogForm";
 import BlogDetails from "./Modal/BlogDetails";
 import DeleteProductModal from "./Modal/DeleteProductModal";
-import DeleteBlogModal from "./Modal/DeletBlogModal";
+import DeleteBlogModal from "./Modal/DeleteBlogModal";
 import OrderChart from "./OrderChart";
 import adminAvatar from "./../../Components/Assets/admin.png";
 import {
@@ -47,6 +47,7 @@ const ManageAdmin = () => {
   const token = JSON.parse(localStorage.getItem("token"));
   const userRole = JSON.parse(localStorage.getItem("role"));
   const userId = JSON.parse(localStorage.getItem("userId"));
+  const searchTerm = ""; // Define searchTerm here
 
   const openModal = (type, content = null) => {
     setModalType(type);
@@ -81,7 +82,7 @@ const ManageAdmin = () => {
 
   useEffect(() => {
     fetchData();
-  }, [token, userId]);
+  }, [token, userId, searchTerm]); // Add searchTerm to the dependency array
 
   const rolesList = [
     { id: 1, name: "Admin" },
@@ -119,7 +120,43 @@ const ManageAdmin = () => {
       });
   };
 
-  const fetchData = () => {
+  const fetchData = async () => {
+    const userId = JSON.parse(localStorage.getItem("userId"));
+
+    try {
+      const response = await axiosInstance.get(
+        `/api/Order?page=1&pageSize=100`
+      );
+      if (response.status === 200) {
+        const filteredOrders = response.data
+          .map((order) => {
+            const filteredProducts = order.orderProducts.filter(
+              (product) => product.product.userId === userId
+            );
+
+            if (filteredProducts.length === 0) return null;
+
+            const totalCost = filteredProducts.reduce((sum, product) => {
+              return sum + product.product.cost * product.quantity;
+            }, 0);
+
+            return {
+              ...order,
+              orderProducts: filteredProducts,
+              totalCost: totalCost,
+              description: filteredProducts
+                .map((product) => product.product.description)
+                .join(", "),
+            };
+          })
+          .filter((order) => order !== null);
+
+        setOrders(filteredOrders);
+      }
+    } catch (error) {
+      toast.error("Error fetching orders:", error);
+    }
+
     axiosInstance
       .get("/api/Member", {
         headers: { Authorization: `Bearer ${token}` },
@@ -133,15 +170,6 @@ const ManageAdmin = () => {
       })
       .then((res) => setProducts(res.data))
       .catch((err) => console.error("Error fetching products:", err));
-
-    axiosInstance
-      .get("/api/Order?page=1&pageSize=100", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) =>
-        setOrders(res.data.filter((order) => order.memberId === userId))
-      )
-      .catch((err) => console.error("Error fetching orders:", err));
 
     axiosInstance
       .get("/api/Blog?page=1&pageSize=100", {
