@@ -27,6 +27,20 @@ const BlogForm = ({ blog, onSubmit, closeModal }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === "dateOfPublish") {
+      const selectedDate = new Date(value);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      if (selectedDate > today) {
+        toast.error("Date of publish cannot be in the future.", {
+          autoClose: 1500,
+        });
+        return;
+      }
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
