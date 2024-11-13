@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from "react";
 import "./subscription.css";
 import axiosInstance from "../axiosInstance";
+import { toast } from "react-toastify";
 
 const Subscription = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("status") === "CANCELLED") {
+    toast.warn("Thanh toán đã bị hủy!", { autoClose: 1500 });
+
+    const newUrl = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, document.title, newUrl);
+  }
   const [subScribe, setSubScribe] = useState([]);
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     axiosInstance
@@ -16,9 +25,41 @@ const Subscription = () => {
       });
   }, []);
 
-  function handleSubscribe(id) {
-    console.log("Subscribed to plan with ID:", id);
-  }
+  const handleSubscribe = async (id) => {
+    if (token === null) {
+      toast.warn("Login to subcribe!", {
+        autoClose: 1000,
+      });
+
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1000);
+      return;
+    }
+    console.log(id);
+    const payload = {
+      orderRequest: [
+        {
+          productId: 0,
+          cost: 0,
+          quantity: 0,
+        },
+      ],
+      subscriptionId: id,
+      cancelUrl: `${window.location.origin}/home`,
+      returnUrl: `${window.location.origin}/orderHistory`,
+    };
+    const response = await axiosInstance.post(
+      "/api/Checkout/create-payment-link",
+      payload
+    );
+    console.log(payload);
+    if (response.status === 200 && response.data) {
+      const paymentUrl = response.data;
+      localStorage.setItem("orderCode", response.data.orderCode);
+      window.location.href = paymentUrl;
+    }
+  };
 
   return (
     <div className="subscription-container">

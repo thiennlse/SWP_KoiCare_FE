@@ -190,7 +190,7 @@ const OrderItem = ({ order }) => {
               {products.map((orderProduct, index) => (
                 <div
                   key={index}
-                  className="product-item d-flex align-items-center mb-2"
+                  className="product-item-history d-flex align-items-center mb-2"
                   style={{
                     padding: "10px",
                     border: "1px solid #ccc",
