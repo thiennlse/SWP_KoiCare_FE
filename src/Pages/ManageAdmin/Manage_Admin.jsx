@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { GrUserAdmin } from "react-icons/gr";
 import axiosInstance from "../axiosInstance";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -45,6 +44,9 @@ const ManageAdmin = () => {
     startDate: "",
     endDate: "",
   });
+  const token = JSON.parse(localStorage.getItem("token"));
+  const userRole = JSON.parse(localStorage.getItem("role"));
+  const userId = JSON.parse(localStorage.getItem("userId"));
 
   const openModal = (type, content = null) => {
     setModalType(type);
@@ -77,12 +79,9 @@ const ManageAdmin = () => {
     setSelectedBlog(null);
   };
 
-  const token = JSON.parse(localStorage.getItem("token"));
-  const userRole = JSON.parse(localStorage.getItem("role"));
-
   useEffect(() => {
     fetchData();
-  }, [token]);
+  }, [token, userId]);
 
   const rolesList = [
     { id: 1, name: "Admin" },
@@ -139,7 +138,9 @@ const ManageAdmin = () => {
       .get("/api/Order?page=1&pageSize=100", {
         headers: { Authorization: `Bearer ${token}` },
       })
-      .then((res) => setOrders(res.data))
+      .then((res) =>
+        setOrders(res.data.filter((order) => order.memberId === userId))
+      )
       .catch((err) => console.error("Error fetching orders:", err));
 
     axiosInstance
@@ -523,61 +524,65 @@ const ManageAdmin = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {products.map((product) => (
-                      <tr key={product.id}>
-                        <td>
-                          {product.image ? (
-                            <img
-                              src={product.image}
-                              alt={product.name}
-                              style={{
-                                width: "60px",
-                                height: "60px",
-                                objectFit: "cover",
-                                borderRadius: "4px",
-                              }}
-                            />
-                          ) : (
-                            <span
-                              style={{ color: "#999", fontStyle: "italic" }}
-                            >
-                              No Image
-                            </span>
-                          )}
-                        </td>
-                        <td>{product.name}</td>
-                        <td>{product.cost} VND</td>
-                        <td className="product-description-cell">
-                          <div className="product-content">
-                            {product.description}
-                          </div>
-                        </td>
-                        <td>
-                          <div className="action-buttons">
-                            <button
-                              className="action-button edit-button"
-                              onClick={() => openModal("editProduct", product)}
-                            >
-                              Edit
-                            </button>
-                            <button
-                              className="action-button details-button"
-                              onClick={() =>
-                                openModal("productDetails", product)
-                              }
-                            >
-                              Details
-                            </button>
-                            <button
-                              className="action-button delete-button"
-                              onClick={() => openDeleteProductModal(product)}
-                            >
-                              Delete
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                    {products
+                      .filter((product) => product.userId === userId)
+                      .map((product) => (
+                        <tr key={product.id}>
+                          <td>
+                            {product.image ? (
+                              <img
+                                src={product.image}
+                                alt={product.name}
+                                style={{
+                                  width: "60px",
+                                  height: "60px",
+                                  objectFit: "cover",
+                                  borderRadius: "4px",
+                                }}
+                              />
+                            ) : (
+                              <span
+                                style={{ color: "#999", fontStyle: "italic" }}
+                              >
+                                No Image
+                              </span>
+                            )}
+                          </td>
+                          <td>{product.name}</td>
+                          <td>{product.cost} VND</td>
+                          <td className="product-description-cell">
+                            <div className="product-content">
+                              {product.description}
+                            </div>
+                          </td>
+                          <td>
+                            <div className="action-buttons">
+                              <button
+                                className="action-button edit-button"
+                                onClick={() =>
+                                  openModal("editProduct", product)
+                                }
+                              >
+                                Edit
+                              </button>
+                              <button
+                                className="action-button details-button"
+                                onClick={() =>
+                                  openModal("productDetails", product)
+                                }
+                              >
+                                Details
+                              </button>
+                              <button
+                                className="action-button delete-button"
+                                onClick={() => openDeleteProductModal(product)}
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
@@ -589,12 +594,6 @@ const ManageAdmin = () => {
               <div className="blog-management-section">
                 <div className="blog-management-header">
                   <h3>Blog Management</h3>
-                  <button
-                    className="blog-create-button"
-                    onClick={() => openModal("createBlog")}
-                  >
-                    Create Blog
-                  </button>
                 </div>
                 <div className="blog-management-content">
                   <table className="blog-management-table">
@@ -602,7 +601,7 @@ const ManageAdmin = () => {
                       <tr>
                         <th>Image</th>
                         <th>Title</th>
-                        <th>Content</th>
+                        <th>Author</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -630,7 +629,7 @@ const ManageAdmin = () => {
                             )}
                           </td>
                           <td>{blog.title}</td>
-                          <td className="blog-content-cell">{blog.content}</td>
+                          <td>{blog.author}</td>
                           <td>
                             <div className="action-buttons">
                               <button
