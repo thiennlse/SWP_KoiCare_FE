@@ -154,6 +154,18 @@ const UpdateFish = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    if (name === "dob") {
+      const selectedDate = new Date(value);
+      const today = new Date();
+
+      if (selectedDate > today) {
+        toast.error("Date of birth cannot be in the future", {
+          autoClose: 1500,
+        });
+        return;
+      }
+    }
+
     if ((name === "size" || name === "weight") && Number(value) > 100) {
       toast.error(
         `${name.charAt(0).toUpperCase() + name.slice(1)} must be less than 100`,
