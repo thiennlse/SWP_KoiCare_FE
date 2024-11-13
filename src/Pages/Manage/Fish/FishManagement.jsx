@@ -116,7 +116,10 @@ const FishManagement = () => {
         toast.success("Fish deleted successfully");
         const updatedFishList = fishList.filter((fish) => fish.id !== id);
         setFishList(updatedFishList);
-        filterFishList(selectedPoolId, searchQuery);
+        const updatedFilteredList = filteredFishList.filter(
+          (fish) => fish.id !== id
+        );
+        setFilteredFishList(updatedFilteredList);
       }
     } catch (error) {
       console.error("Error deleting fish:", error);
