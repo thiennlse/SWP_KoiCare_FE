@@ -36,7 +36,7 @@ const AquariumManagement = () => {
       });
   };
 
-  const handleCalcSalt = (aquaId) => {
+  const handleCalcSaltByAI = (aquaId) => {
     setLoading(true);
     axiosInstance
       .post(`/api/SupportAI/supportcalculatesalt/${aquaId}`)
@@ -54,6 +54,8 @@ const AquariumManagement = () => {
         setLoading(false);
       });
   };
+
+  function handleCalcSalt(aquaId) {}
 
   const handleShowAqua = (aqua) => {
     setSelectedAqua(aqua);
@@ -102,9 +104,16 @@ const AquariumManagement = () => {
               </p>
               <button
                 className="calc-salt"
+                onClick={() => handleCalcSaltByAI(selectedAqua.id)}
+              >
+                Calculate By Gemini
+              </button>
+
+              <button
+                className="calc-salt"
                 onClick={() => handleCalcSalt(selectedAqua.id)}
               >
-                Calculate
+                Calculate By System
               </button>
               {loading && <div className="loader"></div>}
             </div>
