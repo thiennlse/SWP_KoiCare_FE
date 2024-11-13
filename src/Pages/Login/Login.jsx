@@ -90,7 +90,11 @@ const LoginForm = () => {
         localStorage.setItem("role", JSON.stringify(res.data.role));
         localStorage.setItem("emailUser", JSON.stringify(loginEmail));
 
-        if (res.data.role === "Admin") {
+        if (
+          res.data.role === "Admin" ||
+          res.data.role === "ShopOwner" ||
+          res.data.role === "Staff"
+        ) {
           console.log("Navigating to /admin");
           window.location.href = "/admin";
         } else {

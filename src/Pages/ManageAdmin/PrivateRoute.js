@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
-const PrivateRoute = ({ children, allowedRole }) => {
+const PrivateRoute = ({ children, allowedRoles }) => {
   const [storedRole, setStoredRole] = useState(null);
 
   useEffect(() => {
@@ -14,9 +14,9 @@ const PrivateRoute = ({ children, allowedRole }) => {
     return <div>Loading...</div>;
   }
 
-  if (storedRole !== allowedRole) {
+  if (!allowedRoles.includes(storedRole)) {
     console.log(
-      `Unauthorized - Redirecting to /. Expected: ${allowedRole}, Got: ${storedRole}`
+      `Unauthorized - Redirecting to /. Expected one of: ${allowedRoles}, Got: ${storedRole}`
     );
     return <Navigate to="/" replace />;
   }

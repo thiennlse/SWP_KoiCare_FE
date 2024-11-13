@@ -78,6 +78,7 @@ const ManageAdmin = () => {
   };
 
   const token = JSON.parse(localStorage.getItem("token"));
+  const userRole = JSON.parse(localStorage.getItem("role"));
 
   useEffect(() => {
     fetchData();
@@ -363,41 +364,51 @@ const ManageAdmin = () => {
           </div>
           <nav className="nav_admin">
             <ul>
-              <li
-                className={activeTab === "dashboard" ? "active" : ""}
-                onClick={() => setActiveTab("dashboard")}
-              >
-                <MdDashboard className="nav-icon-admin" />
-                Dashboard
-              </li>
-              <li
-                className={activeTab === "users" ? "active" : ""}
-                onClick={() => setActiveTab("users")}
-              >
-                <MdPeople className="nav-icon-admin" />
-                User Management
-              </li>
-              <li
-                className={activeTab === "products" ? "active" : ""}
-                onClick={() => setActiveTab("products")}
-              >
-                <MdShoppingCart className="nav-icon-admin" />
-                Product Management
-              </li>
-              <li
-                className={activeTab === "blogs" ? "active" : ""}
-                onClick={() => setActiveTab("blogs")}
-              >
-                <MdArticle className="nav-icon-admin" />
-                Blog Management
-              </li>
-              <li
-                className={activeTab === "orders" ? "active" : ""}
-                onClick={() => setActiveTab("orders")}
-              >
-                <FaClipboardList className="nav-icon-admin" />
-                Order Management
-              </li>
+              {userRole === "Admin" && (
+                <li
+                  className={activeTab === "dashboard" ? "active" : ""}
+                  onClick={() => setActiveTab("dashboard")}
+                >
+                  <MdDashboard className="nav-icon-admin" />
+                  Dashboard
+                </li>
+              )}
+              {userRole === "Admin" && (
+                <li
+                  className={activeTab === "users" ? "active" : ""}
+                  onClick={() => setActiveTab("users")}
+                >
+                  <MdPeople className="nav-icon-admin" />
+                  User Management
+                </li>
+              )}
+              {userRole === "ShopOwner" && (
+                <li
+                  className={activeTab === "products" ? "active" : ""}
+                  onClick={() => setActiveTab("products")}
+                >
+                  <MdShoppingCart className="nav-icon-admin" />
+                  Product Management
+                </li>
+              )}
+              {(userRole === "Admin" || userRole === "Staff") && (
+                <li
+                  className={activeTab === "blogs" ? "active" : ""}
+                  onClick={() => setActiveTab("blogs")}
+                >
+                  <MdArticle className="nav-icon-admin" />
+                  Blog Management
+                </li>
+              )}
+              {(userRole === "Admin" || userRole === "ShopOwner") && (
+                <li
+                  className={activeTab === "orders" ? "active" : ""}
+                  onClick={() => setActiveTab("orders")}
+                >
+                  <FaClipboardList className="nav-icon-admin" />
+                  Order Management
+                </li>
+              )}
             </ul>
           </nav>
           <button className="back_button_admin" onClick={handleBackToHome}>
@@ -489,7 +500,7 @@ const ManageAdmin = () => {
             </div>
           )}
 
-          {activeTab === "products" && (
+          {activeTab === "products" && userRole === "ShopOwner" && (
             <div className="product-management-section">
               <div className="product-management-header">
                 <h3>Product Management</h3>
@@ -573,81 +584,82 @@ const ManageAdmin = () => {
             </div>
           )}
 
-          {activeTab === "blogs" && (
-            <div className="blog-management-section">
-              <div className="blog-management-header">
-                <h3>Blog Management</h3>
-                <button
-                  className="blog-create-button"
-                  onClick={() => openModal("createBlog")}
-                >
-                  Create Blog
-                </button>
-              </div>
-              <div className="blog-management-content">
-                <table className="blog-management-table">
-                  <thead>
-                    <tr>
-                      <th>Image</th>
-                      <th>Title</th>
-                      <th>Content</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {blogs.map((blog) => (
-                      <tr key={blog.id}>
-                        <td>
-                          {blog.image ? (
-                            <img
-                              src={blog.image}
-                              alt={blog.title}
-                              style={{
-                                width: "60px",
-                                height: "60px",
-                                objectFit: "cover",
-                                borderRadius: "4px",
-                              }}
-                            />
-                          ) : (
-                            <span
-                              style={{ color: "#999", fontStyle: "italic" }}
-                            >
-                              No Image
-                            </span>
-                          )}
-                        </td>
-                        <td>{blog.title}</td>
-                        <td className="blog-content-cell">{blog.content}</td>
-                        <td>
-                          <div className="action-buttons">
-                            <button
-                              className="action-button edit-button"
-                              onClick={() => openModal("editBlog", blog)}
-                            >
-                              Edit
-                            </button>
-                            <button
-                              className="action-button details-button"
-                              onClick={() => openModal("blogDetails", blog)}
-                            >
-                              Details
-                            </button>
-                            <button
-                              className="action-button delete-button"
-                              onClick={() => openDeleteBlogModal(blog)}
-                            >
-                              Delete
-                            </button>
-                          </div>
-                        </td>
+          {activeTab === "blogs" &&
+            (userRole === "Admin" || userRole === "Staff") && (
+              <div className="blog-management-section">
+                <div className="blog-management-header">
+                  <h3>Blog Management</h3>
+                  <button
+                    className="blog-create-button"
+                    onClick={() => openModal("createBlog")}
+                  >
+                    Create Blog
+                  </button>
+                </div>
+                <div className="blog-management-content">
+                  <table className="blog-management-table">
+                    <thead>
+                      <tr>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Content</th>
+                        <th>Actions</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {blogs.map((blog) => (
+                        <tr key={blog.id}>
+                          <td>
+                            {blog.image ? (
+                              <img
+                                src={blog.image}
+                                alt={blog.title}
+                                style={{
+                                  width: "60px",
+                                  height: "60px",
+                                  objectFit: "cover",
+                                  borderRadius: "4px",
+                                }}
+                              />
+                            ) : (
+                              <span
+                                style={{ color: "#999", fontStyle: "italic" }}
+                              >
+                                No Image
+                              </span>
+                            )}
+                          </td>
+                          <td>{blog.title}</td>
+                          <td className="blog-content-cell">{blog.content}</td>
+                          <td>
+                            <div className="action-buttons">
+                              <button
+                                className="action-button edit-button"
+                                onClick={() => openModal("editBlog", blog)}
+                              >
+                                Edit
+                              </button>
+                              <button
+                                className="action-button details-button"
+                                onClick={() => openModal("blogDetails", blog)}
+                              >
+                                Details
+                              </button>
+                              <button
+                                className="action-button delete-button"
+                                onClick={() => openDeleteBlogModal(blog)}
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
           {activeTab === "orders" && (
             <div className="order-management-section">
