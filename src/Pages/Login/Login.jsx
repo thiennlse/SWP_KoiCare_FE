@@ -209,12 +209,12 @@ const LoginForm = () => {
                 </a>
               </p>
             </div>
-            <span className="line left"></span>
+            {/* <span className="line left"></span>
             <span className="center">Or</span>
             <span className="line right"></span> <br />
             <a href="#" className="btn google">
               Login with Google
-            </a>
+            </a> */}
           </form>
         </div>
 
