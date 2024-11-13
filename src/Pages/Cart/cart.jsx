@@ -135,23 +135,22 @@ function Products({
     }
 
     try {
-      const payload = selectedProducts.map((product) => ({
-        productId: product.id,
-        cost: product.cost,
-        quantity: product.quantity,
-      }));
+      const payload = {
+        orderRequest: selectedProducts.map((product) => ({
+          productId: product.id,
+          cost: product.cost,
+          quantity: product.quantity,
+        })),
+        subscriptionId: 0,
+        cancelUrl: `${window.location.origin}/cart`,
+        returnUrl: `${window.location.origin}/orderHistory`,
+      };
       const response = await axiosInstance.post(
         "/api/Checkout/create-payment-link",
-        payload,
-        {
-          params: {
-            cancelUrl: `${window.location.origin}/cart`,
-            returnUrl: `${window.location.origin}/orderHistory`,
-          },
-        }
+        payload
       );
       if (response.status === 200 && response.data) {
-        const paymentUrl = response.data.url;
+        const paymentUrl = response.data;
         localStorage.setItem("orderCode", response.data.orderCode);
         localStorage.setItem(
           "selectedProducts",
