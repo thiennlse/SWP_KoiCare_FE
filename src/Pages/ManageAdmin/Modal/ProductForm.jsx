@@ -30,6 +30,17 @@ const ProductForm = ({ product, onSubmit, closeModal }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    if (
+      (name === "productivity" || name === "inStock" || name === "cost") &&
+      value < 0
+    ) {
+      toast.error(
+        `${name.charAt(0).toUpperCase() + name.slice(1)} cannot be negative.`
+      );
+      return;
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
