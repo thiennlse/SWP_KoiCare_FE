@@ -47,7 +47,7 @@ const ManageAdmin = () => {
   const token = JSON.parse(localStorage.getItem("token"));
   const userRole = JSON.parse(localStorage.getItem("role"));
   const userId = JSON.parse(localStorage.getItem("userId"));
-  const searchTerm = ""; // Define searchTerm here
+  const searchTerm = "";
 
   const openModal = (type, content = null) => {
     setModalType(type);
@@ -82,7 +82,18 @@ const ManageAdmin = () => {
 
   useEffect(() => {
     fetchData();
-  }, [token, userId, searchTerm]); // Add searchTerm to the dependency array
+  }, [token, userId, searchTerm]);
+
+  useEffect(() => {
+    if (userRole === "Admin") {
+      setActiveTab("dashboard");
+    } else if (userRole === "Staff") {
+      setActiveTab("blogs");
+    } else if (userRole === "ShopOwner") {
+      setActiveTab("products");
+    }
+    fetchData();
+  }, [token, userId, userRole]);
 
   const rolesList = [
     { id: 1, name: "Admin" },
@@ -389,7 +400,7 @@ const ManageAdmin = () => {
         <aside className="sidebar-admin">
           <div className="profile-admin">
             <img src={adminAvatar} alt="Admin" />
-            <div className="admin-name">Admin</div>
+            <div className="admin-name">{userRole}</div>
           </div>
           <nav className="nav_admin">
             <ul>
@@ -429,7 +440,7 @@ const ManageAdmin = () => {
                   Blog Management
                 </li>
               )}
-              {(userRole === "Admin" || userRole === "ShopOwner") && (
+              {userRole === "ShopOwner" && (
                 <li
                   className={activeTab === "orders" ? "active" : ""}
                   onClick={() => setActiveTab("orders")}
@@ -622,6 +633,12 @@ const ManageAdmin = () => {
               <div className="blog-management-section">
                 <div className="blog-management-header">
                   <h3>Blog Management</h3>
+                  <button
+                    className="blog-create-button"
+                    onClick={() => openModal("createBlog")}
+                  >
+                    Create Blog
+                  </button>
                 </div>
                 <div className="blog-management-content">
                   <table className="blog-management-table">

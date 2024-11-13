@@ -277,6 +277,24 @@ function Header() {
                   Logout
                 </span>
               </div>
+            ) : role === "Staff" ? (
+              <div className="admin-nav">
+                <button className="back-to-admin" onClick={handleBackToAdmin}>
+                  Back to Staff
+                </button>
+                <span className="logout_button" onClick={handleLogout}>
+                  Logout
+                </span>
+              </div>
+            ) : role === "ShopOwner" ? (
+              <div className="admin-nav">
+                <button className="back-to-admin" onClick={handleBackToAdmin}>
+                  Back to Shop Owner
+                </button>
+                <span className="logout_button" onClick={handleLogout}>
+                  Logout
+                </span>
+              </div>
             ) : (
               <a href="/login">
                 <CgProfile className="icon_header" />
