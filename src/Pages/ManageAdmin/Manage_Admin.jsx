@@ -133,6 +133,7 @@ const ManageAdmin = () => {
 
   const fetchData = async () => {
     const userId = JSON.parse(localStorage.getItem("userId"));
+    const userRole = JSON.parse(localStorage.getItem("role"));
 
     try {
       const response = await axiosInstance.get(
@@ -140,31 +141,42 @@ const ManageAdmin = () => {
       );
       if (response.status === 200) {
         const filteredOrders = response.data
+          .filter((order) => {
+            if (userRole === "Admin") {
+              return true;
+            } else if (userRole === "ShopOwner") {
+              return order.orderProducts?.some(
+                (product) => product.product?.userId === userId
+              );
+            }
+            return false;
+          })
           .map((order) => {
-            const filteredProducts = order.orderProducts.filter(
-              (product) => product.product.userId === userId
+            const filteredOrderProducts = order.orderProducts?.filter(
+              (product) => product.product?.userId === userId
             );
 
-            if (filteredProducts.length === 0) return null;
-
-            const totalCost = filteredProducts.reduce((sum, product) => {
-              return sum + product.product.cost * product.quantity;
+            const totalCost = filteredOrderProducts.reduce((sum, product) => {
+              if (product.product && product.product.cost) {
+                return sum + product.product.cost * product.quantity;
+              }
+              return sum;
             }, 0);
 
             return {
               ...order,
-              orderProducts: filteredProducts,
+              orderProducts: filteredOrderProducts,
               totalCost: totalCost,
-              description: filteredProducts
-                .map((product) => product.product.description)
+              description: filteredOrderProducts
+                .map((product) => product.product?.description)
                 .join(", "),
             };
-          })
-          .filter((order) => order !== null);
+          });
 
         setOrders(filteredOrders);
       }
     } catch (error) {
+      console.error("Lỗi khi lấy dữ liệu đơn hàng:", error);
       toast.error("Error fetching orders:", error);
     }
 
