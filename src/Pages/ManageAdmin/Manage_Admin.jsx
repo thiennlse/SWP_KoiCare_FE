@@ -748,7 +748,7 @@ const ManageAdmin = () => {
                 <table className="order-management-table">
                   <thead>
                     <tr>
-                      <th>Order #</th>
+                      <th>Order Code#</th>
                       <th>Order Date</th>
                       <th>Description</th>
                       <th>Total Cost</th>
@@ -771,7 +771,7 @@ const ManageAdmin = () => {
                       })
                       .map((order) => (
                         <tr key={order.id}>
-                          <td>#{order.id}</td>
+                          <td>#{order.code}</td>
                           <td>
                             {new Date(order.orderDate).toLocaleDateString()}
                           </td>
