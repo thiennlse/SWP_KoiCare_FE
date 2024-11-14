@@ -12,13 +12,15 @@ const Cart = () => {
   const [totalPayment, setTotalPayment] = useState(0);
   const [isSelectAll, setIsSelectAll] = useState(false);
   const [members, setMembers] = useState([]);
+  const [cancelNotification, setCancelNotification] = useState(false);
+
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get("status") === "CANCELLED") {
-    toast.warn("Thanh toán đã bị hủy!", { autoClose: 1500 });
-
-    const newUrl = window.location.origin + window.location.pathname;
-    window.history.replaceState({}, document.title, newUrl);
-    localStorage.removeItem("selectedProducts");
+    if (!cancelNotification) {
+      toast.warn("Thanh toán đã bị hủy!", { autoClose: 1500 });
+      localStorage.removeItem("selectedProducts");
+      setCancelNotification(true);
+    }
   }
 
   useEffect(() => {
@@ -39,9 +41,16 @@ const Cart = () => {
     setProducts(storedCart);
   }, []);
 
+  useEffect(() => {
+    if (selectedProducts.length === products.length && products.length > 0) {
+      setIsSelectAll(true);
+    } else {
+      setIsSelectAll(false);
+    }
+  }, [selectedProducts, products]);
+
   const groupProductsByShop = () => {
     const groupedProducts = {};
-
     products.forEach((product) => {
       const member = members.find((member) => member.id === product.userId);
       const shopName = member ? member.fullName : "Unknown Shop";
@@ -51,8 +60,26 @@ const Cart = () => {
       }
       groupedProducts[shopName].push(product);
     });
-
     return groupedProducts;
+  };
+
+  const calculateTotalPayment = (selected) => {
+    const total = selected.reduce(
+      (sum, item) => sum + item.cost * item.quantity,
+      0
+    );
+    setTotalPayment(total);
+  };
+
+  const handleSelectAll = (e) => {
+    if (e.target.checked) {
+      setSelectedProducts(products.map((product) => ({ ...product })));
+      calculateTotalPayment(products);
+    } else {
+      setSelectedProducts([]);
+      setTotalPayment(0);
+    }
+    setIsSelectAll(e.target.checked);
   };
 
   const renderGroupedProducts = () => {
@@ -96,37 +123,63 @@ const Cart = () => {
     calculateTotalPayment(updatedSelectedProducts);
   };
 
-  const calculateTotalPayment = (selected) => {
-    const total = selected.reduce(
-      (sum, item) => sum + item.cost * item.quantity,
-      0
-    );
-    setTotalPayment(total);
-  };
-
-  const handleSelectAll = () => {
-    if (isSelectAll) {
-      setSelectedProducts([]);
-    } else {
-      setSelectedProducts(products);
-    }
-    setIsSelectAll(!isSelectAll);
-    calculateTotalPayment(isSelectAll ? [] : products);
-  };
-
-  const handleUpdateQuantityAndRecalculate = (id, newQuantity) => {
+  const handleUpdateQuantityAndRecalculate = (productId, newQuantity) => {
     const updatedProducts = products.map((product) => {
-      if (product.id === id) {
+      if (product.id === productId) {
         return { ...product, quantity: newQuantity };
       }
       return product;
     });
+
     setProducts(updatedProducts);
-    calculateTotalPayment(selectedProducts);
+    localStorage.setItem("cart", JSON.stringify(updatedProducts));
+
+    const updatedSelectedProducts = selectedProducts.map((product) => {
+      if (product.id === productId) {
+        return { ...product, quantity: newQuantity };
+      }
+      return product;
+    });
+
+    setSelectedProducts(updatedSelectedProducts);
+    calculateTotalPayment(updatedSelectedProducts);
   };
 
-  const handlePurchase = () => {
-    toast.success("Purchase successful!");
+  const handlePurchase = async () => {
+    if (selectedProducts.length === 0) {
+      toast.warn("Vui lòng chọn ít nhất một sản phẩm!", { autoClose: 1500 });
+      return;
+    }
+
+    try {
+      const payload = {
+        orderRequest: selectedProducts.map((product) => ({
+          productId: product.id,
+          cost: product.cost,
+          quantity: product.quantity,
+        })),
+        subscriptionId: 0,
+        cancelUrl: `${window.location.origin}/cart`,
+        returnUrl: `${window.location.origin}/orderHistory`,
+      };
+      const response = await axiosInstance.post(
+        "/api/Checkout/create-payment-link",
+        payload
+      );
+      if (response.status === 200 && response.data) {
+        const paymentUrl = response.data;
+        localStorage.setItem("orderCode", response.data.orderCode);
+        localStorage.setItem(
+          "selectedProducts",
+          JSON.stringify(selectedProducts)
+        );
+        window.location.href = paymentUrl;
+      }
+    } catch (error) {
+      toast.error("Thanh toán thất bại! Không đủ số lượng sản phẩm", {
+        autoClose: 1500,
+      });
+    }
   };
 
   return (
@@ -213,7 +266,7 @@ function Product({
         />
         <div>{item.name}</div>
       </div>
-      <div className="col-3 cart-price">{item.cost} vnd</div>
+      <div className="col-2 cart-price">{item.cost} vnd</div>
       <div className="col-3">
         <div className="calc-count d-flex justify-content-center">
           <button
@@ -242,7 +295,7 @@ function Product({
           {item.inStock} products remaining
         </div>
       </div>
-      <div className="col-3 text-danger">{item.cost * count} vnd</div>{" "}
+      <div className="col-3 text-danger">{item.cost * count} vnd</div>
     </div>
   );
 }
