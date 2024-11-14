@@ -1,6 +1,5 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
-import "./koiChart.css";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,7 +11,6 @@ import {
   Legend,
 } from "chart.js";
 
-// Register the necessary components from Chart.js
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -23,47 +21,71 @@ ChartJS.register(
   Legend
 );
 
-const KoiChart = () => {
-  // Mock Data
-  const mockData = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"], // Example months
+const KoiChart = ({ fishInfor }) => {
+  const growthData = fishInfor.fishProperties;
+
+  if (!growthData || growthData.length === 0) {
+    return <p>No growth data available for this fish.</p>;
+  }
+
+  const dates = growthData.map((data) =>
+    new Date(data.date).toLocaleString()
+  );
+  const sizes = growthData.map((data) => data.size);
+  const weights = growthData.map((data) => data.weight);
+
+  const chartData = {
+    labels: dates,
     datasets: [
       {
-        label: "Koi Fish Growth (cm)",
-        data: [5, 10, 15, 20, 25, 30, 35], // Example growth in cm per month
-        borderColor: "rgba(75, 192, 192, 1)", // Line color
-        backgroundColor: "rgba(75, 192, 192, 0.2)", // Fill color
-        tension: 0.1, // Curve of the line
-        fill: true, // Fill under the line
+        label: "Size (cm)",
+        data: sizes,
+        fill: false,
+        borderColor: "rgb(75, 192, 192)",
+        tension: 0.1,
+      },
+      {
+        label: "Weight (kg)",
+        data: weights,
+        fill: false,
+        borderColor: "rgb(255, 99, 132)",
+        tension: 0.1,
       },
     ],
   };
 
-  // Chart options
   const options = {
     responsive: true,
     plugins: {
+      legend: {
+        position: "top",
+      },
       title: {
         display: true,
-        text: "Koi Fish Growth Statistics",
+        text: "Koi Growth Development Over Time",
       },
     },
     scales: {
-      y: {
-        min: 0,
+      x: {
+        title: {
+          display: true,
+          text: "Date & Time",
+        },
         ticks: {
-          stepSize: 5,
+          autoSkip: true,
+          maxRotation: 45,
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: "Value",
         },
       },
     },
   };
 
-  return (
-    <div className="koi-chart">
-      <h2>Koi Fish Growth Chart</h2>
-      <Line data={mockData} options={options} />
-    </div>
-  );
+  return <Line data={chartData} options={options} />;
 };
 
 export default KoiChart;

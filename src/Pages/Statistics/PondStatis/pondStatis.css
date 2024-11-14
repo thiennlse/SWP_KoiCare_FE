@@ -1,4 +1,4 @@
-.koi-statis-container {
+.pond-statis-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -7,7 +7,7 @@
   margin-top: 70px;
 }
 
-.koi-choose-form {
+.pond-choose-form {
   width: 600px;
   margin: 0 auto;
   text-align: center;
@@ -16,17 +16,17 @@
   border-radius: 8px;
 }
 
-.koi-choose-form select {
+h1 {
+  margin-bottom: 10px;
+}
+
+select {
   width: 100%;
   padding: 8px;
   margin-top: 10px;
 }
 
-h1 {
-  margin-bottom: 10px;
-}
-
-.koi-chart-container {
+.pond-chart-container {
   width: 1000px;
   height: 500px;
   margin: 0 auto;

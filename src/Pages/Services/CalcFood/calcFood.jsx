@@ -9,10 +9,12 @@ const CalcFood = () => {
   const [foodList, setFoodList] = useState([]);
   const [selectedFish, setSelectedFish] = useState(null);
   const [calculationResultHTML, setCalculationResultHTML] = useState("");
+  const [systemCalculationResult, setSystemCalculationResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [isShow, setIsShow] = useState(false);
 
   const memberId = JSON.parse(localStorage.getItem("userId"));
+  const subId = localStorage.getItem("subId");
 
   useEffect(() => {
     if (memberId !== 0) {
@@ -88,22 +90,37 @@ const CalcFood = () => {
           .replace(/^```html\s*/, "")
           .replace(/```$/, "");
         setCalculationResultHTML(cleanHtml);
-        toast.success("Calculation completed!", { autoClose: 2000 });
+        toast.success("Calculation completed by Gemini!", { autoClose: 2000 });
       })
       .catch((err) => {
-        toast.error("Failed to calculate food.", { autoClose: 1500 });
+        toast.error("Failed to calculate food by Gemini.", { autoClose: 1500 });
       })
       .finally(() => {
         setLoading(false);
       });
   }
 
-  function handleCalcFood(fishId) {}
+  function handleCalcFood(fishId) {
+    setLoading(true);
+    axiosInstance
+      .get(`/api/Fish/calculateFoodFish/${fishId}`)
+      .then((res) => {
+        setSystemCalculationResult(res.data);
+        toast.success("Calculation completed by System!", { autoClose: 2000 });
+      })
+      .catch((err) => {
+        toast.error("Failed to calculate food by System.", { autoClose: 1500 });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
 
   function handleShowFish(fish) {
     setSelectedFish(fish);
     setIsShow(true);
     setCalculationResultHTML("");
+    setSystemCalculationResult("");
   }
 
   return (
@@ -153,27 +170,64 @@ const CalcFood = () => {
                 {getFoodWeight(selectedFish.foodId)}kg
               </p>
               <button
-                className="calc-food"
+                className={`calc-food ${
+                  !subId || subId === "1" ? "disabled" : ""
+                }`}
                 onClick={() => handleCalcFoodByAI(selectedFish.id)}
+                disabled={!subId || subId === "1"}
+                title={
+                  !subId || subId === "1" ? "Upgrade to Premium to use" : ""
+                }
               >
                 Calculate By Gemini
               </button>
+
               <button
-                className="calc-food"
+                className={`calc-food ${!subId ? "disabled" : ""}`}
                 onClick={() => handleCalcFood(selectedFish.id)}
+                disabled={!subId}
+                title={!subId ? "Upgrade to Standard/Premium to use" : ""}
               >
                 Calculate By System
               </button>
+
               {loading && <div className="loader"></div>}
             </div>
           ) : (
             ""
           )}
           {calculationResultHTML && (
-            <div
-              className="calculation-result"
-              dangerouslySetInnerHTML={{ __html: calculationResultHTML }}
-            />
+            <>
+              <h1>Tính toán lượng thức ăn theo Gemini</h1>
+              <div
+                className="calculation-result"
+                dangerouslySetInnerHTML={{ __html: calculationResultHTML }}
+              />
+            </>
+          )}
+
+          {systemCalculationResult && (
+            <div className="calculation-result">
+              <h1>Tính toán lượng thức ăn theo hệ thống</h1>
+              <div>
+                <p>
+                  <strong>Số lượng thức ăn tiêu chuẩn:</strong>{" "}
+                  {systemCalculationResult.dailyFood} kg
+                </p>
+                <p>
+                  <strong>Thức ăn trong 1 tuần:</strong>{" "}
+                  {systemCalculationResult.weeklyFood} kg
+                </p>
+                <p>
+                  <strong>Số ngày cho ăn / tuần :</strong>{" "}
+                  {systemCalculationResult.feedDay} ngày
+                </p>
+                <p>
+                  <strong>Số lượng cho ăn mỗi ngày:</strong>{" "}
+                  {systemCalculationResult.perFeedingDay} kg
+                </p>
+              </div>
+            </div>
           )}
         </div>
       ) : (

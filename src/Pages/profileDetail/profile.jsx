@@ -10,17 +10,36 @@ const ProfileForm = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
+    //   const fetchUserDetails = async () => {
+    //     try {
+    //       const response = await axiosInstance.get("/api/Member");
+    //       const member = response.data.find(
+    //         (member) => member.id === Number(userId)
+    //       );
+    //       if (member) {
+    //         setUserData(member);
+    //       } else {
+    //         console.error("User not found");
+    //       }
+    //     } catch (error) {
+    //       console.error("Error fetching user data:", error);
+    //     }
+
+    //     const successMessage = localStorage.getItem("updSuccess");
+    //     if (successMessage) {
+    //       toast.success(successMessage, { autoClose: 2000 });
+    //       localStorage.removeItem("updSuccess");
+    //     }
+    //   };
+
+    //   fetchUserDetails();
+    // }, [userId]);
+
     const fetchUserDetails = async () => {
       try {
-        const response = await axiosInstance.get("/api/Member");
-        const member = response.data.find(
-          (member) => member.id === Number(userId)
-        );
-        if (member) {
-          setUserData(member);
-        } else {
-          console.error("User not found");
-        }
+        const response = await axiosInstance.get(`/api/Member/${userId}`);
+
+        setUserData(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -129,6 +148,14 @@ const ProfileForm = () => {
           </p>
           <p>
             <strong>Address:</strong> {userData.address}
+          </p>
+          <p>
+            <strong>Subscription End Date:</strong>{" "}
+            {userData.userSubcriptions && userData.userSubcriptions.length > 0
+              ? new Date(
+                  userData.userSubcriptions[0].endDate
+                ).toLocaleDateString()
+              : "No subscription available"}
           </p>
 
           <button className="edit-btn" onClick={handleEditClick}>

@@ -22,8 +22,8 @@ import CalcFood from "./Pages/Services/CalcFood/calcFood";
 import CalcSalt from "./Pages/Services/CalcSalt/calcSalt";
 import Water from "./Pages/Manage/WaterManagement/water";
 import AuthGuard from "./Pages/authGuagd";
-import KoiChart from "./Pages/Statistics/KoiStatis/koiChart";
 import KoiStatis from "./Pages/Statistics/KoiStatis/koiStatis";
+import PondStatis from "./Pages/Statistics/PondStatis/pondStatis";
 
 function App() {
   return (
@@ -51,8 +51,8 @@ function App() {
           <Route path="/calcFood" element={<CalcFood />} />
           <Route path="/calcSalt" element={<CalcSalt />} />
           <Route path="/water" element={<Water />} />
-          <Route path="/koiChart" element={<KoiChart />} />
           <Route path="/koiStatistic" element={<KoiStatis />} />
+          <Route path="/pondStatistic" element={<PondStatis />} />
         </Route>
         <Route
           path="/admin"
