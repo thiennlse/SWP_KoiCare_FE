@@ -11,6 +11,7 @@ const AquariumManagement = () => {
   const [isShow, setIsShow] = useState(false);
 
   const memberId = JSON.parse(localStorage.getItem("userId"));
+  const subId = localStorage.getItem("subId");
 
   useEffect(() => {
     if (memberId !== 0) {
@@ -103,15 +104,23 @@ const AquariumManagement = () => {
                 <strong>Depth:</strong> {selectedAqua.depth} cm
               </p>
               <button
-                className="calc-salt"
+                className={`calc-salt ${
+                  !subId || subId === "1" ? "disabled" : ""
+                }`}
                 onClick={() => handleCalcSaltByAI(selectedAqua.id)}
+                disabled={!subId || subId === "1"}
+                title={
+                  !subId || subId === "1" ? "Upgrade to Premium to use" : ""
+                }
               >
                 Calculate By Gemini
               </button>
 
               <button
-                className="calc-salt"
+                className={`calc-salt ${!subId ? "disabled" : ""}`}
                 onClick={() => handleCalcSalt(selectedAqua.id)}
+                disabled={!subId}
+                title={!subId ? "Upgrade to Standard/Premium to use" : ""}
               >
                 Calculate By System
               </button>

@@ -147,3 +147,13 @@
   background-color: #f1f1f1;
   color: #333;
 }
+
+.calc-salt.disabled {
+  background-color: gray;
+  color: white;
+  cursor: not-allowed;
+}
+
+.calc-salt.disabled:hover {
+  background-color: #333;
+}

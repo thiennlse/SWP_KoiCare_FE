@@ -7,12 +7,14 @@ const Subscription = () => {
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get("status") === "CANCELLED") {
     toast.warn("Thanh toán đã bị hủy!", { autoClose: 1500 });
-
+    localStorage.removeItem("paySubscibe");
+    localStorage.removeItem("subscriptionId");
     const newUrl = window.location.origin + window.location.pathname;
     window.history.replaceState({}, document.title, newUrl);
   }
   const [subScribe, setSubScribe] = useState([]);
   const token = localStorage.getItem("token");
+  const subId = Number(localStorage.getItem("subId"));
 
   useEffect(() => {
     axiosInstance
@@ -53,10 +55,11 @@ const Subscription = () => {
       "/api/Checkout/create-payment-link",
       payload
     );
-    console.log(payload);
     if (response.status === 200 && response.data) {
       const paymentUrl = response.data;
       localStorage.setItem("orderCode", response.data.orderCode);
+      localStorage.setItem("paySubscibe", true);
+      localStorage.setItem("subscriptionId", id);
       window.location.href = paymentUrl;
     }
   };
@@ -73,7 +76,7 @@ const Subscription = () => {
               <strong>Duration:</strong> {plan.duration} months
             </p>
             <p>
-              <strong>Price:</strong> {plan.price} vnd
+              <strong>Price:</strong> {plan.price.toLocaleString("en-US")} vnd
             </p>
             <div>
               <strong>Description:</strong>
@@ -111,12 +114,22 @@ const Subscription = () => {
                 )}
               </ul>
             </div>
-            <button
-              className="subscribe-btn"
-              onClick={() => handleSubscribe(plan.id)}
-            >
-              Subscribe Now
-            </button>
+            {subId === plan.id ? (
+              <button
+                className="subscribe-btn member-app"
+                disabled
+                onClick={() => handleSubscribe(plan.id)}
+              >
+                Registed
+              </button>
+            ) : (
+              <button
+                className="subscribe-btn "
+                onClick={() => handleSubscribe(plan.id)}
+              >
+                Subscribe Now
+              </button>
+            )}
           </div>
         ))}
       </div>

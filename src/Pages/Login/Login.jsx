@@ -16,7 +16,10 @@ const LoginForm = () => {
   const [registerPassword, setRegisterPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [rememberMe, setRememberMe] = useState(false);
+  const [isTick, setIsTick] = useState(
+    localStorage.getItem("emailRemember") ? true : false
+  );
+  const [rememberMe, setRememberMe] = useState(isTick);
 
   const [action, setAction] = useState("");
   const navigate = useNavigate();
@@ -29,8 +32,8 @@ const LoginForm = () => {
   };
 
   useEffect(() => {
-    const savedEmail = localStorage.getItem("email");
-    const savedPassword = localStorage.getItem("password");
+    const savedEmail = localStorage.getItem("emailRemember");
+    const savedPassword = localStorage.getItem("passwordRemember");
     if (savedEmail) setLoginEmail(savedEmail);
     if (savedPassword)
       setLoginPassword(
@@ -70,15 +73,15 @@ const LoginForm = () => {
       });
       const token = res.data.token;
       if (rememberMe) {
-        localStorage.setItem("email", loginEmail);
+        localStorage.setItem("emailRemember", loginEmail);
         const encryptedPassword = CryptoJS.AES.encrypt(
           loginPassword,
           "secret-key"
         ).toString();
-        localStorage.setItem("password", encryptedPassword);
+        localStorage.setItem("passwordRemember", encryptedPassword);
       } else {
-        localStorage.removeItem("email");
-        localStorage.removeItem("password");
+        localStorage.removeItem("emailRemember");
+        localStorage.removeItem("passwordRemember");
       }
 
       setLoginEmail("");
@@ -89,6 +92,18 @@ const LoginForm = () => {
         localStorage.setItem("userId", JSON.stringify(res.data.userId));
         localStorage.setItem("role", JSON.stringify(res.data.role));
         localStorage.setItem("emailUser", JSON.stringify(loginEmail));
+
+        if (res.data.subcriptions.length !== 0) {
+          console.log(res.data.subcriptions);
+          localStorage.setItem(
+            "memberExpired",
+            JSON.stringify(res.data.subcriptions[0].endDate)
+          );
+          localStorage.setItem(
+            "subId",
+            JSON.stringify(res.data.subcriptions[0].subcriptionId)
+          );
+        }
 
         if (
           res.data.role === "Admin" ||
@@ -191,8 +206,12 @@ const LoginForm = () => {
               <label>
                 <input
                   type="checkbox"
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                ></input>
+                  checked={rememberMe}
+                  onChange={(e) => {
+                    setRememberMe(e.target.checked);
+                    setIsTick(e.target.checked);
+                  }}
+                />
                 Remember
               </label>
               <a href="#">Forgotten password?</a>

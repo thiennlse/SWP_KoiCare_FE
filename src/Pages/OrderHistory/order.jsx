@@ -20,6 +20,8 @@ const OrderHistory = () => {
       const selectedProducts = JSON.parse(
         localStorage.getItem("selectedProducts")
       );
+      const subscriptionId = localStorage.getItem("subscriptionId");
+      const isPaySubscribe = JSON.parse(localStorage.getItem("paySubscibe"));
       const email = JSON.parse(localStorage.getItem("emailUser"));
 
       if (status === "PAID") {
@@ -33,16 +35,30 @@ const OrderHistory = () => {
           ?.map((product) => `${product.name} x ${product.quantity}`)
           .join(", ");
 
+        let subCost = 0;
+        let subPackage = "";
+
+        try {
+          const response = await axiosInstance.get(
+            `api/subcriptions/${subscriptionId}`
+          );
+          subCost = response.data.price;
+          subPackage = response.data.name;
+          console.log(subCost, subPackage);
+        } catch (error) {
+          console.error("Error fetching subscription cost:", error);
+        }
         const orderRequest = {
-          productId: productIds,
-          quantity: quantities,
-          totalCost: totalCost,
+          productId: isPaySubscribe ? [0] : productIds,
+          subcriptionId: isPaySubscribe ? subscriptionId : 0,
+          quantity: isPaySubscribe ? [0] : quantities,
+          totalCost: isPaySubscribe ? subCost : totalCost,
           closeDate: new Date(
             new Date().getTime() - 3 * 60 * 1000
           ).toISOString(),
-          description: description,
           code: orderCode,
-          status: status,
+          description: isPaySubscribe ? subPackage : description,
+          status,
         };
 
         try {
@@ -50,6 +66,13 @@ const OrderHistory = () => {
           toast.success("Đơn hàng đã được thêm thành công!", {
             autoClose: 1500,
           });
+          if (subscriptionId !== null) {
+            await axiosInstance.post(
+              `/api/Member/subcription/${subscriptionId}`
+            );
+            localStorage.removeItem("subscriptionId");
+            localStorage.removeItem("paySubscribe");
+          }
           localStorage.removeItem("cart");
 
           setTimeout(async () => {
@@ -62,6 +85,7 @@ const OrderHistory = () => {
 
           const newUrl = window.location.origin + window.location.pathname;
           window.history.replaceState({}, document.title, newUrl);
+          localStorage.removeItem("selectedProducts");
         } catch (error) {
           console.log(error);
           toast.error("Lỗi khi thêm đơn hàng!", { autoClose: 1500 });
@@ -143,6 +167,15 @@ const OrderHistory = () => {
 const OrderItem = ({ order }) => {
   const [showDetails, setShowDetails] = useState(false);
   const products = order.orderProducts ? order.orderProducts : [];
+  const memberExpired = JSON.parse(localStorage.getItem("memberExpired"));
+  const getSubscriptionType = (subcriptionId) => {
+    if (subcriptionId === 1) {
+      return "Standard";
+    } else if (subcriptionId === 2) {
+      return "Premium";
+    }
+    return "Unknown Subscription";
+  };
 
   const getStatusStyle = (status) => {
     switch (status) {
@@ -187,48 +220,75 @@ const OrderItem = ({ order }) => {
         <div className="order-products mt-4">
           {products.length > 0 ? (
             <div>
-              {products.map((orderProduct, index) => (
-                <div
-                  key={index}
-                  className="product-item-history d-flex align-items-center mb-2"
-                  style={{
-                    padding: "10px",
-                    border: "1px solid #ccc",
-                    borderRadius: "5px",
-                  }}
-                >
-                  <img
-                    src={orderProduct.product.image || koiFood}
-                    alt={orderProduct.product.name}
-                    style={{
-                      width: "50px",
-                      height: "50px",
-                      borderRadius: "5px",
-                      marginRight: "10px",
-                    }}
-                  />
-                  <div>
-                    <strong className="product-name">
-                      {orderProduct.product.name.length > 20
-                        ? orderProduct.product.name.slice(0, 20) + "..."
-                        : `${orderProduct.product.name} x${orderProduct.quantity}`}
-                    </strong>
-                    <p style={{ margin: "0", color: "#000" }}>
-                      {orderProduct.product.cost.toLocaleString()} vnd
-                    </p>
-                    <p>
-                      Total amount ({orderProduct.quantity} product):{" "}
-                      {(
-                        orderProduct.product.cost * orderProduct.quantity
-                      ).toLocaleString()}{" "}
-                      vnd{" "}
-                    </p>
-                  </div>
-                </div>
-              ))}
+              {products.map((orderProduct, index) => {
+                if (orderProduct.product) {
+                  return (
+                    <div
+                      key={index}
+                      className="product-item-history d-flex align-items-center mb-2"
+                      style={{
+                        padding: "10px",
+                        border: "1px solid #ccc",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      <img
+                        src={orderProduct.product.image || koiFood}
+                        alt={orderProduct.product.name}
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "5px",
+                          marginRight: "10px",
+                        }}
+                      />
+                      <div>
+                        <strong className="product-name">
+                          {orderProduct.product.name.length > 20
+                            ? orderProduct.product.name.slice(0, 20) + "..."
+                            : `${orderProduct.product.name} x${orderProduct.quantity}`}
+                        </strong>
+                        <p style={{ margin: "0", color: "#000" }}>
+                          {orderProduct.product.cost.toLocaleString()} vnd
+                        </p>
+                        <p>
+                          Total amount ({orderProduct.quantity} product):{" "}
+                          {(
+                            orderProduct.product.cost * orderProduct.quantity
+                          ).toLocaleString()}{" "}
+                          vnd
+                        </p>
+                      </div>
+                    </div>
+                  );
+                } else if (orderProduct.subcriptionId) {
+                  return (
+                    <div
+                      key={index}
+                      className="subscription-item-history d-flex align-items-center mb-2"
+                      style={{
+                        padding: "10px",
+                        border: "1px solid #ccc",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      <div>
+                        <p>
+                          Subscription:{" "}
+                          <strong>
+                            {getSubscriptionType(orderProduct.subcriptionId)}{" "}
+                            Package
+                          </strong>
+                        </p>
+                      </div>
+                    </div>
+                  );
+                }
+                return null;
+              })}
             </div>
           ) : (
-            <span>There are no products in the order.</span>
+            <span>There are no products or subscriptions in the order.</span>
           )}
         </div>
       )}

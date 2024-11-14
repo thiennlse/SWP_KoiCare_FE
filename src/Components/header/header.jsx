@@ -87,6 +87,8 @@ function Header() {
     localStorage.removeItem("cart");
     localStorage.removeItem("emailUser");
     localStorage.removeItem("orderCode");
+    localStorage.removeItem("memberExpired");
+    localStorage.removeItem("subId");
 
     setTimeout(() => {
       navigate("/login");

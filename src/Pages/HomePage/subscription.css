@@ -90,3 +90,13 @@ ul li {
   padding-left: 20px;
   margin-top: 15px;
 }
+
+.subscribe-btn.member-app {
+  background-color: gray;
+  color: white;
+  cursor: not-allowed;
+}
+
+.subscribe-btn.member-app:hover {
+  background-color: #333;
+}
