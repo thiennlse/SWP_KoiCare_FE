@@ -11,6 +11,7 @@ import { FaArrowUp } from "react-icons/fa";
 import CalcAds from "./calcAds";
 import SubScription from "./subscription";
 import koiFood from "../../Components/Assets/KoiFood.jpeg";
+import { FaStore } from "react-icons/fa";
 
 import banner_image_1 from "../../Components/Assets/banner_image_1.png";
 import banner_image_2 from "../../Components/Assets/banner_image_2.png";
@@ -122,6 +123,26 @@ function Products() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 6;
+  const [members, setMembers] = useState([]);
+
+  useEffect(() => {
+    const fetchProductsAndMembers = async () => {
+      try {
+        const productResponse = await axiosInstance.get(
+          "/api/Product?page=1&pagesize=100"
+        );
+        const memberResponse = await axiosInstance.get("/api/Member");
+        setProducts(productResponse.data);
+        setMembers(memberResponse.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching products or members:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchProductsAndMembers();
+  }, []);
 
   useEffect(() => {
     axiosInstance
@@ -196,13 +217,19 @@ function Products() {
         <p>Loading products...</p>
       ) : (
         <ul className="products">
-          {currentProducts.map((product, index) => (
-            <Product
-              key={index}
-              productObj={product}
-              onAddToCart={handleAddToCart}
-            />
-          ))}
+          {currentProducts.map((product) => {
+            const member = members.find(
+              (member) => member.id === product.userId
+            );
+            return (
+              <Product
+                key={product.id}
+                productObj={product}
+                onAddToCart={handleAddToCart}
+                shopName={member ? member.fullName : "Unknown Shop"}
+              />
+            );
+          })}
         </ul>
       )}
 
@@ -244,7 +271,7 @@ function Products() {
   );
 }
 
-function Product({ productObj, onAddToCart }) {
+function Product({ productObj, onAddToCart, shopName }) {
   const formattedCost = productObj.cost.toLocaleString("en-US");
   const navigate = useNavigate();
 
@@ -268,6 +295,9 @@ function Product({ productObj, onAddToCart }) {
       </div>
       <div className="product_price">
         <p className="name-ellipsis">{productObj.name}</p>
+        <p className="shop_name">
+          <FaStore /> {shopName}
+        </p>
         <p className="product_description ellipsis">{productObj.description}</p>
         <p>{formattedCost} Vnd</p>
       </div>
