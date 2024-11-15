@@ -702,7 +702,6 @@ const ManageAdmin = () => {
                       <tr>
                         <th>Image</th>
                         <th>Title</th>
-                        <th>Author</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -730,7 +729,6 @@ const ManageAdmin = () => {
                             )}
                           </td>
                           <td>{blog.title}</td>
-                          <td>{blog.author}</td>
                           <td>
                             <div className="action-buttons">
                               <button
