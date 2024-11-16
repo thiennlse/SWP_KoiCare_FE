@@ -381,7 +381,11 @@ const KoiInformation = () => {
                 <p>
                   <IoFishOutline />
                   <span className="report-label">Date:</span>{" "}
-                  {new Date(latestReport.date).toLocaleDateString("en-GB")}
+                  {new Date(latestReport.date).toLocaleString("en-GB", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
                 </p>
                 <p>
                   <IoFishOutline />
@@ -420,7 +424,11 @@ const KoiInformation = () => {
                     <p>
                       <GiTropicalFish />
                       <span className="report-label">Date:</span>{" "}
-                      {new Date(report.date).toLocaleDateString("en-GB")}
+                      {new Date(report.date).toLocaleString("en-GB", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
                     </p>
                     <p>
                       <GiTropicalFish />
