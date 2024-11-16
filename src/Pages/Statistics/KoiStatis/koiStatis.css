@@ -30,4 +30,15 @@ h1 {
   width: 1000px;
   height: 500px;
   margin: 0 auto;
+  margin-bottom: 200px;
+}
+
+.koi-chart-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.koi-chart-controls label {
+  margin-right: 10px;
 }

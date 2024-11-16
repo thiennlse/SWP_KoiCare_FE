@@ -6,12 +6,15 @@ import { toast } from "react-toastify";
 const AquariumManagement = () => {
   const [aquaList, setAquaList] = useState([]);
   const [selectedAqua, setSelectedAqua] = useState(null);
-  const [calculationResultHTML, setCalculationResultHTML] = useState("");
+  const [aiCalculationResultHTML, setAiCalculationResultHTML] = useState("");
+  const [systemCalculationResultHTML, setSystemCalculationResultHTML] =
+    useState("");
   const [loading, setLoading] = useState(false);
   const [isShow, setIsShow] = useState(false);
 
   const memberId = JSON.parse(localStorage.getItem("userId"));
   const subId = localStorage.getItem("subId");
+  const [productRecommend, setProductRecommend] = useState([]);
 
   useEffect(() => {
     if (memberId !== 0) {
@@ -45,23 +48,72 @@ const AquariumManagement = () => {
         const cleanHtml = res.data
           .replace(/^```html\s*/, "")
           .replace(/```$/, "");
-        setCalculationResultHTML(cleanHtml);
-        toast.success("Calculation completed!", { autoClose: 2000 });
+        setAiCalculationResultHTML(cleanHtml);
+        toast.success("AI Calculation completed!", { autoClose: 2000 });
       })
       .catch((err) => {
-        toast.error("Failed to calculate salt.", { autoClose: 1500 });
+        toast.error("Failed to calculate salt by AI.", { autoClose: 1500 });
       })
       .finally(() => {
         setLoading(false);
       });
   };
 
-  function handleCalcSalt(aquaId) {}
+  const handleCalcSalt = (aquaId) => {
+    setLoading(true);
+    axiosInstance
+      .get(`/api/Pool/check-water-element-of-pool/${aquaId}`)
+      .then((res) => {
+        const result = res.data;
+
+        const calculationResult = `
+        <div>
+          <h4>Water Element Standards</h4>
+          <ul>
+            <li><strong>Temperature:</strong> ${result.standardTemperature}°C</li>
+            <li><strong>Salt:</strong> ${result.standardSalt} %</li>
+            <li><strong>NO2:</strong> ${result.standardNo2} mg/L</li>
+            <li><strong>NO3:</strong> ${result.standardNo3} mg/L</li>
+            <li><strong>PO4:</strong> ${result.standardPo4} mg/L</li>
+            <li><strong>PH:</strong> ${result.standardPH}</li>
+            <li><strong>O2:</strong> ${result.standardO2} mg/L</li>
+          </ul>
+        </div>
+      `;
+
+        setSystemCalculationResultHTML(calculationResult);
+        toast.success("Water element standards retrieved successfully!", {
+          autoClose: 2000,
+        });
+
+        axiosInstance
+          .get(
+            "https://koicare-api.onrender.com/api/Product?page=1&pagesize=100"
+          )
+          .then((productRes) => {
+            const filteredProducts = productRes.data.filter((product) =>
+              result.listProductId.includes(product.id)
+            );
+            setProductRecommend(filteredProducts);
+            console.log(filteredProducts);
+          });
+      })
+      .catch((err) => {
+        toast.error("Failed to retrieve water element standards by system.", {
+          autoClose: 1500,
+        });
+        console.error("Error fetching water elements:", err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   const handleShowAqua = (aqua) => {
     setSelectedAqua(aqua);
     setIsShow(true);
-    setCalculationResultHTML("");
+    setAiCalculationResultHTML("");
+    setSystemCalculationResultHTML("");
   };
 
   return (
@@ -127,11 +179,47 @@ const AquariumManagement = () => {
               {loading && <div className="loader"></div>}
             </div>
           )}
-          {calculationResultHTML && (
-            <div
-              className="calculation-result"
-              dangerouslySetInnerHTML={{ __html: calculationResultHTML }}
-            />
+          {aiCalculationResultHTML && (
+            <>
+              <div
+                className="calculation-result"
+                dangerouslySetInnerHTML={{ __html: aiCalculationResultHTML }}
+              />
+              <div>
+                <h3>Recommended Products</h3>
+                <ul>
+                  {productRecommend.length > 0 ? (
+                    productRecommend.map((product) => (
+                      <li key={product.id}>{product.name}</li>
+                    ))
+                  ) : (
+                    <p>No products found</p>
+                  )}
+                </ul>
+              </div>
+            </>
+          )}
+          {systemCalculationResultHTML && (
+            <>
+              <div
+                className="calculation-result"
+                dangerouslySetInnerHTML={{
+                  __html: systemCalculationResultHTML,
+                }}
+              />
+              <div>
+                <h3>Recommended Products</h3>
+                <ul>
+                  {productRecommend.length > 0 ? (
+                    productRecommend.map((product) => (
+                      <li key={product.id}>{product.name}</li>
+                    ))
+                  ) : (
+                    <p>No products found</p>
+                  )}
+                </ul>
+              </div>
+            </>
           )}
         </div>
       ) : (

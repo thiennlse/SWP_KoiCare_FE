@@ -25,19 +25,28 @@ const KoiStatis = () => {
     };
 
     if (memberId) {
-      fetchPools(fishList);
+      fetchPools();
     }
   }, [memberId]);
 
   useEffect(() => {
-    axiosInstance.get("api/Fish?page=1&pageSize=100").then((res) => {
-      const filteredFish = res.data.filter((fish) =>
-        poolList.some((pool) => pool.id === fish.poolId)
-      );
-      setFishList(filteredFish);
-    });
-    console.log();
-  }, [memberId, poolList]);
+    const fetchFishList = async () => {
+      if (poolList.length === 0) return;
+
+      try {
+        const res = await axiosInstance.get("api/Fish?page=1&pageSize=100");
+        const filteredFish = res.data.filter((fish) =>
+          poolList.some((pool) => pool.id === fish.poolId)
+        );
+        setFishList(filteredFish);
+      } catch (err) {
+        console.error("Error fetching fish data:", err);
+        toast.error("Failed to fetch fish data");
+      }
+    };
+
+    fetchFishList();
+  }, [poolList]);
 
   const handleFishChange = (event) => {
     const fishId = event.target.value;
@@ -45,12 +54,12 @@ const KoiStatis = () => {
     const selectedFish = fishList
       .sort((a, b) => a.id - b.id)
       .find((fish) => fish.id === parseInt(fishId));
+
     if (selectedFish) {
       selectedFish.fishProperties.sort((a, b) => a.id - b.id);
     }
 
     setSelectedFish(selectedFish);
-    console.log(selectedFish);
   };
 
   return (
