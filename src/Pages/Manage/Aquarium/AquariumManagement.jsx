@@ -132,8 +132,9 @@ const AquariumManagement = () => {
               <tr>
                 <th>Image</th>
                 <th>Name</th>
-                <th>Size (cm)</th>
+                <th>Size (cm2)</th>
                 <th>Depth (cm)</th>
+                <th>Volume (L)</th>
                 <th>Description</th>
                 <th>Actions</th>
               </tr>
@@ -158,8 +159,9 @@ const AquariumManagement = () => {
                     )}
                   </td>
                   <td>{aquarium.name}</td>
-                  <td>{aquarium.size} cm</td>
+                  <td>{aquarium.size} cm2</td>
                   <td>{aquarium.depth} cm</td>
+                  <td>{aquarium.volume} L</td>
                   <td>{aquarium.description}</td>
                   <td>
                     <div className="aquarium-action-buttons">

@@ -147,7 +147,7 @@ function UpdateAquariumForm({
           </div>
 
           <div className="input_infor">
-            <label>Size (cm):</label>
+            <label>Size (cm2):</label>
             <input
               type="number"
               name="size"

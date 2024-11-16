@@ -116,11 +116,11 @@ const CreateAquarium = () => {
             </div>
 
             <div className="input_infor">
-              <label>Size (cm):</label>
+              <label>Size (cm2):</label>
               <input
                 type="number"
                 placeholder="Enter size"
-                value={aquarium.size}
+                value={aquarium.size === 0 ? "" : aquarium.size}
                 onChange={(e) =>
                   setAquarium({ ...aquarium, size: e.target.value })
                 }
@@ -133,7 +133,7 @@ const CreateAquarium = () => {
               <input
                 type="number"
                 placeholder="Enter depth"
-                value={aquarium.depth}
+                value={aquarium.depth === 0 ? "" : aquarium.depth}
                 onChange={(e) =>
                   setAquarium({ ...aquarium, depth: e.target.value })
                 }

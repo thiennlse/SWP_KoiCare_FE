@@ -150,7 +150,7 @@ const Water = () => {
               )}
             </div>
             <div className="form-group">
-              <label>Salt (gram)</label>
+              <label>Salt (gram/L)</label>
               <input
                 name="salt"
                 value={waterData.salt}
