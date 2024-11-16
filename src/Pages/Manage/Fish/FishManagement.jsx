@@ -81,6 +81,22 @@ const FishManagement = () => {
     }
   };
 
+  const handleDelete = async (fishId) => {
+    if (window.confirm("Are you sure you want to delete this fish?")) {
+      try {
+        await axiosInstance.delete(`/api/Fish/Delete?id=${fishId}`);
+        setFishList(fishList.filter((fish) => fish.id !== fishId));
+        setFilteredFishList(
+          filteredFishList.filter((fish) => fish.id !== fishId)
+        );
+        toast.success("Fish deleted successfully!");
+      } catch (error) {
+        console.error("Error deleting fish:", error);
+        toast.error("Failed to delete fish.");
+      }
+    }
+  };
+
   const handlePoolChange = (e) => {
     const poolId = Number(e.target.value);
     setSelectedPoolId(poolId);
@@ -185,12 +201,20 @@ const FishManagement = () => {
                   Pond: {poolList.find((pool) => pool.id === fish.poolId)?.name}
                 </p>
                 <p>Origin: {fish.origin}</p>
-                <button
-                  className="fish-details-button"
-                  onClick={() => navigate(`/fishdetail/${fish.id}`)}
-                >
-                  See More Details
-                </button>
+                <div className="fish-action-buttons">
+                  <button
+                    className="fish-details-button"
+                    onClick={() => navigate(`/fishdetail/${fish.id}`)}
+                  >
+                    See More Details
+                  </button>
+                  <button
+                    className="fish-delete-button"
+                    onClick={() => handleDelete(fish.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           ))
