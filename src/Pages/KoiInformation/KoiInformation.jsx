@@ -111,18 +111,22 @@ const KoiInformation = () => {
       }
     }
 
-    if ((name === "size" || name === "weight") && Number(value) >= 100) {
-      toast.error(
-        `${name.charAt(0).toUpperCase() + name.slice(1)} must be less than 100`,
-        {
-          autoClose: 1500,
-        }
-      );
+    if (name === "size" && Number(value) >= 101) {
+      toast.error("Size must be less than 100 cm", {
+        autoClose: 1500,
+      });
       return;
     }
 
     if (name === "foodWeight" && Number(value) >= 15) {
       toast.error("Food Weight must be less than 15 kg", {
+        autoClose: 1500,
+      });
+      return;
+    }
+
+    if (name === "weight" && Number(value) >= 11) {
+      toast.error("Weight must be less than 10 kg", {
         autoClose: 1500,
       });
       return;
@@ -254,8 +258,8 @@ const KoiInformation = () => {
                 handleUpdateKoi();
               }}
             >
-              <div className="form-row">
-                <div className="form-group">
+              <div className="info-form-row">
+                <div className="info-form-group">
                   <label>Pool:</label>
                   <select
                     name="poolId"
@@ -272,7 +276,7 @@ const KoiInformation = () => {
                   </select>
                 </div>
 
-                <div className="form-group">
+                <div className="info-form-group">
                   <label>Birthday:</label>
                   <input
                     type="date"
@@ -284,8 +288,8 @@ const KoiInformation = () => {
                 </div>
               </div>
 
-              <div className="form-row">
-                <div className="form-group">
+              <div className="info-form-row">
+                <div className="info-form-group">
                   <label>Size (cm):</label>
                   <input
                     type="number"
@@ -296,8 +300,8 @@ const KoiInformation = () => {
                   />
                 </div>
 
-                <div className="form-group">
-                  <label>Weight (g):</label>
+                <div className="info-form-group">
+                  <label>Weight (kg):</label>
                   <input
                     type="number"
                     name="weight"
@@ -308,8 +312,8 @@ const KoiInformation = () => {
                 </div>
               </div>
 
-              <div className="form-row">
-                <div className="form-group">
+              <div className="info-form-row">
+                <div className="info-form-group">
                   <label>Gender:</label>
                   <select
                     name="gender"
@@ -321,7 +325,7 @@ const KoiInformation = () => {
                     <option value="Female">Female</option>
                   </select>
                 </div>
-                <div className="form-group">
+                <div className="info-form-group">
                   <label>Origin:</label>
                   <select
                     name="origin"
@@ -336,8 +340,8 @@ const KoiInformation = () => {
                 </div>
               </div>
 
-              <div className="form-row">
-                <div className="form-group">
+              <div className="info-form-row">
+                <div className="info-form-group">
                   <label>Food Name:</label>
                   <input
                     type="text"
@@ -347,7 +351,7 @@ const KoiInformation = () => {
                     required
                   />
                 </div>
-                <div className="form-group">
+                <div className="info-form-group">
                   <label>Food Weight (kg/month):</label>
                   <input
                     type="number"
@@ -387,7 +391,7 @@ const KoiInformation = () => {
                 <p>
                   <IoFishOutline />
                   <span className="report-label">Koi Weight:</span>{" "}
-                  {latestReport.weight} g
+                  {latestReport.weight} kg
                 </p>
               </>
             )}
@@ -426,7 +430,7 @@ const KoiInformation = () => {
                     <p>
                       <GiTropicalFish />
                       <span className="report-label">Koi Weight:</span>{" "}
-                      {report.weight} g
+                      {report.weight} kg
                     </p>
                   </div>
                 ))}

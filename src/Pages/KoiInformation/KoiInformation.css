@@ -86,6 +86,15 @@
   min-height: 200px;
 }
 
+.report-history {
+  max-height: 765px;
+  overflow-y: auto;
+  padding: 15px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
 .latest-report,
 .report-history {
   width: 100%;
@@ -205,17 +214,17 @@
   background-color: #e5771f;
 }
 
-.form-row {
+.info-form-row {
   display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
 }
 
-.form-group {
+.info-form-group {
   flex: 1;
   margin-right: 10px;
 }
 
-.form-group:last-child {
+.info-form-group:last-child {
   margin-right: 0;
 }
