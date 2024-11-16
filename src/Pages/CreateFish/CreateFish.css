@@ -1,111 +1,93 @@
-.form_fish {
-  width: 50%;
-  margin: 40px auto;
+.form_create_fish {
+  width: 60%;
+  margin: 80px auto;
   padding: 30px;
-  background-color: #f5f5f5;
+  background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border: 1px solid #ddd;
-  margin-top: 100px;
 }
 
-.form_grid_fish {
+.form_title_create_fish {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form_grid_create_fish {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 
-.column {
+.input_infor_create_fish {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
 }
 
-.form_grid_fish.input_infor label {
-  font-size: 20px;
-  display: block;
-  margin-left: 10px;
-}
-
-.form_grid_fish .input_infor input {
-  width: 80%;
+.input_infor_create_fish label {
   font-size: 18px;
-  margin-left: 10px;
+  color: #555;
+}
+
+.input_infor_create_fish input,
+.input_infor_create_fish select {
+  width: 100%;
+  font-size: 16px;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  margin-top: 5px;
+  transition: border-color 0.3s;
 }
 
-.form_grid_fish .input_infor select {
-  background-color: white;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" stroke="gray" stroke-width="1" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6H6z"/></svg>'); /* Custom dropdown arrow */
-  background-repeat: no-repeat;
-  background-position: right 10px center;
+.input_infor_create_fish input:focus,
+.input_infor_create_fish select:focus {
+  border-color: #28a745;
+  outline: none;
 }
 
-.form_title {
-  text-align: center;
-  font-size: 28px;
-  margin-bottom: 20px;
-}
-
-.buttons {
+.button_create_fish {
   display: flex;
   justify-content: center;
   gap: 20px;
   margin-top: 20px;
 }
 
-.buttons button {
+.button_create_fish button {
   padding: 12px 24px;
   font-size: 16px;
   font-weight: 600;
   border-radius: 5px;
-  border: 1px solid #ddd;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.buttons button[type="submit"] {
+.button_create_fish button[type="submit"] {
   background-color: #28a745;
   color: white;
 }
 
-.buttons button[type="submit"]:hover {
+.button_create_fish button[type="submit"]:hover {
   background-color: #218838;
 }
 
-.buttons button[type="button"] {
+.button_create_fish button[type="button"] {
   background-color: #dc3545;
   color: white;
 }
 
-.buttons button[type="button"]:hover {
+.button_create_fish button[type="button"]:hover {
   background-color: #c82333;
 }
 
-.custom-select {
-  width: 80%;
-  font-size: 18px;
-  margin-left: 10px;
-  padding: 10px;
+.image-preview {
+  margin-top: 10px;
+  max-width: 200px;
+  max-height: 200px;
+  object-fit: contain;
+  border: 1px solid #ddd;
   border-radius: 5px;
-  border: 1px solid #ccc;
-  margin-top: 5px;
-  background-color: #fff;
-  appearance: none;
-}
-
-.custom-select:focus {
-  border-color: #28a745;
-  outline: none;
-}
-
-.custom-select option {
-  padding: 10px;
-}
-
-.dropdown-arrow {
-  font-size: 18px;
-  margin-left: 5px;
-  color: #555;
 }
