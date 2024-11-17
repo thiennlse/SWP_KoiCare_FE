@@ -11,10 +11,10 @@ const AquariumManagement = () => {
     useState("");
   const [loading, setLoading] = useState(false);
   const [isShow, setIsShow] = useState(false);
-
   const memberId = JSON.parse(localStorage.getItem("userId"));
   const subId = localStorage.getItem("subId");
   const [productRecommend, setProductRecommend] = useState([]);
+  const [geminiProductRecommend, setGeminiProductRecommend] = useState([]);
 
   useEffect(() => {
     if (memberId !== 0) {
@@ -50,6 +50,7 @@ const AquariumManagement = () => {
           .replace(/```$/, "");
         setAiCalculationResultHTML(cleanHtml);
         toast.success("AI Calculation completed!", { autoClose: 2000 });
+        fetchRandomSuggestedProductsForGemini();
       })
       .catch((err) => {
         toast.error("Failed to calculate salt by AI.", { autoClose: 1500 });
@@ -65,7 +66,6 @@ const AquariumManagement = () => {
       .get(`/api/Pool/check-water-element-of-pool/${aquaId}`)
       .then((res) => {
         const result = res.data;
-
         const calculationResult = `
         <div>
           <h4>Water Element Standards</h4>
@@ -80,7 +80,6 @@ const AquariumManagement = () => {
           </ul>
         </div>
       `;
-
         setSystemCalculationResultHTML(calculationResult);
         toast.success("Water element standards retrieved successfully!", {
           autoClose: 2000,
@@ -95,7 +94,6 @@ const AquariumManagement = () => {
               result.listProductId.includes(product.id)
             );
             setProductRecommend(filteredProducts);
-            console.log(filteredProducts);
           });
       })
       .catch((err) => {
@@ -109,6 +107,36 @@ const AquariumManagement = () => {
       });
   };
 
+  const fetchRecommendedProducts = (aquaId) => {
+    axiosInstance
+      .get(`/api/Pool/get-recommended-products/${aquaId}`)
+      .then((res) => {
+        const recommendedProducts = res.data;
+        setProductRecommend(recommendedProducts);
+      })
+      .catch((err) => {
+        console.error("Error fetching recommended products:", err);
+      });
+  };
+
+  const fetchRandomSuggestedProductsForGemini = () => {
+    axiosInstance
+      .get("/api/Product?page=1&pagesize=100")
+      .then((productRes) => {
+        const shuffledProducts = productRes.data.sort(
+          () => 0.5 - Math.random()
+        );
+        const randomProducts = shuffledProducts.slice(0, 5);
+        setGeminiProductRecommend(randomProducts);
+      })
+      .catch((err) => {
+        console.error(
+          "Error fetching random suggested products for Gemini:",
+          err
+        );
+      });
+  };
+
   const handleShowAqua = (aqua) => {
     setSelectedAqua(aqua);
     setIsShow(true);
@@ -116,10 +144,36 @@ const AquariumManagement = () => {
     setSystemCalculationResultHTML("");
   };
 
+  const handleBuySuggestedProduct = (suggestedProduct) => {
+    const isLogin = localStorage.getItem("userId");
+
+    if (!isLogin) {
+      toast.warn("Please log in to add products to your cart!", {
+        autoClose: 1000,
+      });
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1000);
+      return;
+    }
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const productInCart = cart.find((item) => item.id === suggestedProduct.id);
+
+    if (productInCart) {
+      productInCart.quantity += 1;
+    } else {
+      cart.push({ ...suggestedProduct, quantity: 1 });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    window.location.href = "/cart";
+  };
+
   return (
     <div>
       {memberId ? (
-        <div className="aquarium-container">
+        <div className="calc-salt-aquarium-container">
           <div className="header-with-button">
             <h2 className="aquarium-title">Calculate Salt</h2>
           </div>
@@ -179,47 +233,17 @@ const AquariumManagement = () => {
               {loading && <div className="loader"></div>}
             </div>
           )}
-          {aiCalculationResultHTML && (
-            <>
-              <div
-                className="calculation-result"
-                dangerouslySetInnerHTML={{ __html: aiCalculationResultHTML }}
-              />
-              <div>
-                <h3>Recommended Products</h3>
-                <ul>
-                  {productRecommend.length > 0 ? (
-                    productRecommend.map((product) => (
-                      <li key={product.id}>{product.name}</li>
-                    ))
-                  ) : (
-                    <p>No products found</p>
-                  )}
-                </ul>
-              </div>
-            </>
-          )}
           {systemCalculationResultHTML && (
-            <>
-              <div
-                className="calculation-result"
-                dangerouslySetInnerHTML={{
-                  __html: systemCalculationResultHTML,
-                }}
-              />
-              <div>
-                <h3>Recommended Products</h3>
-                <ul>
-                  {productRecommend.length > 0 ? (
-                    productRecommend.map((product) => (
-                      <li key={product.id}>{product.name}</li>
-                    ))
-                  ) : (
-                    <p>No products found</p>
-                  )}
-                </ul>
-              </div>
-            </>
+            <div
+              className="calculation-result"
+              dangerouslySetInnerHTML={{ __html: systemCalculationResultHTML }}
+            />
+          )}
+          {aiCalculationResultHTML && (
+            <div
+              className="calculation-result"
+              dangerouslySetInnerHTML={{ __html: aiCalculationResultHTML }}
+            />
           )}
         </div>
       ) : (
@@ -229,6 +253,44 @@ const AquariumManagement = () => {
             <button className="btn btn-warning">Login</button>
           </a>
         </div>
+      )}
+      {productRecommend.length > 0 && (
+        <>
+          <h3 className="calc-salt-recommended-products">
+            Recommended Products By System
+          </h3>
+          <div className="calc-salt-product-grid">
+            {productRecommend.map((product) => (
+              <div key={product.id} className="calc-salt-product-item">
+                <img src={product.image} alt={product.name} />
+                <h4>{product.name}</h4>
+                <p>{product.cost.toLocaleString("en-US")} Vnd</p>
+                <button onClick={() => handleBuySuggestedProduct(product)}>
+                  Buy Now
+                </button>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+      {geminiProductRecommend.length > 0 && (
+        <>
+          <h3 className="calc-salt-recommended-products">
+            Recommended Products By Gemini
+          </h3>
+          <div className="calc-salt-product-grid">
+            {geminiProductRecommend.map((product) => (
+              <div key={product.id} className="calc-salt-product-item">
+                <img src={product.image} alt={product.name} />
+                <h4>{product.name}</h4>
+                <p>{product.cost.toLocaleString("en-US")} Vnd</p>
+                <button onClick={() => handleBuySuggestedProduct(product)}>
+                  Buy Now
+                </button>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
