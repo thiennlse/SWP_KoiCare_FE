@@ -43,7 +43,7 @@ const KoiChart = ({ fishInfor }) => {
   });
 
   const actualDataLabels = fishProperties.map((data) =>
-    new Date(data.date).toLocaleString()
+    new Date(data.date).toLocaleDateString()
   );
 
   const actualData = viewType === "size" ? sizeData : weightData;
@@ -101,33 +101,20 @@ const KoiChart = ({ fishInfor }) => {
   const growthLimits =
     viewType === "size" ? sizeGrowthLimits : weightGrowthLimits;
 
-  const poorData = dataLabels.map((_, i) => {
-    const limit = growthLimits.find(
-      (limit) => limit.age === (i === 0 ? 0 : ageInMonths)
-    );
-    return limit ? limit.poor : 0;
-  });
-
-  const avgData = dataLabels.map((_, i) => {
-    const limit = growthLimits.find(
-      (limit) => limit.age === (i === 0 ? 0 : ageInMonths)
-    );
-    return limit ? limit.avg : 0;
-  });
-
-  const superiorData = dataLabels.map((_, i) => {
-    const limit = growthLimits.find(
-      (limit) => limit.age === (i === 0 ? 0 : ageInMonths)
-    );
-    return limit ? limit.superior : 0;
-  });
+  const createGrowthData = (key) =>
+    dataLabels.map((_, i) => {
+      const limit = growthLimits.find(
+        (limit) => limit.age === (i === 0 ? 0 : ageInMonths)
+      );
+      return limit ? limit[key] : 0;
+    });
 
   const chartData = {
     labels: actualDataLabels.length > 0 ? actualDataLabels : dataLabels,
     datasets: [
       {
         label: `Poor ${viewType === "size" ? "Size (cm)" : "Weight (kg)"}`,
-        data: poorData,
+        data: createGrowthData("poor"),
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderWidth: 1,
@@ -135,7 +122,7 @@ const KoiChart = ({ fishInfor }) => {
       },
       {
         label: `Average ${viewType === "size" ? "Size (cm)" : "Weight (kg)"}`,
-        data: avgData,
+        data: createGrowthData("avg"),
         borderColor: "rgb(54, 162, 235)",
         backgroundColor: "rgba(54, 162, 235, 0.2)",
         borderWidth: 1,
@@ -143,7 +130,7 @@ const KoiChart = ({ fishInfor }) => {
       },
       {
         label: `Superior ${viewType === "size" ? "Size (cm)" : "Weight (kg)"}`,
-        data: superiorData,
+        data: createGrowthData("superior"),
         borderColor: "rgb(75, 192, 192)",
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         borderWidth: 1,
