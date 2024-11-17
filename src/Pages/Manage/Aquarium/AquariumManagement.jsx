@@ -130,9 +130,11 @@ const AquariumManagement = () => {
           <table className="aquarium-table">
             <thead>
               <tr>
+                <th>Image</th>
                 <th>Name</th>
-                <th>Size (cm)</th>
+                <th>Size (cm2)</th>
                 <th>Depth (cm)</th>
+                <th>Volume (L)</th>
                 <th>Description</th>
                 <th>Actions</th>
               </tr>
@@ -140,9 +142,26 @@ const AquariumManagement = () => {
             <tbody>
               {aquaList.map((aquarium) => (
                 <tr key={aquarium.id}>
+                  <td>
+                    {aquarium.image ? (
+                      <img
+                        src={aquarium.image}
+                        alt={aquarium.name}
+                        style={{
+                          width: "60px",
+                          height: "60px",
+                          objectFit: "cover",
+                          borderRadius: "4px",
+                        }}
+                      />
+                    ) : (
+                      <span className="no-image">No Image</span>
+                    )}
+                  </td>
                   <td>{aquarium.name}</td>
-                  <td>{aquarium.size} cm</td>
+                  <td>{aquarium.size} cm2</td>
                   <td>{aquarium.depth} cm</td>
+                  <td>{aquarium.volume} L</td>
                   <td>{aquarium.description}</td>
                   <td>
                     <div className="aquarium-action-buttons">

@@ -13,41 +13,62 @@ const CreateAquarium = () => {
     size: 0,
     depth: 0,
     description: "",
-    waterId: 1,
+    image: "",
   });
+  const [previewImage, setPreviewImage] = useState("");
+  const [imageFile, setImageFile] = useState(null);
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const aquariumData = {
-      name: aquarium.name.trim(),
-      size: Number(aquarium.size),
-      depth: Number(aquarium.depth),
-      description: aquarium.description.trim(),
-    };
+    try {
+      let imageUrl = aquarium.image;
 
-    console.log("Data being sent:", aquariumData);
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append("file", imageFile);
 
-    axiosInstance
-      .post("/api/Pool/add", aquariumData, {
+        const imageResponse = await axiosInstance.post(
+          "/api/Fish/upload",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        imageUrl = imageResponse.data.url;
+      }
+
+      const aquariumData = {
+        name: aquarium.name.trim(),
+        size: Number(aquarium.size),
+        depth: Number(aquarium.depth),
+        description: aquarium.description.trim(),
+        image: imageUrl,
+      };
+
+      console.log("Data being sent:", aquariumData);
+
+      await axiosInstance.post("/api/Pool/add", aquariumData, {
         headers: {
           "Content-Type": "application/json",
         },
-      })
-      .then((response) => {
-        console.log("Aquarium created successfully:", response.data);
-        toast.success("Aquarium created successfully!", { autoClose: 1500 });
-        navigate("/aquariummanagement");
-      })
-      .catch((error) => {
-        console.error("Error response:", error.response.data);
-        toast.error(
-          `Failed to create aquarium. Status: ${error.response.status}`,
-          { autoClose: 1500 }
-        );
       });
+
+      toast.success("Aquarium created successfully!", { autoClose: 1500 });
+      navigate("/aquariummanagement");
+    } catch (error) {
+      console.error("Error response:", error.response.data);
+      toast.error(
+        `Failed to create aquarium. Status: ${error.response.status}`,
+        {
+          autoClose: 1500,
+        }
+      );
+    }
   };
 
   const handleCancel = () => {
@@ -58,8 +79,20 @@ const CreateAquarium = () => {
       size: 0,
       depth: 0,
       description: "",
-      waterId: 1,
+      image: "",
     });
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
@@ -83,16 +116,14 @@ const CreateAquarium = () => {
             </div>
 
             <div className="input_infor">
-              <label>Size (cm):</label>
+              <label>Size (cm2):</label>
               <input
                 type="number"
                 placeholder="Enter size"
-                value={aquarium.size}
+                value={aquarium.size === 0 ? "" : aquarium.size}
                 onChange={(e) =>
                   setAquarium({ ...aquarium, size: e.target.value })
                 }
-                onFocus={(e) => e.target.value === "0" && (e.target.value = "")}
-                onBlur={(e) => e.target.value === "" && (e.target.value = "0")}
                 required
               />
             </div>
@@ -102,12 +133,10 @@ const CreateAquarium = () => {
               <input
                 type="number"
                 placeholder="Enter depth"
-                value={aquarium.depth}
+                value={aquarium.depth === 0 ? "" : aquarium.depth}
                 onChange={(e) =>
                   setAquarium({ ...aquarium, depth: e.target.value })
                 }
-                onFocus={(e) => e.target.value === "0" && (e.target.value = "")}
-                onBlur={(e) => e.target.value === "" && (e.target.value = "0")}
                 required
               />
             </div>
@@ -122,6 +151,22 @@ const CreateAquarium = () => {
                   setAquarium({ ...aquarium, description: e.target.value })
                 }
               />
+            </div>
+
+            <div className="input_infor">
+              <label>Image:</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+              {previewImage && (
+                <img
+                  src={previewImage}
+                  alt="Aquarium preview"
+                  style={{ maxWidth: "200px", marginTop: "10px" }}
+                />
+              )}
             </div>
           </div>
         </div>

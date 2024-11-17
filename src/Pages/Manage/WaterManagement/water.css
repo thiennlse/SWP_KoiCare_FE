@@ -108,3 +108,92 @@
   cursor: not-allowed;
   transform: none;
 }
+
+.water-reports {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.water-reports .latest-water-report {
+  background-color: #f6e5ca;
+}
+
+.water-reports h3 {
+  color: #e5771f;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.latest-water-report,
+.water-report-history {
+  flex: 1;
+  margin-left: 1rem;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.water-report-history {
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.water1-report-history {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.water-report-item {
+  background-color: #ffffff;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.water-report-item button {
+  padding: 5px 10px;
+  font-size: 14px;
+  background-color: #ff6600;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.water-report-item button:hover {
+  background-color: #e5771f;
+}
+
+.ReactModal__Content {
+  max-width: 500px;
+  width: 80%;
+  height: 500px;
+  padding: 15px;
+  border-radius: 8px;
+  margin: auto;
+  margin-top: 120px;
+  text-align: center;
+}
+
+.ReactModal__Content h2 {
+  color: #e5771f;
+}
+
+.water-close-modal-button {
+  width: 90%;
+  padding: 10px;
+  background-color: #ff6600;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.water-close-modal-button:hover {
+  background-color: #e5771f;
+}

@@ -84,11 +84,12 @@
   width: 100%;
   border-collapse: collapse;
   border: 1px solid #dee2e6;
+  background-color: white;
 }
 
 .aquarium-table th,
 .aquarium-table td {
-  padding: 1rem;
+  padding: 12px;
   text-align: center;
   border: 1px solid #dee2e6;
   vertical-align: middle;
@@ -111,7 +112,7 @@
 }
 
 .aquarium-table tbody tr:hover {
-  background-color: #f8f9fa;
+  background-color: #e9ecef;
 }
 
 .aquarium-action-buttons {

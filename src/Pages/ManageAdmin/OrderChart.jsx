@@ -76,6 +76,7 @@ const OrderChart = ({ orders }) => {
 
   return (
     <div className="order-chart">
+      <h1>Order Chart</h1>
       <Bar data={data} options={options} />
     </div>
   );

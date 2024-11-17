@@ -9,7 +9,6 @@ import ManageAdmin from "./Pages/ManageAdmin/Manage_Admin";
 import AquariumManagement from "./Pages/Manage/Aquarium/AquariumManagement";
 import FishManagement from "./Pages/Manage/Fish/FishManagement";
 import UpdateAquarium from "./Pages/Manage/UpdateAquarium/UpdateAquarium";
-import UpdateFish from "./Pages/Manage/UpdateFish/UpdateFish";
 import { Routes, Route } from "react-router-dom";
 import ProductDetail from "./Pages/ProductDetail/productDetail";
 import BlogDetail from "./Pages/BlogDetail/BlogDetail";
@@ -24,6 +23,7 @@ import Water from "./Pages/Manage/WaterManagement/water";
 import AuthGuard from "./Pages/authGuagd";
 import KoiStatis from "./Pages/Statistics/KoiStatis/koiStatis";
 import PondStatis from "./Pages/Statistics/PondStatis/pondStatis";
+import KoiInformation from "./Pages/KoiInformation/KoiInformation";
 
 function App() {
   return (
@@ -44,7 +44,7 @@ function App() {
           <Route path="/aquariummanagement" element={<AquariumManagement />} />
           <Route path="/fishmanagement" element={<FishManagement />} />
           <Route path="/updateaquarium/:id" element={<UpdateAquarium />} />
-          <Route path="/updatefish/:id" element={<UpdateFish />} />
+          <Route path="/fishdetail/:id" element={<KoiInformation />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/orderHistory" element={<Order />} />
