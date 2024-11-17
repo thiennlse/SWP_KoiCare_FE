@@ -1,6 +1,5 @@
 import "./UpdateAquarium.css";
 import axiosInstance from "../../axiosInstance";
-
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -15,62 +14,98 @@ const UpdateAquarium = () => {
     depth: "",
     description: "",
   });
+  const [previewImage, setPreviewImage] = useState("");
+  const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
-    axiosInstance
-      .get(`/api/Pool/${id}`)
-      .then((response) => {
+    const fetchAquariumData = async () => {
+      try {
+        const response = await axiosInstance.get(`/api/Pool/${id}`);
         setAquariumData(response.data);
-      })
-      .catch((error) => {
+        setPreviewImage(response.data.image);
+      } catch (error) {
         console.error("Error fetching aquarium details:", error);
         toast.error("Failed to load aquarium details.", { autoClose: 1500 });
-      });
-  }, [id]);
-
-  const handleUpdate = (e) => {
-    e.preventDefault();
-    const updatedAquariumData = {
-      memberId: aquariumData.id,
-      name: aquariumData.name.trim(),
-      size: Number(aquariumData.size),
-      depth: Number(aquariumData.depth),
-      description: aquariumData.description.trim(),
-      waterId: aquariumData.waterId,
+      }
     };
 
-    axiosInstance
-      .patch(`/api/Pool/update/${id}`, updatedAquariumData, {
+    fetchAquariumData();
+  }, [id]);
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      let imageUrl = aquariumData.image;
+
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append("file", imageFile);
+
+        const imageResponse = await axiosInstance.post(
+          "/api/Fish/upload",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        imageUrl = imageResponse.data.url;
+      }
+
+      const updatedAquariumData = {
+        memberId: aquariumData.memberId,
+        name: aquariumData.name.trim(),
+        size: Number(aquariumData.size),
+        depth: Number(aquariumData.depth),
+        description: aquariumData.description.trim(),
+        image: imageUrl,
+      };
+
+      await axiosInstance.patch(`/api/Pool/update/${id}`, updatedAquariumData, {
         headers: {
           "Content-Type": "application/json",
         },
-      })
-      .then((response) => {
-        toast.success("Aquarium updated successfully!", { autoClose: 1500 });
-        navigate("/aquariummanagement");
-      })
-      .catch((error) => {
-        if (error.response) {
-          console.error("Error updating aquarium:", error.response.data);
-          toast.error(
-            `Failed to update aquarium. Error: ${error.response.data}`,
-            { autoClose: 1500 }
-          );
-        } else {
-          console.error("Error setting up request:", error.message);
-          toast.error(`Failed to update aquarium. Error: ${error.message}`, {
-            autoClose: 1500,
-          });
-        }
       });
+
+      toast.success("Aquarium updated successfully!", { autoClose: 1500 });
+      navigate("/aquariummanagement");
+    } catch (error) {
+      if (error.response) {
+        console.error("Error updating aquarium:", error.response.data);
+        toast.error(
+          `Failed to update aquarium. Error: ${error.response.data}`,
+          {
+            autoClose: 1500,
+          }
+        );
+      } else {
+        console.error("Error setting up request:", error.message);
+        toast.error(`Failed to update aquarium. Error: ${error.message}`, {
+          autoClose: 1500,
+        });
+      }
+    }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setAquariumData((prevData) => ({
-      ...prevData,
+    setAquariumData((prev) => ({
+      ...prev,
       [name]: value,
     }));
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
@@ -79,12 +114,20 @@ const UpdateAquarium = () => {
         aquariumData={aquariumData}
         handleChange={handleChange}
         handleUpdate={handleUpdate}
+        handleImageChange={handleImageChange}
+        previewImage={previewImage}
       />
     </div>
   );
 };
 
-function UpdateAquariumForm({ aquariumData, handleChange, handleUpdate }) {
+function UpdateAquariumForm({
+  aquariumData,
+  handleChange,
+  handleUpdate,
+  handleImageChange,
+  previewImage,
+}) {
   return (
     <form className="form_pool" onSubmit={handleUpdate}>
       <p className="form_title">Update Aquarium</p>
@@ -104,7 +147,7 @@ function UpdateAquariumForm({ aquariumData, handleChange, handleUpdate }) {
           </div>
 
           <div className="input_infor">
-            <label>Size (cm):</label>
+            <label>Size (cm2):</label>
             <input
               type="number"
               name="size"
@@ -136,6 +179,18 @@ function UpdateAquariumForm({ aquariumData, handleChange, handleUpdate }) {
               value={aquariumData.description}
               onChange={handleChange}
             />
+          </div>
+
+          <div className="input_infor">
+            <label>Image:</label>
+            <input type="file" accept="image/*" onChange={handleImageChange} />
+            {previewImage && (
+              <img
+                src={previewImage}
+                alt="Aquarium preview"
+                style={{ maxWidth: "200px", marginTop: "10px" }}
+              />
+            )}
           </div>
         </div>
       </div>

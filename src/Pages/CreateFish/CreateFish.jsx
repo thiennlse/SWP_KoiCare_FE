@@ -61,13 +61,17 @@ const CreateFish = () => {
       }
     }
 
-    if ((name === "size" || name === "weight") && Number(value) > 100) {
-      toast.error(
-        `${name.charAt(0).toUpperCase() + name.slice(1)} must be less than 100`,
-        {
-          autoClose: 1500,
-        }
-      );
+    if (name === "size" && Number(value) >= 101) {
+      toast.error("Size must be less than 100 cm", {
+        autoClose: 1500,
+      });
+      return;
+    }
+
+    if (name === "weight" && Number(value) >= 11) {
+      toast.error("Weight must be less than 10 kg", {
+        autoClose: 1500,
+      });
       return;
     }
 
@@ -206,161 +210,132 @@ const CreateFishForm = ({
   };
 
   return (
-    <form className="form_fish" onSubmit={handleSubmit}>
-      <p className="form_title">Create Fish</p>
-
-      <div className="form_grid_fish">
-        <div className="column">
-          <div className="input_infor">
-            <label>Fish Name</label>
-            <input
-              type="text"
-              name="name"
-              placeholder="Enter fish name"
-              value={fishData.name}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="input_infor">
-            <label>Pool:</label>
-            <select
-              name="poolId"
-              value={fishData.poolId}
-              onChange={handleChange}
-              className="custom-select"
-              required
-            >
-              <option value="0">Select a pool</option>
-              {pools.map((pool) => (
-                <option key={pool.id} value={pool.id}>
-                  {pool.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="input_infor">
-            <label>Gender:</label>
-            <select
-              name="gender"
-              value={fishData.gender}
-              onChange={handleChange}
-              className="custom-select"
-            >
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-            </select>
-          </div>
-
-          <div className="input_infor">
-            <label>Origin:</label>
-            <select
-              name="origin"
-              value={fishData.origin}
-              onChange={handleChange}
-              className="custom-select"
-              required
-            >
-              <option value="">Select an origin</option>
-              <option value="Japan">Japan</option>
-              <option value="China">China</option>
-              <option value="Korea">Korea</option>
-            </select>
-          </div>
-
-          <div className="input_infor">
-            <label>Image:</label>
-            <input
-              type="file"
-              name="image"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
-            {previewImage && (
-              <img
-                src={previewImage}
-                alt="Fish preview"
-                style={{
-                  marginTop: "10px",
-                  maxWidth: "200px",
-                  maxHeight: "200px",
-                  objectFit: "contain",
-                }}
-              />
-            )}
-          </div>
+    <form className="form_create_fish" onSubmit={handleSubmit}>
+      <p className="form_title_create_fish">Create Fish</p>
+      <div className="form_grid_create_fish">
+        <div className="input_infor_create_fish">
+          <label>Fish Name</label>
+          <input
+            type="text"
+            name="name"
+            placeholder="Enter fish name"
+            value={fishData.name}
+            onChange={handleChange}
+            required
+          />
         </div>
-
-        <div className="column">
-          <div className="input_infor">
-            <label>Size (cm):</label>
-            <input
-              type="number"
-              name="size"
-              placeholder="Enter size"
-              value={fishData.size}
-              onChange={handleChange}
-              onFocus={handleFocus}
-              required
+        <div className="input_infor_create_fish">
+          <label>Pool:</label>
+          <select
+            name="poolId"
+            value={fishData.poolId}
+            onChange={handleChange}
+            required
+          >
+            <option value="0">Select a pool</option>
+            {pools.map((pool) => (
+              <option key={pool.id} value={pool.id}>
+                {pool.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="input_infor_create_fish">
+          <label>Gender:</label>
+          <select name="gender" value={fishData.gender} onChange={handleChange}>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+        <div className="input_infor_create_fish">
+          <label>Origin:</label>
+          <select
+            name="origin"
+            value={fishData.origin}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select an origin</option>
+            <option value="Japan">Japan</option>
+            <option value="China">China</option>
+            <option value="Korea">Korea</option>
+          </select>
+        </div>
+        <div className="input_infor_create_fish">
+          <label>Image:</label>
+          <input
+            type="file"
+            name="image"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+          {previewImage && (
+            <img
+              src={previewImage}
+              alt="Fish preview"
+              className="image-preview"
             />
-          </div>
-
-          <div className="input_infor">
-            <label>Weight (kg):</label>
-            <input
-              type="number"
-              name="weight"
-              placeholder="Enter weight"
-              value={fishData.weight}
-              onChange={handleChange}
-              onFocus={handleFocus}
-              max="100"
-              required
-            />
-          </div>
-
-          <div className="input_infor">
-            <label>Food Name:</label>
-            <input
-              type="text"
-              name="foodName"
-              placeholder="Enter food name"
-              value={fishData.foodName}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="input_infor">
-            <label>Food Weight (kg/month):</label>
-            <input
-              type="number"
-              name="foodWeight"
-              placeholder="Enter food weight"
-              value={fishData.foodWeight}
-              onChange={handleChange}
-              onFocus={handleFocus}
-              max="15"
-              required
-            />
-          </div>
-
-          <div className="input_infor">
-            <label>Date of Birth:</label>
-            <input
-              type="date"
-              name="dob"
-              value={fishData.dob}
-              onChange={handleChange}
-              required
-            />
-          </div>
+          )}
+        </div>
+        <div className="input_infor_create_fish">
+          <label>Size (cm):</label>
+          <input
+            type="number"
+            name="size"
+            placeholder="Enter size"
+            value={fishData.size}
+            onChange={handleChange}
+            required
+            onFocus={handleFocus}
+          />
+        </div>
+        <div className="input_infor_create_fish">
+          <label>Weight (kg):</label>
+          <input
+            type="number"
+            name="weight"
+            placeholder="Enter weight"
+            value={fishData.weight}
+            onChange={handleChange}
+            required
+            onFocus={handleFocus}
+          />
+        </div>
+        <div className="input_infor_create_fish">
+          <label>Food Name:</label>
+          <input
+            type="text"
+            name="foodName"
+            placeholder="Enter food name"
+            value={fishData.foodName}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="input_infor_create_fish">
+          <label>Food Weight (kg/month):</label>
+          <input
+            type="number"
+            name="foodWeight"
+            placeholder="Enter food weight"
+            value={fishData.foodWeight}
+            onChange={handleChange}
+            required
+            onFocus={handleFocus}
+          />
+        </div>
+        <div className="input_infor_create_fish">
+          <label>Date of Birth:</label>
+          <input
+            type="date"
+            name="dob"
+            value={fishData.dob}
+            onChange={handleChange}
+            required
+          />
         </div>
       </div>
-
-      <div className="buttons">
+      <div className="button_create_fish">
         <button type="submit">Save</button>
         <button type="button" onClick={() => window.history.back()}>
           Cancel

@@ -11,6 +11,7 @@ import BlogDetails from "./Modal/BlogDetails";
 import DeleteProductModal from "./Modal/DeleteProductModal";
 import DeleteBlogModal from "./Modal/DeleteBlogModal";
 import OrderChart from "./OrderChart";
+import RevenueChart from "./RevenueChart";
 import adminAvatar from "./../../Components/Assets/admin.png";
 import {
   MdDashboard,
@@ -30,6 +31,7 @@ const ManageAdmin = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [modalType, setModalType] = useState("");
+  const [revenueData, setRevenueData] = useState({ labels: [], data: [] });
   const [deleteProductModalIsOpen, setDeleteProductModalIsOpen] =
     useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -400,6 +402,46 @@ const ManageAdmin = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axiosInstance.get(
+          "/api/Order?page=1&pageSize=100"
+        );
+        if (response.status === 200) {
+          const orders = response.data;
+          const monthlyRevenue = Array(12).fill(0);
+
+          orders.forEach((order) => {
+            const orderMonth = new Date(order.orderDate).getMonth();
+            monthlyRevenue[orderMonth] += order.totalCost;
+          });
+
+          const labels = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+          ];
+          setRevenueData({ labels, data: monthlyRevenue });
+        }
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+        toast.error("Failed to fetch order data.");
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
   return (
     <div className="admin_dashboard">
       <header className="header-admin">
@@ -498,6 +540,8 @@ const ManageAdmin = () => {
                 </div>
               </div>
               <div className="chart-container">
+                <RevenueChart revenueData={revenueData} /> <br /> <br />
+                <br />
                 <OrderChart orders={orders} />
               </div>
             </div>
@@ -658,7 +702,6 @@ const ManageAdmin = () => {
                       <tr>
                         <th>Image</th>
                         <th>Title</th>
-                        <th>Author</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -686,7 +729,6 @@ const ManageAdmin = () => {
                             )}
                           </td>
                           <td>{blog.title}</td>
-                          <td>{blog.author}</td>
                           <td>
                             <div className="action-buttons">
                               <button

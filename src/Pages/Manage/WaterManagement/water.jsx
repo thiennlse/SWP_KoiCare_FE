@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "../../axiosInstance";
 import "./water.css";
 import { toast } from "react-toastify";
+import Modal from "react-modal";
 
 const Water = () => {
   const [pools, setPools] = useState([]);
   const [selectedPool, setSelectedPool] = useState(null);
   const [waterData, setWaterData] = useState({});
+  const [latestReport, setLatestReport] = useState(null);
+  const [reportHistory, setReportHistory] = useState([]);
   const [isValid, setIsValid] = useState({
     temperature: true,
     salt: true,
@@ -17,6 +20,8 @@ const Water = () => {
     po4: true,
   });
   const [showOptimalRange, setShowOptimalRange] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalData, setModalData] = useState(null);
   const userId = Number(localStorage.getItem("userId"));
 
   const optimalRanges = {
@@ -49,8 +54,18 @@ const Water = () => {
 
   const fetchWaterData = async (waterId) => {
     try {
-      const response = await axiosInstance.get(`/api/Water/${waterId}`);
+      const response = await axiosInstance.get(
+        `/api/Water/getwaterbyidproperties/${waterId}`
+      );
       setWaterData(response.data);
+      setReportHistory(response.data.waterProperties || []);
+      if (response.data.waterProperties.length > 0) {
+        setLatestReport(
+          response.data.waterProperties[
+            response.data.waterProperties.length - 1
+          ]
+        );
+      }
     } catch (error) {
       toast.error("Error fetching water data:", error);
     }
@@ -91,8 +106,6 @@ const Water = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     const isInputValid = validateInput(name, value);
-    console.log(e.target);
-    console.log(isInputValid);
     setIsValid((prev) => ({ ...prev, [name]: isInputValid }));
     setWaterData((prevData) => ({ ...prevData, [name]: value }));
   };
@@ -110,12 +123,47 @@ const Water = () => {
       toast.success("Water parameters updated successfully!", {
         autoClose: 1500,
       });
+      fetchWaterData(selectedPool.waterId);
     } catch (error) {
       toast.error("Error updating water data:", error);
     }
   };
 
   const isAnyInvalid = Object.values(isValid).some((valid) => !valid);
+
+  const openModal = (data) => {
+    setModalData(data);
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const formatReportDate = (date) => {
+    const newDate = new Date(date);
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    const day = newDate.getDate();
+    const monthIndex = newDate.getMonth();
+    const year = newDate.getFullYear();
+    const hours = newDate.getHours();
+    const minutes = newDate.getMinutes();
+    const seconds = newDate.getSeconds();
+    return `${day} ${monthNames[monthIndex]} ${year} ${hours}:${minutes}:${seconds}`;
+  };
 
   return (
     <div className="water-container">
@@ -256,6 +304,75 @@ const Water = () => {
           </form>
         </div>
       )}
+
+      {selectedPool && (
+        <div className="water-reports">
+          <div className="latest-water-report">
+            <h3>Latest Water Report</h3>
+            <hr className="divider" />
+
+            {latestReport ? (
+              <div>
+                <p>Date: {formatReportDate(latestReport.date)}</p>
+                <p>Temperature: {latestReport.temperature} °C</p>
+                <p>Salt: {latestReport.salt} g</p>
+                <p>pH: {latestReport.ph}</p>
+                <p>O2: {latestReport.o2} mg/L</p>
+                <p>NO2: {latestReport.no2} mg/L</p>
+                <p>NO3: {latestReport.no3} mg/L</p>
+                <p>PO4: {latestReport.po4} mg/L</p>
+              </div>
+            ) : (
+              <p>No latest report available.</p>
+            )}
+          </div>
+
+          <div className="water-report-history">
+            <h3>Water Report History</h3>
+            <hr className="divider" />
+
+            {reportHistory.length > 0 ? (
+              <div className="water1-report-history">
+                {reportHistory
+                  .sort((a, b) => new Date(b.date) - new Date(a.date))
+                  .map((report) => (
+                    <div key={report.id} className="water-report-item">
+                      <p>Date: {formatReportDate(report.date)}</p>
+                      <button onClick={() => openModal(report)}>
+                        See more details
+                      </button>
+                    </div>
+                  ))}
+              </div>
+            ) : (
+              <p>No report history available.</p>
+            )}
+          </div>
+        </div>
+      )}
+
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="Water Report Details"
+      >
+        {modalData && (
+          <div>
+            <h2>Water Report Details</h2>
+            <p>Date: {formatReportDate(modalData.date)}</p>
+            <p>Temperature: {modalData.temperature} °C</p>
+            <p>Salt: {modalData.salt} g</p>
+            <p>pH: {modalData.ph}</p>
+            <p>O2: {modalData.o2} mg/L</p>
+            <p>NO2: {modalData.no2} mg/L</p>
+            <p>NO3: {modalData.no3} mg/L</p>
+            <p>PO4: {modalData.po4} mg/L</p>
+          </div>
+        )}
+        <button className="water-close-modal-button" onClick={closeModal}>
+          Close
+        </button>
+      </Modal>
     </div>
   );
 };
