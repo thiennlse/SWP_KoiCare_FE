@@ -35,17 +35,16 @@ const KoiChart = ({ fishInfor }) => {
     (latestUpdate - dob) / (1000 * 60 * 60 * 24 * 30)
   );
 
-  // Convert dates into readable date/time format
-  const dataLabels = fishProperties.map((data, index) => {
+  const dataLabels = fishProperties.map((data) => {
     const ageInMonthsAtData = Math.floor(
       (new Date(data.date) - dob) / (1000 * 60 * 60 * 24 * 30)
     );
     return `${ageInMonthsAtData} months`;
   });
 
-  const actualDataLabels = fishProperties.map((data) => {
-    return new Date(data.date).toLocaleString(); // Format each data point as a readable date/time
-  });
+  const actualDataLabels = fishProperties.map((data) =>
+    new Date(data.date).toLocaleString()
+  );
 
   const actualData = viewType === "size" ? sizeData : weightData;
 
@@ -62,6 +61,16 @@ const KoiChart = ({ fishInfor }) => {
     { age: 10, poor: 10, avg: 15, superior: 18 },
     { age: 11, poor: 11, avg: 17, superior: 19 },
     { age: 12, poor: 12, avg: 18, superior: 21 },
+    ...Array.from({ length: 48 }, (_, i) => {
+      const age = i + 13;
+      const increment = Math.floor((age - 12) / 5);
+      return {
+        age,
+        poor: 12 + increment,
+        avg: 18 + increment * 2,
+        superior: 21 + increment * 2.5,
+      };
+    }),
   ];
 
   const weightGrowthLimits = [
@@ -77,6 +86,16 @@ const KoiChart = ({ fishInfor }) => {
     { age: 10, poor: 1, avg: 1.8, superior: 2.2 },
     { age: 11, poor: 1.1, avg: 2, superior: 2.4 },
     { age: 12, poor: 1.2, avg: 2.2, superior: 2.5 },
+    ...Array.from({ length: 48 }, (_, i) => {
+      const age = i + 13;
+      const increment = Math.floor((age - 12) / 5) * 0.1;
+      return {
+        age,
+        poor: 1.2 + increment,
+        avg: 2.2 + increment * 2,
+        superior: 2.5 + increment * 2.5,
+      };
+    }),
   ];
 
   const growthLimits =
@@ -104,7 +123,7 @@ const KoiChart = ({ fishInfor }) => {
   });
 
   const chartData = {
-    labels: actualDataLabels.length > 0 ? actualDataLabels : dataLabels, // Use actualDataLabels if available
+    labels: actualDataLabels.length > 0 ? actualDataLabels : dataLabels,
     datasets: [
       {
         label: `Poor ${viewType === "size" ? "Size (cm)" : "Weight (kg)"}`,
