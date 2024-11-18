@@ -102,7 +102,7 @@
   background-color: #2ab67e;
 }
 
-.aquarium-container {
+.calc-salt-aquarium-container {
   width: 60%;
   margin: 40px auto;
   padding: 20px;
@@ -156,4 +156,70 @@
 
 .calc-salt.disabled:hover {
   background-color: #333;
+}
+
+.calc-salt-product-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+  margin: 40px auto;
+  width: 90%;
+}
+
+.calc-salt-recommended-products {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #ff6600;
+}
+
+.calc-salt-product-item {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  background-color: #fff;
+  transition: transform 0.3s, box-shadow 0.3s;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.calc-salt-product-item img {
+  width: 80%;
+  height: 60%;
+  border-radius: 10px;
+  margin: 0 auto;
+}
+
+.calc-salt-product-grid h3 {
+  text-align: center;
+}
+
+.calc-salt-product-item h4 {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.calc-salt-product-item p {
+  font-size: 14px;
+  color: #007bff;
+  margin: 10px 0;
+}
+
+.calc-salt-product-item button {
+  padding: 8px 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: auto;
+}
+
+.calc-salt-product-item button:hover {
+  background-color: #218838;
 }
