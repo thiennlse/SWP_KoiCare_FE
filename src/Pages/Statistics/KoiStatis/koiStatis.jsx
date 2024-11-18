@@ -48,18 +48,23 @@ const KoiStatis = () => {
     fetchFishList();
   }, [poolList]);
 
-  const handleFishChange = (event) => {
+  const handleFishChange = async (event) => {
     const fishId = event.target.value;
 
-    const selectedFish = fishList
-      .sort((a, b) => a.id - b.id)
-      .find((fish) => fish.id === parseInt(fishId));
-
-    if (selectedFish) {
-      selectedFish.fishProperties.sort((a, b) => a.id - b.id);
+    if (!fishId) {
+      setSelectedFish(null);
+      return;
     }
 
-    setSelectedFish(selectedFish);
+    try {
+      const res = await axiosInstance.get(
+        `api/Fish/getlastpropertiesonday?fishId=${fishId}`
+      );
+      setSelectedFish(res.data);
+    } catch (err) {
+      console.error("Error fetching fish properties:", err);
+      toast.error("Failed to fetch fish properties");
+    }
   };
 
   return (
