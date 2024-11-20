@@ -26,7 +26,7 @@ const Water = () => {
 
   const optimalRanges = {
     temperature: "6°C -  32°C",
-    salt: ">0 gram",
+    salt: "0.1 - 1 gram",
     ph: "6.5 - 8.5",
     o2: ">6mg/L",
     no2: "0 - 0.1 mg/L",
@@ -87,7 +87,7 @@ const Water = () => {
       case "temperature":
         return numValue >= 6 && numValue <= 32;
       case "salt":
-        return numValue > 0;
+        return numValue >= 0.1 && numValue <= 1;
       case "ph":
         return numValue >= 6.5 && numValue <= 8.5;
       case "o2":
