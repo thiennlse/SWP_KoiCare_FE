@@ -35,7 +35,7 @@ function ProductDetail() {
     fetchSuggestedProducts();
   }, [product.id]);
 
-  const handleBuyNow = () => {
+  function handleBuyNow(product) {
     const isLogin = localStorage.getItem("userId");
 
     if (!isLogin) {
@@ -51,15 +51,33 @@ function ProductDetail() {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     const productInCart = cart.find((item) => item.id === product.id);
 
+    // if (productInCart) {
+    //   productInCart.quantity += 1;
+    // } else {
+    //   cart.push({ ...product, quantity: 1 });
+    // }
+
     if (productInCart) {
+      if (productInCart.quantity >= product.inStock) {
+        toast.error("Số lượng vượt quá tồn kho!", {
+          autoClose: 500,
+        });
+        return;
+      }
       productInCart.quantity += 1;
     } else {
+      if (product.inStock <= 0) {
+        toast.error("Sản phẩm đã hết hàng!", {
+          autoClose: 500,
+        });
+        return;
+      }
       cart.push({ ...product, quantity: 1 });
     }
 
     localStorage.setItem("cart", JSON.stringify(cart));
     window.location.href = "/cart";
-  };
+  }
 
   const handleProductClick = (suggestedProduct) => {
     navigate(`/product/${suggestedProduct.id}`, {
@@ -72,9 +90,27 @@ function ProductDetail() {
     e.stopPropagation();
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     const productInCart = cart.find((item) => item.id === suggestedProduct.id);
+    // if (productInCart) {
+    //   productInCart.quantity += 1;
+    // } else {
+    //   cart.push({ ...suggestedProduct, quantity: 1 });
+    // }
+
     if (productInCart) {
+      if (productInCart.quantity >= suggestedProduct.inStock) {
+        toast.error("Số lượng vượt quá tồn kho!", {
+          autoClose: 500,
+        });
+        return;
+      }
       productInCart.quantity += 1;
     } else {
+      if (suggestedProduct.inStock <= 0) {
+        toast.error("Sản phẩm đã hết hàng!", {
+          autoClose: 500,
+        });
+        return;
+      }
       cart.push({ ...suggestedProduct, quantity: 1 });
     }
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -88,7 +124,7 @@ function ProductDetail() {
         <div className="product-details-backgr">
           <h2>{product.name}</h2>
           <p>{product.description}</p>
-          <button onClick={handleBuyNow}>
+          <button onClick={() => handleBuyNow(product)}>
             {product.cost.toLocaleString("en-US")} Vnd - Buy
           </button>
         </div>
@@ -123,7 +159,7 @@ function ProductDetail() {
       ) : (
         ""
       )}
-      <ToastContainer />
+      <ToastContainer containerId="containerProductDetail" />
       <ScrollToTop />
     </div>
   );

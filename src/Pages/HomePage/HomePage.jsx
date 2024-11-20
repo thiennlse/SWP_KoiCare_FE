@@ -12,17 +12,21 @@ import CalcAds from "./calcAds";
 import SubScription from "./subscription";
 import koiFood from "../../Components/Assets/KoiFood.jpeg";
 import { FaStore } from "react-icons/fa";
-
-import banner_image_1 from "../../Components/Assets/banner_image_1.png";
-import banner_image_2 from "../../Components/Assets/banner_image_2.png";
-import banner_image_3 from "../../Components/Assets/banner_image_3.png";
-
 import blog_image_1 from "../../Components/Assets/blog_imgae_1.png";
 
 const bannerImages = [
-  { img: banner_image_1, title: "Your Fish" },
-  { img: banner_image_2, title: "Your Fish" },
-  { img: banner_image_3, title: "Your Fish" },
+  {
+    img: "https://res.cloudinary.com/dkedkbs8d/image/upload/v1732030738/nflxazt9erg8ouacwwew.png",
+    title: "Your Fish",
+  },
+  {
+    img: "https://res.cloudinary.com/dkedkbs8d/image/upload/v1732030854/odeyjjnj3zpyo4luzkkp.png",
+    title: "Your Fish",
+  },
+  {
+    img: "https://res.cloudinary.com/dkedkbs8d/image/upload/v1732030887/zpur3kgyvkekkkx2hm0i.png",
+    title: "Your Fish",
+  },
 ];
 
 const scrollToBestSelling = () => {
@@ -87,6 +91,7 @@ function Banner() {
     <div className="banner">
       <div className="banner_content">
         <img
+          loading="lazy"
           src={bannerImages[currentIndex].img}
           alt="Banner"
           className="banner_image"
@@ -170,7 +175,7 @@ function Products() {
     const role = JSON.parse(localStorage.getItem("role"));
     if (role !== "Member") {
       toast.warn("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!", {
-        autoClose: 1000,
+        autoClose: 500,
       });
 
       setTimeout(() => {
@@ -178,21 +183,31 @@ function Products() {
       }, 1000);
       return;
     }
-    toast.success(`${productObj.name} đã được thêm vào giỏ hàng!`, {
-      autoClose: 1500,
-    });
 
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     const productInCart = cart.find((item) => item.id === productObj.id);
 
     if (productInCart) {
+      if (productInCart.quantity >= productObj.inStock) {
+        toast.error("Số lượng vượt quá tồn kho!", {
+          autoClose: 500,
+        });
+        return;
+      }
       productInCart.quantity += 1;
     } else {
-      const selectedProduct = products.find(
-        (product) => product.id === productObj.id
-      );
-      cart.push({ ...selectedProduct, quantity: 1 });
+      if (productObj.inStock <= 0) {
+        toast.error("Sản phẩm đã hết hàng!", {
+          autoClose: 500,
+        });
+        return;
+      }
+      cart.push({ ...productObj, quantity: 1 });
     }
+
+    toast.success(`${productObj.name} đã được thêm vào giỏ hàng!`, {
+      autoClose: 500,
+    });
 
     localStorage.setItem("cart", JSON.stringify(cart));
   }
@@ -288,6 +303,7 @@ function Product({ productObj, onAddToCart, shopName }) {
     <li onClick={handleClick}>
       <div className="image_product">
         <img
+          loading="lazy"
           src={productObj.image === "" ? koiFood : productObj.image}
           alt={productObj.name}
           onClick={handleClick}
@@ -382,6 +398,7 @@ function BlogSection({ blogs }) {
               onClick={(e) => handleBlogClick(blog, e)}
             >
               <img
+                loading="lazy"
                 src={blog.image ? blog.image : blog_image_1}
                 className="card-img-top"
                 alt={blog.title}
