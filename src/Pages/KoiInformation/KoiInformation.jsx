@@ -102,8 +102,13 @@ const KoiInformation = () => {
     if (name === "dob") {
       const selectedDate = new Date(value);
       const today = new Date();
+      const nextDay = new Date(today);
+      nextDay.setDate(nextDay.getDate() + 1);
 
-      if (selectedDate > today) {
+      today.setHours(today.getHours() + 7);
+      selectedDate.setHours(selectedDate.getHours() + 7);
+
+      if (selectedDate > nextDay) {
         toast.error("Date of birth cannot be in the future", {
           autoClose: 1500,
         });
