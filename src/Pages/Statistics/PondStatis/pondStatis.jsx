@@ -58,7 +58,7 @@ const PondStatis = () => {
 
           {selectedPool && (
             <div>
-              <h2>Select a Property to View</h2>
+              <h3>Select a Property to View</h3>
               <select onChange={handlePropertyChange} value={selectedProperty}>
                 <option value="temperature">Temperature</option>
                 <option value="salt">Salt</option>
