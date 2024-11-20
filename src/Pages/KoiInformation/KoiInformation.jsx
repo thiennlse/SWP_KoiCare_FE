@@ -207,7 +207,7 @@ const KoiInformation = () => {
       }
 
       toast.success("Koi information updated successfully!");
-      navigate("/fishmanagement");
+      window.location.reload();
     } catch (error) {
       if (error.response && error.response.status === 400) {
         toast.error(
