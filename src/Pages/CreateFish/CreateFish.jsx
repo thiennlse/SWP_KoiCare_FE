@@ -52,8 +52,10 @@ const CreateFish = () => {
     if (name === "dob") {
       const selectedDate = new Date(value);
       const today = new Date();
+      const nextDay = new Date(today);
+      nextDay.setDate(today.getDate() + 1);
 
-      if (selectedDate > today) {
+      if (selectedDate > nextDay) {
         toast.error("Date of birth cannot be in the future", {
           autoClose: 1500,
         });
