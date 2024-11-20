@@ -61,22 +61,40 @@ const CreateFish = () => {
       }
     }
 
-    if (name === "size" && Number(value) >= 101) {
-      toast.error("Size must be less than 100 cm", {
-        autoClose: 1500,
-      });
-      return;
+    if (name === "size") {
+      const sizeValue = Number(value);
+      if (sizeValue < 0.2) {
+        toast.error("Size must be at least 0.2 cm", {
+          autoClose: 1500,
+        });
+        return;
+      }
+      if (sizeValue > 8) {
+        toast.error("Size must be less than 8 cm", {
+          autoClose: 1500,
+        });
+        return;
+      }
     }
 
-    if (name === "weight" && Number(value) >= 11) {
-      toast.error("Weight must be less than 10 kg", {
-        autoClose: 1500,
-      });
-      return;
+    if (name === "weight") {
+      const weightValue = Number(value);
+      if (weightValue < 0.05) {
+        toast.error("Weight must be at least 0.05 g", {
+          autoClose: 1500,
+        });
+        return;
+      }
+      if (weightValue > 1) {
+        toast.error("Weight must be less than 1 g", {
+          autoClose: 1500,
+        });
+        return;
+      }
     }
 
     if (name === "foodWeight" && Number(value) > 15) {
-      toast.error("Food Weight must be less than 15 kg", {
+      toast.error("Food Weight must be less than 15 g", {
         autoClose: 1500,
       });
       return;
@@ -290,7 +308,7 @@ const CreateFishForm = ({
           />
         </div>
         <div className="input_infor_create_fish">
-          <label>Weight (kg):</label>
+          <label>Weight (g):</label>
           <input
             type="number"
             name="weight"
@@ -313,7 +331,7 @@ const CreateFishForm = ({
           />
         </div>
         <div className="input_infor_create_fish">
-          <label>Food Weight (kg/month):</label>
+          <label>Food Weight (g/month):</label>
           <input
             type="number"
             name="foodWeight"
