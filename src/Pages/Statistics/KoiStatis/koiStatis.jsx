@@ -7,6 +7,8 @@ import KoiChart from "../KoiStatis/koiChart";
 const KoiStatis = () => {
   const [fishList, setFishList] = useState([]);
   const [selectedFish, setSelectedFish] = useState(null);
+  const [selectedWeek, setSelectedWeek] = useState(1);
+  const [viewType, setViewType] = useState("size");
   const memberId = JSON.parse(localStorage.getItem("userId"));
   const [poolList, setPoolList] = useState([]);
 
@@ -53,6 +55,7 @@ const KoiStatis = () => {
 
     if (!fishId) {
       setSelectedFish(null);
+      setSelectedWeek(1);
       return;
     }
 
@@ -60,11 +63,18 @@ const KoiStatis = () => {
       const res = await axiosInstance.get(
         `api/Fish/getlastpropertiesonday?fishId=${fishId}`
       );
+      console.log("Fish Data:", res.data);
       setSelectedFish(res.data);
+      setSelectedWeek(1);
     } catch (err) {
       console.error("Error fetching fish properties:", err);
       toast.error("Failed to fetch fish properties");
     }
+  };
+
+  const handleWeekChange = (event) => {
+    const week = event.target.value;
+    setSelectedWeek(week);
   };
 
   return (
@@ -79,11 +89,23 @@ const KoiStatis = () => {
             </option>
           ))}
         </select>
+        <select onChange={handleWeekChange}>
+          <option value="1">Week 1</option>
+          {Array.from({ length: 52 }, (_, i) => (
+            <option key={i} value={i + 1}>
+              Week {i + 1}
+            </option>
+          ))}
+        </select>
       </div>
 
       {selectedFish && (
         <div className="koi-chart-container">
-          <KoiChart fishInfor={selectedFish} />
+          <KoiChart
+            fishInfor={selectedFish}
+            viewType={viewType}
+            selectedWeek={selectedWeek}
+          />
         </div>
       )}
     </div>
