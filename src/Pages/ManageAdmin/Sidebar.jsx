@@ -31,6 +31,7 @@ export default function SideBar({
   orders,
   userId,
   dateRange,
+  revenueDataShopOwner,
 }) {
   return (
     <div style={{ display: "flex", flexGrow: 1 }}>
@@ -45,6 +46,15 @@ export default function SideBar({
               <li
                 className={activeTab === "dashboard" ? "active" : ""}
                 onClick={() => setActiveTab("dashboard")}
+              >
+                <MdDashboard className="nav-icon-admin" />
+                Dashboard
+              </li>
+            )}
+            {userRole === "ShopOwner" && (
+              <li
+                className={activeTab === "dashboardShop" ? "active" : ""}
+                onClick={() => setActiveTab("dashboardShop")}
               >
                 <MdDashboard className="nav-icon-admin" />
                 Dashboard
@@ -121,6 +131,7 @@ export default function SideBar({
         filteredDateRange={filteredDateRange}
         orderStatuses={orderStatuses}
         handleStatusChange={handleStatusChange}
+        revenueDataShopOwner={revenueDataShopOwner}
       />
     </div>
   );

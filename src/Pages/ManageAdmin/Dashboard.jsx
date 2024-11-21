@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axiosInstance from "../axiosInstance";
 import OrderChart from "./OrderChart";
 import RevenueChart from "./RevenueChart";
@@ -23,24 +23,26 @@ export default function DashBoard({
   filteredDateRange,
   orderStatuses,
   handleStatusChange,
+  revenueDataShopOwner,
 }) {
   const [subscriptionOrders, setSubscriptionOrders] = useState([]);
-  const fetchSubscriptionOrders = async () => {
-    try {
-      const response = await axiosInstance.get(
-        "/api/Order?page=1&pageSize=100"
-      );
-      console.log(response.data);
-      const filteredOrders = response.data.filter((order) =>
-        order.orderProducts.some((product) => product.subcriptionId)
-      );
-      setSubscriptionOrders(filteredOrders);
-    } catch (error) {
-      console.error("Error fetching subscription orders:", error);
-    }
-  };
-
-  fetchSubscriptionOrders();
+  const [shopOrders, setShopOrders] = useState([]);
+  useEffect(() => {
+    const fetchSubscriptionOrders = async () => {
+      try {
+        const response = await axiosInstance.get(
+          "/api/Order?page=1&pageSize=100"
+        );
+        const filteredOrders = response.data.filter((order) =>
+          order.orderProducts.some((product) => product.subcriptionId)
+        );
+        setSubscriptionOrders(filteredOrders);
+      } catch (error) {
+        console.error("Error fetching subscription orders:", error);
+      }
+    };
+    fetchSubscriptionOrders();
+  }, []);
 
   return (
     <main className="content_admin">
@@ -68,14 +70,33 @@ export default function DashBoard({
 
             <div className="stat-card">
               <div className="stat-icon">🛍️</div>
-              <div className="stat-number">{orders.length}</div>
+              <div className="stat-number">{subscriptionOrders.length}</div>
               <div className="stat-title">Total Orders</div>
             </div>
           </div>
           <div className="chart-container">
             <RevenueChart revenueData={revenueData} /> <br /> <br />
             <br />
-            <OrderChart orders={orders} />
+            <OrderChart orders={subscriptionOrders} />
+          </div>
+        </div>
+      )}
+
+      {activeTab === "dashboardShop" && (
+        <div className="card_admin">
+          <h3>Dash Board Shop Owner</h3>
+          <div className="dashboard-cards">
+            <div className="stat-card">
+              <div className="stat-icon">🛍️</div>
+              <div className="stat-number">{subscriptionOrders.length}</div>
+              <div className="stat-title">Total Orders</div>
+            </div>
+          </div>
+          <div className="chart-container">
+            <RevenueChart revenueData={revenueData} /> <br />
+            <br />
+            <br />
+            <OrderChart orders={subscriptionOrders} />
           </div>
         </div>
       )}
@@ -357,12 +378,45 @@ export default function DashBoard({
                           onChange={(e) =>
                             handleStatusChange(order.id, e.target.value)
                           }
+                          style={
+                            order.status === "PAID"
+                              ? { backgroundColor: "#d4edda", color: "#155724" }
+                              : order.status === "IN TRANSIT"
+                              ? { backgroundColor: "#fff3cd", color: "#856404" }
+                              : order.status === "DELIVERED"
+                              ? { backgroundColor: "#cce5ff", color: "#004085" }
+                              : { backgroundColor: "#e2e3e5", color: "#333" }
+                          }
                         >
                           <option value={order.status}>{order.status}</option>
                           {orderStatuses
                             .filter((status) => status.name !== order.status)
                             .map((status) => (
-                              <option key={status.id} value={status.name}>
+                              <option
+                                key={status.id}
+                                value={status.name}
+                                style={
+                                  status.name === "PAID"
+                                    ? {
+                                        backgroundColor: "#d4edda",
+                                        color: "#155724",
+                                      }
+                                    : status.name === "IN TRANSIT"
+                                    ? {
+                                        backgroundColor: "#fff3cd",
+                                        color: "#856404",
+                                      }
+                                    : status.name === "DELIVERED"
+                                    ? {
+                                        backgroundColor: "#cce5ff",
+                                        color: "#004085",
+                                      }
+                                    : {
+                                        backgroundColor: "#e2e3e5",
+                                        color: "#333",
+                                      }
+                                }
+                              >
                                 {status.name}
                               </option>
                             ))}
@@ -446,23 +500,10 @@ export default function DashBoard({
                       <td>{new Date(order.orderDate).toLocaleDateString()}</td>
                       <td>{order.description}</td>
                       <td>{order.totalCost} VND</td>
-                      <td>
-                        <select
-                          className="status-select"
-                          value={order.status}
-                          onChange={(e) =>
-                            handleStatusChange(order.id, e.target.value)
-                          }
-                        >
-                          <option value={order.status}>{order.status}</option>
-                          {orderStatuses
-                            .filter((status) => status.name !== order.status)
-                            .map((status) => (
-                              <option key={status.id} value={status.name}>
-                                {status.name}
-                              </option>
-                            ))}
-                        </select>
+                      <td
+                        style={{ backgroundColor: "#d4edda", color: "#155724" }}
+                      >
+                        {order.status}
                       </td>
                     </tr>
                   ))}

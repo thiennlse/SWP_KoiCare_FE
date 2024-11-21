@@ -24,6 +24,10 @@ const ManageAdmin = () => {
   const [modalContent, setModalContent] = useState(null);
   const [modalType, setModalType] = useState("");
   const [revenueData, setRevenueData] = useState({ labels: [], data: [] });
+  const [revenueDataShopOwner, setRevenueDataShopOwner] = useState({
+    labels: [],
+    data: [],
+  });
   const [deleteProductModalIsOpen, setDeleteProductModalIsOpen] =
     useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -408,7 +412,21 @@ const ManageAdmin = () => {
           const orders = response.data;
           const monthlyRevenue = Array(12).fill(0);
 
-          orders.forEach((order) => {
+          // orders.forEach((order) => {
+          //   const orderMonth = new Date(order.orderDate).getMonth();
+          //   monthlyRevenue[orderMonth] += order.totalCost;
+          // });
+
+          const ordersSubcribe = orders
+            .map((order) => ({
+              ...order,
+              orderProducts: order.orderProducts.filter(
+                (orderProduct) => orderProduct.subcriptionId != null
+              ),
+            }))
+            .filter((order) => order.orderProducts.length > 0);
+
+          ordersSubcribe.forEach((order) => {
             const orderMonth = new Date(order.orderDate).getMonth();
             monthlyRevenue[orderMonth] += order.totalCost;
           });
@@ -437,6 +455,55 @@ const ManageAdmin = () => {
 
     fetchOrders();
   }, []);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axiosInstance.get(
+          "/api/Order?page=1&pageSize=100"
+        );
+        if (response.status === 200) {
+          const orders = response.data;
+          const monthlyRevenue = Array(12).fill(0);
+          const ordersSubcribe = orders
+            .map((order) => ({
+              ...order,
+              orderProducts: order.orderProducts.filter(
+                (orderProduct) => orderProduct.subcriptionId != null
+              ),
+            }))
+            .filter((order) => order.orderProducts.length > 0);
+
+          ordersSubcribe.forEach((order) => {
+            const orderMonth = new Date(order.orderDate).getMonth();
+            monthlyRevenue[orderMonth] += order.totalCost;
+          });
+
+          const labels = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+          ];
+          setRevenueDataShopOwner({ labels, data: monthlyRevenue });
+        }
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+        toast.error("Failed to fetch order data.", { autoClose: 500 });
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
   axiosInstance
     .get(`/api/Member/${userId}`)
     .then((res) => setAccountName(res.data.fullName));
@@ -472,6 +539,7 @@ const ManageAdmin = () => {
         orders={orders}
         userId={userId}
         dateRange={dateRange}
+        revenueDataShopOwner={revenueDataShopOwner}
       />
       <Modal
         isOpen={modalIsOpen}
