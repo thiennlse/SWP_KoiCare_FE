@@ -355,6 +355,7 @@ const Water = () => {
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Water Report Details"
+        className="modal-css-water"
       >
         {modalData && (
           <div>

@@ -168,7 +168,7 @@
   background-color: #e5771f;
 }
 
-.ReactModal__Content {
+.modal-css-water {
   max-width: 500px;
   width: 80%;
   height: 500px;
@@ -177,9 +177,17 @@
   margin: auto;
   margin-top: 120px;
   text-align: center;
+  position: absolute;
+  inset: 40px;
+  border: 1px solid rgb(204, 204, 204);
+  background: rgb(255, 255, 255);
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
 }
 
-.ReactModal__Content h2 {
+.modal-css-water h2 {
   color: #e5771f;
 }
 
