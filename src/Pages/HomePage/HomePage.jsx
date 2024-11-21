@@ -129,6 +129,10 @@ function Products() {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 6;
   const [members, setMembers] = useState([]);
+  const [selectedShop, setSelectedShop] = useState("");
+  const [sortOption, setSortOption] = useState("");
+
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchProductsAndMembers = async () => {
@@ -139,6 +143,7 @@ function Products() {
         const memberResponse = await axiosInstance.get("/api/Member");
         setProducts(productResponse.data);
         setMembers(memberResponse.data);
+        console.log(memberResponse.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching products or members:", error);
@@ -149,24 +154,29 @@ function Products() {
     fetchProductsAndMembers();
   }, []);
 
-  useEffect(() => {
-    axiosInstance
-      .get("/api/Product?page=1&pagesize=100")
-      .then((response) => {
-        setProducts(response.data);
+  const filteredProducts = products
+    .filter((product) =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .filter((product) => {
+      if (selectedShop === "") return true;
+      const member = members.find((member) => member.id === product.userId);
+      return member?.fullName === selectedShop;
+    });
 
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching products:", error);
-        setLoading(false);
-      });
-  }, []);
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    if (sortOption === "name") {
+      return a.name.localeCompare(b.name);
+    } else if (sortOption === "price") {
+      return a.cost - b.cost;
+    }
+    return 0;
+  });
 
-  const totalPages = Math.ceil(products.length / productsPerPage);
+  const totalPages = Math.ceil(sortedProducts.length / productsPerPage);
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(
+  const currentProducts = sortedProducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
@@ -226,7 +236,39 @@ function Products() {
 
   return (
     <div id="products_scroll" className="product_wrapper">
-      <h1 className="product_title">Best Selling Products</h1>
+      <div className="product-search">
+        <h1 className="product_title">Best Selling Products</h1>
+        <div className="filter-sort-container">
+          <input
+            type="text"
+            className="search-product"
+            placeholder="Search by product name..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <select
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+          >
+            <option value="">Sort By</option>
+            <option value="name">Product Name</option>
+            <option value="price">Price</option>
+          </select>
+          <select
+            value={selectedShop}
+            onChange={(e) => setSelectedShop(e.target.value)}
+          >
+            <option value="">All Shops</option>
+            {members
+              .filter((members) => members.role.name === "ShopOwner")
+              .map((member) => (
+                <option key={member.id} value={member.fullName}>
+                  {member.role.id === 2 ? member.fullName : ""}
+                </option>
+              ))}
+          </select>
+        </div>
+      </div>
 
       {loading ? (
         <p>Loading products...</p>

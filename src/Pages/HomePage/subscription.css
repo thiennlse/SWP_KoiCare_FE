@@ -5,6 +5,10 @@
   background-color: #f4f8fb;
 }
 
+.subscription-container h2 {
+  color: #333 !important;
+}
+
 h2 {
   font-size: 2.5rem;
   color: #fff;

@@ -433,3 +433,31 @@ body {
   text-overflow: ellipsis;
   min-height: 72px;
 }
+
+.product-search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.product_title {
+  margin: 0;
+  font-size: 36px;
+  font-family: "Chilanka", sans-serif;
+  color: #41403e;
+}
+
+.search-product {
+  width: 600px;
+}
+
+.filter-sort-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.filter-sort-container .form-control {
+  min-width: 150px;
+}
