@@ -342,6 +342,7 @@ const ManageAdmin = () => {
 
     const updatedOrder = {
       productId: orderToUpdate.productId || [],
+      subcriptionId: 0,
       quantity: orderToUpdate.quantity || [],
       totalCost: orderToUpdate.totalCost > 0 ? orderToUpdate.totalCost : 1,
       closeDate: orderToUpdate.closeDate,
