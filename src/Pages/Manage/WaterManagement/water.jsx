@@ -31,7 +31,7 @@ const Water = () => {
     o2: ">6mg/L",
     no2: "0 - 0.1 mg/L",
     no3: "<40 mg/L",
-    po4: " <0.5 mg/L.",
+    po4: " <0.1 mg/L.",
   };
 
   useEffect(() => {
@@ -97,7 +97,7 @@ const Water = () => {
       case "no3":
         return numValue >= 0 && numValue < 40;
       case "po4":
-        return numValue >= 0 && numValue < 0.5;
+        return numValue >= 0 && numValue < 0.1;
       default:
         return true;
     }

@@ -63,45 +63,6 @@ const CreateFish = () => {
       }
     }
 
-    if (name === "size") {
-      const sizeValue = Number(value);
-      if (sizeValue < 0.2) {
-        toast.error("Size must be at least 0.2 cm", {
-          autoClose: 1500,
-        });
-        return;
-      }
-      if (sizeValue > 8) {
-        toast.error("Size must be less than 8 cm", {
-          autoClose: 1500,
-        });
-        return;
-      }
-    }
-
-    if (name === "weight") {
-      const weightValue = Number(value);
-      if (weightValue < 0) {
-        toast.error("Weight must be at least 0 g", {
-          autoClose: 1500,
-        });
-        return;
-      }
-      if (weightValue > 2) {
-        toast.error("Weight must be less than 2 g", {
-          autoClose: 1500,
-        });
-        return;
-      }
-    }
-
-    if (name === "foodWeight" && Number(value) > 15) {
-      toast.error("Food Weight must be less than 15 g", {
-        autoClose: 1500,
-      });
-      return;
-    }
-
     setFishData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -125,6 +86,38 @@ const CreateFish = () => {
 
     if (!fishData.origin) {
       toast.error("Please select an origin", { autoClose: 1500 });
+      return;
+    }
+
+    if (Number(fishData.size) < 0.2) {
+      toast.error("Size must be at least 0.2 cm", {
+        autoClose: 1500,
+      });
+      return;
+    }
+    if (Number(fishData.size) > 8) {
+      toast.error("Size must be less than 8 cm", {
+        autoClose: 1500,
+      });
+      return;
+    }
+    if (Number(fishData.weight) < 0) {
+      toast.error("Weight must be at least 0 g", {
+        autoClose: 1500,
+      });
+      return;
+    }
+    if (Number(fishData.weight) > 2) {
+      toast.error("Weight must be less than 2 g", {
+        autoClose: 1500,
+      });
+      return;
+    }
+
+    if (Number(fishData.foodWeight) < 0 || Number(fishData.foodWeight) > 15) {
+      toast.error("Food weight must be between 0 and 15", {
+        autoClose: 1500,
+      });
       return;
     }
 
