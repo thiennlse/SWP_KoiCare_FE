@@ -436,28 +436,60 @@ body {
 
 .product-search {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.product_title {
-  margin: 0;
-  font-size: 36px;
-  font-family: "Chilanka", sans-serif;
-  color: #41403e;
+.search-product {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 15px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  outline: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.search-product {
-  width: 600px;
+.search-product::placeholder {
+  color: #aaa;
+}
+
+.search-product:focus {
+  border-color: #4caf50; /* Green for focus */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .filter-sort-container {
   display: flex;
-  gap: 10px;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 15px;
+  justify-content: center;
 }
 
-.filter-sort-container .form-control {
-  min-width: 150px;
+.filter-sort-container select {
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  font-size: 16px;
+  background-color: #fff;
+  transition: all 0.3s ease;
+  outline: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.filter-sort-container select:focus {
+  border-color: #4caf50; /* Green for focus */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.product_title {
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
 }

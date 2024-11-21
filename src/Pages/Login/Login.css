@@ -3,7 +3,8 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: url("../../Components/Assets/background3.jpg") no-repeat;
+  background: url("https://res.cloudinary.com/dkedkbs8d/image/upload/v1732195912/oaobipdi7ututlk17ymz.jpg")
+    no-repeat;
   background-size: cover;
   background-position: center;
 }
