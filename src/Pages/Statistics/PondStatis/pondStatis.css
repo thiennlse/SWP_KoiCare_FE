@@ -16,11 +16,11 @@
   border-radius: 8px;
 }
 
-h1 {
+.pond-choose-form h1 {
   margin-bottom: 10px;
 }
 
-select {
+.pond-choose-form select {
   width: 100%;
   padding: 8px;
   margin-top: 10px;
@@ -28,6 +28,11 @@ select {
 
 .pond-chart-container {
   width: 1000px;
-  height: 500px;
-  margin: 0 auto;
+  height: 600px;
+  margin: 20px auto;
+  margin-bottom: 200px;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
