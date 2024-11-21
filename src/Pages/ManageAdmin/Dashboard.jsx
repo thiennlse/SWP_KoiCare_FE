@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axiosInstance from "../axiosInstance";
 import OrderChart from "./OrderChart";
 import RevenueChart from "./RevenueChart";
+import { toast } from "react-toastify";
 
 export default function DashBoard({
   activeTab,
@@ -23,10 +24,13 @@ export default function DashBoard({
   filteredDateRange,
   orderStatuses,
   handleStatusChange,
-  revenueDataShopOwner,
 }) {
+  const [revenueDataShopOwner, setRevenueDataShopOwner] = useState({
+    labels: [],
+    data: [],
+  });
   const [subscriptionOrders, setSubscriptionOrders] = useState([]);
-  const [shopOrders, setShopOrders] = useState([]);
+
   useEffect(() => {
     const fetchSubscriptionOrders = async () => {
       try {
@@ -43,6 +47,38 @@ export default function DashBoard({
     };
     fetchSubscriptionOrders();
   }, []);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const monthlyRevenue = Array(12).fill(0);
+        orders.forEach((order) => {
+          const orderMonth = new Date(order.orderDate).getMonth();
+          monthlyRevenue[orderMonth] += order.totalCost;
+        });
+        const labels = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+        setRevenueDataShopOwner({ labels, data: monthlyRevenue });
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+        toast.error("Failed to fetch order data.", { autoClose: 500 });
+      }
+    };
+
+    fetchOrders();
+  }, [orders]);
 
   return (
     <main className="content_admin">
@@ -75,7 +111,8 @@ export default function DashBoard({
             </div>
           </div>
           <div className="chart-container">
-            <RevenueChart revenueData={revenueData} /> <br /> <br />
+            <RevenueChart revenueData={revenueData} />
+            <br /> <br />
             <br />
             <OrderChart orders={subscriptionOrders} />
           </div>
@@ -88,15 +125,15 @@ export default function DashBoard({
           <div className="dashboard-cards">
             <div className="stat-card">
               <div className="stat-icon">🛍️</div>
-              <div className="stat-number">{subscriptionOrders.length}</div>
+              <div className="stat-number">{orders.length}</div>
               <div className="stat-title">Total Orders</div>
             </div>
           </div>
           <div className="chart-container">
-            <RevenueChart revenueData={revenueData} /> <br />
+            <RevenueChart revenueData={revenueDataShopOwner} /> <br />
             <br />
             <br />
-            <OrderChart orders={subscriptionOrders} />
+            <OrderChart orders={orders} />
           </div>
         </div>
       )}
