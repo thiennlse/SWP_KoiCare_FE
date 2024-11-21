@@ -44,6 +44,7 @@ const KoiInformation = () => {
         setReportHistory(data.fishProperties);
 
         if (data.fishProperties.length > 0) {
+          // Sort fishProperties by date in descending order
           const sortedProperties = data.fishProperties.sort(
             (a, b) => new Date(b.date) - new Date(a.date)
           );
@@ -214,6 +215,7 @@ const KoiInformation = () => {
       setReportHistory(data.fishProperties);
 
       if (data.fishProperties.length > 0) {
+        // Sort fishProperties by date in descending order
         const sortedProperties = data.fishProperties.sort(
           (a, b) => new Date(b.date) - new Date(a.date)
         );
