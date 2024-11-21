@@ -20,7 +20,14 @@ const Subscription = () => {
     axiosInstance
       .get("/api/subcriptions")
       .then((res) => {
-        setSubScribe(res.data);
+        const sortedData = res.data.sort((a, b) => {
+          if (a.name === "Standard") return -1;
+          if (b.name === "Standard") return 1;
+          if (a.name === "Premium") return -1;
+          if (b.name === "Premium") return 1;
+          return 0;
+        });
+        setSubScribe(sortedData);
       })
       .catch((error) => {
         console.error("Error fetching subscriptions:", error);
