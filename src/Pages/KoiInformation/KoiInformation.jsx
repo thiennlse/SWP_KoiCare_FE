@@ -39,17 +39,18 @@ const KoiInformation = () => {
         const response = await axiosInstance.get(
           `/api/Fish/getfishbyidproperties/${id}`
         );
-        setKoiData(response.data);
-        setReportHistory(response.data.fishProperties);
-        if (response.data.fishProperties.length > 0) {
-          setLatestReport(
-            response.data.fishProperties[
-              response.data.fishProperties.length - 1
-            ]
+        const data = response.data;
+        setKoiData(data);
+        setReportHistory(data.fishProperties);
+
+        if (data.fishProperties.length > 0) {
+          const sortedProperties = data.fishProperties.sort(
+            (a, b) => new Date(b.date) - new Date(a.date)
           );
+          setLatestReport(sortedProperties[0]);
         }
-        if (response.data.foodId) {
-          fetchFoodDetails(response.data.foodId);
+        if (data.foodId) {
+          fetchFoodDetails(data.foodId);
         }
       } catch (error) {
         console.error("Error fetching koi data:", error);
@@ -116,51 +117,6 @@ const KoiInformation = () => {
       }
     }
 
-    if (name === "size") {
-      const sizeValue = Number(value);
-      if (sizeValue < 0.2) {
-        toast.error("Size must be at least 0.2 cm", {
-          autoClose: 1500,
-        });
-        return;
-      }
-      if (sizeValue > 8) {
-        toast.error("Size must be less than 8 cm", {
-          autoClose: 1500,
-        });
-        return;
-      }
-      if (sizeValue < koiData.size) {
-        toast.error("New size cannot be smaller than the current size", {
-          autoClose: 1500,
-        });
-        return;
-      }
-    }
-
-    if (name === "foodWeight" && Number(value) >= 15) {
-      toast.error("Food Weight must be less than 15 g", {
-        autoClose: 1500,
-      });
-      return;
-    }
-
-    if (name === "weight") {
-      const weightValue = Number(value);
-      if (weightValue < 0) {
-        toast.error("Weight must be at least 0 g", {
-          autoClose: 1500,
-        });
-        return;
-      }
-      if (weightValue > 2) {
-        toast.error("Weight must be less than 2 g", {
-          autoClose: 1500,
-        });
-        return;
-      }
-    }
-
     if (name === "foodName" || name === "foodWeight") {
       setFoodData((prevData) => ({
         ...prevData,
@@ -185,6 +141,33 @@ const KoiInformation = () => {
 
   const handleUpdateKoi = async () => {
     try {
+      if (koiData.size < Number(latestReport.size)) {
+        toast.error("New size cannot be smaller than the current size", {
+          autoClose: 1500,
+        });
+        return;
+      }
+      if (koiData.size > 10) {
+        toast.error("Size must be less than 10 cm", {
+          autoClose: 1500,
+        });
+        return;
+      }
+      if (koiData.weight < 0) {
+        toast.error("Weight must be at least 0 g", { autoClose: 1500 });
+        return;
+      }
+      if (koiData.weight > 30) {
+        toast.error("Weight must be less than 30 g", { autoClose: 1500 });
+        return;
+      }
+      if (foodData.weight < 0 || foodData.weight > 30) {
+        toast.error("Food weight must be between 0 and 30", {
+          autoClose: 1500,
+        });
+        return;
+      }
+
       let imageUrl = koiData.image;
 
       if (imageFile) {
@@ -226,13 +209,15 @@ const KoiInformation = () => {
       const response = await axiosInstance.get(
         `/api/Fish/getfishbyidproperties/${id}`
       );
-      setKoiData(response.data);
-      setReportHistory(response.data.fishProperties);
+      const data = response.data;
+      setKoiData(data);
+      setReportHistory(data.fishProperties);
 
-      if (response.data.fishProperties.length > 0) {
-        setLatestReport(
-          response.data.fishProperties[response.data.fishProperties.length - 1]
+      if (data.fishProperties.length > 0) {
+        const sortedProperties = data.fishProperties.sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
         );
+        setLatestReport(sortedProperties[0]);
       }
 
       toast.success("Koi information updated successfully!");
