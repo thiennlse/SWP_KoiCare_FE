@@ -50,6 +50,7 @@ const ManageAdmin = () => {
   const userRole = JSON.parse(localStorage.getItem("role"));
   const userId = JSON.parse(localStorage.getItem("userId"));
   const searchTerm = "";
+  const [accountName, setAccountName] = useState("");
 
   const openModal = (type, content = null) => {
     setModalType(type);
@@ -124,12 +125,12 @@ const ManageAdmin = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        toast.success("User  role updated successfully!");
+        toast.success("User  role updated successfully!", { autoClose: 500 });
         fetchData();
       })
       .catch((err) => {
         console.error("Error updating user role:", err);
-        toast.error("Failed to update user role.");
+        toast.error("Failed to update user role.", { autoClose: 500 });
       });
   };
 
@@ -179,7 +180,7 @@ const ManageAdmin = () => {
       }
     } catch (error) {
       console.error("Lỗi khi lấy dữ liệu đơn hàng:", error);
-      toast.error("Error fetching orders:", error);
+      toast.error("Error fetching orders:", error, { autoClose: 500 });
     }
 
     axiosInstance
@@ -205,7 +206,7 @@ const ManageAdmin = () => {
   };
 
   const handleLogout = () => {
-    toast.success("Logout successful!", { autoClose: 1500 });
+    toast.success("Logout successful!", { autoClose: 500 });
 
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
@@ -216,12 +217,14 @@ const ManageAdmin = () => {
     setTimeout(() => {
       localStorage.removeItem("user");
       window.location.href = "/login";
-    }, 1500);
+    }, 500);
   };
 
   const handleDateSearch = () => {
     if (!dateRange.startDate || !dateRange.endDate) {
-      toast.warning("Please select both start and end dates");
+      toast.warning("Please select both start and end dates", {
+        autoClose: 500,
+      });
       return;
     }
     setFilteredDateRange({
@@ -241,13 +244,13 @@ const ManageAdmin = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        toast.success("Product created successfully!");
+        toast.success("Product created successfully!", { autoClose: 500 });
         fetchData();
         closeModal();
       })
       .catch((err) => {
         console.error("Error creating product:", err);
-        toast.error("Failed to create product.");
+        toast.error("Failed to create product.", { autoClose: 500 });
       });
   };
 
@@ -257,7 +260,7 @@ const ManageAdmin = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        toast.success("Product updated successfully!", { autoClose: 1500 });
+        toast.success("Product updated successfully!", { autoClose: 500 });
         fetchData();
         closeModal();
       })
@@ -273,7 +276,7 @@ const ManageAdmin = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        toast.success("Product deleted successfully!", { autoClose: 1500 });
+        toast.success("Product deleted successfully!", { autoClose: 500 });
         fetchData();
         closeDeleteProductModal();
       })
@@ -297,13 +300,13 @@ const ManageAdmin = () => {
         },
       })
       .then((res) => {
-        toast.success("Blog created successfully!");
+        toast.success("Blog created successfully!", { autoClose: 500 });
         fetchData();
         closeModal();
       })
       .catch((err) => {
         console.error("Error creating blog:", err);
-        toast.error("Failed to create blog.");
+        toast.error("Failed to create blog.", { autoClose: 500 });
       });
   };
 
@@ -313,13 +316,13 @@ const ManageAdmin = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        toast.success("Blog updated successfully!");
+        toast.success("Blog updated successfully!", { autoClose: 500 });
         fetchData();
         closeModal();
       })
       .catch((err) => {
         console.error("Error updating blog:", err);
-        toast.error("Failed to update blog.");
+        toast.error("Failed to update blog.", { autoClose: 500 });
       });
   };
 
@@ -329,7 +332,7 @@ const ManageAdmin = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        toast.success("Blog deleted successfully!", { autoClose: 1500 });
+        toast.success("Blog deleted successfully!", { autoClose: 500 });
         fetchData();
         closeDeleteBlogModal();
       })
@@ -355,12 +358,12 @@ const ManageAdmin = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        toast.success("Order status updated successfully!");
+        toast.success("Order status updated successfully!", { autoClose: 500 });
         fetchData();
       })
       .catch((err) => {
         console.error("Error updating order status:", err);
-        toast.error("Failed to update order status.");
+        toast.error("Failed to update order status.", { autoClose: 500 });
       });
   };
 
@@ -435,12 +438,15 @@ const ManageAdmin = () => {
         }
       } catch (error) {
         console.error("Error fetching orders:", error);
-        toast.error("Failed to fetch order data.");
+        toast.error("Failed to fetch order data.", { autoClose: 500 });
       }
     };
 
     fetchOrders();
   }, []);
+  axiosInstance
+    .get(`/api/Member/${userId}`)
+    .then((res) => setAccountName(res.data.fullName));
 
   return (
     <div className="admin_dashboard">
@@ -454,7 +460,7 @@ const ManageAdmin = () => {
         <aside className="sidebar-admin">
           <div className="profile-admin">
             <img src={adminAvatar} alt="Admin" />
-            <div className="admin-name">{userRole}</div>
+            <div className="admin-name">{accountName}</div>
           </div>
           <nav className="nav_admin">
             <ul>
