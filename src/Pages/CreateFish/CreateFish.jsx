@@ -81,14 +81,14 @@ const CreateFish = () => {
 
     if (name === "weight") {
       const weightValue = Number(value);
-      if (weightValue < 0.05) {
-        toast.error("Weight must be at least 0.05 g", {
+      if (weightValue < 0) {
+        toast.error("Weight must be at least 0 g", {
           autoClose: 1500,
         });
         return;
       }
-      if (weightValue > 1) {
-        toast.error("Weight must be less than 1 g", {
+      if (weightValue > 2) {
+        toast.error("Weight must be less than 2 g", {
           autoClose: 1500,
         });
         return;
