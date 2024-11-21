@@ -70,8 +70,9 @@ const OrderHistory = () => {
             await axiosInstance.post(
               `/api/Member/subcription/${subscriptionId}`
             );
+            localStorage.setItem("subId", subscriptionId);
             localStorage.removeItem("subscriptionId");
-            localStorage.removeItem("paySubscribe");
+            localStorage.removeItem("paySubscibe");
           }
           localStorage.removeItem("cart");
 

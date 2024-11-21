@@ -12,15 +12,14 @@ const Cart = () => {
   const [totalPayment, setTotalPayment] = useState(0);
   const [isSelectAll, setIsSelectAll] = useState(false);
   const [members, setMembers] = useState([]);
-  const [cancelNotification, setCancelNotification] = useState(false);
 
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get("status") === "CANCELLED") {
-    if (!cancelNotification) {
-      toast.warn("Thanh toán đã bị hủy!", { autoClose: 1500 });
-      localStorage.removeItem("selectedProducts");
-      setCancelNotification(true);
-    }
+    toast.warn("Thanh toán đã bị hủy!", { autoClose: 1500 });
+    localStorage.removeItem("paySubscibe");
+    localStorage.removeItem("subscriptionId");
+    const newUrl = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, document.title, newUrl);
   }
 
   useEffect(() => {

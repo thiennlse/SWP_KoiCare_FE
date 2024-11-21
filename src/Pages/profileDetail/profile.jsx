@@ -10,31 +10,6 @@ const ProfileForm = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    //   const fetchUserDetails = async () => {
-    //     try {
-    //       const response = await axiosInstance.get("/api/Member");
-    //       const member = response.data.find(
-    //         (member) => member.id === Number(userId)
-    //       );
-    //       if (member) {
-    //         setUserData(member);
-    //       } else {
-    //         console.error("User not found");
-    //       }
-    //     } catch (error) {
-    //       console.error("Error fetching user data:", error);
-    //     }
-
-    //     const successMessage = localStorage.getItem("updSuccess");
-    //     if (successMessage) {
-    //       toast.success(successMessage, { autoClose: 2000 });
-    //       localStorage.removeItem("updSuccess");
-    //     }
-    //   };
-
-    //   fetchUserDetails();
-    // }, [userId]);
-
     const fetchUserDetails = async () => {
       try {
         const response = await axiosInstance.get(`/api/Member/${userId}`);
