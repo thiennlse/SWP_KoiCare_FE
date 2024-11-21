@@ -22,14 +22,14 @@
   margin-top: 10px;
 }
 
-h1 {
+.koi-choose-form h1 {
   margin-bottom: 10px;
 }
 
 .koi-chart-container {
   width: 1000px;
   height: 500px;
-  margin: 0 auto;
+  margin: 20px auto;
   margin-bottom: 200px;
 }
 
@@ -41,4 +41,41 @@ h1 {
 
 .koi-chart-controls label {
   margin-right: 10px;
+}
+
+.chart-select-week {
+  margin: 20px 0;
+  font-size: 16px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  width: 150px;
+}
+
+.chart-radio-group {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.chart-radio-group label {
+  margin-right: 15px;
+  font-size: 16px;
+  color: #333;
+}
+
+.chart-radio-group input[type="radio"] {
+  margin-right: 5px;
+}
+
+.koi-chart-container-1 {
+  width: 1000px;
+  height: 650px;
+  margin: 0 auto;
+  margin-bottom: 200px;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }

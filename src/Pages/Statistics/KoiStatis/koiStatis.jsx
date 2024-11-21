@@ -72,11 +72,6 @@ const KoiStatis = () => {
     }
   };
 
-  const handleWeekChange = (event) => {
-    const week = event.target.value;
-    setSelectedWeek(week);
-  };
-
   return (
     <div className="koi-statis-container">
       <div className="koi-choose-form">
@@ -86,14 +81,6 @@ const KoiStatis = () => {
           {fishList.map((fish) => (
             <option key={fish.id} value={fish.id}>
               {fish.name}
-            </option>
-          ))}
-        </select>
-        <select onChange={handleWeekChange}>
-          <option value="1">Week 1</option>
-          {Array.from({ length: 52 }, (_, i) => (
-            <option key={i} value={i + 1}>
-              Week {i + 1}
             </option>
           ))}
         </select>

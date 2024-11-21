@@ -42,10 +42,10 @@ const weightGrowthLimits = Array.from({ length: 6 }, (_, i) => {
 });
 
 const KoiChart = ({ fishInfor }) => {
-  const [viewType, setViewType] = useState("size"); // Quản lý loại hiển thị (size hoặc weight)
-  const [selectedWeek, setSelectedWeek] = useState(1); // Quản lý tuần được chọn
+  const [viewType, setViewType] = useState("size");
+  const [selectedWeek, setSelectedWeek] = useState(1);
   const fishProperties = fishInfor.fishProperties || [];
-  const dob = new Date(fishInfor.dob); // Ngày sinh của cá
+  const dob = new Date(fishInfor.dob);
 
   const normalizeDate = (date) => {
     const d = new Date(date);
@@ -67,7 +67,8 @@ const KoiChart = ({ fishInfor }) => {
     return endOfWeek;
   };
 
-  const growthLimits = viewType === "size" ? sizeGrowthLimits : weightGrowthLimits;
+  const growthLimits =
+    viewType === "size" ? sizeGrowthLimits : weightGrowthLimits;
 
   const generateWeekLabels = (week) => {
     const startOfWeek = getStartOfWeek(week);
@@ -186,18 +187,21 @@ const KoiChart = ({ fishInfor }) => {
   };
 
   const handleWeekChange = (event) => {
-    setSelectedWeek(parseInt(event.target.value, 10)); // Thay đổi selectedWeek khi chọn
+    setSelectedWeek(parseInt(event.target.value, 10));
   };
 
   const handleViewTypeChange = (event) => {
-    setViewType(event.target.value); // Cập nhật viewType (size hoặc weight)
+    setViewType(event.target.value);
   };
 
   return (
-    <div>
-      {/* Chọn tuần */}
+    <div className="koi-chart-container-1">
       <div>
-        <select value={selectedWeek} onChange={handleWeekChange}>
+        <select
+          className="chart-select-week"
+          value={selectedWeek}
+          onChange={handleWeekChange}
+        >
           <option value={1}>Week 1</option>
           <option value={2}>Week 2</option>
           <option value={3}>Week 3</option>
@@ -206,7 +210,7 @@ const KoiChart = ({ fishInfor }) => {
           <option value={6}>Week 6</option>
         </select>
       </div>
-      <div>
+      <div className="chart-radio-group">
         <label>
           <input
             type="radio"
