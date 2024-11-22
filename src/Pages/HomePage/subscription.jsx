@@ -71,6 +71,8 @@ const Subscription = () => {
     }
   };
 
+  console.log(subId);
+
   return (
     <div className="subscription-container">
       <h2>Our Subscription Plans</h2>
@@ -121,22 +123,25 @@ const Subscription = () => {
                 )}
               </ul>
             </div>
-            {subId === plan.id ? (
+            {plan.name === "Standard" ? (
               <button
-                className="subscribe-btn member-app"
-                disabled
+                className={`subscribe-btn ${
+                  subId === 1 || subId === 2 ? "member-app" : ""
+                }`}
+                disabled={subId === 1 || subId === 2}
+                onClick={() => (subId === 1 ? null : handleSubscribe(plan.id))}
+              >
+                {subId === 1 || subId === 2 ? "Registered" : "Subscribe Now"}
+              </button>
+            ) : plan.name === "Premium" ? (
+              <button
+                className={`subscribe-btn ${subId === 2 ? "member-app" : ""}`}
+                disabled={subId === 2}
                 onClick={() => handleSubscribe(plan.id)}
               >
-                Registed
+                {subId === 2 ? "Registered" : "Subscribe Now"}
               </button>
-            ) : (
-              <button
-                className="subscribe-btn "
-                onClick={() => handleSubscribe(plan.id)}
-              >
-                Subscribe Now
-              </button>
-            )}
+            ) : null}
           </div>
         ))}
       </div>
