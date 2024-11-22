@@ -36,7 +36,7 @@ const AquariumManagement = () => {
       })
       .catch((err) => {
         console.error("Error fetching pools:", err);
-        toast.error("Failed to fetch aquariums");
+        toast.error("Failed to fetch aquariums", { autoClose: 500 });
       })
       .finally(() => {
         setLoading(false);
@@ -62,7 +62,7 @@ const AquariumManagement = () => {
         })
         .catch((err) => {
           console.error("Error searching aquariums:", err);
-          toast.error("Failed to search aquariums");
+          toast.error("Failed to search aquariums", { autoClose: 500 });
         })
         .finally(() => {
           setLoading(false);
@@ -80,16 +80,19 @@ const AquariumManagement = () => {
           if (response.status === 204) {
             const updatedAquaList = aquaList.filter((pool) => pool.id !== id);
             setAquaList(updatedAquaList);
-            toast.success("Aquarium deleted successfully");
+            toast.success("Aquarium deleted successfully", { autoClose: 1500 });
           } else {
             toast.error(
-              `Failed to delete aquarium. Status: ${response.status}`
+              `Failed to delete aquarium. Status: ${response.status}`,
+              { autoClose: 500 }
             );
           }
         })
         .catch((error) => {
           console.error("Error deleting aquarium:", error);
-          toast.error("Failed to delete aquarium. Please try again.");
+          toast.error("Failed to delete aquarium. Please try again.", {
+            autoClose: 500,
+          });
         });
     }
   };

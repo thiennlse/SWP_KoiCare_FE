@@ -55,7 +55,7 @@ const KoiInformation = () => {
         }
       } catch (error) {
         console.error("Error fetching koi data:", error);
-        toast.error("Failed to load koi data.");
+        toast.error("Failed to load koi data.", { autoClose: 1500 });
       }
     };
 
@@ -74,7 +74,7 @@ const KoiInformation = () => {
       })
       .catch((error) => {
         console.error("Error fetching food details:", error);
-        toast.error("Failed to load food details.");
+        toast.error("Failed to load food details.", { autoClose: 1500 });
       });
   };
 
@@ -91,7 +91,7 @@ const KoiInformation = () => {
         setPools(response.data);
       } catch (error) {
         console.error("Error fetching pools:", error);
-        toast.error("Failed to load pools.");
+        toast.error("Failed to load pools.", { autoClose: 1500 });
       }
     };
 
@@ -197,7 +197,7 @@ const KoiInformation = () => {
         !foodData.name ||
         !foodData.weight
       ) {
-        toast.error("Please fill in all required fields.");
+        toast.error("Please fill in all required fields.", { autoClose: 1500 });
         return;
       }
 
@@ -221,7 +221,9 @@ const KoiInformation = () => {
         setLatestReport(sortedProperties[0]);
       }
 
-      toast.success("Koi information updated successfully!");
+      toast.success("Koi information updated successfully!", {
+        autoClose: 1500,
+      });
       navigate("/fishmanagement");
     } catch (error) {
       if (error.response && error.response.status === 400) {
@@ -230,7 +232,7 @@ const KoiInformation = () => {
         );
       } else {
         console.error("Error updating koi information:", error);
-        toast.error("Failed to update koi information.");
+        toast.error("Failed to update koi information.", { autoClose: 1500 });
       }
     }
   };

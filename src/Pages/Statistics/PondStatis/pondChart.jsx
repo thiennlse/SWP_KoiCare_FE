@@ -49,16 +49,16 @@ const PondChart = ({ waterData, selectedProperty }) => {
   const values = propertyData.map((data) => data[selectedProperty]);
 
   const standardValues = {
-    temperature: 20,    
-    salt: 0.3,          
-    ph: 7.4,           
-    o2: 7.0,            
-    no2: 0.05,          
-    no3: 20,            
+    temperature: 20,
+    salt: 0.3,
+    ph: 7.4,
+    o2: 7.0,
+    no2: 0.05,
+    no3: 20,
     po4: 0.5,
-};
-  const standardValue = standardValues[selectedProperty]; 
-  const standardLine = new Array(dates.length).fill(standardValue)
+  };
+  const standardValue = standardValues[selectedProperty];
+  const standardLine = new Array(dates.length).fill(standardValue);
 
   const chartData = {
     labels: dates,
@@ -114,7 +114,7 @@ const PondChart = ({ waterData, selectedProperty }) => {
 
   return (
     <div>
-      <h2>{propertyLabels[selectedProperty]}</h2>
+      <h2 className="pond-chart-title">{propertyLabels[selectedProperty]}</h2>
       <Line data={chartData} options={options} />
     </div>
   );

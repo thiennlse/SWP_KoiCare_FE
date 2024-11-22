@@ -406,7 +406,12 @@ export default function DashBoard({
                     <tr key={order.id}>
                       <td>#{order.code}</td>
                       <td>{new Date(order.orderDate).toLocaleDateString()}</td>
-                      <td>{order.description}</td>
+                      <td>
+                        {order.orderProducts
+                          .filter((op) => op.product)
+                          .map((op) => `${op.product.name} x ${op.quantity}`)
+                          .join(", ")}
+                      </td>
                       <td>{order.totalCost} VND</td>
                       <td>
                         <select
