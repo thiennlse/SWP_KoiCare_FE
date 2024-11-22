@@ -86,7 +86,7 @@ const ManageAdmin = () => {
     } else if (userRole === "Staff") {
       setActiveTab("blogs");
     } else if (userRole === "ShopOwner") {
-      setActiveTab("products");
+      setActiveTab("dashboardShop");
     }
     fetchData();
   }, [token, userId, userRole]);
