@@ -229,7 +229,7 @@ export default function DashBoard({
                         )}
                       </td>
                       <td>{product.name}</td>
-                      <td>{product.cost} VND</td>
+                      <td>{product.cost.toLocaleString("en-US")} VND</td>
                       <td className="product-description-cell">
                         <div className="product-content">
                           {product.description}
@@ -420,7 +420,7 @@ export default function DashBoard({
                           .map((op) => `${op.product.name} x ${op.quantity}`)
                           .join(", ")}
                       </td>
-                      <td>{order.totalCost} VND</td>
+                      <td>{order.totalCost.toLocaleString("en-US")} VND</td>
                       <td>
                         <select
                           className="status-select"
@@ -557,7 +557,7 @@ export default function DashBoard({
                       <td>#{order.code}</td>
                       <td>{new Date(order.orderDate).toLocaleDateString()}</td>
                       <td>{order.description}</td>
-                      <td>{order.totalCost} VND</td>
+                      <td>{order.totalCost.toLocaleString("en-US")} VND</td>
                       <td
                         style={{ backgroundColor: "#d4edda", color: "#155724" }}
                       >
