@@ -23,7 +23,9 @@ const FishManagement = () => {
       fetchInitialData();
     } else {
       console.error("No memberId found. Please log in.");
-      toast.error("Please log in to access Fish Management");
+      toast.error("Please log in to access Fish Management", {
+        autoClose: 1500,
+      });
       navigate("/login");
     }
   }, [memberId]);
@@ -34,7 +36,7 @@ const FishManagement = () => {
       await Promise.all([fetchPoolsForMember(memberId), fetchFood()]);
     } catch (error) {
       console.error("Error fetching initial data:", error);
-      toast.error("Failed to load initial data");
+      toast.error("Failed to load initial data", { autoClose: 1500 });
     } finally {
       setIsLoading(false);
     }
@@ -52,7 +54,7 @@ const FishManagement = () => {
       setFoodList(res.data);
     } catch (err) {
       console.error("Error fetching food data:", err);
-      toast.error("Failed to fetch food data");
+      toast.error("Failed to fetch food data", { autoClose: 1500 });
     }
   };
 
@@ -66,7 +68,7 @@ const FishManagement = () => {
       setFilteredFishList(filteredFish);
     } catch (err) {
       console.error("Error fetching fish data:", err);
-      toast.error("Failed to fetch fish data");
+      toast.error("Failed to fetch fish data", { autoClose: 1500 });
     }
   };
 
@@ -77,7 +79,7 @@ const FishManagement = () => {
       setPoolList(memberPools);
     } catch (err) {
       console.error("Error fetching pools data:", err);
-      toast.error("Failed to fetch pools data");
+      toast.error("Failed to fetch pools data", { autoClose: 1500 });
     }
   };
 
@@ -89,10 +91,10 @@ const FishManagement = () => {
         setFilteredFishList(
           filteredFishList.filter((fish) => fish.id !== fishId)
         );
-        toast.success("Fish deleted successfully!");
+        toast.success("Fish deleted successfully!", { autoClose: 1500 });
       } catch (error) {
         console.error("Error deleting fish:", error);
-        toast.error("Failed to delete fish.");
+        toast.error("Failed to delete fish.", { autoClose: 1500 });
       }
     }
   };
