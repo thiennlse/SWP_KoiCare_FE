@@ -396,11 +396,19 @@ export default function DashBoard({
                       !filteredDateRange.endDate
                     )
                       return true;
-                    const orderDate = new Date(order.orderDate);
-                    const startDate = new Date(filteredDateRange.startDate);
-                    const endDate = new Date(filteredDateRange.endDate);
-                    endDate.setDate(endDate.getDate() + 1);
-                    return orderDate >= startDate && orderDate < endDate;
+                    const orderDate = new Date(order.orderDate).setHours(
+                      0,
+                      0,
+                      0,
+                      0
+                    );
+                    const startDate = new Date(
+                      filteredDateRange.startDate
+                    ).setHours(0, 0, 0, 0);
+                    const endDate = new Date(
+                      filteredDateRange.endDate
+                    ).setHours(0, 0, 0, 0);
+                    return orderDate >= startDate && orderDate <= endDate;
                   })
                   .map((order) => (
                     <tr key={order.id}>
@@ -530,11 +538,19 @@ export default function DashBoard({
                       !filteredDateRange.endDate
                     )
                       return true;
-                    const orderDate = new Date(order.orderDate);
-                    const startDate = new Date(filteredDateRange.startDate);
-                    const endDate = new Date(filteredDateRange.endDate);
-                    endDate.setDate(endDate.getDate() + 1);
-                    return orderDate >= startDate && orderDate < endDate;
+                    const orderDate = new Date(order.orderDate).setHours(
+                      0,
+                      0,
+                      0,
+                      0
+                    );
+                    const startDate = new Date(
+                      filteredDateRange.startDate
+                    ).setHours(0, 0, 0, 0);
+                    const endDate = new Date(
+                      filteredDateRange.endDate
+                    ).setHours(0, 0, 0, 0);
+                    return orderDate >= startDate && orderDate <= endDate;
                   })
                   .map((order) => (
                     <tr key={order.id}>
